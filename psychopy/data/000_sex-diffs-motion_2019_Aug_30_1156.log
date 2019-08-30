@@ -1,0 +1,21 @@
+16.2254 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1920, 1080]. Using actual size
+17.8460 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, args=UNKNOWN, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([0., 0., 0.]), colorSpace='rgb', fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x12f5829b0>, gamma=None, kwargs=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x12e658c88>, multiSample=False, name='window1', numSamples=2, pos=[0.0, 0.0], screen=0, size=array([1920, 1080]), stereo=False, units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+17.8461 	EXP 	window1: recordFrameIntervals = False
+18.0089 	EXP 	window1: recordFrameIntervals = True
+18.1928 	EXP 	window1: recordFrameIntervals = False
+18.6703 	EXP 	Created env_grating = EnvelopeGrating(__class__=type(...), autoDraw=False, autoLog=True, blendmode='avg', color=array([1., 1., 1.]), colorSpace='rgb', contrast=0.5, depth=0.0, interpolate=True, mask='none', maskParams=None, name='env_grating', opacity=1.0, ori=0.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1., 1.]), size=array([0.5, 0.5]), tex='sin', texRes=128, units='height', win=Window(...))
+18.7098 	EXP 	env_grating: interpolate = True
+18.7098 	EXP 	env_grating: mask = None
+18.7098 	EXP 	env_grating: envelope = 'sin'
+18.7098 	EXP 	env_grating: carrier = 'sin'
+18.7098 	EXP 	env_grating: envsf = array([1., 1.])
+18.7098 	EXP 	env_grating: envphase = array([0., 0.])
+18.7098 	EXP 	env_grating: envori = 0.0
+18.7098 	EXP 	env_grating: moddepth = 1.0
+18.7098 	EXP 	env_grating: beat = False
+18.7098 	EXP 	env_grating: blendmode = 'avg'
+18.7098 	EXP 	env_grating: texRes = 128
+18.7098 	EXP 	env_grating: autoDraw = True
+19.6925 	EXP 	env_grating: autoDraw = False
+19.6925 	EXP 	env_grating: autoDraw = False
+20.0037 	EXP 	window1: mouseVisible = True
