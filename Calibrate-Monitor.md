@@ -1,7 +1,7 @@
 # Calibrate Monitor
 ## EEG
 ### Prepare Computers
-- In 120H Switch on power of large surge protector on bottom left shelf.
+- In 503B Switch on power of large surge protector on bottom left shelf.
 
 - Switch on power of smaller, thin surge protector on second shelf (ignore lights; always on).
 
@@ -77,7 +77,7 @@ All mirrors and the projector screen have marks on the floor indicating their pr
 ### Run Matlab Script
 
 - At a minimum a black (0,0,0) and white (255,255,255) image must be displayed on the projector screen 
-- The script to do this is located on Github: https://github.com/gilmore-lab/photometer_proj
+- The script to do this is located on Github: https://gilmore-lab.github.io/photometer_proj
  
 ### Measure Luminance
 

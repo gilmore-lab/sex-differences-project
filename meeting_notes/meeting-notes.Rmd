@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
   - Equipment
     - New PC here; set-up; connects to high res monitor; additional set-up (ARS) in-process
     - IT request submitted (ARS) for Psychopy install, internet, LA admin, computer admin, dual boot
-    - ARS: Find monitor testing protocol - Current EEG/MRI protocol [here](https://gilmore-lab.github.io/protocols/Calibrate-Monitor.md)
+    - ARS: Find monitor testing protocol - Current EEG/MRI [protocol](https://gilmore-lab.github.io/protocols/Calibrate-Monitor.md) and [code](https://gilmore-lab.github.io/gilmore-lab/photometer_proj)
     - ARS: Contact calibration vendor (sent email 9/26), price new calibration. Last year ~ $500
   - IRB
     - Filed 2019-09-19 
