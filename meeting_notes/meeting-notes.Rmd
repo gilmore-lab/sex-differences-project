@@ -1,0 +1,56 @@
+---
+title: "Sex differences project mtg notes"
+author: "Rick Gilmore"
+date: "`r Sys.time()``"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 2019-09-26-11:08
+
+- Attending: Andrea, Yiming, Rick
+- Topics
+  - Equipment
+    - New PC here; set-up; connects to high res monitor; additional set-up (ARS) in-process
+    - IT request submitted (ARS) for Psychopy install, internet, LA admin, computer admin, dual boot
+    - ARS: Find monitor testing protocol
+    - ARS: Contact calibration vendor, price new calibration.
+  - IRB
+    - Filed 2019-09-19 
+  - Stimulus code (YM)
+    - Abramov component
+      - YM will demo next week
+    - Murray et al component
+  - Questionnaires
+    - YM give URLs to ARS
+    - ARS create page using R Markdown
+  - SONA project page (YM/ARS)
+    - Create page before IRB
+    - Confirm that corrected-to-normal (bring glasses or contacts) is required for inclusion
+    - Publish SONA page after IRB approval
+  - Internal/detailed protocol
+    - ARS draft
+      - Participant ID scheme
+        - Test date & sequential number
+      - Scheduling
+      - Confirmation
+      - Equipment set-up
+      - Consent
+      - Vision screening
+        - Snellen acuity (how record data?)
+      - Questionnaires
+      - Decide on test order
+      - Run visual test 1
+      - Break
+      - Run visual test 2
+      - Debrief
+      - Give credit
+      - Post-processing
+        - Transfer data from computer to Box
+        - Download questionnaire data and transfer to Box
+    - Post-processing QA/visualization
+      - Explore use of Qualtrics R package
+      - Subject-specific QA reports (R Markdown)

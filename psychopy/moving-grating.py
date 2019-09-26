@@ -103,8 +103,8 @@ start_time = clock.getTime()
 tf = 4 # Hz, so stim_dur is 1/freq_temp
 cyc_secs = 1/tf # in seconds
 #max_contr = .025
-stim_dur_secs = 5/expInfo['frameRate']
-motion_dir = -1 # rightward
+stim_dur_secs = 20/expInfo['frameRate']
+motion_dir = +1 # rightward
 
 while keep_going:
     secs_from_start = (start_time - clock.getTime())

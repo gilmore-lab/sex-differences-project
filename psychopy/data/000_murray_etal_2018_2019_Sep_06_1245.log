@@ -1,0 +1,25 @@
+12.6786 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1920, 1080]. Using actual size
+13.5169 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, args=UNKNOWN, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([0., 0., 0.]), colorSpace='rgb', fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x12f819940>, gamma=None, kwargs=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x12f2f4780>, multiSample=False, name='window1', numSamples=2, pos=[0.0, 0.0], screen=0, size=array([1920, 1080]), stereo=False, units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+13.8231 	EXP 	Created grating_murray = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color=array([0.98, 0.98, 0.98]), colorSpace='rgb', contrast=1.0, depth=0.0, interpolate=True, mask='gauss', maskParams=None, name='grating_murray', opacity=1.0, ori=0.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1.2, 1.2]), size=array([10., 10.]), tex='sin', texRes=128, units='deg', win=Window(...))
+13.8486 	EXP 	grating_murray: phase = -1.8888000340666622e-05
+13.8655 	EXP 	grating_murray: phase = -0.10215049200633075
+13.8827 	EXP 	grating_murray: phase = -0.1697526240022853
+13.8995 	EXP 	grating_murray: phase = -0.2387020680034766
+13.9162 	EXP 	grating_murray: phase = -0.3059542280025198
+13.9328 	EXP 	grating_murray: phase = -0.37275471199973254
+13.9494 	EXP 	grating_murray: phase = -0.439237636004691
+13.9659 	EXP 	grating_murray: phase = -0.5053141840035096
+13.9831 	EXP 	grating_murray: phase = -0.5715516800046316
+13.9985 	EXP 	grating_murray: phase = -0.6400851920043351
+14.0161 	EXP 	grating_murray: phase = -0.702168628005893
+14.0316 	EXP 	grating_murray: phase = -0.772518696001498
+14.0495 	EXP 	grating_murray: phase = -0.8341973679998773
+14.0652 	EXP 	grating_murray: phase = -0.906048800003191
+14.0819 	EXP 	grating_murray: phase = -0.968553212005645
+14.0992 	EXP 	grating_murray: phase = -1.0355216080060927
+14.1161 	EXP 	grating_murray: phase = -1.1048597920016618
+14.1321 	EXP 	grating_murray: phase = -1.1722417440032586
+14.1491 	EXP 	grating_murray: phase = -1.2363984640032868
+14.1658 	EXP 	grating_murray: phase = -1.3044546200035256
+16.8514 	DATA 	Keypress: escape
+17.1291 	EXP 	window1: mouseVisible = True

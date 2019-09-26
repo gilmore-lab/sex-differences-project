@@ -1,0 +1,10 @@
+13.7221 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1920, 1080]. Using actual size
+14.7558 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, args=UNKNOWN, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([0., 0., 0.]), colorSpace='rgb', fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x12f416940>, gamma=None, kwargs=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x12f2db780>, multiSample=False, name='window1', numSamples=2, pos=[0.0, 0.0], screen=0, size=array([1920, 1080]), stereo=False, units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+15.2905 	EXP 	Created grating_murray = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color=array([0.98, 0.98, 0.98]), colorSpace='rgb', contrast=1.0, depth=0.0, interpolate=True, mask='gauss', maskParams=None, name='grating_murray', opacity=1.0, ori=0.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1.2, 1.2]), size=array([10., 10.]), tex='sin', texRes=128, units='deg', win=Window(...))
+15.3143 	EXP 	grating_murray: phase = 1.943599636433646e-05
+15.3293 	EXP 	grating_murray: phase = 0.09540149999520509
+15.3458 	EXP 	grating_murray: phase = 0.15527425199979916
+15.3631 	EXP 	grating_murray: phase = 0.22132526799396146
+15.3795 	EXP 	grating_murray: phase = 0.2907042839942733
+19.9194 	DATA 	Keypress: escape
+20.2060 	EXP 	window1: mouseVisible = True
