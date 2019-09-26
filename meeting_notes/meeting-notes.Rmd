@@ -16,8 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
   - Equipment
     - New PC here; set-up; connects to high res monitor; additional set-up (ARS) in-process
     - IT request submitted (ARS) for Psychopy install, internet, LA admin, computer admin, dual boot
-    - ARS: Find monitor testing protocol
-    - ARS: Contact calibration vendor, price new calibration.
+    - ARS: Find monitor testing protocol - Current EEG/MRI protocol [here](https://gilmore-lab.github.io/protocols/Calibrate-Monitor.md)
+    - ARS: Contact calibration vendor (sent email 9/26), price new calibration. Last year ~ $500
   - IRB
     - Filed 2019-09-19 
   - Stimulus code (YM)
@@ -37,7 +37,7 @@ knitr::opts_chunk$set(echo = TRUE)
         - Test date & sequential number
       - Scheduling
       - Confirmation
-      - Equipment set-up
+      - Equipment set-up ()
       - Consent
       - Vision screening
         - Snellen acuity (how record data?)
