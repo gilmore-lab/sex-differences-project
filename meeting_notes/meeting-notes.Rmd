@@ -17,7 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
     - New PC here; set-up; connects to high res monitor; additional set-up (ARS) in-process
     - IT request submitted (ARS) for Psychopy install, internet, LA admin, computer admin, dual boot
     - ARS: Find monitor testing protocol - Current EEG/MRI [protocol](https://gilmore-lab.github.io/protocols/Calibrate-Monitor.md) and [code](https://gilmore-lab.github.io/gilmore-lab/photometer_proj)
-    - ARS: Contact calibration vendor (sent email 9/26), price new calibration (ILT1700 is $235 and SED033 sensor is )
+    - ARS: Contact calibration vendor, price new calibration 
+        - The cost to calibrate the ILT1700 is $235 and $265 for the SED033. 
+        - Request RMA [here](https://www.intl-lighttech.com/service-support/rma-form)
   - IRB
     - Filed 2019-09-19 
   - Stimulus code (YM)
