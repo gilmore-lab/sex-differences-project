@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Consent
 
-![Consent Form](){width=100% height=1200}
+![Consent Form](13345-consent-2019-09-13v01.pdf){width=100% height=1200}
 
 
 ## Survey
