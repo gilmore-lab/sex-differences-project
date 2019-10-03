@@ -1,3 +1,10 @@
+---
+title: "Set-up"
+author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+---
+
 # Sex Differences Set-Up Checklist
 
 # Before Participant Arrives
@@ -30,8 +37,6 @@
 #### For Abramov
 
 #### For Murray
-
-
 
 ## AFTER PARTICIPANT ARRIVES
 
@@ -79,8 +84,6 @@ You can withdraw anytime when you feel uncomfortable or .Do you want to go on?â€
 - Enter the ID in the pop window and speak to the participant
 â€œOkay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have question, ..."
 
-
-
 ## AFTER SESSION
 
 - After the participant finishes all the test, thank him/her. 
@@ -91,3 +94,9 @@ You can withdraw anytime when you feel uncomfortable or .Do you want to go on?â€
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
 
 - After data export is complete, turn off computer and monitor in 503B
+
+----
+
+```{r terminology, child="terminology.Rmd"}
+```
+

@@ -1,7 +1,7 @@
 ---
-title: "Consent_and_Survey"
-author: "Andrea Seisler"
-date: "9/26/2019"
+title: "Consent and Survey"
+author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
+date: "`r Sys.time()`"
 output: html_document
 ---
 
@@ -12,6 +12,5 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Consent
 
 ![Consent Form](13345-consent-2019-09-13v01.pdf){width=100% height=1200}
-
 
 ## Survey

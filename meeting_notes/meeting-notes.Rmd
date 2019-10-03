@@ -9,6 +9,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## 2019-10-03
+
+- Attending: Andrea, Yiming, Rick
+- Topics
+  - Revision of IRB protocol; Yiming will resubmit today
+  - Rick will help with Murray et al. (now called temporal threshold or $T^2$) task.
+  - Added terminology document to protocol.
+  - Reviewed the consent and survey document.
+  - Yiming will check Qualtrics URL and add to consent and survey document.
+  - Yiming will create SONA protocol in expecation of IRB approval
+  - ??? Add SONA link to internal protocol. Ideally use the study-specific URL if that works.
+  - Andrea will forward monitor calibration email to Rick; Rick will ask for $ from Mel and Michele.
+
 ## 2019-09-26-11:08
 
 - Attending: Andrea, Yiming, Rick

@@ -1,0 +1,26 @@
+---
+title: "terminology"
+author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose
+
+This document explains the terminology we use in this study.
+
+## Terms
+
+### Contrast-sensitivity function (CSF) task
+
+This is the spatio-temporal constrast sensitivity function task from Abramov et al.
+
+### Temporal threshold task
+
+This is the temporal threshold task from Murray et al.
+
+
