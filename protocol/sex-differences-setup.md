@@ -25,6 +25,8 @@
  
 ### Prepare Stimuli
 
+#### For Qualtric questionnaires
+
 #### For Abramov
 
 #### For Murray
@@ -34,7 +36,11 @@
 ## AFTER PARTICIPANT ARRIVES
 
 - Talk with participant to complete the following 
-  - Consent Form  
+  - Check the name
+  - Consent Form, get verbal approval 
+  
+*" welcome. Are you XXX? This project about individual difference in motion perception. You will have ... The risk includes .Do you have any questions? 
+You can withdraw anytime when you feel uncomfortable or .Do you want to go on?”*
 
   - Complete Vision Screening
     - Child - HTOV @ 10ft
@@ -42,6 +48,11 @@
   - Complete Stereo Acuity Test 
   - Complete Color Vision Test (adult only)
   
+## Questionnaires Setup
+- open the Qualtric website
+- enter the ID, let the participants finish the items
+-	A little break for the participants. If the participant wants to keep going, lead him to the test room
+“You have finished the first part of testing. Next you have have a behavial testing. Do you want to continue or have a little break?”
 
 
 ## Experimental Setup
@@ -61,12 +72,19 @@
 - Low Density
   -  Game controller is used to record and pause
 
-## Run Experiment
 
-- In PsychoPy, press 
+## Run Experiment
+- open the files "" located in folder.
+- In PsychoPy, press the green button 
+- Enter the ID in the pop window and speak to the participant
+“Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have question, ..."
+
 
 
 ## AFTER SESSION
+
+- After the participant finishes all the test, thank him/her. 
+“Thank you for participating this experiment. “
 
 - Assign credit in SONA
 
