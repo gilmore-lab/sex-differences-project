@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v3.0.2),
-    on Fri Oct 11 11:43:27 2019
+    on Fri Oct 11 11:32:03 2019
 If you publish work using this script please cite the PsychoPy publications:
     Peirce, JW (2007) PsychoPy - Psychophysics software in Python.
         Journal of Neuroscience Methods, 162(1-2), 8-13.
@@ -67,6 +67,15 @@ if expInfo['frameRate'] != None:
     frameDur = 1.0 / round(expInfo['frameRate'])
 else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
+    
+# Contrast ramps up from 0 for ramp_up_secs, remains at max_contr for full_scale_secs and ramps down for ramp_dn_secs
+# note sum(ramp_up_secs, full_scale_secs, ramp_dn_secs) = stim_dur_secs
+stim_dur_secs = 2
+ramp_up_secs = .5
+full_scale_secs = 1
+ramp_dn_secs = ramp_up_secs
+tf=1 # Hz, so stim_dur is 1/freq_temp
+cyc_secs=1/tf # in seconds
 
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
@@ -242,7 +251,7 @@ for level, condition in trials:
             fixation.tStart = t
             fixation.frameNStart = frameN  # exact frame index
             fixation.setAutoDraw(True)
-        frameRemains = 0.25 + 0.6- win.monitorFramePeriod * 0.75  # most of one frame period left
+        frameRemains = 0.25 + 0.5- win.monitorFramePeriod * 0.75  # most of one frame period left
         if fixation.status == STARTED and t >= frameRemains:
             fixation.setAutoDraw(False)
         

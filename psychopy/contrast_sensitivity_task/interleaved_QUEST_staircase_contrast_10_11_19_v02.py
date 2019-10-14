@@ -67,6 +67,16 @@ if expInfo['frameRate'] != None:
     frameDur = 1.0 / round(expInfo['frameRate'])
 else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
+    
+    
+# Contrast ramps up from 0 for ramp_up_secs, remains at max_contr for full_scale_secs and ramps down for ramp_dn_secs
+# note sum(ramp_up_secs, full_scale_secs, ramp_dn_secs) = stim_dur_secs
+ramp_up_secs = .5
+ramp_dn_secs = ramp_up_secs
+
+TF = 1 # Hz, so stim_dur is 1/freq_temp
+cyc_secs = 1/TF # in seconds
+
 
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
@@ -196,7 +206,7 @@ trials = data.MultiStairHandler(stairType='QUEST', name='trials',
     originPath=-1)
 thisExp.addLoop(trials)  # add the loop to the experiment
 # initialise values for first condition
-level = trials._nextIntensity  # initialise some vals
+level = trials._nextIntensity  # initialise some vals  # Yiming: I assume the level is contrast
 condition = trials.currentStaircase.condition
 
 for level, condition in trials:
@@ -251,7 +261,16 @@ for level, condition in trials:
             # keep track of start time/frame for later
             grating.tStart = t
             grating.frameNStart = frameN  # exact frame index
-            grating.setAutoDraw(True)
+            grating.phase = round(np.mod((t-1), cyc_secs)/cyc_secs)/2   # need value of 0 or 0.5 to switch phase
+            if 1.5 > t >= 1:
+               contr = (t-1)/ramp_up_secs*level  
+            elif 3 >= t > 2.5:
+               contr = (3- t)/ramp_dn_secs*level
+            else:
+               contr = level
+            grating.color = [contr, contr, contr]
+            grating.draw()
+            win.flip()
         
         # *resp* updates
         if t >= 1 and resp.status == NOT_STARTED:

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v3.0.2),
-    on Fri Oct 11 11:43:27 2019
+    on Fri Oct 11 11:20:56 2019
 If you publish work using this script please cite the PsychoPy publications:
     Peirce, JW (2007) PsychoPy - Psychophysics software in Python.
         Journal of Neuroscience Methods, 162(1-2), 8-13.
@@ -68,10 +68,22 @@ if expInfo['frameRate'] != None:
 else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
 
+# Contrast ramps up from 0 for ramp_up_secs, remains at max_contr for full_scale_secs and ramps down for ramp_dn_secs
+# note sum(ramp_up_secs, full_scale_secs, ramp_dn_secs) = stim_dur_secs
+stim_dur_secs = 2
+ramp_up_secs = .5
+full_scale_secs = 1
+ramp_dn_secs = ramp_up_secs
+max_contr = .5
+
+tf = 1 # Hz, so stim_dur is 1/freq_temp
+cyc_secs = 1/tf # in seconds
+
+
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 instrText = visual.TextStim(win=win, name='instrText',
-    text="You will see horizontal and vertical movement. Press the left or right buttons to indicate if you see the grating is horizontally moved, up or down button if you see the grating is vertically moving. \n \nIf you don't see anything then guess! \n \n \nPress any key to continue",
+    text="Press the left and right cursor keys to indicate whether the grating was vertical or horizontal. \n \nIf you don't see anything then guess! \n \n \nPress any key to continue",
     font='Arial',
     pos=[0, 0], height=1, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -190,17 +202,17 @@ routineTimer.reset()
 
 # set up handler to look after randomisation of trials etc
 conditions = data.importConditions('stairDefinitions.xlsx')
-trials = data.MultiStairHandler(stairType='QUEST', name='trials',
+loop = data.MultiStairHandler(stairType='QUEST', name='loop',
     nTrials=40,
     conditions=conditions,
     originPath=-1)
-thisExp.addLoop(trials)  # add the loop to the experiment
+thisExp.addLoop(loop)  # add the loop to the experiment
 # initialise values for first condition
-level = trials._nextIntensity  # initialise some vals
-condition = trials.currentStaircase.condition
+level = loop._nextIntensity  # initialise some vals
+condition = loop.currentStaircase.condition
 
-for level, condition in trials:
-    currentLoop = trials
+for level, condition in loop:
+    currentLoop = loop
     # abbreviate parameter names if possible (e.g. rgb=condition.rgb)
     for paramName in condition:
         exec(paramName + '= condition[paramName]')
@@ -242,7 +254,7 @@ for level, condition in trials:
             fixation.tStart = t
             fixation.frameNStart = frameN  # exact frame index
             fixation.setAutoDraw(True)
-        frameRemains = 0.25 + 0.6- win.monitorFramePeriod * 0.75  # most of one frame period left
+        frameRemains = 0.25 + 0.5- win.monitorFramePeriod * 0.75  # most of one frame period left
         if fixation.status == STARTED and t >= frameRemains:
             fixation.setAutoDraw(False)
         
@@ -317,9 +329,9 @@ for level, condition in trials:
            resp.corr = 1;  # correct non-response
         else:
            resp.corr = 0;  # failed to respond (incorrectly)
-    # store data for trials (MultiStairHandler)
-    trials.addResponse(resp.corr)
-    trials.addOtherData('resp.rt', resp.rt)
+    # store data for loop (MultiStairHandler)
+    loop.addResponse(resp.corr)
+    loop.addOtherData('resp.rt', resp.rt)
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     thisExp.nextEntry()
