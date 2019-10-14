@@ -1,0 +1,7 @@
+targetSide	oriIncrement	correct
+0	0.500	1
+0	0.450	1
+0	0.400	1
+0	0.350	1
+0	0.300	1
+90	0.250	1
