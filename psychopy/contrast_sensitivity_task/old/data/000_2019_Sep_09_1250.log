@@ -1,0 +1,216 @@
+15.0669 	WARNING 	User requested fullscreen with size [1920 1080], but screen is actually [2560, 1440]. Using actual size
+15.8289 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, args=UNKNOWN, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([0., 0., 0.]), colorSpace='rgb', fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x11c9f77f0>, gamma=None, kwargs=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x11c9c8a20>, multiSample=False, name='window1', numSamples=2, pos=[0.0, 0.0], screen=0, size=array([2560, 1440]), stereo=False, units='deg', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+15.8289 	EXP 	window1: recordFrameIntervals = False
+15.9953 	EXP 	window1: recordFrameIntervals = True
+16.1788 	EXP 	window1: recordFrameIntervals = False
+17.3690 	EXP 	Created instrText = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=1, italic=False, languageStyle='LTR', name='instrText', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='deg', win=Window(...), wrapWidth=15.0)
+17.3717 	EXP 	Created fixation = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color='black', colorSpace='named', contrast=1.0, depth=0, interpolate=True, mask='gauss', maskParams=None, name='fixation', opacity=1.0, ori=0.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1., 1.]), size=array([1., 1.]), tex=None, texRes=128, units='deg', win=Window(...))
+17.3743 	EXP 	Created grating = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color='white', colorSpace='named', contrast=1.0, depth=0.0, interpolate=True, mask='gauss', maskParams=None, name='grating', opacity=1.0, ori=1.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1., 1.]), size=array([1., 1.]), tex='sin', texRes=128, units='deg', win=Window(...))
+17.3954 	EXP 	Created thanksMsg = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, languageStyle='LTR', name='thanksMsg', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([1., 1., 1.]), text=str(...), units='deg', win=Window(...), wrapWidth=15.0)
+17.4141 	EXP 	instrText: autoDraw = True
+34.5651 	EXP 	Imported stairDefinitions.xlsx as conditions, 4 conditions, 9 params
+34.8263 	EXP 	window1: recordFrameIntervals = False
+34.8294 	DATA 	Keypress: space
+34.8454 	EXP 	instrText: autoDraw = False
+34.8454 	EXP 	grating: color = '[0.3 0.3 0.3] (rgb)'
+34.8454 	EXP 	grating: size = array([3.6, 3.6])
+34.8454 	EXP 	grating: ori = 90.0
+34.8454 	EXP 	grating: sf = array([12., 12.])
+34.8456 	EXP 	window1: recordFrameIntervals = False
+35.0981 	EXP 	fixation: autoDraw = True
+35.2793 	EXP 	fixation: autoDraw = False
+35.3448 	EXP 	grating: autoDraw = True
+38.7059 	EXP 	window1: recordFrameIntervals = False
+38.7077 	DATA 	Keypress: right
+38.7154 	EXP 	fixation: autoDraw = False
+38.7154 	EXP 	grating: autoDraw = False
+38.7154 	EXP 	grating: color = '[0.001 0.001 0.001] (rgb)'
+38.7154 	EXP 	grating: size = array([3.6, 3.6])
+38.7154 	EXP 	grating: ori = 0.0
+38.7154 	EXP 	grating: sf = array([1.2, 1.2])
+38.7155 	EXP 	window1: recordFrameIntervals = False
+38.9824 	EXP 	fixation: autoDraw = True
+39.1659 	EXP 	fixation: autoDraw = False
+39.2326 	EXP 	grating: autoDraw = True
+42.0761 	EXP 	window1: recordFrameIntervals = False
+42.0775 	DATA 	Keypress: left
+42.0848 	EXP 	fixation: autoDraw = False
+42.0848 	EXP 	grating: autoDraw = False
+42.0848 	EXP 	grating: color = '[0.001 0.001 0.001] (rgb)'
+42.0848 	EXP 	grating: size = array([3.6, 3.6])
+42.0848 	EXP 	grating: ori = 0.0
+42.0848 	EXP 	grating: sf = array([12., 12.])
+42.0849 	EXP 	window1: recordFrameIntervals = False
+42.3518 	EXP 	fixation: autoDraw = True
+42.5353 	EXP 	fixation: autoDraw = False
+42.6020 	EXP 	grating: autoDraw = True
+44.4107 	EXP 	window1: recordFrameIntervals = False
+44.4122 	DATA 	Keypress: right
+44.4202 	EXP 	fixation: autoDraw = False
+44.4202 	EXP 	grating: autoDraw = False
+44.4202 	EXP 	grating: color = '[0.3 0.3 0.3] (rgb)'
+44.4202 	EXP 	grating: size = array([3.6, 3.6])
+44.4202 	EXP 	grating: ori = 0.0
+44.4202 	EXP 	grating: sf = array([1.2, 1.2])
+44.4203 	EXP 	window1: recordFrameIntervals = False
+44.6872 	EXP 	fixation: autoDraw = True
+44.8706 	EXP 	fixation: autoDraw = False
+44.9373 	EXP 	grating: autoDraw = True
+45.9954 	EXP 	window1: recordFrameIntervals = False
+45.9968 	DATA 	Keypress: left
+46.0050 	EXP 	fixation: autoDraw = False
+46.0050 	EXP 	grating: autoDraw = False
+46.0050 	EXP 	grating: color = '[0.30209459 0.30209459 0.30209459] (rgb)'
+46.0050 	EXP 	grating: size = array([3.6, 3.6])
+46.0050 	EXP 	grating: ori = 0.0
+46.0050 	EXP 	grating: sf = array([12., 12.])
+46.0051 	EXP 	window1: recordFrameIntervals = False
+46.2719 	EXP 	fixation: autoDraw = True
+46.4553 	EXP 	fixation: autoDraw = False
+46.5220 	EXP 	grating: autoDraw = True
+47.4297 	EXP 	window1: recordFrameIntervals = False
+47.4313 	DATA 	Keypress: right
+47.4394 	EXP 	fixation: autoDraw = False
+47.4394 	EXP 	grating: autoDraw = False
+47.4394 	EXP 	grating: color = '[0.30209459 0.30209459 0.30209459] (rgb)'
+47.4394 	EXP 	grating: size = array([3.6, 3.6])
+47.4394 	EXP 	grating: ori = 90.0
+47.4394 	EXP 	grating: sf = array([1.2, 1.2])
+47.4395 	EXP 	window1: recordFrameIntervals = False
+47.7063 	EXP 	fixation: autoDraw = True
+47.8898 	EXP 	fixation: autoDraw = False
+47.9565 	EXP 	grating: autoDraw = True
+48.8811 	EXP 	window1: recordFrameIntervals = False
+48.8825 	DATA 	Keypress: right
+48.8906 	EXP 	fixation: autoDraw = False
+48.8906 	EXP 	grating: autoDraw = False
+48.8906 	EXP 	grating: color = '[0.00309459 0.00309459 0.00309459] (rgb)'
+48.8906 	EXP 	grating: size = array([3.6, 3.6])
+48.8906 	EXP 	grating: ori = 90.0
+48.8906 	EXP 	grating: sf = array([1.2, 1.2])
+48.8907 	EXP 	window1: recordFrameIntervals = False
+49.1576 	EXP 	fixation: autoDraw = True
+49.3411 	EXP 	fixation: autoDraw = False
+49.4078 	EXP 	grating: autoDraw = True
+52.5677 	EXP 	window1: recordFrameIntervals = False
+52.5691 	DATA 	Keypress: left
+52.5771 	EXP 	fixation: autoDraw = False
+52.5771 	EXP 	grating: autoDraw = False
+52.5771 	EXP 	grating: color = '[0.02506749 0.02506749 0.02506749] (rgb)'
+52.5771 	EXP 	grating: size = array([3.6, 3.6])
+52.5771 	EXP 	grating: ori = 0.0
+52.5771 	EXP 	grating: sf = array([12., 12.])
+52.5772 	EXP 	window1: recordFrameIntervals = False
+52.8440 	EXP 	fixation: autoDraw = True
+53.0274 	EXP 	fixation: autoDraw = False
+53.0942 	EXP 	grating: autoDraw = True
+58.9564 	EXP 	window1: recordFrameIntervals = False
+58.9579 	DATA 	Keypress: left
+58.9658 	EXP 	fixation: autoDraw = False
+58.9658 	EXP 	grating: autoDraw = False
+58.9658 	EXP 	grating: color = '[0.02123613 0.02123613 0.02123613] (rgb)'
+58.9658 	EXP 	grating: size = array([3.6, 3.6])
+58.9658 	EXP 	grating: ori = 0.0
+58.9658 	EXP 	grating: sf = array([12., 12.])
+58.9659 	EXP 	window1: recordFrameIntervals = False
+59.2327 	EXP 	fixation: autoDraw = True
+59.4163 	EXP 	fixation: autoDraw = False
+59.4830 	EXP 	grating: autoDraw = True
+60.3240 	EXP 	window1: recordFrameIntervals = False
+60.3254 	DATA 	Keypress: left
+60.3337 	EXP 	fixation: autoDraw = False
+60.3337 	EXP 	grating: autoDraw = False
+60.3337 	EXP 	grating: color = '[0.32011197 0.32011197 0.32011197] (rgb)'
+60.3337 	EXP 	grating: size = array([3.6, 3.6])
+60.3337 	EXP 	grating: ori = 0.0
+60.3337 	EXP 	grating: sf = array([12., 12.])
+60.3338 	EXP 	window1: recordFrameIntervals = False
+60.6006 	EXP 	fixation: autoDraw = True
+60.7864 	EXP 	fixation: autoDraw = False
+60.8364 	EXP 	grating: autoDraw = True
+61.4406 	EXP 	window1: recordFrameIntervals = False
+61.4421 	DATA 	Keypress: left
+61.4501 	EXP 	fixation: autoDraw = False
+61.4501 	EXP 	grating: autoDraw = False
+61.4501 	EXP 	grating: color = '[0.02111197 0.02111197 0.02111197] (rgb)'
+61.4501 	EXP 	grating: size = array([3.6, 3.6])
+61.4501 	EXP 	grating: ori = 90.0
+61.4501 	EXP 	grating: sf = array([1.2, 1.2])
+61.4502 	EXP 	window1: recordFrameIntervals = False
+61.7170 	EXP 	fixation: autoDraw = True
+61.9005 	EXP 	fixation: autoDraw = False
+61.9672 	EXP 	grating: autoDraw = True
+62.5760 	EXP 	window1: recordFrameIntervals = False
+62.5775 	DATA 	Keypress: right
+62.5855 	EXP 	fixation: autoDraw = False
+62.5855 	EXP 	grating: autoDraw = False
+62.5855 	EXP 	grating: color = '[0.29787761 0.29787761 0.29787761] (rgb)'
+62.5855 	EXP 	grating: size = array([3.6, 3.6])
+62.5855 	EXP 	grating: ori = 0.0
+62.5855 	EXP 	grating: sf = array([1.2, 1.2])
+62.5856 	EXP 	window1: recordFrameIntervals = False
+62.8524 	EXP 	fixation: autoDraw = True
+63.0360 	EXP 	fixation: autoDraw = False
+63.1027 	EXP 	grating: autoDraw = True
+63.5771 	EXP 	window1: recordFrameIntervals = False
+63.5785 	DATA 	Keypress: left
+63.5864 	EXP 	fixation: autoDraw = False
+63.5864 	EXP 	grating: autoDraw = False
+63.5864 	EXP 	grating: color = '[0.01744957 0.01744957 0.01744957] (rgb)'
+63.5864 	EXP 	grating: size = array([3.6, 3.6])
+63.5864 	EXP 	grating: ori = 0.0
+63.5864 	EXP 	grating: sf = array([1.2, 1.2])
+63.5866 	EXP 	window1: recordFrameIntervals = False
+63.8534 	EXP 	fixation: autoDraw = True
+64.0367 	EXP 	fixation: autoDraw = False
+64.1035 	EXP 	grating: autoDraw = True
+64.8613 	EXP 	window1: recordFrameIntervals = False
+64.8628 	DATA 	Keypress: right
+64.8708 	EXP 	fixation: autoDraw = False
+64.8708 	EXP 	grating: autoDraw = False
+64.8708 	EXP 	grating: color = '[0.2937835 0.2937835 0.2937835] (rgb)'
+64.8708 	EXP 	grating: size = array([3.6, 3.6])
+64.8708 	EXP 	grating: ori = 90.0
+64.8708 	EXP 	grating: sf = array([1.2, 1.2])
+64.8709 	EXP 	window1: recordFrameIntervals = False
+65.1377 	EXP 	fixation: autoDraw = True
+65.3212 	EXP 	fixation: autoDraw = False
+65.3879 	EXP 	grating: autoDraw = True
+67.4301 	EXP 	window1: recordFrameIntervals = False
+67.4315 	DATA 	Keypress: left
+67.4397 	EXP 	fixation: autoDraw = False
+67.4397 	EXP 	grating: autoDraw = False
+67.4397 	EXP 	grating: color = '[0.01758127 0.01758127 0.01758127] (rgb)'
+67.4397 	EXP 	grating: size = array([3.6, 3.6])
+67.4397 	EXP 	grating: ori = 0.0
+67.4397 	EXP 	grating: sf = array([12., 12.])
+67.4398 	EXP 	window1: recordFrameIntervals = False
+67.7065 	EXP 	fixation: autoDraw = True
+67.8900 	EXP 	fixation: autoDraw = False
+67.9567 	EXP 	grating: autoDraw = True
+68.6813 	EXP 	window1: recordFrameIntervals = False
+68.6827 	DATA 	Keypress: left
+68.6907 	EXP 	fixation: autoDraw = False
+68.6907 	EXP 	grating: autoDraw = False
+68.6907 	EXP 	grating: color = '[0.31644957 0.31644957 0.31644957] (rgb)'
+68.6907 	EXP 	grating: size = array([3.6, 3.6])
+68.6907 	EXP 	grating: ori = 0.0
+68.6907 	EXP 	grating: sf = array([12., 12.])
+68.6908 	EXP 	window1: recordFrameIntervals = False
+68.9576 	EXP 	fixation: autoDraw = True
+69.1411 	EXP 	fixation: autoDraw = False
+69.2078 	EXP 	grating: autoDraw = True
+69.9143 	EXP 	window1: recordFrameIntervals = False
+69.9157 	DATA 	Keypress: right
+69.9238 	EXP 	fixation: autoDraw = False
+69.9238 	EXP 	grating: autoDraw = False
+69.9238 	EXP 	grating: color = '[0.33301176 0.33301176 0.33301176] (rgb)'
+69.9238 	EXP 	grating: size = array([3.6, 3.6])
+69.9238 	EXP 	grating: ori = 0.0
+69.9238 	EXP 	grating: sf = array([12., 12.])
+69.9239 	EXP 	window1: recordFrameIntervals = False
+70.1908 	EXP 	fixation: autoDraw = True
+70.3743 	EXP 	fixation: autoDraw = False
+70.4410 	EXP 	grating: autoDraw = True
+71.7617 	DATA 	Keypress: escape
+72.1579 	EXP 	window1: mouseVisible = True
