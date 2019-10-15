@@ -1,0 +1,28 @@
+10.4803 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, args=UNKNOWN, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([0., 0., 0.]), colorSpace='rgb', fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x12e289e80>, gamma=None, gammaErrorPolicy='raise', kwargs=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x1308b08d0>, multiSample=False, name='window1', numSamples=2, pos=[0.0, 0.0], screen=0, size=array([1920, 1080]), stereo=False, units='deg', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+10.4803 	EXP 	window1: recordFrameIntervals = False
+10.6463 	EXP 	window1: recordFrameIntervals = True
+10.8305 	EXP 	window1: recordFrameIntervals = False
+11.4317 	EXP 	Created setup_text = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=1, italic=False, languageStyle='LTR', name='setup_text', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='deg', win=Window(...), wrapWidth=15.0)
+11.5728 	EXP 	Created instrText = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=1, italic=False, languageStyle='LTR', name='instrText', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='deg', win=Window(...), wrapWidth=15.0)
+11.6192 	EXP 	Created fixation = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color='black', colorSpace='named', contrast=1.0, depth=-2.0, interpolate=True, mask='gauss', maskParams=None, name='fixation', opacity=1.0, ori=0.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1., 1.]), size=array([1., 1.]), tex=None, texRes=128, units='deg', win=Window(...))
+11.6238 	EXP 	Created grating = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color='white', colorSpace='named', contrast=1.0, depth=-3.0, interpolate=True, mask='gauss', maskParams=None, name='grating', opacity=1.0, ori=1.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1., 1.]), size=array([60., 60.]), tex='sin', texRes=128, units='deg', win=Window(...))
+11.7550 	EXP 	Created text = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, languageStyle='LTR', name='text', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='deg', win=Window(...), wrapWidth=15.0)
+11.7975 	EXP 	Created fixation = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color='black', colorSpace='named', contrast=1.0, depth=-2.0, interpolate=True, mask='gauss', maskParams=None, name='fixation', opacity=1.0, ori=0.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1., 1.]), size=array([1., 1.]), tex=None, texRes=128, units='deg', win=Window(...))
+11.8022 	EXP 	Created grating = GratingStim(__class__=<class 'psychopy.visual.grating.GratingStim'>, autoDraw=False, autoLog=True, blendmode='avg', color='white', colorSpace='named', contrast=1.0, depth=-3.0, interpolate=True, mask='gauss', maskParams=None, name='grating', opacity=1.0, ori=1.0, phase=array([0., 0.]), pos=array([0., 0.]), rgbPedestal=array([0., 0., 0.]), sf=array([1., 1.]), size=array([3.5, 3.5]), tex='sin', texRes=128, units='deg', win=Window(...))
+11.8647 	EXP 	Created thanksMsg = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, languageStyle='LTR', name='thanksMsg', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([1., 1., 1.]), text=str(...), units='deg', win=Window(...), wrapWidth=15.0)
+11.8786 	EXP 	setup_text: autoDraw = True
+12.3276 	DATA 	Keypress: space
+12.3374 	EXP 	setup_text: autoDraw = False
+12.3374 	EXP 	instrText: autoDraw = True
+13.0808 	EXP 	Created sequence: random, trialTypes=1, nReps=10, seed=None
+13.0812 	EXP 	New trial (rep=0, index=0): None
+13.0818 	EXP 	window1: recordFrameIntervals = False
+13.0849 	DATA 	Keypress: space
+13.0958 	EXP 	instrText: autoDraw = False
+13.0958 	EXP 	grating: ori = 90.0
+13.0958 	EXP 	grating: sf = array([12., 12.])
+13.0960 	EXP 	window1: recordFrameIntervals = False
+13.3404 	EXP 	fixation: autoDraw = True
+13.9409 	EXP 	fixation: autoDraw = False
+14.0793 	EXP 	grating: autoDraw = True
+17.1922 	EXP 	window1: mouseVisible = True
