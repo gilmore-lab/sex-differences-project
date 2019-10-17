@@ -1,7 +1,7 @@
 ---
 title: "Set-up"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "`r Sys.time()`"
+date: "2019-10-17 08:42:40"
 output:
   html_document:
     keep_md: true
@@ -11,7 +11,7 @@ output:
     code_folding: hide
 ---
 
-# Set-Up Checklist
+# Sex Differences Set-Up Checklist
 
 ## Before participant arrives
 
@@ -108,6 +108,31 @@ Say:
 
 ----
 
-```{r terminology, child="terminology.Rmd"}
-```
+
+
+
+
+# Terminology
+
+## Purpose
+
+This document explains the terminology we use in this study.
+
+## Terms
+
+### Contrast-sensitivity function (CSF) task
+
+This is the spatio-temporal constrast sensitivity function task from [Abramov et al](https://doi.org/10.1186/2042-6410-3-20).
+
+### Temporal threshold task
+
+This is the temporal threshold task from [Murray et al](https://doi.org/10.1016/j.cub.2018.06.014).
+
+### Qualtrics
+
+### PsychoPy
+
+### SONA Systems
+
+
 

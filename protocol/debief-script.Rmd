@@ -1,0 +1,16 @@
+---
+title: "debrief-script"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this study, we were examining...
+
+Thank you for contributing to the science of visual perception.
+
+If you have any questions, please contact Yiming Qian...or Rick Gilmore <rog1@psu.edu>.

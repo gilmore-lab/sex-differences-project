@@ -1,3 +1,0 @@
-﻿endInstructions.keys,endInstructions.rt,loop.label,loop.startVal,loop.startValSd,loop.stim_diam_degs,loop.SF,loop.TF,loop.stepSizes,loop.maxVal,loop.minVal,loop.thisIndex,loop.thisRepN,loop.thisN,loop.direction,loop.stepSize,loop.stepType,loop.intensity,session,participant,date,expName,psychopyVersion,frameRate,
-left,11.90778600005433,,,,,,,,,,,,,,,,,001,000,2019_Oct_11_1126,interleaved_QUEST_staircase_contrast,3.0.2,59.942923685930644,
-,,low_2,0.001,0.05,3.6,1.2,1,"[4, 2, 2, 1]",1,0,0,1,0,start,4,lin,0.001,,,,,,,
