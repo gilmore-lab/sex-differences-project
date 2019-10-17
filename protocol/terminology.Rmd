@@ -9,6 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Terminology
+
 ## Purpose
 
 This document explains the terminology we use in this study.
@@ -17,10 +19,16 @@ This document explains the terminology we use in this study.
 
 ### Contrast-sensitivity function (CSF) task
 
-This is the spatio-temporal constrast sensitivity function task from Abramov et al.
+This is the spatio-temporal constrast sensitivity function task from [Abramov et al](https://doi.org/10.1186/2042-6410-3-20).
 
 ### Temporal threshold task
 
-This is the temporal threshold task from Murray et al.
+This is the temporal threshold task from [Murray et al](https://doi.org/10.1016/j.cub.2018.06.014).
+
+### Qualtrics
+
+### PsychoPy
+
+### SONA Systems
 
 

@@ -1,3 +1,0 @@
-﻿endInstructions.keys,endInstructions.rt,trials.label,trials.startVal,trials.startValSd,trials.stim_diam_degs,trials.SF,trials.TF,trials.stepSizes,trials.maxVal,trials.minVal,trials.thisIndex,trials.thisRepN,trials.thisN,trials.direction,trials.stepSize,trials.stepType,trials.intensity,session,participant,date,expName,psychopyVersion,frameRate,
-right,1.3540702811442316,,,,,,,,,,,,,,,,,001,000,2019_Oct_11_1205,interleaved_QUEST_staircase_contrast,3.0.2,60.001487377648736,
-,,high_2,0.5,0.05,3.6,1.2,1,"[4, 2, 2, 1]",1,0,1,1,0,start,4,lin,0.5,,,,,,,

@@ -1,408 +1,205 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
-This experiment was created using PsychoPy3 Experiment Builder (v3.0.2),
-    on Fri Oct 11 11:43:27 2019
-If you publish work using this script please cite the PsychoPy publications:
-    Peirce, JW (2007) PsychoPy - Psychophysics software in Python.
-        Journal of Neuroscience Methods, 162(1-2), 8-13.
-    Peirce, JW (2009) Generating stimuli for neuroscience using PsychoPy.
-        Frontiers in Neuroinformatics, 2:10. doi: 10.3389/neuro.11.010.2008
+This code is an attempt to replicate the Abramov et al. 2012 study on spatiotemporal contrast sensitivity thresholds.
+
+Abramov, I., Gordon, J., Feldman, O., & Chavarga, A. (2012). Sex & vision I: Spatio-temporal resolution. Biology of Sex Differences, 3(1), 20. 
+bsd.biomedcentral.com. Retrieved from http://dx.doi.org/10.1186/2042-6410-3-20
 """
 
-from __future__ import absolute_import, division
-from psychopy import locale_setup, sound, gui, visual, core, data, event, logging, clock
-from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
-                                STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
-import numpy as np  # whole numpy lib is available, prepend 'np.'
-from numpy import (sin, cos, tan, log, log10, pi, average,
-                   sqrt, std, deg2rad, rad2deg, linspace, asarray)
-from numpy.random import random, randint, normal, shuffle
-import os  # handy system and path functions
-import sys  # to get file system encoding
+from __future__ import absolute_import, division, print_function
+from psychopy import core, visual, gui, data, event
+from psychopy.tools.filetools import fromFile, toFile
+from psychopy.visual import ShapeStim
+from psychopy.hardware import keyboard
+import time, numpy
 
+# Set up hardware
+kb = keyboard.Keyboard()
 
-# Ensure that relative paths start from the same directory as this script
-_thisDir = os.path.dirname(os.path.abspath(__file__))
-os.chdir(_thisDir)
+try:  # try to get a previous parameters file
+    expInfo = fromFile('lastParams.pickle')
+except:  # if not there then use a default set
+    expInfo = {'observer':time.strftime("%Y%m%d%H%M%S"),'gender':'M'}
+#dateStr = time.strftime("%b_%d_%H%M", time.localtime())  # add the current time
 
-# Store info about the experiment session
-psychopyVersion = '3.2.4'
-expName = 'interleaved_QUEST_staircase_contrast'  # from the Builder filename that created this script
-expInfo = {'session': '001', 'participant': ''}
-dlg = gui.DlgFromDict(dictionary=expInfo, title=expName)
-if dlg.OK == False:
-    core.quit()  # user pressed cancel
-expInfo['date'] = data.getDateStr()  # add a simple timestamp
-expInfo['expName'] = expName
-expInfo['psychopyVersion'] = psychopyVersion
-
-# Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-filename = _thisDir + os.sep + 'data' + os.sep + '%s_%s' % (expInfo['participant'], expInfo['date'])
-
-# An ExperimentHandler isn't essential but helps with data saving
-thisExp = data.ExperimentHandler(name=expName, version='',
-    extraInfo=expInfo, runtimeInfo=None,
-    originPath='/Users/yxq5055/Box/Project: Sex difference on Motion Perception/codes/contrast_sensitivity_task/interleaved_QUEST_staircase_contrast.py',
-    savePickle=True, saveWideText=True,
-    dataFileName=filename)
-# save a log file for detail verbose info
-logFile = logging.LogFile(filename+'.log', level=logging.EXP)
-logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
-
-endExpNow = False  # flag for 'escape' or other condition => quit the exp
-
-# Start Code - component code to be run before the window creation
-
-# Setup the Window
-win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=0,
-    allowGUI=False, allowStencil=False,
-    monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
-    blendMode='avg', useFBO=True,
-    units='deg')
-# store frame rate of monitor if we can measure it
-expInfo['frameRate'] = win.getActualFrameRate()
-if expInfo['frameRate'] != None:
-    frameDur = 1.0 / round(expInfo['frameRate'])
+# present a dialogue to change params
+dlg = gui.DlgFromDict(expInfo, title='simple JND Exp', fixed=['date'])
+if dlg.OK:
+    toFile('lastParams.pickle', expInfo)  # save params to file for next time
 else:
-    frameDur = 1.0 / 60.0  # could not measure, so guess
+    core.quit()  # the user hit cancel so exit
+
+# make a text file to save data
+fileName = 'csv/' + expInfo['observer']
+dataFile = open(fileName + '.csv', 'w')
+dataFile.write('ori,cyc_deg,tf_hz,contrast,correct,rt\n')
+
+# Parameters
+import params
+
+# Clock variables
+clock = core.Clock()
+countDown = core.CountdownTimer()
+
+# create window and stimuli
+win = visual.Window([params.window_pix_h, params.window_pix_v], allowGUI=False, monitor=params.monitor_name, units='deg')
+fixation = visual.GratingStim(win, color='black', tex=None, mask='circle', size=0.2)
+pr_grating = visual.GratingStim(
+    win=win, name='phase_reverse_grating',units='deg', 
+    tex='sin', mask='circle',
+    ori=90, pos=(0, 0), size=params.grating_deg, sf=params.spf, phase=0,
+    color=[params.max_contr, params.max_contr, params.max_contr], colorSpace='rgb', opacity=1, blendmode='avg',
+    texRes=128, interpolate=True, depth=0.0)
     
+# `donut` has a true hole, using two loops of vertices:
+donutVert = [[(-params.donut_outer_rad,-params.donut_outer_rad),(-params.donut_outer_rad,params.donut_outer_rad),(params.donut_outer_rad,params.donut_outer_rad),(params.donut_outer_rad,-params.donut_outer_rad)],
+[(-params.donut_inner_rad,-params.donut_inner_rad),(-params.donut_inner_rad,params.donut_inner_rad),(params.donut_inner_rad,params.donut_inner_rad),(params.donut_inner_rad,-params.donut_inner_rad)]]
+donut = ShapeStim(win, vertices=donutVert, fillColor=params.donut_color, lineWidth=0, size=.75, pos=(0, 0))
+
+message1 = visual.TextStim(win, pos=[0, + 3],
+    text='Hit a key when ready.')
+message2 = visual.TextStim(win, pos=[0, -3],
+    text="When the white box appears, press LEFT arrow to identify a horizontal grating or the UP arrow to identify a vertical grating.")
+
+# create the staircase handler
+staircase = data.StairHandler(startVal=0.5, # contrast in [0,1]
+    stepType='db',
+    stepSizes=[8, 4, 4, 2, 2, 1, 1],  # reduce step size every two reversals
+    minVal=0.0001, maxVal=1.0,
+    nUp=1, nDown=3,  # will home in on the 80% threshold
+    nTrials=20)
+
+# Helper function
+def rand_unif_int(min, max):
+    # Force min >= 0 and max >= 0
+    if min < 0:
+        min = 0
+    if max < 0:
+        max = 0
+    return (min + numpy.random.random()*(max-min))
+
+# display instructions and wait
+message1.draw()
+message2.draw()
+fixation.draw()
+win.flip()
+
+# check for a keypress, then proceed
+event.waitKeys()
+
+# Start staircase
+for this_max_contrast in staircase:
+    # Initialize grating
     
-# Contrast ramps up from 0 for ramp_up_secs, remains at max_contr for full_scale_secs and ramps down for ramp_dn_secs
-# note sum(ramp_up_secs, full_scale_secs, ramp_dn_secs) = stim_dur_secs
-ramp_up_secs = .5
-ramp_dn_secs = ramp_up_secs
-
-TF = 1 # Hz, so stim_dur is 1/freq_temp
-cyc_secs = 1/TF # in seconds
-
-
-# Initialize components for Routine "instructions"
-instructionsClock = core.Clock()
-instrText = visual.TextStim(win=win, name='instrText',
-    text="You will see horizontal and vertical movement. Press the left or right buttons to indicate if you see the grating is horizontally moved, up or down button if you see the grating is vertically moving. \n \nIf you don't see anything then guess! \n \n \nPress any key to continue",
-    font='Arial',
-    pos=[0, 0], height=1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=0.0);
-
-# Initialize components for Routine "trial"
-trialClock = core.Clock()
-
-ISI = clock.StaticPeriod(win=win, screenHz=expInfo['frameRate'], name='ISI')
-fixation = visual.GratingStim(
-    win=win, name='fixation',
-    tex=None, mask='gauss',
-    ori=0, pos=[0, 0], size=1, sf=None, phase=0.0,
-    color='black', colorSpace='rgb', opacity=1,blendmode='avg',
-    texRes=128, interpolate=True, depth=-2.0)
-grating = visual.GratingStim(
-    win=win, name='grating',
-    tex='sin', mask='gauss',
-    ori=1.0, pos=[0,0], size=1.0, sf=1.0, phase=0.0,
-    color='white', colorSpace='rgb', opacity=1,blendmode='avg',
-    texRes=128, interpolate=True, depth=-3.0)
-
-# Initialize components for Routine "thanks"
-thanksClock = core.Clock()
-thanksMsg = visual.TextStim(win=win, name='thanksMsg',
-    text="You're done! You can contact the researcher outside the room. You are free to have a break!",
-    font='Arial',
-    pos=[0, 0], height=0.1, wrapWidth=None, ori=0, 
-    color=[1,1,1], colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=0.0);
-
-# Create some handy timers
-globalClock = core.Clock()  # to track the time since experiment started
-routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine 
-
-# ------Prepare to start Routine "instructions"-------
-t = 0
-instructionsClock.reset()  # clock
-frameN = -1
-continueRoutine = True
-# update component parameters for each repeat
-endInstructions = event.BuilderKeyResponse()
-# keep track of which components have finished
-instructionsComponents = [instrText, endInstructions]
-for thisComponent in instructionsComponents:
-    if hasattr(thisComponent, 'status'):
-        thisComponent.status = NOT_STARTED
-
-# -------Start Routine "instructions"-------
-while continueRoutine:
-    # get current time
-    t = instructionsClock.getTime()
-    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-    # update/draw components on each frame
-    
-    # *instrText* updates
-    if t >= 0.0 and instrText.status == NOT_STARTED:
-        # keep track of start time/frame for later
-        instrText.tStart = t
-        instrText.frameNStart = frameN  # exact frame index
-        instrText.setAutoDraw(True)
-    
-    # *endInstructions* updates
-    if t >= 0.0 and endInstructions.status == NOT_STARTED:
-        # keep track of start time/frame for later
-        endInstructions.tStart = t
-        endInstructions.frameNStart = frameN  # exact frame index
-        endInstructions.status = STARTED
-        # keyboard checking is just starting
-        win.callOnFlip(endInstructions.clock.reset)  # t=0 on next screen flip
-        event.clearEvents(eventType='keyboard')
-    if endInstructions.status == STARTED:
-        theseKeys = event.getKeys()
-        
-        # check for quit:
-        if "escape" in theseKeys:
-            endExpNow = True
-        if len(theseKeys) > 0:  # at least one key was pressed
-            endInstructions.keys = theseKeys[-1]  # just the last key pressed
-            endInstructions.rt = endInstructions.clock.getTime()
-            # a response ends the routine
-            continueRoutine = False
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or event.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in instructionsComponents:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
-
-# -------Ending Routine "instructions"-------
-for thisComponent in instructionsComponents:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-# check responses
-if endInstructions.keys in ['', [], None]:  # No response was made
-    endInstructions.keys=None
-thisExp.addData('endInstructions.keys',endInstructions.keys)
-if endInstructions.keys != None:  # we had a response
-    thisExp.addData('endInstructions.rt', endInstructions.rt)
-thisExp.nextEntry()
-# the Routine "instructions" was not non-slip safe, so reset the non-slip timer
-routineTimer.reset()
-
-# set up handler to look after randomisation of trials etc
-conditions = data.importConditions('stairDefinitions.xlsx')
-trials = data.MultiStairHandler(stairType='QUEST', name='trials',
-    nTrials=40,
-    conditions=conditions,
-    originPath=-1)
-thisExp.addLoop(trials)  # add the loop to the experiment
-# initialise values for first condition
-level = trials._nextIntensity  # initialise some vals  # Yiming: I assume the level is contrast
-condition = trials.currentStaircase.condition
-
-for level, condition in trials:
-    currentLoop = trials
-    # abbreviate parameter names if possible (e.g. rgb=condition.rgb)
-    for paramName in condition:
-        exec(paramName + '= condition[paramName]')
-    
-    # ------Prepare to start Routine "trial"-------
-    t = 0
-    trialClock.reset()  # clock
-    frameN = -1
-    continueRoutine = True
-    # update component parameters for each repeat
-    if random()>0.5:
-        ori = 0  #this is orientation of the grating
-        correctAns = ['left','right']
+    # set orientation of grating
+    if (round(numpy.random.random())) > 0.5:
+        this_ori = 90
     else:
-        ori = 90
-        correctAns = ['up','down']
-    grating.setColor(level, colorSpace='rgb')
-    grating.setSize(stim_diam_degs)
-    grating.setOri(ori)
-    grating.setSF(SF)
-    resp = event.BuilderKeyResponse()
-    # keep track of which components have finished
-    trialComponents = [ISI, fixation, grating, resp]
-    for thisComponent in trialComponents:
-        if hasattr(thisComponent, 'status'):
-            thisComponent.status = NOT_STARTED
+        this_ori = 0
+        
+    # pick spf randomly (for now)
+    if (round(numpy.random.random())) > 0.5:
+        this_spf = params.spfreqs[0]
+    else:
+        this_spf = params.spfreqs[1]
+ 
+    pr_grating = visual.GratingStim(
+        win=win, name='phase_reverse_grating',units='deg', 
+        tex='sin', mask='circle',
+        ori=this_ori, pos=(0, 0), size=params.grating_deg, sf=this_spf, phase=0,
+        color=[this_max_contrast, this_max_contrast, this_max_contrast], colorSpace='rgb', opacity=1, blendmode='avg',
+        texRes=128, interpolate=True, depth=0.0)
     
-    # -------Start Routine "trial"-------
-    while continueRoutine:
-        # get current time
-        t = trialClock.getTime()
-        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-        # update/draw components on each frame
-        
-        
-        # *fixation* updates
-        if t >= 0.25 and fixation.status == NOT_STARTED:
-            # keep track of start time/frame for later
-            fixation.tStart = t
-            fixation.frameNStart = frameN  # exact frame index
-            fixation.setAutoDraw(True)
-        frameRemains = 0.25 + 0.6- win.monitorFramePeriod * 0.75  # most of one frame period left
-        if fixation.status == STARTED and t >= frameRemains:
-            fixation.setAutoDraw(False)
-        
-        # *grating* updates
-        if t >= 1 and grating.status == NOT_STARTED:
-            # keep track of start time/frame for later
-            grating.tStart = t
-            grating.frameNStart = frameN  # exact frame index
-            grating.phase = round(np.mod((t-1), cyc_secs)/cyc_secs)/2   # need value of 0 or 0.5 to switch phase
-            if 1.5 > t >= 1:
-               contr = (t-1)/ramp_up_secs*level  
-            elif 3 >= t > 2.5:
-               contr = (3- t)/ramp_dn_secs*level
-            else:
-               contr = level
-            grating.color = [contr, contr, contr]
-            grating.draw()
-            win.flip()
-        
-        # *resp* updates
-        if t >= 1 and resp.status == NOT_STARTED:
-            # keep track of start time/frame for later
-            resp.tStart = t
-            resp.frameNStart = frameN  # exact frame index
-            resp.status = STARTED
-            # keyboard checking is just starting
-            win.callOnFlip(resp.clock.reset)  # t=0 on next screen flip
-            event.clearEvents(eventType='keyboard')
-        if resp.status == STARTED:
-            theseKeys = event.getKeys(keyList=['left', 'right', 'up', 'down'])
-            
-            # check for quit:
-            if "escape" in theseKeys:
-                endExpNow = True
-            if len(theseKeys) > 0:  # at least one key was pressed
-                resp.keys = theseKeys[-1]  # just the last key pressed
-                resp.rt = resp.clock.getTime()
-                # was this 'correct'?
-                if (resp.keys == str(correctAns)) or (resp.keys == correctAns):
-                    resp.corr = 1
-                else:
-                    resp.corr = 0
-                # a response ends the routine
-                continueRoutine = False
-        # *ISI* period
-        if t >= 0 and ISI.status == NOT_STARTED:
-            # keep track of start time/frame for later
-            ISI.tStart = t
-            ISI.frameNStart = frameN  # exact frame index
-            ISI.start(0.25)
-        elif ISI.status == STARTED:  # one frame should pass before updating params and completing
-            ISI.complete()  # finish the static period
-        
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
-        # check if all components have finished
-        if not continueRoutine:  # a component has requested a forced-end of Routine
-            break
-        continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in trialComponents:
-            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                continueRoutine = True
-                break  # at least one component has not yet finished
-        
-        # refresh the screen
-        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-            win.flip()
+    # Pick tf randomly (for now)
+    this_tf = params.tfreqs[round(numpy.random.random())]
     
-    # -------Ending Routine "trial"-------
-    for thisComponent in trialComponents:
-        if hasattr(thisComponent, "setAutoDraw"):
-            thisComponent.setAutoDraw(False)
-    trials.addOtherData('side',correctAns)
-    # check responses
-    if resp.keys in ['', [], None]:  # No response was made
-        resp.keys=None
-        # was no response the correct answer?!
-        if str(correctAns).lower() == 'none':
-           resp.corr = 1;  # correct non-response
+    # Show fixation
+    fixation.draw()
+    win.flip()
+    
+    # ISI (uniform within [isi_min, isi_max])
+    core.wait(params.isi_min + numpy.random.random()*(params.isi_max-params.isi_min))
+    
+    # draw grating
+    keep_going = True
+    start_time = clock.getTime()
+    while keep_going:
+        t = clock.getTime()
+        #pr_grating.phase = round(numpy.mod(clock.getTime(), cyc_secs)/cyc_secs)/2 # need value of 0 or 0.5 to switch phase
+        pr_grating.contrast = numpy.sin(2 * numpy.pi * t * this_tf) # from counterphase.py demo
+        
+        # Contrast ramp in, hold, down
+        secs_passed = clock.getTime()-start_time
+        if secs_passed <= params.ramp_up_secs:
+            this_contr = (secs_passed/params.ramp_up_secs)*this_max_contrast
+        elif (secs_passed > params.ramp_up_secs) & (secs_passed <= params.ramp_up_secs + params.full_scale_secs):
+            this_contr = this_max_contrast
         else:
-           resp.corr = 0;  # failed to respond (incorrectly)
-    # store data for trials (MultiStairHandler)
-    trials.addResponse(resp.corr)
-    trials.addOtherData('resp.rt', resp.rt)
-    # the Routine "trial" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset()
-    thisExp.nextEntry()
+            this_contr = ((params.stim_dur_secs - secs_passed)/params.ramp_up_secs)*this_max_contrast
+        pr_grating.color = this_contr
     
-# all staircases completed
-
-
-# ------Prepare to start Routine "thanks"-------
-t = 0
-thanksClock.reset()  # clock
-frameN = -1
-continueRoutine = True
-routineTimer.add(2.000000)
-# update component parameters for each repeat
-# keep track of which components have finished
-thanksComponents = [thanksMsg]
-for thisComponent in thanksComponents:
-    if hasattr(thisComponent, 'status'):
-        thisComponent.status = NOT_STARTED
-
-# -------Start Routine "thanks"-------
-while continueRoutine and routineTimer.getTime() > 0:
-    # get current time
-    t = thanksClock.getTime()
-    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-    # update/draw components on each frame
-    
-    # *thanksMsg* updates
-    if t >= 0.0 and thanksMsg.status == NOT_STARTED:
-        # keep track of start time/frame for later
-        thanksMsg.tStart = t
-        thanksMsg.frameNStart = frameN  # exact frame index
-        thanksMsg.setAutoDraw(True)
-    frameRemains = 0.0 + 2.0- win.monitorFramePeriod * 0.75  # most of one frame period left
-    if thanksMsg.status == STARTED and t >= frameRemains:
-        thanksMsg.setAutoDraw(False)
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or event.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in thanksComponents:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        # Draw next grating component
+        pr_grating.draw()
         win.flip()
+        grating_start = clock.getTime()
 
-# -------Ending Routine "thanks"-------
-for thisComponent in thanksComponents:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
+        # Start collecting responses
+        thisResp = None
 
-# these shouldn't be strictly necessary (should auto-save)
-thisExp.saveAsWideText(filename+'.csv')
-thisExp.saveAsPickle(filename)
-logging.flush()
-# make sure everything is closed down
-thisExp.abort()  # or data files will save again on exit
+        # Is stimulus presentation time over?
+        if (clock.getTime()-start_time > params.stim_dur_secs):
+            win.flip()
+            keep_going = False
+            
+        # check for quit (typically the Esc key)
+        if kb.getKeys(keyList=["escape"]):
+            thisResp = 0
+            rt = 0
+            print("Saving data.")
+            dataFile.write('%i,%i,%i,%.3f,%i,%.3f\n' % (this_ori, this_spf, this_tf, this_max_contrast, thisResp, rt))
+            staircase.saveAsPickle(fileName)  # special python data file to save all the info
+            print("Exiting program.")
+            core.quit()
+
+    # clear screen get response
+    donut.draw()
+    win.flip()
+    start_resp_time = clock.getTime()
+    
+    while thisResp is None:
+        allKeys = event.waitKeys()
+        rt = clock.getTime() - start_resp_time
+        for thisKey in allKeys:
+            if ((thisKey == 'left' and this_ori == 90) or
+                (thisKey == 'up' and this_ori == 0)):
+                thisResp = 1  # correct
+            elif ((thisKey == 'left' and this_ori == 0) or
+                (thisKey == 'up' and this_ori == 90)):
+                thisResp = 0  # incorrect
+            elif thisKey in ['q', 'escape']:
+                test = False
+                core.quit()  # abort experiment
+        event.clearEvents('mouse')  # only really needed for pygame windows
+
+    # add the data to the staircase so it can calculate the next level
+    staircase.addResponse(thisResp)
+    dataFile.write('%i,%i,%i,%.3f,%i,%.3f\n' % (this_ori, this_spf, this_tf, this_max_contrast, thisResp, rt))
+    
+    # Clear screen and ITI
+    win.flip()
+    core.wait(rand_unif_int(params.iti_min, params.iti_max))
+
+# staircase has ended
+dataFile.close()
+staircase.saveAsPickle(fileName)  # special python data file to save all the info
+
+# give some output to user
+print('reversals:')
+print(staircase.reversalIntensities)
+print('mean of final 6 reversals = %.3f' % numpy.average(staircase.reversalIntensities[-6:]))
+
+# clean-up
 win.close()
 core.quit()
