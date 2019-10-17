@@ -16,6 +16,9 @@ from psychopy.visual import ShapeStim
 from psychopy.hardware import keyboard
 import time, numpy
 
+# Parameters
+import params
+
 # Set up hardware
 kb = keyboard.Keyboard()
 
@@ -23,7 +26,7 @@ try:  # try to get a previous parameters file
     expInfo = fromFile('lastParams.pickle')
 except:  # if not there then use a default set
     expInfo = {'observer':time.strftime("%Y%m%d%H%M%S"),'gender':'M'}
-#
+
 # present a dialogue to change params
 dlg = gui.DlgFromDict(expInfo, title='simple JND Exp', fixed=['date'])
 if dlg.OK:
@@ -32,12 +35,10 @@ else:
     core.quit()  # the user hit cancel so exit
 
 # make a text file to save data
-fileName = 'csv/' + expInfo['observer']
+fileName = 'csv/' + expInfo['observer'] + "_" + params.task_name
 dataFile = open(fileName + '.csv', 'w')
 dataFile.write('direction,cyc_deg,tf_hz,show_secs,correct,rt\n')
 
-# Parameters
-import params
 
 # Clock variables
 clock = core.Clock()
@@ -46,6 +47,8 @@ countDown = core.CountdownTimer()
 # create window and stimuli
 win = visual.Window([params.window_pix_h, params.window_pix_v], allowGUI=False, monitor=params.monitor_name, units='deg')
 fixation = visual.GratingStim(win, color='black', tex=None, mask='circle', size=0.2)
+respond = visual.GratingStim(win, color='white', tex=None, mask='circle', size=0.3)
+
 pr_grating = visual.GratingStim(
     win=win, name='grating_murray',units='deg', 
     tex='sin', mask='gauss',
@@ -120,9 +123,11 @@ for this_stim_frames in staircase:
     # Show fixation
     fixation.draw()
     win.flip()
+    core.wait(params.fixation_secs)
+    win.flip()
     
     # ISI (uniform within [isi_min, isi_max])
-    core.wait(params.isi_min + numpy.random.random()*(params.isi_max-params.isi_min))
+    core.wait(params.fixation_grating_isi)
     
     # draw grating
     keep_going = True
@@ -160,16 +165,19 @@ for this_stim_frames in staircase:
             thisResp = 0
             rt = 0
             print("Saving data.")
-            dataFile.write('%i,%i,%i,%.3f,%i,%.3f\n' % (this_dir, this_spf, this_tf, this_stim_frames*params.frameDur, thisResp, rt))
+            dataFile.write('%i,%.3f,%i,%.3f,%i,%.3f\n' % (this_dir, this_spf, this_tf, this_stim_frames*params.frameDur, thisResp, rt))
             staircase.saveAsPickle(fileName)  # special python data file to save all the info
             print("Exiting program.")
             core.quit()
 
     # clear screen get response
     if params.show_response_frame:
-        donut.draw()
+        respond.draw()
         win.flip()
     start_resp_time = clock.getTime()
+    
+    # Show response fixation
+
     
     while thisResp is None:
         allKeys = event.waitKeys()

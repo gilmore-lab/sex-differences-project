@@ -1,0 +1,36 @@
+---
+title: "Individual session QA"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+params:
+  csv_path: "csv/"
+  data_fn: "20191017122445_temp_thresh.csv"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Purpose
+
+This script imports, summarizes, and shows basic visualizations of an individual's session data.
+
+## Import
+
+```{r}
+this_session <- readr::read_csv(paste0(params$csv_path, params$data_fn))
+names(this_session)
+```
+
+## Visualize
+
+```{r}
+this_session %>%
+  ggplot(.) +
+  aes(x = rt) +
+  facet_grid(. ~ correct) +
+  geom_histogram()
+```
+
