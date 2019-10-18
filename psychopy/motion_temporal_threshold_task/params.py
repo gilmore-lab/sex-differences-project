@@ -46,10 +46,10 @@ grating_ori = 0
 max_contr = .98
 max_frames = 20
 
-stair_case_style = 'quest' # {'simple or 'quest'}
+stair_case_style = 'simple' # {'simple or 'quest'}
 conditions_QUEST = [
-    {'label':'lo_contr', 'startVal':20, 'startValSd':.2, 'pThreshold':.82, 'max_contr':.03, 'minVal':2, 'maxVal':40, 'pThreshold':0.63},
-    {'label':'hi_contr', 'startVal':20, 'startValSd':.2, 'pThreshold':.82, 'max_contr':.98, 'minVal':2, 'maxVal':40, 'pThreshold':0.63}
+    {'label':'lo_contr', 'startVal':.5, 'startValSd':.2, 'max_contr':.03, 'minVal':.001, 'maxVal':.8, 'pThreshold':0.63},
+    {'label':'hi_contr', 'startVal':.5, 'startValSd':.2, 'max_contr':.98, 'minVal':.001, 'maxVal':.8, 'pThreshold':0.63}
     ]
 conditions_simple = [
     {'label':'lo_contr', 'startVal':1, 'max_contr':.03},

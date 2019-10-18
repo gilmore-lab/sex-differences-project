@@ -79,22 +79,11 @@ message1 = visual.TextStim(win, pos=[0, + 3],
 message2 = visual.TextStim(win, pos=[0, -3],
     text="When the white box appears, press LEFT arrow to identify leftward motion or the RIGHT arrow to identify rightward motion.")
 
-# create the staircase handler
-#staircase = data.StairHandler(startVal=20, # stimulus duration in frames
-#    stepType='db',
-#    stepSizes=[8, 4, 4, 2, 2, 1, 1],  # reduce step size every two reversals
-#    minVal=2, maxVal=40,
-#    nUp=1, nDown=3,  # will home in on the 80% threshold
-#    nTrials=40)
-    
-#if params.stair_case_style == 'quest':
-#    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST, 
-#    minVal=2, maxVal=40, pThreshold=0.63, nTrials=50)
-#else:
-#    staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=50)
-#    
-staircase = data.QuestHandler(0.5, 0.2, pThreshold=0.63, gamma=0.01,
-                              minVal=0, maxVal=1, ntrials=10)
+# create the staircase handler    
+if params.stair_case_style == 'quest':
+    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST, nTrials=50)
+else:
+    staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=50)
 
 # display instructions and wait
 message1.draw()
@@ -106,14 +95,12 @@ win.flip()
 event.waitKeys()
 
 # Start staircase
-#for this_stim_frames_p, this_condition in staircase:
-for this_stim_frames_p in staircase:
+for this_stim_frames_p, this_condition in staircase:
     # Initialize grating
-    this_stim_frames = this_stim_frames_p*20
+    this_stim_frames = this_stim_frames_p*40
     print(calculate_stim_duration(this_stim_frames, params.frame_rate_hz))
-    #print(this_condition)
-    #this_max_contrast = this_condition['max_contr']
-    this_max_contrast = .98
+    print(this_condition)
+    this_max_contrast = this_condition['max_contr']
 
     # set orientation of grating
     if (round(numpy.random.random())) > 0.5:
@@ -121,13 +108,7 @@ for this_stim_frames_p in staircase:
     else:
         this_dir = -1 # rightward
         
-    # pick spf randomly (for now)
     this_spf = params.spfreqs[0]
-#    if (round(numpy.random.random())) > 0.5:
-#        this_spf = params.spfreqs[0]
-#    else:
-#        this_spf = params.spfreqs[1]
-    #this_max_contrast = .98
  
     pr_grating = visual.GratingStim(
         win=win, name='grating_murray',units='deg', 
@@ -154,7 +135,6 @@ for this_stim_frames_p in staircase:
     while keep_going:
         secs_from_start = (start_time - clock.getTime())
         pr_grating.phase = this_dir*(secs_from_start/params.cyc_secs)
-        #pr_grating.contrast = numpy.sin(2 * numpy.pi * t * this_tf) # from counterphase.py demo
         
         # Contrast ramp in, hold, down
         secs_passed = clock.getTime()-start_time
