@@ -1,0 +1,26 @@
+---
+title: "parameters"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Display parameters
+
+## Murray et al.
+
+- contrast levels (low = 3%, high = 98%) 
+- Diameter = 0.84, 1.7 and 10° 
+- Motion speed was 4 cycles/s (Hz)
+- spatial frequency was 1.2 cycles/°. 
+- Gratings were presented within a circular aperture, whose edges were blurred with a Gaussian envelope (SD = 0.21°)
+- Trials began with a central fixation mark, a small shrinking circle (850 ms). 
+- This was followed by a blank screen (150 ms)
+- after which the grating stimuli appeared (variable duration controlled by a staircase procedure, range 6.7 – 333 ms)
+- followed by another blank screen (150 ms), and finally a fixation mark (the response cue)
+
+

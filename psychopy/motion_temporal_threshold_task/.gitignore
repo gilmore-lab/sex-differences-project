@@ -1,4 +1,4 @@
 __pycache__
 csv
 *.pickle
-
+lastParams.pickle
