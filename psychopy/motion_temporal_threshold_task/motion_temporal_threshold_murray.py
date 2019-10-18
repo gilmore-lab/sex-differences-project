@@ -39,6 +39,19 @@ fileName = 'csv/' + expInfo['observer'] + "_" + params.task_name
 dataFile = open(fileName + '.csv', 'w')
 dataFile.write('direction,cyc_deg,tf_hz,show_secs,correct,rt\n')
 
+# Helper functions
+def rand_unif_int(min, max):
+    # Force min >= 0 and max >= 0
+    if min < 0:
+        min = 0
+    if max < 0:
+        max = 0
+    return (min + numpy.random.random()*(max-min))
+    
+def calculate_stim_duration(frames, frame_rate_hz):
+    if frame_rate_hz == 0:
+        frame_rate_hz = 60
+    return (frames/frame_rate_hz)
 
 # Clock variables
 clock = core.Clock()
@@ -67,21 +80,21 @@ message2 = visual.TextStim(win, pos=[0, -3],
     text="When the white box appears, press LEFT arrow to identify leftward motion or the RIGHT arrow to identify rightward motion.")
 
 # create the staircase handler
-staircase = data.StairHandler(startVal=20, # stimulus duration in frames
-    stepType='db',
-    stepSizes=[8, 4, 4, 2, 2, 1, 1],  # reduce step size every two reversals
-    minVal=2, maxVal=40,
-    nUp=1, nDown=3,  # will home in on the 80% threshold
-    nTrials=40)
-
-# Helper function
-def rand_unif_int(min, max):
-    # Force min >= 0 and max >= 0
-    if min < 0:
-        min = 0
-    if max < 0:
-        max = 0
-    return (min + numpy.random.random()*(max-min))
+#staircase = data.StairHandler(startVal=20, # stimulus duration in frames
+#    stepType='db',
+#    stepSizes=[8, 4, 4, 2, 2, 1, 1],  # reduce step size every two reversals
+#    minVal=2, maxVal=40,
+#    nUp=1, nDown=3,  # will home in on the 80% threshold
+#    nTrials=40)
+    
+#if params.stair_case_style == 'quest':
+#    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST, 
+#    minVal=2, maxVal=40, pThreshold=0.63, nTrials=50)
+#else:
+#    staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=50)
+#    
+staircase = data.QuestHandler(0.5, 0.2, pThreshold=0.63, gamma=0.01,
+                              minVal=0, maxVal=1, ntrials=10)
 
 # display instructions and wait
 message1.draw()
@@ -93,9 +106,15 @@ win.flip()
 event.waitKeys()
 
 # Start staircase
-for this_stim_frames in staircase:
+#for this_stim_frames_p, this_condition in staircase:
+for this_stim_frames_p in staircase:
     # Initialize grating
-    
+    this_stim_frames = this_stim_frames_p*20
+    print(calculate_stim_duration(this_stim_frames, params.frame_rate_hz))
+    #print(this_condition)
+    #this_max_contrast = this_condition['max_contr']
+    this_max_contrast = .98
+
     # set orientation of grating
     if (round(numpy.random.random())) > 0.5:
         this_dir = +1 # leftward
@@ -108,7 +127,7 @@ for this_stim_frames in staircase:
 #        this_spf = params.spfreqs[0]
 #    else:
 #        this_spf = params.spfreqs[1]
-    this_max_contrast = params.max_contr
+    #this_max_contrast = .98
  
     pr_grating = visual.GratingStim(
         win=win, name='grating_murray',units='deg', 
@@ -177,8 +196,6 @@ for this_stim_frames in staircase:
     start_resp_time = clock.getTime()
     
     # Show response fixation
-
-    
     while thisResp is None:
         allKeys = event.waitKeys()
         rt = clock.getTime() - start_resp_time
