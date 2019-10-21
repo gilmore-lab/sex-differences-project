@@ -28,7 +28,7 @@ except:  # if not there then use a default set
     expInfo = {'observer':time.strftime("%Y%m%d%H%M%S"),'gender':'M'}
 
 # present a dialogue to change params
-dlg = gui.DlgFromDict(expInfo, title='simple JND Exp', fixed=['date'])
+dlg = gui.DlgFromDict(expInfo, title='Motion Temporal threshold', fixed=['date'])
 if dlg.OK:
     toFile('lastParams.pickle', expInfo)  # save params to file for next time
 else:
@@ -37,7 +37,7 @@ else:
 # make a text file to save data
 fileName = 'csv/' + expInfo['observer'] + "_" + params.task_name
 dataFile = open(fileName + '.csv', 'w')
-dataFile.write('direction,cyc_deg,tf_hz,show_secs,correct,rt\n')
+dataFile.write('direction,ori,key_resp,diameter,contrast,spf,tf_hz,frame,frame_rate_hz,show_secs,correct,rt,grating.started,grating.stoped\n')
 
 # Helper functions
 def rand_unif_int(min, max):
@@ -79,11 +79,22 @@ message1 = visual.TextStim(win, pos=[0, + 3],
 message2 = visual.TextStim(win, pos=[0, -3],
     text="When the white box appears, press LEFT arrow to identify leftward motion or the RIGHT arrow to identify rightward motion.")
 
-# create the staircase handler    
+# create the staircase handler
+#staircase = data.StairHandler(startVal=20, # stimulus duration in frames
+#    stepType='db',
+#    stepSizes=[8, 4, 4, 2, 2, 1, 1],  # reduce step size every two reversals
+#    minVal=2, maxVal=40,
+#    nUp=1, nDown=3,  # will home in on the 80% threshold
+#    nTrials=40)
+    
 if params.stair_case_style == 'quest':
-    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST, nTrials=50)
+    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST,  nTrials=50)
 else:
     staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=50)
+    
+# staircase = data.QuestHandler(0.5, 0.2, pThreshold=0.63, gamma=0.01,
+#                               minVal=0, maxVal=1, ntrials=10)
+
 
 # display instructions and wait
 message1.draw()
@@ -96,29 +107,34 @@ event.waitKeys()
 
 # Start staircase
 for this_stim_frames_p, this_condition in staircase:
+
+# for this_stim_frames_p in staircase:
+
     # Initialize grating
     this_stim_frames = this_stim_frames_p*40
     print(calculate_stim_duration(this_stim_frames, params.frame_rate_hz))
     print(this_condition)
     this_max_contrast = this_condition['max_contr']
+    this_grating_degree = this_condition['grating_deg']
+    this_tf = params.tfreqs[0]
+
 
     # set orientation of grating
     if (round(numpy.random.random())) > 0.5:
         this_dir = +1 # leftward
+        ori='left'
     else:
         this_dir = -1 # rightward
+        ori='right'
         
     this_spf = params.spfreqs[0]
  
     pr_grating = visual.GratingStim(
         win=win, name='grating_murray',units='deg', 
         tex='sin', mask='circle',
-        ori=params.grating_ori, pos=(0, 0), size=params.grating_deg, sf=this_spf, phase=0,
+        ori=params.grating_ori, pos=(0, 0), size=this_grating_degree, sf=this_spf, phase=0,
         color=[this_max_contrast, this_max_contrast, this_max_contrast], colorSpace='rgb', opacity=1, blendmode='avg',
         texRes=128, interpolate=True, depth=0.0)
-    
-    # Pick tf and max contrast
-    this_tf = params.tfreqs[0]
     
     # Show fixation
     fixation.draw()
@@ -164,8 +180,8 @@ for this_stim_frames_p, this_condition in staircase:
             thisResp = 0
             rt = 0
             print("Saving data.")
-            dataFile.write('%i,%.3f,%i,%.3f,%i,%.3f\n' % (this_dir, this_spf, this_tf, this_stim_frames*params.frameDur, thisResp, rt))
-            staircase.saveAsPickle(fileName)  # special python data file to save all the info
+            # dataFile.write('%i,%s,%s,%.3f,%.3f,%.3f,%.3f,%9f,%9f,%9f,%9f,%i,%.9f,%.9f,%.9f\n' % (this_dir, str(ori),str(thiskey),this_grating_degree,this_contr,this_spf, this_tf, this_stim_frames,params.frameDur,this_stim_frames*params.frameDur, thisResp, rt,start_resp_time,clock.getTime()))
+            # staircase.saveAsPickle(fileName)  # special python data file to save all the info
             print("Exiting program.")
             core.quit()
 
@@ -193,8 +209,9 @@ for this_stim_frames_p, this_condition in staircase:
 
     # add the data to the staircase so it can calculate the next level
     staircase.addResponse(thisResp)
-    dataFile.write('%i,%i,%i,%.3f,%i,%.3f\n' % (this_dir, this_spf, this_tf, this_stim_frames*params.frameDur, thisResp, rt))
-    
+    # dataFile.write('%i,%i,%i,%.3f,%i,%.3f\n' % (this_dir, this_spf, this_tf, this_stim_frames*params.frameDur, thisResp, rt))
+    dataFile.write('%i,%s,%s,%.3f,%.3f,%.3f,%.3f,%9f,%9f,%9f,%9f,%i,%.9f,%.9f,%.9f\n' % (this_dir, str(ori),str(thiskey),this_grating_degree,this_contr,this_spf, this_tf, this_stim_frames,params.frameDur,this_stim_frames*params.frameDur, thisResp, rt,start_resp_time,clock.getTime()))
+
     # Clear screen and ITI
     win.flip()
     core.wait(rand_unif_int(params.iti_min, params.iti_max))

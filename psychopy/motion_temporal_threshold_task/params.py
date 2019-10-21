@@ -34,7 +34,8 @@ ramp_up_secs = .5
 full_scale_secs = 1
 ramp_dn_secs = ramp_up_secs
 
-grating_deg = (10, 10) # 
+
+grating_deg = (10, 10) # two conditions: 1.6 deg and 10 deg
 #max_contr = 0.98 # Add 0.03?
 spfreqs = [1.2]
 spf = spfreqs[0]
@@ -43,17 +44,21 @@ tf = tfreqs[0]      # Hz
 cyc_secs = 1/tf     # seconds
 max_resp_secs = 5
 grating_ori = 0
-max_contr = .98
+max_contr = .98  # two conditions: 0.03 and 0.98
 max_frames = 20
 
 stair_case_style = 'simple' # {'simple or 'quest'}
 conditions_QUEST = [
-    {'label':'lo_contr', 'startVal':.5, 'startValSd':.2, 'max_contr':.03, 'minVal':.001, 'maxVal':.8, 'pThreshold':0.63},
-    {'label':'hi_contr', 'startVal':.5, 'startValSd':.2, 'max_contr':.98, 'minVal':.001, 'maxVal':.8, 'pThreshold':0.63}
+    {'label':'lo_contr_big_disp', 'startVal':20, 'startValSd':2, 'pThreshold':.82, 'max_contr':.03, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':10 ,'spf':spf,'tf':tf},
+    {'label':'hi_contr_big_disp', 'startVal':20, 'startValSd':2, 'pThreshold':.82, 'max_contr':.98, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':10 ,'spf':spf,'tf':tf},
+    {'label':'lo_contr_sma_disp', 'startVal':20, 'startValSd':2, 'pThreshold':.82, 'max_contr':.03, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':1.7,'spf':spf,'tf':tf},
+    {'label':'hi_contr_sma_disp', 'startVal':20, 'startValSd':2, 'pThreshold':.82, 'max_contr':.98, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':1.7,'spf':spf,'tf':tf},
     ]
 conditions_simple = [
-    {'label':'lo_contr', 'startVal':1, 'max_contr':.03},
-    {'label':'hi_contr', 'startVal':1, 'max_contr':.98}
+    {'label':'lo_contr_big_disp', 'startVal':1, 'max_contr':.03,'grating_deg':1.7},
+    {'label':'hi_contr_big_disp', 'startVal':1, 'max_contr':.98,'grating_deg':1.7},
+    {'label':'lo_contr_big_disp', 'startVal':1, 'max_contr':.03,'grating_deg':10},
+    {'label':'hi_contr_big_disp', 'startVal':1, 'max_contr':.98,'grating_deg':10}
     ]
 
 # Donut/response frame
