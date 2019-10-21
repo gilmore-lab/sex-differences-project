@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+#-----------------------------------------------------------------------------------------------------------
+# 
+# 
+# 
+#-----------------------------------------------------------------------------------------------------------
 """
 This code is an attempt to replicate the Murray et al. 2018 study on sex differences in temporal motion detection thresholds.
 
@@ -9,6 +13,11 @@ Sex Differences in Visual Motion Processing. Current Biology, 28(17), 2794-2799.
 Retrieved from http://dx.doi.org/10.1016/j.cub.2018.06.014
 """
 
+#-----------------------------------------------------------------------------------------------------------
+# Initialize
+#-----------------------------------------------------------------------------------------------------------
+
+# import external packages
 from __future__ import absolute_import, division, print_function
 from psychopy import core, visual, gui, data, event
 from psychopy.tools.filetools import fromFile, toFile
@@ -16,7 +25,7 @@ from psychopy.visual import ShapeStim
 from psychopy.hardware import keyboard
 import time, numpy
 
-# Parameters
+# user-defined parameters
 import params
 
 # Set up hardware
@@ -34,12 +43,15 @@ if dlg.OK:
 else:
     core.quit()  # the user hit cancel so exit
 
-# make a text file to save data
+# make an output text file to save data
 fileName = 'csv/' + expInfo['observer'] + "_" + params.task_name
 dataFile = open(fileName + '.csv', 'w')
-dataFile.write('direction,ori,key_resp,diameter,contrast,spf,tf_hz,frame,frame_rate_hz,show_secs,correct,rt,grating.started,grating.stoped\n')
+dataFile.write('motion_dir,grating_ori,key_resp,grating_deg,contrast,spf,tf_hz,show_frames,frame_rate_hz,show_secs,correct,rt,grating_start,grating_end\n')
 
-# Helper functions
+#-----------------------------------------------------------------------------------------------------------
+# Define helper functions
+#-----------------------------------------------------------------------------------------------------------
+
 def rand_unif_int(min, max):
     # Force min >= 0 and max >= 0
     if min < 0:
@@ -52,6 +64,40 @@ def calculate_stim_duration(frames, frame_rate_hz):
     if frame_rate_hz == 0:
         frame_rate_hz = 60
     return (frames/frame_rate_hz)
+    
+def write_trial_data_to_file():
+    dataFile.write('%i,%i,%s,%2.2f' % (this_dir, params.grating_ori, thisKey, this_grating_degree))
+    dataFile.write(',%.3f,%.3f,%.3f,%i' % (this_contr, this_spf, this_tf, this_stim_secs))
+    dataFile.write(',%.3f,%.3f,%i,%.3f' % (params.frameDur, 0, thisResp, rt))
+    dataFile.write(',%.3f,%.3f\n' % (start_resp_time, clock.getTime()))
+    
+def calculate_contrast():
+    if params.contrast_mod_type == 'fixed_triangular':
+        secs_passed = clock.getTime()-start_time
+        if secs_passed <= params.ramp_up_secs:
+            this_contr = (secs_passed/params.ramp_up_secs)*this_max_contrast
+        elif (secs_passed > params.ramp_up_secs) & (secs_passed <= params.ramp_up_secs + params.full_scale_secs):
+            this_contr = this_max_contrast
+        else:
+            this_contr = ((params.stim_dur_secs - secs_passed)/params.ramp_up_secs)*this_max_contrast
+    elif params.contrast_mod_type == 'variable_triangular': # linear ramp up for half of this_stim_secs, then ramp down
+        secs_passed = clock.getTime()-start_time
+        if secs_passed <= this_stim_secs * 0.5: # first half
+            this_contr = (secs_passed/(this_stim_secs*0.5))*this_max_contrast
+        else: 
+            this_contr = (this_stim_secs - secs_passed )/(this_stim_secs * 0.5)*this_max_contrast
+    else:
+        this_contr = this_condition['max_contr']
+        
+    # Sanity check on this_contr to keep in [0.1]
+    if this_contr > 1:
+        this_contr = 1
+    elif this_contr < 0:
+        this_contr = 0
+        
+    return(this_contr)
+ 
+#-----------------------------------------------------------------------------------------------------------
 
 # Clock variables
 clock = core.Clock()
@@ -65,7 +111,7 @@ respond = visual.GratingStim(win, color='white', tex=None, mask='circle', size=0
 pr_grating = visual.GratingStim(
     win=win, name='grating_murray',units='deg', 
     tex='sin', mask='gauss',
-    ori=90, pos=(0, 0), size=params.grating_deg, sf=params.spf, phase=0,
+    ori=params.grating_ori, pos=(0, 0), size=params.grating_deg, sf=params.spf, phase=0,
     color=[params.max_contr, params.max_contr, params.max_contr], colorSpace='rgb', opacity=1, blendmode='avg',
     texRes=128, interpolate=True, depth=0.0)
     
@@ -80,20 +126,14 @@ message2 = visual.TextStim(win, pos=[0, -3],
     text="When the white box appears, press LEFT arrow to identify leftward motion or the RIGHT arrow to identify rightward motion.")
 
 # create the staircase handler
-#staircase = data.StairHandler(startVal=20, # stimulus duration in frames
-#    stepType='db',
-#    stepSizes=[8, 4, 4, 2, 2, 1, 1],  # reduce step size every two reversals
-#    minVal=2, maxVal=40,
-#    nUp=1, nDown=3,  # will home in on the 80% threshold
-#    nTrials=40)
-    
 if params.stair_case_style == 'quest':
     staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST,  nTrials=50)
 else:
     staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=50)
-    
-# staircase = data.QuestHandler(0.5, 0.2, pThreshold=0.63, gamma=0.01,
-#                               minVal=0, maxVal=1, ntrials=10)
+
+#-----------------------------------------------------------------------------------------------------------
+# Start experiment
+#-----------------------------------------------------------------------------------------------------------
 
 # display instructions and wait
 message1.draw()
@@ -105,42 +145,38 @@ win.flip()
 event.waitKeys()
 
 # Start staircase
-for this_stim_frames_p, this_condition in staircase:
-# for this_stim_frames_p in staircase:
-    # Initialize grating
-    this_stim_frames = this_stim_frames_p*20
-    print(calculate_stim_duration(this_stim_frames, params.frame_rate_hz))
-    print(this_condition)
+for this_stim_secs, this_condition in staircase:
+    
+    # Print condition info to console
+    print('condition: ' + this_condition['label'] + " | " + 'stim_secs: ' + str(this_stim_secs))
+    
+    # Initialize grating parameters for this condition
     this_max_contrast = this_condition['max_contr']
     this_grating_degree = this_condition['grating_deg']
-    this_tf = params.tfreqs[0]
+    this_tf = this_condition['tf']
+    this_spf = this_condition['spf']
 
-    # set orientation of grating
+    # randomly set motion direction of grating on each trial
     if (round(numpy.random.random())) > 0.5:
         this_dir = +1 # leftward
-        ori='left'
+        this_dir_str='left'
     else:
         this_dir = -1 # rightward
-        ori='right'
-        
-    # pick spf randomly (for now)
-    this_spf = params.spfreqs[0]
-#    if (round(numpy.random.random())) > 0.5:
-#        this_spf = params.spfreqs[0]
-#    else:
-#        this_spf = params.spfreqs[1]
-    #this_max_contrast = .98
- 
+        this_dir_str='right'
+    
+    # draw initial grating
     pr_grating = visual.GratingStim(
         win=win, name='grating_murray',units='deg', 
-        tex='sin', mask='circle',
+        tex='sin', mask=this_condition['mask_type'],
         ori=params.grating_ori, pos=(0, 0), size=this_grating_degree, sf=this_spf, phase=0,
-        color=[this_max_contrast, this_max_contrast, this_max_contrast], colorSpace='rgb', opacity=1, blendmode='avg',
+        color=0, colorSpace='rgb', opacity=1, blendmode='avg',
         texRes=128, interpolate=True, depth=0.0)
     
     # Show fixation
     fixation.draw()
     win.flip()
+    
+    # Hide fixation
     core.wait(params.fixation_secs)
     win.flip()
     
@@ -153,18 +189,11 @@ for this_stim_frames_p, this_condition in staircase:
     while keep_going:
         secs_from_start = (start_time - clock.getTime())
         pr_grating.phase = this_dir*(secs_from_start/params.cyc_secs)
-        #pr_grating.contrast = numpy.sin(2 * numpy.pi * t * this_tf) # from counterphase.py demo
         
-        # Contrast ramp in, hold, down
-        secs_passed = clock.getTime()-start_time
-        if secs_passed <= params.ramp_up_secs:
-            this_contr = (secs_passed/params.ramp_up_secs)*this_max_contrast
-        elif (secs_passed > params.ramp_up_secs) & (secs_passed <= params.ramp_up_secs + params.full_scale_secs):
-            this_contr = this_max_contrast
-        else:
-            this_contr = ((params.stim_dur_secs - secs_passed)/params.ramp_up_secs)*this_max_contrast
+        # Modulate contrast
+        this_contr = calculate_contrast()
         pr_grating.color = this_contr
-    
+
         # Draw next grating component
         pr_grating.draw()
         win.flip()
@@ -174,17 +203,18 @@ for this_stim_frames_p, this_condition in staircase:
         thisResp = None
 
         # Is stimulus presentation time over?
-        if (clock.getTime()-start_time > this_stim_frames*params.frameDur):
+        if (clock.getTime()-start_time > this_stim_secs):
             win.flip()
-            keep_going = False
+            keep_going = False 
             
         # check for quit (typically the Esc key)
         if kb.getKeys(keyList=["escape"]):
             thisResp = 0
             rt = 0
+            
             print("Saving data.")
-            # dataFile.write('%i,%s,%s,%.3f,%.3f,%.3f,%.3f,%9f,%9f,%9f,%9f,%i,%.9f,%.9f,%.9f\n' % (this_dir, str(ori),str(thiskey),this_grating_degree,this_contr,this_spf, this_tf, this_stim_frames,params.frameDur,this_stim_frames*params.frameDur, thisResp, rt,start_resp_time,clock.getTime()))
-            # staircase.saveAsPickle(fileName)  # special python data file to save all the info
+            write_trial_data_to_file()
+            
             print("Exiting program.")
             core.quit()
 
@@ -212,12 +242,18 @@ for this_stim_frames_p, this_condition in staircase:
 
     # add the data to the staircase so it can calculate the next level
     staircase.addResponse(thisResp)
-    # dataFile.write('%i,%i,%i,%.3f,%i,%.3f\n' % (this_dir, this_spf, this_tf, this_stim_frames*params.frameDur, thisResp, rt))
-    dataFile.write('%i,%s,%s,%.3f,%.3f,%.3f,%.3f,%9f,%9f,%9f,%9f,%i,%.9f,%.9f,%.9f\n' % (this_dir, str(ori),str(thiskey),this_grating_degree,this_contr,this_spf, this_tf, this_stim_frames,params.frameDur,this_stim_frames*params.frameDur, thisResp, rt,start_resp_time,clock.getTime()))
+    
+    # Write data to file
+    write_trial_data_to_file()
 
     # Clear screen and ITI
     win.flip()
     core.wait(rand_unif_int(params.iti_min, params.iti_max))
+#-----------------------------------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------------------------------
+# Save data and clean-up
+#-----------------------------------------------------------------------------------------------------------
 
 # staircase has ended
 dataFile.close()
