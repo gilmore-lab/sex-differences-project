@@ -1,0 +1,18 @@
+---
+title: "Benchmark Testing"
+author: "Andrea Seisler"
+date: "10/21/2019"
+output: "`r Sys.time()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## PsychoPy Benchmark Testing
+
+| Resolution | Pixel Aspect Ratio | Display Aspect Ratio | Refresh Rate (Hz) | Vis Sync ( ms/frame) | Refresh Stability (SD)(ms) | Dropped Frames|
+|1280 x 1024| 1:1 | 5:4 | 75 | 13.33 | .41 | 0 |
+
+
+
