@@ -47,7 +47,7 @@ grating_ori = 0
 max_contr = .98  # two conditions: 0.03 and 0.98
 max_frames = 20
 
-stair_case_style = 'quest' # {'simple or 'quest'}
+stair_case_style = 'simple' # {'simple or 'quest'}
 conditions_QUEST = [
     {'label':'lo_contr_big_disp', 'startVal':20, 'startValSd':2, 'pThreshold':.82, 'max_contr':.03, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':10 ,'spf':spf,'tf':tf},
     {'label':'hi_contr_big_disp', 'startVal':20, 'startValSd':2, 'pThreshold':.82, 'max_contr':.98, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':10 ,'spf':spf,'tf':tf},

@@ -95,6 +95,7 @@ else:
 # staircase = data.QuestHandler(0.5, 0.2, pThreshold=0.63, gamma=0.01,
 #                               minVal=0, maxVal=1, ntrials=10)
 
+
 # display instructions and wait
 message1.draw()
 message2.draw()
@@ -106,14 +107,17 @@ event.waitKeys()
 
 # Start staircase
 for this_stim_frames_p, this_condition in staircase:
+
 # for this_stim_frames_p in staircase:
+
     # Initialize grating
-    this_stim_frames = this_stim_frames_p*20
+    this_stim_frames = this_stim_frames_p*40
     print(calculate_stim_duration(this_stim_frames, params.frame_rate_hz))
     print(this_condition)
     this_max_contrast = this_condition['max_contr']
     this_grating_degree = this_condition['grating_deg']
     this_tf = params.tfreqs[0]
+
 
     # set orientation of grating
     if (round(numpy.random.random())) > 0.5:
@@ -123,13 +127,7 @@ for this_stim_frames_p, this_condition in staircase:
         this_dir = -1 # rightward
         ori='right'
         
-    # pick spf randomly (for now)
     this_spf = params.spfreqs[0]
-#    if (round(numpy.random.random())) > 0.5:
-#        this_spf = params.spfreqs[0]
-#    else:
-#        this_spf = params.spfreqs[1]
-    #this_max_contrast = .98
  
     pr_grating = visual.GratingStim(
         win=win, name='grating_murray',units='deg', 
@@ -153,7 +151,6 @@ for this_stim_frames_p, this_condition in staircase:
     while keep_going:
         secs_from_start = (start_time - clock.getTime())
         pr_grating.phase = this_dir*(secs_from_start/params.cyc_secs)
-        #pr_grating.contrast = numpy.sin(2 * numpy.pi * t * this_tf) # from counterphase.py demo
         
         # Contrast ramp in, hold, down
         secs_passed = clock.getTime()-start_time
