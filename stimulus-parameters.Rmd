@@ -1,0 +1,91 @@
+---
+title: "display-parameters"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+# Stimulus parameters
+
+## Purpose
+
+This document summarizes the display parameters used in the Abramov et al. 2012 and Murray et al. 2018 studies.
+It also documents the choices we made in carrying out our replication.
+
+## Parameter summary
+
+| Parameter | Abramov et al. 2012 | Murray et al. 2018 |
+|-----------|---------------------|--------------------|
+| Target type      | Grating             | Grating            |
+| Diameter (deg) | 3.5            | 0.84 (UW[^1]), 1.7 (UW), 2 (UR[^2], UB[^3]), 4 (UR, UB), 8 (UR, UB), 10 (UW) |
+| Window | Circular | Gaussian |
+| Gaussian SD | NA | 0.21$^{\circ}$, |
+| Spatial frequency (cyc/deg) | 0.6, 1.2, 2, 5, 12, 24.4 | 1 (UR, UB), 1.2 (UW) |
+| Bgnd luminance | 55 $cd/m^2$ | 60.5 $cd/m^2$         |
+| View dist (cm) | 3600 cm     | 61 cm (UB), 66 cm (UW), 146 cm (UR)                |
+| Duration | Ramp up (500 ms), steady (1000 ms), ramp down (500 ms) | Varied by staircase, trapezoidal or Gaussian |
+| Contrast | Varied by staircase |3\% (UW), 42\% (UR), 95\% (UB), 98\% (UW) |
+| Temporal frequency (Hz) | 4 | 4 Hz (UW) |
+| Speed | | 4$^{\circ}/s$ (UR) or 4.8$^{\circ}/s$ (UB)|
+| Response time | Not limited | Not limited |
+| Response period | During stimulus or after | |
+| Task | 2AFC orientation (horizontal or vertical) | 2AFC interval (UW), 2AFC direction (UR, UB)  |
+| Feedback | Auditory | Auditory (UR, UB) |
+| $n$ staircase trials | | 30 + 20 catch trials/staircase with 333 ms/98% contrast |
+| Staircase type/algorithm | QUEST | Psi (UW) or QUEST (UR, UB) |
+| Staircase confidence interval | 99% | |
+| $n$ thresholds/condition | | median of 4 (UW), average of 4/6 (discard high and low) at UR and UB |
+
+## Parameters selected for replication
+
+The goals for the replication are as follows:
+
+- choose parameters where the differences in performance between males and females are **large**.
+- choose parameters where the differences in performance are **small**.
+- choose parameters that allow the two paradigms to be compared.
+
+### Abramov et al. 2012 contrast threshold
+
+- Grating
+- Diameter: 4 $cyc/^{\circ}$ for comparison with Murray
+- Window: Gaussian to compare with Murray
+- Gaussian SD:
+- Spatial frequency: 12 and/or 24.4 to maximize sex diff; 1.2 to minimize and compare with Murray?
+- Bgnd luminance: Per our monitor
+- View distance: To enable high spatial frequency if needed
+- Duration: Per Abramov 2012
+- Contrast: staircase
+- Temporal frequency: 4 Hz
+- Response time: Unlimited
+- Task 2AFC orientation
+- Feedback: Auditory
+- $n$ staircase trials: 30
+- Catch trials: ???
+- Algorithm: QUEST
+- $n$ thresholds/condition: > 1, depending on how long convergence takes
+
+### Murray et al. 2018 temporal threshold
+
+- Grating
+- Diameter: 4 cyc/$^{\circ}$
+- Window: Gaussian
+- Gaussian SD:
+- Spatial frequency: ???; interacts with temporal frequency in determining speed ($tf/sf$)
+- Bgnd luminance: Per our monitor
+- View distance: vary to achieve highest spatial frequency
+- Duration: staircase
+- Contrast: high (95\% or 98\%) where sex difference is high; possibly also low (03\%) where sex difference is smaller or non-existent
+- Temporal frequency: 4 Hz (if follow UW)
+- Response time: Unlimited
+- Task: 2AFC direction (easier to code than interval)
+- Feedback: Auditory
+- $n$ staircase trials: 30
+- Catch trials: ???
+- Algorithm: QUEST
+- $n$ thresholds/condition: > 1, depending on how long convergence takes
+
+---
+
+[^1]: University of Washington cohort
+[^2]: University of Rochester cohort
+[^3]: University of Bern cohort

@@ -19,14 +19,14 @@ Retrieved from http://dx.doi.org/10.1016/j.cub.2018.06.014
 
 # import external packages
 from __future__ import absolute_import, division, print_function
-from psychopy import core, visual, gui, data, event
+from psychopy import core, visual, gui, data, event, sound
 from psychopy.tools.filetools import fromFile, toFile
 from psychopy.visual import ShapeStim
 from psychopy.hardware import keyboard
 import time, numpy
 
 # user-defined parameters
-import params
+import motion_temporal_threshold_params as params
 
 # Set up hardware
 kb = keyboard.Keyboard()
@@ -102,6 +102,10 @@ def calculate_contrast():
 # Clock variables
 clock = core.Clock()
 countDown = core.CountdownTimer()
+
+# sound
+highA = sound.Sound('A', octave=4, sampleRate=44100, secs=0.2, stereo=True, loops=-1)
+highA.setVolume(0.5)
 
 # create window and stimuli
 win = visual.Window([params.window_pix_h, params.window_pix_v], allowGUI=False, monitor=params.monitor_name, units='deg')
@@ -238,6 +242,8 @@ for this_stim_secs, this_condition in staircase:
             elif ((thisKey == 'left' and this_dir == +1) or
                 (thisKey == 'right' and this_dir == -1)):
                 thisResp = 1  # correct
+                highA.play(loops=-1)
+                core.wait(0.1)
             elif thisKey in ['q', 'escape']:
                 test = False
                 core.quit()  # abort experiment

@@ -70,7 +70,7 @@ You can withdraw anytime when you feel uncomfortable or .Do you want to go on?�
 
 Say:
 
->"You have finished the first part of testing. Next you have a behavial testing. Do you want to continue or have a little break?"
+>"You have finished the first part of testing. Next you have  behavorial testing. Do you want to continue or have a little break?"
 
 ### Secure implied consent
 
@@ -95,7 +95,7 @@ Say:
 - Enter the ID in the pop window and speak to the participant
 “Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have question, ..."
 
-## After sessions ends
+## After session ends
 
 - After the participant finishes all the test, thank him/her. 
 “Thank you for participating this experiment. “
@@ -111,3 +111,7 @@ Say:
 ```{r terminology, child="terminology.Rmd"}
 ```
 
+---
+
+```{r stimulus-parameters, child="terminology.Rmd"}
+```
