@@ -60,7 +60,8 @@ max_secs = .5
 max_secs_sd = .2
 min_secs = 2 * frameDur                 # Require two frames to generate motion
 
-stair_case_style = 'quest'             # 'simple' or 'quest'
+staircase_style = 'simple'               # 'simple' or 'quest'
+staircase_ntrials = 35
 
 conditions_QUEST = [
     {'label':'hi_contr', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.95, 'minVal':min_secs, 'maxVal':max_secs, 
@@ -81,9 +82,9 @@ conditions_simple = [
 
 # Donut/response frame
 show_response_frame = True              # Square 'response' frame flag
-donut_outer_rad = 10                    # Outer radius in deg
-donut_inner_rad = 9.7                   # Inner radius in deg
-donut_color = .55                       # Color (.55 is a light gray)
+donut_outer_rad = 12                    # Outer radius in deg
+donut_inner_rad = 11                   # Inner radius in deg
+donut_color = [0, .75, 0]                  # Color 
 
 # Interstimulus and intertrial timing
 iti = 3.0                               # Fixed ITI in secs

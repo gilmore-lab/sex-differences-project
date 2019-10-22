@@ -34,7 +34,7 @@ kb = keyboard.Keyboard()
 try:  # try to get a previous parameters file
     expInfo = fromFile('lastParams.pickle')
 except:  # if not there then use a default set
-    expInfo = {'observer':time.strftime("%Y%m%d%H%M%S"),'gender':'M'}
+    expInfo = {'observer':time.strftime("%Y-%m-%d-%H%M%S"),'gender':'M'}
 
 # present a dialogue to change params
 dlg = gui.DlgFromDict(expInfo, title='Motion Temporal threshold', fixed=['date'])
@@ -42,11 +42,6 @@ if dlg.OK:
     toFile('lastParams.pickle', expInfo)  # save params to file for next time
 else:
     core.quit()  # the user hit cancel so exit
-
-# make an output text file to save data
-fileName = 'csv/' + expInfo['observer'] + "_" + params.task_name
-dataFile = open(fileName + '.csv', 'w')
-dataFile.write('motion_dir,grating_ori,key_resp,grating_deg,contrast,spf,tf_hz,show_frames,frame_rate_hz,show_secs,correct,rt,grating_start,grating_end\n')
 
 #-----------------------------------------------------------------------------------------------------------
 # Define helper functions
@@ -65,10 +60,16 @@ def calculate_stim_duration(frames, frame_rate_hz):
         frame_rate_hz = 60
     return (frames/frame_rate_hz)
     
+def write_trial_data_header():
+    dataFile.write('motion_dir,grating_ori,key_resp,grating_deg')
+    dataFile.write(',contrast,spf,tf_hz,stim_secs')
+    dataFile.write(',frame_rate_hz,correct,rt')
+    dataFile.write(',grating_start,grating_end\n')
+
 def write_trial_data_to_file():
     dataFile.write('%i,%i,%s,%2.2f' % (this_dir, params.grating_ori, thisKey, this_grating_degree))
-    dataFile.write(',%.3f,%.3f,%.3f,%i' % (this_contr, this_spf, this_tf, this_stim_secs))
-    dataFile.write(',%.3f,%.3f,%i,%.3f' % (params.frameDur, 0, thisResp, rt))
+    dataFile.write(',%.3f,%.3f,%.3f,%.3f' % (this_max_contrast, this_spf, this_tf, this_stim_secs))
+    dataFile.write(',%.3f,%i,%.3f' % (params.frameDur, thisResp, rt))
     dataFile.write(',%.3f,%.3f\n' % (start_resp_time, clock.getTime()))
     
 def calculate_contrast():
@@ -98,6 +99,12 @@ def calculate_contrast():
     return(this_contr)
  
 #-----------------------------------------------------------------------------------------------------------
+
+# make an output text file to save data
+fileName = 'csv/' + expInfo['observer'] + "_" + params.task_name
+dataFile = open(fileName + '.csv', 'w')
+write_trial_data_header()
+#dataFile.write('motion_dir,grating_ori,key_resp,grating_deg,contrast,spf,tf_hz,show_frames,frame_rate_hz,show_secs,correct,rt,grating_start,grating_end\n')
 
 # Clock variables
 clock = core.Clock()
@@ -130,10 +137,10 @@ message2 = visual.TextStim(win, pos=[0, -3],
     text="When the white box appears, press LEFT arrow to identify leftward motion or the RIGHT arrow to identify rightward motion.")
 
 # create the staircase handler
-if params.stair_case_style == 'quest':
-    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST,  nTrials=50)
+if params.staircase_style == 'quest':
+    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST,  nTrials=params.staircase_ntrials)
 else:
-    staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=50)
+    staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=params.staircase_ntrials)
 
 #-----------------------------------------------------------------------------------------------------------
 # Start experiment
@@ -147,15 +154,17 @@ win.flip()
 
 # check for a keypress, then proceed
 event.waitKeys()
-
 n_trials = 0
+
+#catch_trial_indices = numpy.floor(numpy.sort(numpy.random.random(n_catch_trials))*params.staircase_ntrials)
+#catch_trial_i = 0
 
 # Start staircase
 for this_stim_secs, this_condition in staircase:
     
     # Print trial number, condition info to console
     n_trials += 1
-    print('trial :', str(n_trials), 'condition: ' + this_condition['label'] + " | " + 'stim_secs: ' + str(this_stim_secs))
+    print('trial:', str(n_trials), 'condition: ' + this_condition['label'] + " | " + 'stim_secs: ' + str(this_stim_secs))
     
     # Initialize grating parameters for this condition
     this_max_contrast = this_condition['max_contr']
@@ -242,8 +251,11 @@ for this_stim_secs, this_condition in staircase:
             elif ((thisKey == 'left' and this_dir == +1) or
                 (thisKey == 'right' and this_dir == -1)):
                 thisResp = 1  # correct
-                highA.play(loops=-1)
-                core.wait(0.1)
+                
+                # Feedback
+                highA.play(loops=-1)    # Only first plays?
+                donut.draw()            # Try visual feedback for now
+                win.flip()
             elif thisKey in ['q', 'escape']:
                 test = False
                 core.quit()  # abort experiment
@@ -269,9 +281,10 @@ dataFile.close()
 staircase.saveAsPickle(fileName)  # special python data file to save all the info
 
 # give some output to user
-print('reversals:')
-print(staircase.reversalIntensities)
-print('mean of final 6 reversals = %.3f' % numpy.average(staircase.reversalIntensities[-6:]))
+if params.staircase_style == 'simple':
+    print('reversals:')
+    print(staircase.reversalIntensities)
+    print('mean of final 5 reversals = %.3f' % numpy.average(staircase.reversalIntensities[-5:]))
 
 # clean-up
 win.close()
