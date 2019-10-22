@@ -72,7 +72,7 @@ def write_trial_data_to_file():
     dataFile.write(',%.3f,%.3f\n' % (start_resp_time, clock.getTime()))
     
 def calculate_contrast():
-    if params.contrast_mod_type == 'fixed_triangular':
+    if params.contrast_mod_type == 'fixed_trapezoidal':
         secs_passed = clock.getTime()-start_time
         if secs_passed <= params.ramp_up_secs:
             this_contr = (secs_passed/params.ramp_up_secs)*this_max_contrast
@@ -144,11 +144,14 @@ win.flip()
 # check for a keypress, then proceed
 event.waitKeys()
 
+n_trials = 0
+
 # Start staircase
 for this_stim_secs, this_condition in staircase:
     
-    # Print condition info to console
-    print('condition: ' + this_condition['label'] + " | " + 'stim_secs: ' + str(this_stim_secs))
+    # Print trial number, condition info to console
+    n_trials += 1
+    print('trial :', str(n_trials), 'condition: ' + this_condition['label'] + " | " + 'stim_secs: ' + str(this_stim_secs))
     
     # Initialize grating parameters for this condition
     this_max_contrast = this_condition['max_contr']

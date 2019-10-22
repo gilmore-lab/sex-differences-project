@@ -22,68 +22,68 @@ frame_rate_hz = 60
 frameDur = 1/frame_rate_hz
 
 # Data file parameters
-task_name = "temp_thresh"
+task_name = "temp_thresh"               # Murray et al. temporal threshold
 
 # Fixation
-fixation_secs = .850
-fixation_grating_isi = .15
+fixation_secs = .850                    # Fixation duration
+fixation_grating_isi = .15              # Fixation/grating ISI
 
-# Grating (not fixed for this study, must calculate based on current temporal duration in staircase)
-stim_dur_secs = 2
-ramp_up_secs = .5
-full_scale_secs = 1
-ramp_dn_secs = ramp_up_secs
+#--- Grating
+#contrast_mod_type = 'fixed_trapezoidal' # Ramp up, constant, ramp down, e.g., Abramov et al. 2012
+stim_dur_secs = 2                       # Total grating duration
+ramp_up_secs = .5                       # Ramp up duration
+full_scale_secs = 1                     # Full-scale (constant contrast) duration
+ramp_dn_secs = ramp_up_secs             # Ramp down duration
 
-grating_deg = (10, 10) # two conditions: 1.6 deg and 10 deg
-#max_contr = 0.98 # Add 0.03?
-spfreqs = [1.2]
+contrast_mod_type = 'variable_triangular'  # 'variable_triangular', 'fixed_trapezoidal'
+
+grating_deg = (1.7, 10)                 # 1.7 deg or 10 deg
+
+spfreqs = [1.2]                         # 1.2 cyc/deg
 spf = spfreqs[0]
-mask_type = 'circle'
 
-tfreqs = [4]    # Hz
-tf = tfreqs[0]      # Hz
-cyc_secs = 1/tf     # seconds
+mask_type = 'circle'                    # 'circle' or 'gauss'
 
-max_resp_secs = 5
-grating_ori = 0
+grating_ori = 0                         # grating orientation in deg, 0 is vertical, 90 is horizontal
 
-max_contr = .98  # two conditions: 0.03 and 0.98
-contrast_mod_type = 'fixed_triangular' # 'variable_triangular', 'triangular'
+tfreqs = [4]                            # Hz
+tf = tfreqs[0]                          # Hz
+cyc_secs = 1/tf                         # seconds for one full cycle
 
-start_secs = .333
+max_resp_secs = 5                       # max response period in secs
+
+max_contr = .98                         # two conditions: 0.03 and 0.98
+
+# Staircase parameters
+start_secs = .333                       # starting duration in secs for temporal staircase
 max_secs = .5
 max_secs_sd = .2
-min_secs = 2 * frameDur # Require two frames to generate motion
+min_secs = 2 * frameDur                 # Require two frames to generate motion
 
-stair_case_style = 'simple' # {'simple or 'quest'}
+stair_case_style = 'simple'             # 'simple' or 'quest'
+
 conditions_QUEST = [
-    {'label':'lo_contr_big_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.03, 'minVal':.0083, 'maxVal':max_secs, 'grating_deg':10 , 'spf':spf, 'tf':tf, 'mask_type': mask_type},
-    {'label':'hi_contr_big_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.98, 'minVal':.0083, 'maxVal':max_secs, 'grating_deg':10 , 'spf':spf, 'tf':tf, 'mask_type': mask_type},
-    {'label':'lo_contr_sma_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.03, 'minVal':.0083, 'maxVal':max_secs, 'grating_deg':1.7, 'spf':spf, 'tf':tf, 'mask_type': mask_type},
-    {'label':'hi_contr_sma_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.98, 'minVal':.0083, 'maxVal':max_secs, 'grating_deg':1.7, 'spf':spf, 'tf':tf, 'mask_type': mask_type}
+    {'label':'lo_contr_big_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.03, 'minVal':min_secs, 'maxVal':max_secs, 'grating_deg':10 , 'spf':spf, 'tf':tf, 'mask_type': mask_type},
+    {'label':'hi_contr_big_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.98, 'minVal':min_secs, 'maxVal':max_secs, 'grating_deg':10 , 'spf':spf, 'tf':tf, 'mask_type': mask_type},
+    {'label':'lo_contr_sma_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.03, 'minVal':min_secs, 'maxVal':max_secs, 'grating_deg':1.7, 'spf':spf, 'tf':tf, 'mask_type': mask_type},
+    {'label':'hi_contr_sma_disp', 'startVal':start_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.98, 'minVal':min_secs, 'maxVal':max_secs, 'grating_deg':1.7, 'spf':spf, 'tf':tf, 'mask_type': mask_type}
     ]
-#conditions_QUEST = [
-#    {'label':'lo_contr_big_disp', 'startVal':max_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.03, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':10 ,'spf':spf,'tf':tf},
-#    {'label':'hi_contr_big_disp', 'startVal':max_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.98, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':10 ,'spf':spf,'tf':tf},
-#    {'label':'lo_contr_sma_disp', 'startVal':max_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.03, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':1.7,'spf':spf,'tf':tf},
-#    {'label':'hi_contr_sma_disp', 'startVal':max_secs, 'startValSd':max_secs_sd, 'pThreshold':.82, 'max_contr':.98, 'minVal':2, 'maxVal':40, 'stepSizes':[8,4,4,2,2,1],'grating_deg':1.7,'spf':spf,'tf':tf},
-#    ]
 conditions_simple = [
-    {'label':'lo_contr_big_disp', 'startVal':max_secs, 'max_contr':.03,'grating_deg':1.7, 'stepSizes':[8,4,4,2,2,1]},
-    {'label':'hi_contr_big_disp', 'startVal':max_secs, 'max_contr':.98,'grating_deg':1.7, 'stepSizes':[8,4,4,2,2,1]},
-    {'label':'lo_contr_big_disp', 'startVal':max_secs, 'max_contr':.03,'grating_deg':10, 'stepSizes':[8,4,4,2,2,1]},
-    {'label':'hi_contr_big_disp', 'startVal':max_secs, 'max_contr':.98,'grating_deg':10, 'stepSizes':[8,4,4,2,2,1]}
+    {'label':'lo_contr_big_disp', 'startVal':start_secs, 'minVal': min_secs, 'maxVal': max_secs, 'max_contr':.03,'grating_deg':1.7, 'stepSizes':[8,4,4,2,2,1], 'spf':spf, 'tf':tf, 'mask_type': mask_type},
+    {'label':'hi_contr_big_disp', 'startVal':start_secs, 'minVal': min_secs, 'maxVal': max_secs, 'max_contr':.98,'grating_deg':1.7, 'stepSizes':[8,4,4,2,2,1], 'spf':spf, 'tf':tf, 'mask_type': mask_type},
+    {'label':'lo_contr_big_disp', 'startVal':start_secs, 'minVal': min_secs, 'maxVal': max_secs, 'max_contr':.03,'grating_deg':10, 'stepSizes':[8,4,4,2,2,1], 'spf':spf, 'tf':tf, 'mask_type': mask_type},
+    {'label':'hi_contr_big_disp', 'startVal':start_secs, 'minVal': min_secs, 'maxVal': max_secs, 'max_contr':.98,'grating_deg':10, 'stepSizes':[8,4,4,2,2,1], 'spf':spf, 'tf':tf, 'mask_type': mask_type}
     ]
 
 # Donut/response frame
-show_response_frame = True
-donut_outer_rad = 10
-donut_inner_rad = 9.7
-donut_color = .55
+show_response_frame = True              # Square 'response' frame flag
+donut_outer_rad = 10                    # Outer radius in deg
+donut_inner_rad = 9.7                   # Inner radius in deg
+donut_color = .55                       # Color (.55 is a light gray)
 
 # Interstimulus and intertrial timing
-iti = 3.0           # seconds
-isi_min = .250      # seconds
-isi_max = .500      # seconds
-iti_min = 1.0       # seconds
-iti_max = 2.5       # seconds
+iti = 3.0                               # Fixed ITI in secs
+isi_min = .250                          # Fixation/grating ISI min val
+isi_max = .500                          # Fixation/grating ISI max val
+iti_min = 1.0                           # ITI min val
+iti_max = 2.5                           # ITI max val
