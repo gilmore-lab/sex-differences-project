@@ -92,7 +92,7 @@ end_setup = keyboard.Keyboard()
 # Initialize components for Routine "instructions_before_practice"
 instructions_before_practiceClock = core.Clock()
 instrText = visual.TextStim(win=win, name='instrText',
-    text="You will see black and white stripes oriented either horizontally or vertically. \n\nPress the LEFT or RIGHT arrow button if you see a horizontal grating.\n\nPush the UP or DOWN arrow button if you see a vertical grating. \n \nIf you don't see anything, then guess! \n \nYou will have several pratice trials. \n\nPress any key to continue",
+    text="You will see black and white stripes oriented either horizontally or vertically. \n\nPress the LEFT or RIGHT arrow button if you see horizontal stripes.\n\nPush the UP or DOWN arrow button if you see vertical stripes. \n \nIf you don't see anything, then guess! \n \nYou will have several pratice trials. \n\nPress any key to continue",
     font='Arial',
     pos=[0, 0], height=1, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -380,11 +380,11 @@ for thisPractice_trial in practice_trials:
         ori = 90
         correctAns = ['left','right']
     grating.setOri(ori)
-    
-    if random()>0.5:
-        SF = 1.2 # cyc/deg
-    else:
-        SF = 12 # cyc/deg
+    # this code is clearly wrong. The random function may lead to unequal trials for two conditions and the intensity in staircase is not calculated by each condition but by mixed conditions.
+#    if random()>0.5:
+#        SF = 1.2 # cyc/deg
+#    else:
+#        SF = 12 # cyc/deg
     grating.setSF(SF)
     
     resp.keys = []
