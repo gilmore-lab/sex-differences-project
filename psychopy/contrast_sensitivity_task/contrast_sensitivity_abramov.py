@@ -15,6 +15,9 @@ from psychopy.visual import ShapeStim
 from psychopy.hardware import keyboard
 import time, numpy
 
+# user defined parameters
+import contrast_sensitivity_params as params
+
 # Set up hardware
 kb = keyboard.Keyboard()
 
@@ -36,8 +39,55 @@ fileName = 'csv/' + expInfo['observer']
 dataFile = open(fileName + '.csv', 'w')
 dataFile.write('ori,cyc_deg,tf_hz,contrast,correct,rt\n')
 
-# Parameters
-import params
+#-----------------------------------------------------------------------------------------------------------
+# Define helper functions
+#-----------------------------------------------------------------------------------------------------------
+
+def rand_unif_int(min, max):
+    # Force min >= 0 and max >= 0
+    if min < 0:
+        min = 0
+    if max < 0:
+        max = 0
+    return (min + numpy.random.random()*(max-min))
+    
+def calculate_stim_duration(frames, frame_rate_hz):
+    if frame_rate_hz == 0:
+        frame_rate_hz = 60
+    return (frames/frame_rate_hz)
+    
+def write_trial_data_to_file():
+    dataFile.write('%i,%i,%s,%2.2f' % (this_dir, params.grating_ori, thisKey, this_grating_degree))
+    dataFile.write(',%.3f,%.3f,%.3f,%i' % (this_contr, this_spf, this_tf, this_stim_secs))
+    dataFile.write(',%.3f,%.3f,%i,%.3f' % (params.frameDur, 0, thisResp, rt))
+    dataFile.write(',%.3f,%.3f\n' % (start_resp_time, clock.getTime()))
+    
+def calculate_contrast():
+    if params.contrast_mod_type == 'fixed_trapezoidal':
+        secs_passed = clock.getTime()-start_time
+        if secs_passed <= params.ramp_up_secs:
+            this_contr = (secs_passed/params.ramp_up_secs)*this_max_contrast
+        elif (secs_passed > params.ramp_up_secs) & (secs_passed <= params.ramp_up_secs + params.full_scale_secs):
+            this_contr = this_max_contrast
+        else:
+            this_contr = ((params.stim_dur_secs - secs_passed)/params.ramp_up_secs)*this_max_contrast
+    elif params.contrast_mod_type == 'variable_triangular': # linear ramp up for half of this_stim_secs, then ramp down
+        secs_passed = clock.getTime()-start_time
+        if secs_passed <= this_stim_secs * 0.5: # first half
+            this_contr = (secs_passed/(this_stim_secs*0.5))*this_max_contrast
+        else: 
+            this_contr = (this_stim_secs - secs_passed )/(this_stim_secs * 0.5)*this_max_contrast
+    else:
+        this_contr = this_condition['max_contr']
+        
+    # Sanity check on this_contr to keep in [0.1]
+    if this_contr > 1:
+        this_contr = 1
+    elif this_contr < 0:
+        this_contr = 0
+        
+    return(this_contr)
+#-----------------------------------------------------------------------------------------------------------
 
 # Clock variables
 clock = core.Clock()
@@ -64,21 +114,14 @@ message2 = visual.TextStim(win, pos=[0, -3],
     text="When the white box appears, press LEFT arrow to identify a horizontal grating or the UP arrow to identify a vertical grating.")
 
 # create the staircase handler
-staircase = data.StairHandler(startVal=0.5, # contrast in [0,1]
-    stepType='db',
-    stepSizes=[8, 4, 4, 2, 2, 1, 1],  # reduce step size every two reversals
-    minVal=0.0001, maxVal=1.0,
-    nUp=1, nDown=3,  # will home in on the 80% threshold
-    nTrials=20)
+if params.stair_case_style == 'quest':
+    staircase = data.MultiStairHandler(stairType='quest', conditions=params.conditions_QUEST,  nTrials=50)
+else:
+    staircase = data.MultiStairHandler(stairType='simple', conditions=params.conditions_simple, nTrials=50)
 
-# Helper function
-def rand_unif_int(min, max):
-    # Force min >= 0 and max >= 0
-    if min < 0:
-        min = 0
-    if max < 0:
-        max = 0
-    return (min + numpy.random.random()*(max-min))
+#-----------------------------------------------------------------------------------------------------------
+# Start experiment
+#-----------------------------------------------------------------------------------------------------------
 
 # display instructions and wait
 message1.draw()
@@ -90,7 +133,13 @@ win.flip()
 event.waitKeys()
 
 # Start staircase
-for this_max_contrast in staircase:
+n_trials = 0
+for this_max_contrast, this_condition in staircase:
+
+    # Print trial number, condition info to console
+    n_trials += 1
+    print('trial :', str(n_trials), 'condition: ' + this_condition['label'] + " | " + 'stim_secs: ' + str(this_stim_secs))
+ 
     # Initialize grating
     
     # set orientation of grating
