@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Rick Gilmore, Yiming Qian, &amp; Andrea Seisler" />
+
+
+<title>Sex differences master protocol</title>
+
+<script src="master-protocol_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="master-protocol_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="master-protocol_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="master-protocol_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="master-protocol_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="master-protocol_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="master-protocol_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="master-protocol_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="master-protocol_files/navigation-1.1/tabsets.js"></script>
+<script src="master-protocol_files/navigation-1.1/codefolding.js"></script>
+<link href="master-protocol_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="master-protocol_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Sex differences master protocol</h1>
+<h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
+<h4 class="date">2019-10-23 08:24:24</h4>
+
+</div>
+
+
+<div id="purpose" class="section level1">
+<h1>Purpose</h1>
+</div>
+<div id="equipment-preparation" class="section level1">
+<h1>Equipment preparation</h1>
+<div id="calibrate-monitor" class="section level2">
+<h2>Calibrate Monitor</h2>
+<div id="prepare-computers" class="section level3">
+<h3>Prepare Computers</h3>
+<ul>
+<li>In 503B Switch on power of large surge protector on bottom left shelf.</li>
+</ul>
+</div>
+<div id="prepare-photometer" class="section level3">
+<h3>Prepare Photometer</h3>
+<ul>
+<li>Take the photometer out of the box.</li>
+<li>Set it up by plugging in the power and the light meter.</li>
+<li>Turn on the photometer</li>
+<li>Ensure the following settings:</li>
+<li>Zero the photometer by placing the cap on the light meter and pressing the ‘zero’ button</li>
+</ul>
+</div>
+<div id="start-calibrating-luminance" class="section level3">
+<h3>Start Calibrating Luminance</h3>
+<ul>
+<li><p>Click <strong>Calibrate Lum</strong></p>
+<div class="figure">
+<img src="imgs/LuminanceCalibration2.jpg" alt="Luminance Calibration" />
+<p class="caption">Luminance Calibration</p>
+</div></li>
+<li>Enter the Monitor Screen Width in centimeters</li>
+<li><p>Select <strong>Start</strong><br />
+<img src="imgs/LuminanceCalibration_EnterValue2.jpg" alt="Luminance Calibration - Enter Value" /></p></li>
+</ul>
+</div>
+<div id="run-matlab-script" class="section level3">
+<h3>Run Matlab Script</h3>
+<ul>
+<li>At a minimum a black (0,0,0) and white (255,255,255) image must be displayed on the projector screen</li>
+<li>The script to do this is located on Github: <a href="https://gilmore-lab.github.io/photometer_proj" class="uri">https://gilmore-lab.github.io/photometer_proj</a></li>
+</ul>
+</div>
+<div id="measure-luminance" class="section level3">
+<h3>Measure Luminance</h3>
+<ul>
+<li>Measure the value of each image on the projector screen with the light meter.</li>
+</ul>
+</div>
+<div id="log-values" class="section level3">
+<h3>Log values</h3>
+<ul>
+<li>Log the values in the file Box Sync/gilmore-lab/protocols-procedures/projector-calibration.xls</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="scheduling-participants" class="section level1">
+<h1>Scheduling participants</h1>
+</div>
+<div id="day-of-visit" class="section level1">
+<h1>Day of visit</h1>
+<div id="before-participant-arrives" class="section level2">
+<h2>Before participant arrives</h2>
+<!-- ## Meet Participant at Parking Lot -->
+<!-- - Fill out a parking pass: Date, Time, and INITIALS -->
+<!-- - Wait for the participant at the parking lot ~ 15 minutes prior to their arrival time. -->
+<div id="vision-screening-preparation" class="section level3">
+<h3>Vision Screening Preparation</h3>
+<ul>
+<li>Child/Adult
+<ul>
+<li>Make sure the black tape is on the floor 10ft from the HVOT Snellen Acuity Chart</li>
+<li>Place Stereo Acuity Test on table
+<ul>
+<li>Where stored?</li>
+</ul></li>
+<li>Place Color Vision Test on table (adult only)
+<ul>
+<li>Where stored</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div id="monitor" class="section level3">
+<h3>Monitor</h3>
+<ul>
+<li>Turn on the <strong>CRT monitor</strong> in 503B. The button is in the back.</li>
+</ul>
+</div>
+<div id="computers" class="section level3">
+<h3>Computer(s)</h3>
+<ul>
+<li>In 503B switch on power of large surge protector on bottom left shelf.</li>
+<li>Turn on the computer</li>
+<li>Log-in</li>
+<li>Start Psychopy</li>
+<li>Double-check monitor settings
+<ul>
+<li>Contrast:</li>
+<li>Brightness:</li>
+<li>Screen width (in cm)</li>
+<li>Screen resolution (choose monitor settings on PC)</li>
+</ul></li>
+<li>Log-in to survey computer</li>
+<li>Load page with surveys: <a href="https://www.psu.edu" class="uri">https://www.psu.edu</a></li>
+</ul>
+</div>
+</div>
+<div id="after-participant-arrives" class="section level2">
+<h2>After participant arrives</h2>
+<div id="welcome-participant" class="section level3">
+<h3>Welcome participant</h3>
+<blockquote>
+<p>“<em>Welcome to the lab…</em>”</p>
+</blockquote>
+<ul>
+<li><p>Store belongings in X.</p></li>
+<li>Talk with participant to complete the following
+<ul>
+<li>Check the name</li>
+<li>Consent Form, get verbal approval</li>
+</ul></li>
+</ul>
+<p><em>&quot; welcome. Are you XXX? This project about individual difference in motion perception. You will have … The risk includes .Do you have any questions? You can withdraw anytime when you feel uncomfortable or .Do you want to go on?”</em></p>
+</div>
+<div id="questionnaires-setup" class="section level3">
+<h3>Questionnaires Setup</h3>
+<ul>
+<li>open the Qualtrics website: <strong>URL HERE</strong></li>
+<li>enter the ID, let the participants finish the items</li>
+<li>A little break for the participants. If the participant wants to keep going, lead him to the test room</li>
+</ul>
+<p>Say:</p>
+<blockquote>
+<p>“You have finished the first part of testing. Next you have a behavial testing. Do you want to continue or have a little break?”</p>
+</blockquote>
+</div>
+<div id="secure-implied-consent" class="section level3">
+<h3>Secure implied consent</h3>
+</div>
+<div id="complete-vision-testing" class="section level3">
+<h3>Complete vision testing</h3>
+<ul>
+<li>Complete Vision Screening
+<ul>
+<li>Child - HTOV @ 10ft</li>
+<li>Adult - HTOV @ 10ft</li>
+</ul></li>
+<li>Complete Stereo Acuity Test</li>
+<li>Complete Color Vision Test (adult only)</li>
+</ul>
+</div>
+<div id="experimental-setup" class="section level3">
+<h3>Experimental Setup</h3>
+<ul>
+<li>The monitor should be located <strong>60cm</strong> from the bridge of the nose on the participant</li>
+<li>The chair height should be set so the participant is looking directly at the <strong>X</strong> in the middle of the screen.</li>
+<li>Response buttons</li>
+</ul>
+</div>
+<div id="run-experiment" class="section level3">
+<h3>Run Experiment</h3>
+<ul>
+<li>open the files &quot;&quot; located in folder.</li>
+<li>In PsychoPy, press the green button</li>
+<li>Enter the ID in the pop window and speak to the participant “Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have question, …”</li>
+</ul>
+</div>
+</div>
+<div id="after-session-ends" class="section level2">
+<h2>After session ends</h2>
+<ul>
+<li><p>After the participant finishes all the test, thank him/her. “Thank you for participating this experiment. “</p></li>
+<li><p>Assign credit in SONA</p></li>
+<li><p>Clean keyboard, mouse and table and begin <a href="sex-differences-data-export.md">data export</a> (separate protocols).</p></li>
+<li><p>After data export is complete, turn off computer and monitor in 503B</p></li>
+</ul>
+</div>
+</div>
+<div id="data-processing" class="section level1">
+<h1>Data processing</h1>
+</div>
+<div id="appendices" class="section level1">
+<h1>Appendices</h1>
+<div id="purpose-1" class="section level2">
+<h2>Purpose</h2>
+<p>This document explains the terminology we use in this study.</p>
+</div>
+<div id="terms" class="section level2">
+<h2>Terms</h2>
+<div id="contrast-sensitivity-function-csf-task" class="section level3">
+<h3>Contrast-sensitivity function (CSF) task</h3>
+<p>This is the spatio-temporal constrast sensitivity function task from <a href="https://doi.org/10.1186/2042-6410-3-20">Abramov et al</a>.</p>
+</div>
+<div id="temporal-threshold-task" class="section level3">
+<h3>Temporal threshold task</h3>
+<p>This is the temporal threshold task from <a href="https://doi.org/10.1016/j.cub.2018.06.014">Murray et al</a>.</p>
+</div>
+<div id="qualtrics" class="section level3">
+<h3>Qualtrics</h3>
+</div>
+<div id="psychopy" class="section level3">
+<h3>PsychoPy</h3>
+</div>
+<div id="sona-systems" class="section level3">
+<h3>SONA Systems</h3>
+</div>
+</div>
+<div id="purpose-2" class="section level2">
+<h2>Purpose</h2>
+<p>This document summarizes the display and experimental parameters for the two studies in order to clarify which ones we have chosen for our replication.</p>
+<p>Abramov, I., Gordon, J., Feldman, O., &amp; Chavarga, A. (2012). Sex &amp; vision I: Spatio-temporal resolution. <em>Biology of Sex differences</em>, <em>3</em>(1), 20. bsd.biomedcentral.com. Retrieved from <a href="http://dx.doi.org/10.1186/2042-6410-3-20" class="uri">http://dx.doi.org/10.1186/2042-6410-3-20</a></p>
+<p>Murray, S. O., Schallmo, M.-P., Kolodny, T., Millin, R., Kale, A., Thomas, P., Rammsayer, T. H., et al. (2018). Sex differences in visual motion processing. <em>Current Biology</em>, Retrieved from <a href="http://dx.doi.org/10.1016/j.cub.2018.06.014" class="uri">http://dx.doi.org/10.1016/j.cub.2018.06.014</a></p>
+</div>
+<div id="murray-et-al." class="section level2">
+<h2>Murray et al.</h2>
+<ul>
+<li>contrast levels (low = 3%, high = 98%)</li>
+<li>Diameter = 0.84, 1.7 and 10°</li>
+<li>Motion speed was 4 cycles/s (Hz)</li>
+<li>spatial frequency was 1.2 cycles/°.</li>
+<li>Gratings were presented within a circular aperture, whose edges were blurred with a Gaussian envelope (SD = 0.21°)</li>
+<li>Trials began with a central fixation mark, a small shrinking circle (850 ms).</li>
+<li>This was followed by a blank screen (150 ms)</li>
+<li>after which the grating stimuli appeared (variable duration controlled by a staircase procedure, range 6.7 – 333 ms)</li>
+<li>followed by another blank screen (150 ms), and finally a fixation mark (the response cue)</li>
+</ul>
+</div>
+<div id="abramov-et-al.2012" class="section level2">
+<h2>Abramov et al. 2012</h2>
+</div>
+<div id="tabular-comparison" class="section level2">
+<h2>Tabular comparison</h2>
+<table>
+<colgroup>
+<col width="39%" />
+<col width="32%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Abramov</th>
+<th>Murray</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Stimulus</td>
+<td>grating</td>
+<td>grating</td>
+</tr>
+<tr class="even">
+<td>Spatial frequency (cyc/<span class="math inline">\(^{\circ}\)</span>)</td>
+<td>0.6, 1, 2, 5, 12, 24.4</td>
+<td>1(UR<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>), 1.2(UW<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>)</td>
+</tr>
+<tr class="odd">
+<td>Temporal frequency (cyc/s; Hz)</td>
+<td>1, 4, 8, 15, 24</td>
+<td>4(UW)</td>
+</tr>
+<tr class="even">
+<td>Speed (cyc/s)</td>
+<td></td>
+<td>4(UR), 4.8(UB<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>)</td>
+</tr>
+<tr class="odd">
+<td>Contrast</td>
+<td>via staircase</td>
+<td>0.3%(UW), 42%(UR), 95%(UB), 98(UW)%</td>
+</tr>
+<tr class="even">
+<td>Contrast modulation</td>
+<td>sinusoidal counterphase</td>
+<td>left/right motion</td>
+</tr>
+<tr class="odd">
+<td>Temporal onset</td>
+<td>0.5s ramp up; 1s steady at max contrast; 0.5s ramp down</td>
+<td>trapezoidal rise, steady, decline</td>
+</tr>
+<tr class="even">
+<td>Mask/shape</td>
+<td>circular</td>
+<td>gaussian, SD=0.21<span class="math inline">\(^{\circ}\)</span>(UW), raised cosine(UR, UB)</td>
+</tr>
+<tr class="odd">
+<td>Size (<span class="math inline">\(^{\circ}\)</span>)</td>
+<td>3.5</td>
+<td>0.85(UW), 1.7(UW), 2(UR, UB), 4(UR, UB), 6(UB), 8(UR, UB), 10(UW)</td>
+</tr>
+<tr class="even">
+<td>Surround</td>
+<td>White 13<span class="math inline">\(^{\circ}\)</span> x 13<span class="math inline">\(^{\circ}\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>View distance</td>
+<td>3600cm</td>
+<td>66cm(UW), 146cm(UR)</td>
+</tr>
+<tr class="even">
+<td>Task</td>
+<td>Orientation discrimination: horizontal/vertical</td>
+<td>Direction discrimination: left/right</td>
+</tr>
+<tr class="odd">
+<td>Response period</td>
+<td>Unlimited</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Feedback</td>
+<td>Auditory (correct trials)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Training trials</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Staircase algorithm</td>
+<td>QUEST</td>
+<td>Psi(UW), QUEST(UR, UB)</td>
+</tr>
+<tr class="odd">
+<td>Staircase trials</td>
+<td></td>
+<td>30 + 10 catch trials, 44(UB)</td>
+</tr>
+<tr class="even">
+<td>Threshold parameters</td>
+<td></td>
+<td>80%(UR), 82%(UB)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n\)</span> staircases/condition</td>
+<td></td>
+<td>4(UW), 2 practice + 6(UR), 6(UB)</td>
+</tr>
+<tr class="even">
+<td>Threshold calculation</td>
+<td></td>
+<td>median of 4(UW); drop high+low then mean of 4(UR), drop high+low then mean of 4(UB)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="replication-parameters" class="section level2">
+<h2>Replication parameters</h2>
+<div id="criteria" class="section level3">
+<h3>Criteria</h3>
+<ul>
+<li>Parameters that <strong>maximize</strong> sex differences.</li>
+<li>Parameters that <strong>minimize</strong> sex differences.</li>
+<li>Parameters that permit comparison between the two paradigms.</li>
+</ul>
+</div>
+<div id="choices-and-justification" class="section level3">
+<h3>Choices and justification</h3>
+<hr />
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>University of Washington cohort<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>University of Rochester cohort<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>University of Bern cohort<a href="#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

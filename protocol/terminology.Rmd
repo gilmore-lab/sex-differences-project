@@ -1,5 +1,5 @@
 ---
-title: "terminology"
+title: "Terminology"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
 date: "`r Sys.time()`"
 output: html_document
@@ -9,11 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Terminology
-
 ## Purpose
 
-This document explains the terminology we use in this study.
+This following explains the terminology we use in this study.
 
 ## Terms
 

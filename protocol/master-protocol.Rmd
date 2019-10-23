@@ -1,0 +1,40 @@
+---
+title: "Sex differences master protocol"
+author: "Rick Gilmore, Yiming Qian, & Andrea Seisler"
+date: "`r Sys.time()`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: true
+    self_contained: false
+    code_folding: hide    
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Purpose
+
+# Equipment preparation
+
+```{r, child="calibrate-monitor.Rmd"}
+```
+
+# Scheduling participants
+
+# Day of visit
+
+```{r, child="sex-differences-setup.Rmd"}
+```
+
+# Data processing
+
+# Appendices
+
+```{r terminology, child="terminology.Rmd"}
+```
+
+```{r parameters, child="parameters.Rmd"}
+```

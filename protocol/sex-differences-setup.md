@@ -1,7 +1,7 @@
 ---
-title: "Set-up"
+title: "Set-up Checklist"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-10-17 08:42:40"
+date: "2019-10-23 08:21:38"
 output:
   html_document:
     keep_md: true
@@ -10,8 +10,6 @@ output:
     toc_float: true
     code_folding: hide
 ---
-
-# Sex Differences Set-Up Checklist
 
 ## Before participant arrives
 
@@ -64,7 +62,7 @@ You can withdraw anytime when you feel uncomfortable or .Do you want to go on?â€
 
 ### Questionnaires Setup
 
-- open the Qualtrics website
+- open the Qualtrics website: <span color="red">URL HERE</span>
 - enter the ID, let the participants finish the items
 -	A little break for the participants. If the participant wants to keep going, lead him to the test room
 
@@ -105,34 +103,3 @@ Say:
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
 
 - After data export is complete, turn off computer and monitor in 503B
-
-----
-
-
-
-
-
-# Terminology
-
-## Purpose
-
-This document explains the terminology we use in this study.
-
-## Terms
-
-### Contrast-sensitivity function (CSF) task
-
-This is the spatio-temporal constrast sensitivity function task from [Abramov et al](https://doi.org/10.1186/2042-6410-3-20).
-
-### Temporal threshold task
-
-This is the temporal threshold task from [Murray et al](https://doi.org/10.1016/j.cub.2018.06.014).
-
-### Qualtrics
-
-### PsychoPy
-
-### SONA Systems
-
-
-

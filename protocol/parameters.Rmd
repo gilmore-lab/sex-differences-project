@@ -1,15 +1,21 @@
 ---
-title: "parameters"
-author: "Rick Gilmore"
+title: "Study parameters"
+author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
 date: "`r Sys.time()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Display parameters
+## Purpose
+
+The following summarizes the display and experimental parameters for the two studies in order to clarify which ones we have chosen for our replication.
+
+Abramov, I., Gordon, J., Feldman, O., & Chavarga, A. (2012). Sex & vision I: Spatio-temporal resolution. *Biology of Sex differences*, *3*(1), 20. bsd.biomedcentral.com. Retrieved from http://dx.doi.org/10.1186/2042-6410-3-20
+
+Murray, S. O., Schallmo, M.-P., Kolodny, T., Millin, R., Kale, A., Thomas, P., Rammsayer, T. H., et al. (2018). Sex differences in visual motion processing. *Current Biology*, Retrieved from http://dx.doi.org/10.1016/j.cub.2018.06.014
 
 ## Murray et al.
 
@@ -23,4 +29,47 @@ knitr::opts_chunk$set(echo = TRUE)
 - after which the grating stimuli appeared (variable duration controlled by a staircase procedure, range 6.7 – 333 ms)
 - followed by another blank screen (150 ms), and finally a fixation mark (the response cue)
 
+## Abramov et al. 2012
 
+## Tabular comparison
+
+| Parameter | Abramov | Murray |
+|-----------|---------|--------|
+| Stimulus  | grating | grating |
+| Spatial frequency (cyc/$^{\circ}$) | 0.6, 1, 2, 5, 12, 24.4 | 1(UR[^1]), 1.2(UW[^2]) |
+| Temporal frequency (cyc/s; Hz)     | 1, 4, 8, 15, 24 | 4(UW) |
+| Speed (cyc/s)                      |                 | 4(UR), 4.8(UB[^3])  |     
+| Contrast            | via staircase           | 0.3\%(UW), 42\%(UR), 95\%(UB), 98(UW)\%|
+| Contrast modulation | sinusoidal counterphase | left/right motion |
+| Temporal onset      | 0.5s ramp up; 1s steady at max contrast; 0.5s ramp down | trapezoidal rise, steady, decline |
+| Mask/shape          | circular | gaussian, SD=0.21$^{\circ}$(UW), raised cosine(UR, UB) |
+| Size ($^{\circ}$)   | 3.5      | 0.85(UW), 1.7(UW), 2(UR, UB), 4(UR, UB), 6(UB), 8(UR, UB), 10(UW) |
+| Surround            | White 13$^{\circ}$ x 13$^{\circ}$ | |
+| View distance       | 3600cm   | 66cm(UW), 146cm(UR) |
+| Task                | Orientation discrimination: horizontal/vertical | Direction discrimination: left/right |
+| Response period     | Unlimited | |
+| Feedback            | Auditory (correct trials) | |
+| Training trials     | No                        | |
+| Staircase algorithm | QUEST                     | Psi(UW), QUEST(UR, UB) |
+| Staircase trials    |                           | 30 + 10 catch trials, 44(UB) |
+| Threshold parameters |                          | 80\%(UR), 82\%(UB) |
+| $n$ staircases/condition |                      | 4(UW), 2 practice + 6(UR), 6(UB) |
+| Threshold calculation |                         | median of 4(UW); drop high+low then mean of 4(UR), drop high+low then mean of 4(UB) |
+
+
+## Replication parameters
+
+### Criteria
+
+- Parameters that **maximize** sex differences.
+- Parameters that **minimize** sex differences.
+- Parameters that permit comparison between the two paradigms.
+
+### Choices and justification
+
+
+---
+
+[^1]: University of Washington cohort
+[^2]: University of Rochester cohort
+[^3]: University of Bern cohort
