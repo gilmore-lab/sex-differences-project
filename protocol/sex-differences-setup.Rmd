@@ -68,7 +68,7 @@ You can withdraw anytime when you feel uncomfortable or .Do you want to go on?â€
 
 Say:
 
->"You have finished the first part of testing. Next you have a behavial testing. Do you want to continue or have a little break?"
+>"You have finished the first part of testing. Next you have  behavorial testing. Do you want to continue or have a little break?"
 
 ### Secure implied consent
 
