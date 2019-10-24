@@ -43,6 +43,8 @@ if dlg.OK == False:
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 expInfo['psychopyVersion'] = psychopyVersion
+window_pix_h = 800
+window_pix_v = 600
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + 'data' + os.sep + '%s_%s' % (expInfo['Participant'],  expInfo['expName'])
@@ -64,7 +66,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=0, 
+    size=[window_pix_h, window_pix_v], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -775,6 +777,7 @@ for level, condition in loop_trial:
     thisExp.addData('correctAns', correctAns)
     thisExp.addData('resp', theseKeys.name)
     thisExp.addData('resp.rt', theseKeys.rt)
+    print('condition: ' + condition + " | " + 'contrast intensity ' + level))
 #    loop_trial.addOtherData('resp.rt', resp.rt)
 #    loop_trial.addOtherData('resp.started', resp.tStartRefresh)
 #    loop_trial.addOtherData('resp.stopped', resp.tStopRefresh)
