@@ -61,12 +61,47 @@ Murray, S. O., Schallmo, M.-P., Kolodny, T., Millin, R., Kale, A., Thomas, P., R
 
 ### Criteria
 
-- Parameters that **maximize** sex differences.
-- Parameters that **minimize** sex differences.
-- Parameters that permit comparison between the two paradigms.
+1. Parameters that **maximize** sex differences.
+2. Parameters that **minimize** sex differences.
+3. Parameters that permit comparison between the two paradigms.
 
 ### Choices and justification
 
+#### Abramov
+
+1. Maximize differences
+  - High spatial frequency (12, 24.4 cyc/deg)
+  - Lower temporal frequencies (1, 4, 8 Hz)
+3. Compare between paradigms
+  - Contrast varies, so can't equate
+  - Use 3.5 or 4 deg in diam
+  - Use 4 Hz to equate with Murray
+  - Can't equate spatial frequency with Murray and maximize sex difference
+  - 1 replications per condition  
+
+#### Murray
+
+1. Maximize differences
+  - High contrast (98\% vs. 3\%)
+  - 4 deg in diam
+3. Compare between paradigms
+  - Used 1.2 cyc/deg, conflicts with maximizing sex differences in Abramov
+  - 3.5 or 4 deg in diam
+  - Can't equate contrast
+  - Use 4 Hz as in Murray
+  - Multiple replications per condition
+  
+#### Recommendations
+
+**MUST**
+- Abramov: 12 cyc/deg, 4 Hz, 3.5 deg diam, 4 reps
+- Murray: 1.2 cyc/deg, 4 Hz, 3.5 deg diam, 4 reps, 98\%contrast
+
+**POSSIBLE, IF TIME**
+- Abramov: 1.2 cyc/deg (minimize sex differences)
+- Murray: 3\% contrast (minimize sex difference)
+  
+- Decided **NOT* to have catch trials, but decide on criteria for dropping participants or runs based on threshold estimation.
 
 ---
 

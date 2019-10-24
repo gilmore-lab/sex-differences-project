@@ -19,6 +19,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This document serves as the master protocol for the study.
 
+# Key references
+
+Abramov, I., Gordon, J., Feldman, O., & Chavarga, A. (2012). Sex & vision I: Spatio-temporal resolution. *Biology of Sex Differences*, *3*(1), 20. Retrieved from http://dx.doi.org/10.1186/2042-6410-3-20
+
+Murray, S. O., Schallmo, M.-P., Kolodny, T., Millin, R., Kale, A., Thomas, P., Rammsayer, T. H., et al. (2018). Sex differences in visual motion processing. *Current Biology*. Retrieved from http://dx.doi.org/10.1016/j.cub.2018.06.014
+
 # IRB
 
 This protocol, "Individual differences in visual perception in adults," has been assigned protocol number 13345.
