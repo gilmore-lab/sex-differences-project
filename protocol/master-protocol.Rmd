@@ -25,25 +25,66 @@ This protocol, "Individual differences in visual perception in adults," has been
 The most recent IRB approval was granted on 2010-10-14.
 Files related to the approved (exempt) submission can be found [here](../irb/2019-10-24).
 
-# Equipment preparation
+# Prior to data collection start
+
+## Equipment preparation
+
+First, we need to do benchmark testing to determine what screen resolution will work at the highest temporal resolution (120 Hz).
+This study requires high temporal resolution in order to measure temporal thresholds--the shortest stimulus duration that participants require in order to accurately detect the direction of motion.
+
+Once we have determined the best monitor settings, we will calibrate the monitor before we start collecting data.
+Those steps follow.
 
 ```{r, child="calibrate-monitor.Rmd"}
 ```
 
-# Survey preparation
+We may check the monitor calibration during data collection at a frequency we will decide later.
+
+## Survey preparation
 
 This study uses Qualtrics to collect implied/oral consent and other data from participants.
-The URL for the survey is 
+Yiming has generated a draft survey.
+She will export it as `*.qsf`, and Rick will import it into his own Qualtrics account.
+Rick will also publish the survey.
+
+The URL for the survey is **SURVEY URL HERE**
 
 # Scheduling participants
 
-Rick Gilmore is the PI on the SONA Systems study associated with this protocol.
+Rick Gilmore is the PI on the SONA Systems study (Study ID 2587) associated with this protocol.
 Yiming Qian and Andrea Seisler are researchers.
 The URL is <https://pennstate.sona-systems.com/exp_info.aspx?experiment_id=2587>.
 
 The process of scheduling participants involves the following steps:
 
-DESCRIBE STEPS
+1. Create slots on SONA with specific dates and times
+2. When slot is scheduled, email sent to Yiming and Andrea.
+3. Scheduled slots will be added to lab calendar.
+4. Researchers will be contacted **HOW** if they are needed for a slot that is not part of their regularly scheduled lab time.
+
+## Weekly testing slots
+
+| Day of Week | Time    | Researcher(s)      | Lead   |     
+|-------------|---------|--------------------|--------|
+| Mon         | 10a     | Sandy, Emily       | Andrea |
+|             | 11a     | Sandy, Emily, Amar | Yiming |
+|             | 1p      |                    | Yiming |
+|             | 2p      |                    | Yiming |
+|             | 3p      |                    | Yiming |
+|             | 4p      |                    | Yiming |
+| Tue         | 9a      |                    | Andrea |
+|             | 10a     |                    | Andrea |
+|             | 11a     | Amar, Michelle     | Andrea |
+|             | 12p     | Michelle, Joseph   |        |
+|             | 1p      | Michelle, Luka     |        |
+| Wed         | 10a     | Sandy, Rachel, Amar |       |
+|             |         | Sandy, Rachel, Amar, Emily | |
+| Thu         | 9a      | Joseph, Michelle, Luka | |
+|             | 12p     | Amar                      | |
+| Fri         | 9a      | Rachel                    | |
+|             | 10a     | Rachel, Emily             | |
+|             | 11a     | Rachel, Emily             | |
+|             | 12p     | Emily                     | |
 
 # Day of visit
 
@@ -51,6 +92,17 @@ DESCRIBE STEPS
 ```
 
 # Data processing
+
+## Gathering
+
+1. Computer task data
+2. Qualtrics data
+
+## Validation and cleaning
+
+## Visualization
+
+## Analysis
 
 # Appendices
 

@@ -1,7 +1,7 @@
 ---
 title: "Set-up Checklist"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-10-23 08:21:38"
+date: "2019-10-24 08:09:59"
 output:
   html_document:
     keep_md: true
@@ -12,10 +12,6 @@ output:
 ---
 
 ## Before participant arrives
-
-<!-- ## Meet Participant at Parking Lot -->
-<!-- - Fill out a parking pass: Date, Time, and INITIALS -->
-<!-- - Wait for the participant at the parking lot ~ 15 minutes prior to their arrival time. -->
 
 ### Vision Screening Preparation
 
@@ -62,21 +58,19 @@ You can withdraw anytime when you feel uncomfortable or .Do you want to go on?�
 
 ### Questionnaires Setup
 
-- open the Qualtrics website: <span color="red">URL HERE</span>
+- open the Qualtrics website: **URL HERE**
 - enter the ID, let the participants finish the items
 -	A little break for the participants. If the participant wants to keep going, lead him to the test room
 
 Say:
 
->"You have finished the first part of testing. Next you have a behavial testing. Do you want to continue or have a little break?"
-
-### Secure implied consent
+>"You have finished the first part of testing. Next you have  behavorial testing. Do you want to continue or have a little break?"
 
 ### Complete vision testing
 
 - Complete Vision Screening
-  - Child - HTOV @ 10ft
-  - Adult - HTOV @ 10ft
+  - Child - HOTV @ 10ft
+  - Adult - HOTV @ 10ft
 - Complete Stereo Acuity Test 
 - Complete Color Vision Test (adult only)
   
@@ -93,7 +87,7 @@ Say:
 - Enter the ID in the pop window and speak to the participant
 “Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have question, ..."
 
-## After sessions ends
+## After session ends
 
 - After the participant finishes all the test, thank him/her. 
 “Thank you for participating this experiment. “
