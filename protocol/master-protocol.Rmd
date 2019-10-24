@@ -1,5 +1,5 @@
 ---
-title: "Sex differences master protocol"
+title: "Individual differences in visual perception in adults"
 author: "Rick Gilmore, Yiming Qian, & Andrea Seisler"
 date: "`r Sys.time()`"
 output: 
@@ -17,12 +17,33 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Purpose
 
+This document serves as the master protocol for the study.
+
+# IRB
+
+This protocol, "Individual differences in visual perception in adults," has been assigned protocol number 13345.
+The most recent IRB approval was granted on 2010-10-14.
+Files related to the approved (exempt) submission can be found [here](../irb/2019-10-24).
+
 # Equipment preparation
 
 ```{r, child="calibrate-monitor.Rmd"}
 ```
 
+# Survey preparation
+
+This study uses Qualtrics to collect implied/oral consent and other data from participants.
+The URL for the survey is 
+
 # Scheduling participants
+
+Rick Gilmore is the PI on the SONA Systems study associated with this protocol.
+Yiming Qian and Andrea Seisler are researchers.
+The URL is <https://pennstate.sona-systems.com/exp_info.aspx?experiment_id=2587>.
+
+The process of scheduling participants involves the following steps:
+
+DESCRIBE STEPS
 
 # Day of visit
 
