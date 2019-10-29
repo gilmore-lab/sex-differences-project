@@ -96,11 +96,8 @@ The order of the computer experiments will be randomized across participants usi
 
 #### Murray et al.
 
-- Open the files "" located in folder.
-- In PsychoPy, press the green button. 
-- Enter the ID in the pop window and speak to the participant.
-
->“Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions, ..."
+```{r, child="murray-etal-task.Rmd"}
+```
 
 #### Abramov et al.
 

@@ -67,10 +67,10 @@ The goals for the replication are as follows:
 ### Murray et al. 2018 temporal threshold
 
 - Grating
-- Diameter: 4 cyc/$^{\circ}$
+- Diameter: 4$^{\circ}$
 - Window: Gaussian
 - Gaussian SD:
-- Spatial frequency: ???; interacts with temporal frequency in determining speed ($tf/sf$)
+- Spatial frequency: ???; interacts with temporal frequency in determining speed ($tf/sf$); 1.2 cyc/$^\circ$
 - Bgnd luminance: Per our monitor
 - View distance: vary to achieve highest spatial frequency
 - Duration: staircase
