@@ -49,11 +49,9 @@ We may check the monitor calibration during data collection at a frequency we wi
 ## Survey preparation
 
 This study uses Qualtrics to collect implied/oral consent and other data from participants.
-Yiming has generated a draft survey.
-She will export it as `*.qsf`, and Rick will import it into his own Qualtrics account.
-Rick will also publish the survey.
+Yiming has generated a draft survey, saved [here](Sex_difference_survey.qsf) as a `*.qsf` text file.
 
-The URL for the survey is **SURVEY URL HERE**
+The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_8dhFCPvGSf0zSTz>
 
 # Scheduling participants
 
