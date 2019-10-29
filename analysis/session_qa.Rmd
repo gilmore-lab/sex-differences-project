@@ -5,7 +5,7 @@ date: "`r Sys.time()`"
 output: html_document
 params:
   csv_path: "csv/"
-  data_fn: "20191017122445_temp_thresh.csv"
+  data_fn: "2019-10-29-140253_temp_thresh.csv"
 ---
 
 ```{r setup, include=FALSE}
@@ -24,13 +24,29 @@ this_session <- readr::read_csv(paste0(params$csv_path, params$data_fn))
 names(this_session)
 ```
 
+## Clean
+
+Add a trial variable.
+
+```{r}
+this_session <- this_session %>%
+  dplyr::mutate(., trial = 1:length(observer)[1])
+```
+
+Make correct/incorrect a factor for plotting.
+
+```{r}
+this_session <- this_session %>%
+  dplyr::mutate(accuracy = factor(correct, labels = c("incorrect", "correct")))
+```
+
 ## Visualize
 
 ```{r}
 this_session %>%
   ggplot(.) +
-  aes(x = rt) +
-  facet_grid(. ~ correct) +
-  geom_histogram()
+  aes(x = trial, y = stim_secs) +
+  geom_point() +
+  geom_smooth()
 ```
 
