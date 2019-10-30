@@ -76,16 +76,16 @@ The process of scheduling participants involves the following steps:
 |             | 2p      |                           | Yiming |
 |             | 3p      |                           | Yiming |
 |             | 4p      |                           | Yiming |
-| Tue         | 9a      |                           | Andrea |
-|             | 10a     |                           | Andrea |
+| Tue         | 9a      | Michelle                  | Andrea |
+|             | 10a     | Michelle                  | Andrea |
 |             | 11a     | Amar, Michelle            | Andrea |
 |             | 12p     | Michelle, Joseph, Amar    |        |
-|             | 1p      | Michelle, Luka, Amar      |        |
+|             | 1p      | Luka, Amar                |        |
 | Wed         | 10a     | Sandy, Rachel, Amar       |       |
 |             | 11a     | Sandy, Rachel, Amar, Emily| |
 |             | 12p     | Amar                      | |
 | Thu         | 9a      | Joseph, Michelle, Luka    | |
-|             | 12p     | Amar                      | |
+|             | 12p     | Amar, Michelle            | |
 |             | 1:30p   | Luka                      | |
 | Fri         | 9a      | Rachel                    | |
 |             | 10a     | Rachel, Emily, Amar       | |
