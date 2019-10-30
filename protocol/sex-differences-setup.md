@@ -1,7 +1,7 @@
 ---
 title: "Set-up Checklist"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-10-29 14:07:06"
+date: "2019-10-30 12:49:09"
 output:
   html_document:
     keep_md: true
@@ -27,23 +27,26 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 - Turn on the **CRT monitor** in 503B. 
 503B is the small testing room inside 503. 
-The button for the monitor is in the back.
 
 ### Computer(s)
 
 - In 503B switch on power of large surge protector on bottom left shelf.
 - Turn on the computer
 - Log-in
-- Start Psychopy
-- Double-check monitor settings within Windows
+- Start Psychopy - Icon on Task Bar
+- Double-check monitor settings within Windows (Type **Display Settings** in Search Bar then open)
+  - Screen resolution: 800 x 600
+  - Refresh rate: 85 Hz
+- Double-check Brightness/Contrast  
   - Contrast:
   - Brightness:
-  - Screen width (in cm)
-  - Screen resolution (choose monitor settings on PC)
 - Check monitor within Psychopy
-
+  - Screen Distance (cm):
+  - Screen resolution: 800 x 600
+  - Screen width (cm): 40.4
+  
 - Log-in to survey computer
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_8dhFCPvGSf0zSTz>
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
 
 ## After participant arrives
 
@@ -141,7 +144,23 @@ The order of the computer experiments will be randomized across participants usi
 
 ### Data export
 
+#### Retrieve Behavioral Data
+
+- Output data files are stored here: xxxx
+
 - Data must be copied to a USB flash drive from the testing PC.
 - Data will be copied to Box.
 - After data export is complete, turn off computer and monitor in 503B.
-- Qualtrics data will be retrieved by...
+
+#### Retrieve Qualtrics Data 
+
+- Log in to Qualtrics <https://pennstate.qualtrics.com/>
+  - To review total summary, which shows total graph summary of survey distribution 
+    - Click on **Distributions** tab
+  -  To review individual responses to survey questions
+    -Click on **Data & Analysis** tab
+    - Under **Actions** click to open drop down menu
+    - Click **view response**
+
+
+

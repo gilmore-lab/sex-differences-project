@@ -68,27 +68,29 @@ The process of scheduling participants involves the following steps:
 
 ## Weekly testing slots
 
-| Day of Week | Time    | Researcher(s)      | Lead   |     
-|-------------|---------|--------------------|--------|
-| Mon         | 10a     | Sandy, Emily       | Andrea |
-|             | 11a     | Sandy, Emily, Amar | Yiming |
-|             | 1p      |                    | Yiming |
-|             | 2p      |                    | Yiming |
-|             | 3p      |                    | Yiming |
-|             | 4p      |                    | Yiming |
-| Tue         | 9a      |                    | Andrea |
-|             | 10a     |                    | Andrea |
-|             | 11a     | Amar, Michelle     | Andrea |
-|             | 12p     | Michelle, Joseph   |        |
-|             | 1p      | Michelle, Luka     |        |
-| Wed         | 10a     | Sandy, Rachel, Amar |       |
-|             |         | Sandy, Rachel, Amar, Emily | |
-| Thu         | 9a      | Joseph, Michelle, Luka | |
+| Day of Week | Time    | Researcher(s)             | Lead   |     
+|-------------|---------|---------------------------|--------|
+| Mon         | 10a     | Sandy, Emily              | Andrea |
+|             | 11a     | Sandy, Emily, Amar        | Yiming |
+|             | 1p      |                           | Yiming |
+|             | 2p      |                           | Yiming |
+|             | 3p      |                           | Yiming |
+|             | 4p      |                           | Yiming |
+| Tue         | 9a      |                           | Andrea |
+|             | 10a     |                           | Andrea |
+|             | 11a     | Amar, Michelle            | Andrea |
+|             | 12p     | Michelle, Joseph, Amar    |        |
+|             | 1p      | Michelle, Luka, Amar      |        |
+| Wed         | 10a     | Sandy, Rachel, Amar       |       |
+|             | 11a     | Sandy, Rachel, Amar, Emily| |
 |             | 12p     | Amar                      | |
+| Thu         | 9a      | Joseph, Michelle, Luka    | |
+|             | 12p     | Amar                      | |
+|             | 1:30p   | Luka                      | |
 | Fri         | 9a      | Rachel                    | |
-|             | 10a     | Rachel, Emily             | |
-|             | 11a     | Rachel, Emily             | |
-|             | 12p     | Emily                     | |
+|             | 10a     | Rachel, Emily, Amar       | |
+|             | 11a     | Rachel, Emily, Amar       | |
+|             | 12p     | Emily, Amar               | |
 
 # Day of visit
 

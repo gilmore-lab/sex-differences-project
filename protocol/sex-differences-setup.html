@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Yiming Qian, Andrea Seisler, &amp; Rick Gilmore" />
@@ -1287,7 +1288,7 @@ window.initializeCodeFolding = function(show) {
 
     // create a collapsable div to wrap the code in
     var div = $('<div class="collapse r-code-collapse"></div>');
-    if (show)
+    if (show || $(this)[0].classList.contains('fold-show'))
       div.addClass('in');
     var id = 'rcode-643E0F36' + currentIndex++;
     div.attr('id', id);
@@ -1403,7 +1404,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -1477,56 +1477,12 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -1620,7 +1576,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Set-up Checklist</h1>
 <h4 class="author">Yiming Qian, Andrea Seisler, &amp; Rick Gilmore</h4>
-<h4 class="date">2019-10-29 14:07:06</h4>
+<h4 class="date">2019-10-30 12:49:09</h4>
 
 </div>
 
@@ -1642,7 +1598,7 @@ div.tocify {
 <div id="monitor" class="section level3">
 <h3>Monitor</h3>
 <ul>
-<li>Turn on the <strong>CRT monitor</strong> in 503B. 503B is the small testing room inside 503. The button for the monitor is in the back.</li>
+<li>Turn on the <strong>CRT monitor</strong> in 503B. 503B is the small testing room inside 503.</li>
 </ul>
 </div>
 <div id="computers" class="section level3">
@@ -1651,17 +1607,25 @@ div.tocify {
 <li>In 503B switch on power of large surge protector on bottom left shelf.</li>
 <li>Turn on the computer</li>
 <li>Log-in</li>
-<li>Start Psychopy</li>
-<li>Double-check monitor settings within Windows
+<li>Start Psychopy - Icon on Task Bar</li>
+<li>Double-check monitor settings within Windows (Type <strong>Display Settings</strong> in Search Bar then open)
+<ul>
+<li>Screen resolution: 800 x 600</li>
+<li>Refresh rate: 85 Hz</li>
+</ul></li>
+<li>Double-check Brightness/Contrast
 <ul>
 <li>Contrast:</li>
 <li>Brightness:</li>
-<li>Screen width (in cm)</li>
-<li>Screen resolution (choose monitor settings on PC)</li>
 </ul></li>
-<li><p>Check monitor within Psychopy</p></li>
+<li>Check monitor within Psychopy
+<ul>
+<li>Screen Distance (cm):</li>
+<li>Screen resolution: 800 x 600</li>
+<li>Screen width (cm): 40.4</li>
+</ul></li>
 <li>Log-in to survey computer</li>
-<li><p>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_8dhFCPvGSf0zSTz" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_8dhFCPvGSf0zSTz</a></p></li>
+<li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB</a></li>
 </ul>
 </div>
 </div>
@@ -1789,12 +1753,30 @@ div.tocify {
 </div>
 <div id="data-export" class="section level3">
 <h3>Data export</h3>
+<div id="retrieve-behavioral-data" class="section level4">
+<h4>Retrieve Behavioral Data</h4>
 <ul>
+<li><p>Output data files are stored here: xxxx</p></li>
 <li>Data must be copied to a USB flash drive from the testing PC.</li>
 <li>Data will be copied to Box.</li>
-<li>After data export is complete, turn off computer and monitor in 503B.</li>
-<li>Qualtrics data will be retrieved by…</li>
+<li><p>After data export is complete, turn off computer and monitor in 503B.</p></li>
 </ul>
+</div>
+<div id="retrieve-qualtrics-data" class="section level4">
+<h4>Retrieve Qualtrics Data</h4>
+<ul>
+<li>Log in to Qualtrics <a href="https://pennstate.qualtrics.com/" class="uri">https://pennstate.qualtrics.com/</a>
+<ul>
+<li>To review total summary, which shows total graph summary of survey distribution
+<ul>
+<li>Click on <strong>Distributions</strong> tab</li>
+</ul></li>
+<li>To review individual responses to survey questions -Click on <strong>Data &amp; Analysis</strong> tab</li>
+<li>Under <strong>Actions</strong> click to open drop down menu</li>
+<li>Click <strong>view response</strong></li>
+</ul></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -1816,6 +1798,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
