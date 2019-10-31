@@ -76,22 +76,32 @@ The process of scheduling participants involves the following steps:
 |             | 1p      |                           | Yiming |
 |             | 2:15p   |                           | Yiming |
 |             | 3:30p   |                           | Yiming |
+|             | 4:45p   |                           | Yiming |
 | Tue         | 9a      | Michelle, Rachel          | Andrea |
 |             | 10:15a  | Michelle, Rachel          | Andrea |
 |             | 11:30a  | Amar, Michelle            | Andrea |
-|             | 12:45p  | Michelle, Joseph, Amar    | Yiming |
+|             | 12:45p  | Michelle, Joseph, Amar    | Andrea |
 | Wed         | 10a     | Sandy, Rachel, Amar       | Yiming |
 |             | 11:15a  | Sandy, Rachel, Amar, Emily| Andrea |
 |             | 12:30p  | Luka                      | Andrea |
+|             | 1:45p   |                           | Yiming |
+|             | 3   p   |                           | Yiming |
+|             | 4:15p   |                           | Yiming |
+|             | 5:30p   |                           | Yiming |
 | Thu         | 9a      | Joseph, Michelle, Luka,Rachel    | Yiming |
 |             | 10:15   | Rachel                    | Yiming |
 |             | 11:30a  | Amar                      | Yiming |
 |             | 1:30p   | Luka                      | Yiming |
+|             | 2:45p   |                           | Yiming |
+|             | 4p      |                           | Yiming |
+|             | 5:15p   |                           | Yiming |
 | Fri         | 9a      | Rachel                    | Yiming |
 |             | 10:15a  | Rachel, Emily, Amar       | Yiming |
 |             | 11:30a  | Rachel, Emily, Amar       | Andrea |
 |             | 12:45p  | Emily, Amar               | Andrea |
 |             | 2p      | Michelle                  | Yiming |
+|             | 3:15p   |                           | Yiming |
+|             | 4:30p   |                           | Yiming |
 
 # Day of visit
 

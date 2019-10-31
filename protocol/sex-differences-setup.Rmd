@@ -47,6 +47,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Double-check monitor settings within Windows 
 - Click Settings Logo on Task Bar
 ![Settings Logo](images/DispSettings-1.PNG)
+- Open one experiment and take note of "Participant ID"
 
 (Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
@@ -68,10 +69,6 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 ### Welcome participant
 
-Say:
-
->*"Welcome. Are you XXX? This project about individual difference in motion perception. You will have ... The risk includes .Do you have any questions? 
-You can withdraw anytime when you feel uncomfortable or .Do you want to go on?”*
 
 - Store belongings in X.
 
@@ -81,25 +78,29 @@ You can withdraw anytime when you feel uncomfortable or .Do you want to go on?�
 
 Say:
 
+>*"Welcome. Are you XXX? This project about individual difference in motion perception. You will have ... The risk includes .Do you have any questions? 
+You can withdraw anytime when you feel uncomfortable or .Do you want to go on?”*
+
 **IMPLIED/VERBAL CONSENT**
 
-### Questionnaires
+### Begin the survey
 
 - Enter the ID: YYYY-MM-DD-HHMM based on appointment time
+
+### Complete vision testing
+
+- Complete [pattern acuity test](vision-screening.Rmd)
+  - Adult - HOTV @ 10ft
+
+### Questionnaires  
 - Let the participants finish the items
 -	A little break for the participants. If the participant wants to keep going, lead him to the test room
 
 Say:
 
->"You have finished the first part of testing. Next you have  behavorial testing. Do you want to continue or have a little break?"
+>"You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?"
 
-### Complete vision testing
 
-- Complete Vision Screening (pattern acuity)
-  - Adult - HOTV @ 10ft
-- Complete Stereo Acuity Test
-- Complete Color Vision Test
-  
 ### Experimental Setup
 
 - Guide participant to testing room.
@@ -126,11 +127,17 @@ The order of the computer experiments will be randomized across participants usi
 
 >“Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,..."
 
+### Other test
+If there is time left,
+- Complete [Stereo Acuity Test](vision-screening.Rmd)
+- Complete [C]olor Vision Test](vision-screening.Rmd)
+>"There is one more test."
+
 ## After session ends
 
 - After the participant finishes all the tests, thank him/her.
 
->“Thank you for participating this experiment. Do you have any questions?“
+>"Thank you for participating this experiment. Do you have any questions?"
 
 ### Give participant credit on SONA
 
