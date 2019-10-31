@@ -36,20 +36,26 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 
 ### Computer(s)
-
-- In 503B switch on power of large surge protector on bottom left shelf.
 - Turn on the computer
+- In 503B switch on power of large surge protector on bottom left shelf.
 - Log-in (Gilmore Lab)
+
 - Start Psychopy - Click icon on Task Bar
 
 ![PsychoPy Logo](images/PsychoPy-1.PNG)
 
-- Double-check monitor settings within Windows (Type **Display Settings** in Search Bar then open)
+- Double-check monitor settings within Windows 
+- Click Settings Logo on Task Bar
+![Settings Logo](images/DispSettings-1.PNG)
+
+(Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
   - Refresh rate: 85 Hz
+  
 - Double-check Brightness/Contrast  
   - Contrast:
   - Brightness:
+  
 - Check monitor within Psychopy
   - Screen Distance (cm): 60
   - Screen resolution: 800 x 600

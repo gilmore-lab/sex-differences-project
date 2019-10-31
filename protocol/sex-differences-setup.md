@@ -1,7 +1,7 @@
 ---
 title: "Set-up Checklist"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-10-31 12:27:38"
+date: "2019-10-31 13:04:06"
 output:
   html_document:
     keep_md: true
@@ -64,7 +64,10 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - In 503B switch on power of large surge protector on bottom left shelf.
 - Turn on the computer
 - Log-in (Gilmore Lab)
-- Start Psychopy - Icon on Task Bar
+- Start Psychopy - Click icon on Task Bar
+
+![PsychoPy Logo](images/PsychoPy-1.PNG)
+
 - Double-check monitor settings within Windows (Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
   - Refresh rate: 85 Hz
