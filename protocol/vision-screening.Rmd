@@ -1,0 +1,37 @@
+---
+title: "Vision Screening Instructions"
+author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
+date: "`r Sys.time()`"
+output:
+  html_document:
+    keep_md: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    code_folding: hide
+---
+
+# Vision Screening Instructions
+
+## Snellen Acuity (Child/Adult)
+- Stand 10 away from the chart on the wall (black tape on the floor)
+- Start with the top line and have the participant read every line
+- If they miss a letter, circle it on the score sheet.
+- Their visual acuity will be the one that matches the line above the line in which they made a mistake.
+
+- Log the acuity for the participant in terms of 10 ft (e.g. 10/10)
+
+## Color Test (Adult)
+
+
+
+
+## Stereo Vision Test
+
+- Have the participant put the stereo glasses on.
+- Point to each item on the left hand side of the page going left to right and up to down. 
+- Log the answer to each item on the score sheet.
+
+
+
+

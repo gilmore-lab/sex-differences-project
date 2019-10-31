@@ -1,7 +1,7 @@
 ---
 title: "Set-up Checklist"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-10-30 12:49:09"
+date: "2019-10-31 12:27:38"
 output:
   html_document:
     keep_md: true
@@ -15,24 +15,55 @@ output:
 
 1. Check to see if there have been any cancellations.
 
-### Vision Screening Preparation
+### Vision Screening 
+
+#### Preparation
 
 Materials for vision screening are stored on the table next to Andrea's office.
 
-- Make sure the black tape is on the floor 10ft from the HOVT Snellen Acuity Chart
-- Place Stereo Acuity Test on table
-- Place Color Vision Test on table (adult only)
+- Make sure the black tape is on the floor 10ft from the HOVT Snellen Acuity Chart which is on the door to 503B
+- Place Stereo Acuity Test and Glasses on table
+- Place Color Vision Test on table
+
+#### Administation Instructions
+
+
+
+# Vision Screening Instructions
+
+## Snellen Acuity (Child/Adult)
+- Stand 10 away from the chart on the wall (black tape on the floor)
+- Start with the top line and have the participant read every line
+- If they miss a letter, circle it on the score sheet.
+- Their visual acuity will be the one that matches the line above the line in which they made a mistake.
+
+- Log the acuity for the participant in terms of 10 ft (e.g. 10/10)
+
+## Color Test (Adult)
+
+
+
+
+## Stereo Vision Test
+
+- Have the participant put the stereo glasses on.
+- Point to each item on the left hand side of the page going left to right and up to down. 
+- Log the answer to each item on the score sheet.
+
+
+
+
 
 ### Monitor
 
 - Turn on the **CRT monitor** in 503B. 
-503B is the small testing room inside 503. 
+
 
 ### Computer(s)
 
 - In 503B switch on power of large surge protector on bottom left shelf.
 - Turn on the computer
-- Log-in
+- Log-in (Gilmore Lab)
 - Start Psychopy - Icon on Task Bar
 - Double-check monitor settings within Windows (Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
@@ -41,9 +72,9 @@ Materials for vision screening are stored on the table next to Andrea's office.
   - Contrast:
   - Brightness:
 - Check monitor within Psychopy
-  - Screen Distance (cm):
+  - Screen Distance (cm): 60
   - Screen resolution: 800 x 600
-  - Screen width (cm): 40.4
+  - Screen width (cm): 39.7
   
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
@@ -142,25 +173,7 @@ The order of the computer experiments will be randomized across participants usi
 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
 
-### Data export
 
-#### Retrieve Behavioral Data
-
-- Output data files are stored here: xxxx
-
-- Data must be copied to a USB flash drive from the testing PC.
-- Data will be copied to Box.
-- After data export is complete, turn off computer and monitor in 503B.
-
-#### Retrieve Qualtrics Data 
-
-- Log in to Qualtrics <https://pennstate.qualtrics.com/>
-  - To review total summary, which shows total graph summary of survey distribution 
-    - Click on **Distributions** tab
-  -  To review individual responses to survey questions
-    -Click on **Data & Analysis** tab
-    - Under **Actions** click to open drop down menu
-    - Click **view response**
 
 
 

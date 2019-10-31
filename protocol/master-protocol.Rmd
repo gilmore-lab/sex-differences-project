@@ -70,27 +70,28 @@ The process of scheduling participants involves the following steps:
 
 | Day of Week | Time    | Researcher(s)             | Lead   |     
 |-------------|---------|---------------------------|--------|
-| Mon         | 10a     | Sandy, Emily              | Andrea |
-|             | 11a     | Sandy, Emily, Amar        | Yiming |
+| Mon         | 9a      | Rachel                    | Andrea |
+|             | 10:15a  | Sandy, Emily, Rachel      | Andrea |
+|             | 11:30a  | Sandy, Emily, Amar        | Yiming |
 |             | 1p      |                           | Yiming |
-|             | 2p      |                           | Yiming |
-|             | 3p      |                           | Yiming |
-|             | 4p      |                           | Yiming |
-| Tue         | 9a      | Michelle                  | Andrea |
-|             | 10a     | Michelle                  | Andrea |
-|             | 11a     | Amar, Michelle            | Andrea |
-|             | 12p     | Michelle, Joseph, Amar    |        |
-|             | 1p      | Luka, Amar                |        |
-| Wed         | 10a     | Sandy, Rachel, Amar       |       |
-|             | 11a     | Sandy, Rachel, Amar, Emily| |
-|             | 12p     | Amar                      | |
-| Thu         | 9a      | Joseph, Michelle, Luka    | |
-|             | 12p     | Amar, Michelle            | |
-|             | 1:30p   | Luka                      | |
-| Fri         | 9a      | Rachel                    | |
-|             | 10a     | Rachel, Emily, Amar       | |
-|             | 11a     | Rachel, Emily, Amar       | |
-|             | 12p     | Emily, Amar               | |
+|             | 2:15p   |                           | Yiming |
+|             | 3:30p   |                           | Yiming |
+| Tue         | 9a      | Michelle, Rachel          | Andrea |
+|             | 10:15a  | Michelle, Rachel          | Andrea |
+|             | 11:30a  | Amar, Michelle            | Andrea |
+|             | 12:45p  | Michelle, Joseph, Amar    | Yiming |
+| Wed         | 10a     | Sandy, Rachel, Amar       | Yiming |
+|             | 11:15a  | Sandy, Rachel, Amar, Emily| Andrea |
+|             | 12:30p  | Luka                      | Andrea |
+| Thu         | 9a      | Joseph, Michelle, Luka,Rachel    | Yiming |
+|             | 10:15   | Rachel                    | Yiming |
+|             | 11:30a  | Amar                      | Yiming |
+|             | 1:30p   | Luka                      | Yiming |
+| Fri         | 9a      | Rachel                    | Yiming |
+|             | 10:15a  | Rachel, Emily, Amar       | Yiming |
+|             | 11:30a  | Rachel, Emily, Amar       | Andrea |
+|             | 12:45p  | Emily, Amar               | Andrea |
+|             | 2p      | Michelle                  | Yiming |
 
 # Day of visit
 
@@ -101,8 +102,23 @@ The process of scheduling participants involves the following steps:
 
 ## Gathering
 
-1. Computer task data
-2. Qualtrics data
+### Retrieve Behavioral Data
+
+- Output data files are stored here: /Documents/PsychoPy-Stimuli/**STUDY NAME**/csv
+
+- Data must be copied to the **Gilmore Lab Participant Data** drive from the testing PC.
+- Data will be copied to Box (XXX).
+- After data export is complete, turn off computer and monitor in 503B.
+
+### Retrieve Qualtrics Data 
+
+- Log in to Qualtrics <https://pennstate.qualtrics.com/>
+  - To review total summary, which shows total graph summary of survey distribution 
+    - Click on **Distributions** tab
+  -  To review individual responses to survey questions
+    -Click on **Data & Analysis** tab
+    - Under **Actions** click to open drop down menu
+    - Click **view response**
 
 ## Validation and cleaning
 
