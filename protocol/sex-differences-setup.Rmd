@@ -41,6 +41,9 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Turn on the computer
 - Log-in (Gilmore Lab)
 - Start Psychopy - Icon on Task Bar
+
+[PsychoPy Icon](/img/PsychoPy-1.PNG)
+
 - Double-check monitor settings within Windows (Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
   - Refresh rate: 85 Hz
