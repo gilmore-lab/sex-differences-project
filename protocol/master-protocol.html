@@ -7,7 +7,6 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Rick Gilmore, Yiming Qian, &amp; Andrea Seisler" />
@@ -89,6 +88,7 @@ code {
 }
 img {
   max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -162,12 +162,56 @@ summary {
 }
 </style>
 
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <style type="text/css">
 
@@ -261,7 +305,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Individual differences in visual perception in adults</h1>
 <h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
-<h4 class="date">2019-11-01 08:27:59</h4>
+<h4 class="date">2019-11-01 11:46:45</h4>
 
 </div>
 
@@ -279,7 +323,7 @@ div.tocify {
 <h1>IRB</h1>
 <p>This protocol, “Individual differences in visual perception in adults,” has been assigned protocol number 13345. The most recent IRB approval was granted on 2010-10-14. Files related to the approved (exempt) submission can be found <a href="../irb/2019-10-24">here</a>.</p>
 </div>
-<div id="prior-to-data-collection-start" class="section level1">
+<div id="prior-to-data-collection-start" class="section level1 tabset">
 <h1>Prior to data collection start</h1>
 <div id="equipment-preparation" class="section level2">
 <h2>Equipment preparation</h2>
@@ -344,16 +388,19 @@ div.tocify {
 <p>The URL for the survey is <a href="https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB</a></p>
 </div>
 </div>
-<div id="scheduling-participants" class="section level1">
+<div id="scheduling-participants" class="section level1 tabset">
 <h1>Scheduling participants</h1>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
 <p>Rick Gilmore is the PI on the SONA Systems study (Study ID 2587) associated with this protocol. Yiming Qian and Andrea Seisler are researchers. The URL is <a href="https://pennstate.sona-systems.com/exp_info.aspx?experiment_id=2587" class="uri">https://pennstate.sona-systems.com/exp_info.aspx?experiment_id=2587</a>.</p>
 <p>The process of scheduling participants involves the following steps:</p>
 <ol style="list-style-type: decimal">
 <li>Create slots on SONA with specific dates and times</li>
 <li>When slot is scheduled, email sent to Yiming and Andrea.</li>
 <li>Scheduled slots will be added to lab calendar.</li>
-<li>Researchers will be contacted <strong>HOW</strong> if they are needed for a slot that is not part of their regularly scheduled lab time.</li>
+<li>Researchers will be contacted by email and Discord by Yiming or Andrea if they are needed for a slot that is not part of their regularly scheduled lab time.</li>
 </ol>
+</div>
 <div id="weekly-testing-slots" class="section level2">
 <h2>Weekly testing slots</h2>
 <table>
@@ -368,7 +415,7 @@ div.tocify {
 <tbody>
 <tr class="odd">
 <td>Mon</td>
-<td>9a</td>
+<td>09:00a</td>
 <td>Rachel</td>
 <td>Andrea</td>
 </tr>
@@ -386,31 +433,31 @@ div.tocify {
 </tr>
 <tr class="even">
 <td></td>
-<td>1p</td>
+<td>01:00p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>2:15p</td>
+<td>02:15p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>3:30p</td>
+<td>03:30p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>4:45p</td>
+<td>04:45p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td>Tue</td>
-<td>9a</td>
+<td>09:00a</td>
 <td>Michelle, Rachel</td>
 <td>Andrea</td>
 </tr>
@@ -434,7 +481,7 @@ div.tocify {
 </tr>
 <tr class="even">
 <td>Wed</td>
-<td>10a</td>
+<td>10:00a</td>
 <td>Sandy, Rachel, Amar</td>
 <td>Yiming</td>
 </tr>
@@ -452,31 +499,31 @@ div.tocify {
 </tr>
 <tr class="odd">
 <td></td>
-<td>1:45p</td>
+<td>01:45p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>3 p</td>
+<td>03:00p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>4:15p</td>
+<td>04:15p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>5:30p</td>
+<td>05:30p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td>Thu</td>
-<td>9a</td>
+<td>09:00a</td>
 <td>Joseph, Michelle, Luka,Rachel</td>
 <td>Yiming</td>
 </tr>
@@ -494,31 +541,31 @@ div.tocify {
 </tr>
 <tr class="even">
 <td></td>
-<td>1:30p</td>
+<td>01:30p</td>
 <td>Luka</td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>2:45p</td>
+<td>02:45p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>4p</td>
+<td>04:00p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>5:15p</td>
+<td>05:15p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td>Fri</td>
-<td>9a</td>
+<td>09:00a</td>
 <td>Rachel</td>
 <td>Yiming</td>
 </tr>
@@ -542,19 +589,19 @@ div.tocify {
 </tr>
 <tr class="even">
 <td></td>
-<td>2p</td>
+<td>02:00p</td>
 <td>Michelle</td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>3:15p</td>
+<td>03:15p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>4:30p</td>
+<td>04:30p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
@@ -566,11 +613,11 @@ div.tocify {
 <h1>Day of visit</h1>
 <div id="before-participant-arrives" class="section level2">
 <h2>Before participant arrives</h2>
-<ol style="list-style-type: decimal">
+<ul>
 <li>Check to see if there have been any cancellations.</li>
-</ol>
-<div id="vision-screening" class="section level3">
-<h3>Vision Screening</h3>
+</ul>
+<div id="set-up-for-vision-screening" class="section level3">
+<h3>Set-up for Vision Screening</h3>
 <div id="preparation" class="section level4">
 <h4>Preparation</h4>
 <p>Materials for vision screening are stored on the table next to Andrea’s office.</p>
@@ -580,75 +627,91 @@ div.tocify {
 <li>Place Color Vision Test on table</li>
 </ul>
 </div>
-<div id="administation-instructions" class="section level4">
-<h4>Administation Instructions</h4>
+<div id="review-vision-screening-procedures" class="section level4">
+<h4>Review vision screening procedures</h4>
 <!-- # Vision Screening Instructions -->
-<div id="snellen-acuity-childadult" class="section level5">
-<h5>Snellen Acuity (Child/Adult)</h5>
+</div>
+</div>
+</div>
+</div>
+<div id="snellen-acuity-childadult" class="section level1">
+<h1>Snellen Acuity (Child/Adult)</h1>
+<div id="procedure" class="section level2">
+<h2>Procedure</h2>
 <ul>
-<li>Stand 10 feet away from the chart on the wall (black tape on the floor)</li>
-<li>Start with the top line and have the participant read the first symbols in every line in descending order</li>
+<li>Have participant stand 10 feet away from the chart on the wall (black tape on the floor)</li>
+<li>Ask the participant to start with the top line and have the participant read the first symbols in every line in descending order</li>
 <li>If they miss a letter, circle it on the score sheet.</li>
 <li>Move back up one line and ask the participant to identify all the optotypes on that line. If the participants identifies all symbols correctly, go to the next line with smaller optotypes and ask the child to identify all optotypes on the line.</li>
 <li>Their visual acuity will be the one that matches the line on which 50% (3 of 5, 4 of 6) of the symbols are identified correctly.</li>
 </ul>
-<p>Report result: - Log the acuity for the participant in terms of 10 ft (e.g. 10/10)</p>
 </div>
-<div id="color-test-childadult" class="section level5">
-<h5>Color Test (Child/Adult)</h5>
+<div id="report-results" class="section level2">
+<h2>Report results</h2>
 <ul>
-<li>The examination should be done indoors with bright, natural illumination of more than 300 lux.</li>
-<li>the plates should be held at a distance of 50 - 75 cm (20-30 inches)</li>
+<li>Log the answer to each item on the <a href="vision-screening-data.md">score sheet</a>.</li>
+<li>Log the acuity for the participant in terms of 10 ft (e.g. 10/10)</li>
+</ul>
+</div>
+</div>
+<div id="color-test-childadult" class="section level1">
+<h1>Color Test (Child/Adult)</h1>
+<div id="procedure-1" class="section level2">
+<h2>Procedure</h2>
+<ul>
+<li>The examination should be done indoors with bright, natural illumination of more than 300 lux. -The plates should be held at a distance of 50 - 75 cm (20-30 inches)</li>
 <li>The first exam:
 <ul>
 <li>*Skip: Examiner shows the participant plate 1 or 2, tracing the red line. Recognized as “circle”, “square”, or some other design.</li>
-<li>plate 3 and 4. The participants are required to say outloud “circle”, “square”, or some other design. If the shape is correctly recognized, mark as normal.If the shape is not correctly recognized, mark as abnormal.</li>
+<li>Plate 3 and 4. The participants are required to say outloud “circle”, “square”, or some other design. If the shape is correctly recognized, mark as normal.If the shape is not correctly recognized, mark as abnormal.</li>
 </ul></li>
 <li>The second exam:
 <ul>
 <li>Skip: Examiner shows the participant plate 5. Recognized as a curve line.</li>
 <li>Plate 6: In tracing the winding line between the upper left mark x and lower right mmark x, the normal traces the red curve, but the abnormal usually trace the blue.</li>
-<li>Plate 7: In tracing the winding line between the upper left mark x and lower right mmark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve.</li>
+<li>Plate 7: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve.</li>
 <li>Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of the abnormal, some can trace either</li>
 </ul></li>
 </ul>
-<p>Report result: - Those who can not recognize any curve in plate 8 at all, or any lower curve are definitely abnormal - They might be abnormal if they misjudge more than 3 plates among plates 3,4,6,7 - If they misjudge 1-2 plates among plates 3,4,6,7, it is better to re-examine him in details from plate 1-8.</p>
+</div>
+<div id="report-results-1" class="section level2">
+<h2>Report results</h2>
 <ul>
-<li>The first exam:
-<ul>
-<li>Examiner shows the participant plate 1 or 2, tracing the red line. Recognized as “circle”, “square”, or some other design.</li>
-<li>Then, plate 3 or 4. The participants are required to say outloud “circle”, “square”, or some other design. If the shape is correctly recognized, mark as normal.If the shape is not correctly recognized, mark as abnormal.</li>
-</ul></li>
-<li>The second exam:
-<ul>
-<li>Examiner shows the participant plate 5. Recognized as a curve line.</li>
-<li>Plate 6: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the red curve, but the abnormal usually trace the blue. If the participants recognize the blue curve, ask whether they see any other shape.</li>
-<li>Plate 7: In tracing the winding line between the upper left mark x and lower right mmark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve. If the participants recognize the red curve, ask whether they see any other shape.</li>
-<li>Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of the abnormal, some can trace either.</li>
-</ul></li>
+<li>Log the answer to each item on the score <a href="vision-screening-data.md">score sheet</a>.</li>
+<li>Those who can not recognize any curve in plate 8 at all, or any lower curve are definitely abnormal.</li>
+<li>They might be abnormal if they misjudge more than 3 plates among plates 3,4,6,7</li>
+<li>If they misjudge 1-2 plates among plates 3,4,6,7, it is better to re-examine him in details from plate 1-8.</li>
 </ul>
 </div>
-<div id="stereo-vision-test" class="section level5">
-<h5>Stereo Vision Test</h5>
+<div id="stereo-vision-test" class="section level2">
+<h2>Stereo Vision Test</h2>
+<div id="procedure-2" class="section level3">
+<h3>Procedure</h3>
 <ul>
 <li>Have the participant put the stereo glasses on.</li>
-<li>provide good light, make sure the pictures maintain the proper axis of polarization before the participants at 15 minutes of arc at a distance of 16 inches.</li>
-<li>Only do circle test. Point to each item on the left hand side of the page going left to right and up to down.</li>
+<li>Provide good light, make sure the pictures maintain the proper axis of polarization before the participants at 15 minutes of arc at a distance of 16 inches.</li>
+<li>Only do the circle test. Point to each item on the left hand side of the page going left to right and up to down.</li>
 <li>Start with No.1. Say to the participant:&quot; Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.&quot; Continue until participant gives up trying, or making two successive mistakes.</li>
 <li>Some participants may develop this perceptual response slowly. So let them study it for a while, if needed.3</li>
 </ul>
-<p>Report result: - Log the answer to each item on the score sheet. - Record the level of stereopsis at the last one chosen correctly.</p>
 </div>
+<div id="report-results-2" class="section level3">
+<h3>Report results</h3>
+<ul>
+<li>Log the answer to each item on the <a href="vision-screening-data.md">score sheet</a>.</li>
+<li>Record the level of stereopsis at the last one chosen correctly.</li>
+</ul>
 </div>
-</div>
-<div id="monitor" class="section level3">
-<h3>Monitor</h3>
+<div id="set-up-for-computer-tasks" class="section level3">
+<h3>Set up for computer tasks</h3>
+<div id="monitor" class="section level4">
+<h4>Monitor</h4>
 <ul>
 <li>Turn on the <strong>CRT monitor</strong> in 503B.</li>
 </ul>
 </div>
-<div id="computers" class="section level3">
-<h3>Computer(s)</h3>
+<div id="computers" class="section level4">
+<h4>Computer(s)</h4>
 <ul>
 <li>Turn on the computer</li>
 <li>In 503B switch on power of large surge protector on bottom left shelf.</li>
@@ -682,34 +745,63 @@ div.tocify {
 </ul>
 </div>
 </div>
+</div>
 <div id="after-participant-arrives" class="section level2">
 <h2>After participant arrives</h2>
 <div id="welcome-participant" class="section level3">
 <h3>Welcome participant</h3>
-<ul>
-<li><p>Store belongings in X.</p></li>
-<li>Talk with participant to complete the following
-<ul>
-<li>Check the name</li>
-<li>Consent Form, get verbal approval</li>
-</ul></li>
-</ul>
 <p>Say:</p>
 <blockquote>
-<p><em>“Welcome. Are you XXX? This project about individual difference in motion perception. You will have … The risk includes .Do you have any questions? You can withdraw anytime when you feel uncomfortable or .Do you want to go on?”</em></p>
+<p>“<em>Welcome to the brain, behavior, and development lab. Are you hear for the study about motion perception?</em>”</p>
 </blockquote>
-<p><strong>IMPLIED/VERBAL CONSENT</strong></p>
+<p>If the participant answers yes, say:</p>
+<blockquote>
+<p>“<em>Great. You can put your things here.</em>”</p>
+</blockquote>
+<ul>
+<li>Store belongings in <strong>X</strong>.</li>
+</ul>
+<blockquote>
+<p>“<em>Are you &lt;NAME OF PERSON ON SONA SYSTEMS SITE SCHEDULED FOR THIS SESSION&gt;?</em>”</p>
+</blockquote>
+<ul>
+<li>If the participant answers yes, say:</li>
+</ul>
+<blockquote>
+<p>“<em>Ok. We want to make sure that you get credit for participation. Please sit here for the first portion of the study.</em>”</p>
+</blockquote>
+<ul>
+<li>Have the person sit at the computer where the survey will be taken.</li>
+</ul>
 </div>
 <div id="begin-the-survey" class="section level3">
 <h3>Begin the survey</h3>
 <ul>
 <li>Enter the ID: YYYY-MM-DD-HHMM based on appointment time</li>
 </ul>
-</div>
-<div id="complete-vision-testing" class="section level3">
-<h3>Complete vision testing</h3>
+<p>Conduct the implied verbal consent. You may say to the participant or have them read the following text:</p>
+<p>You are being invited to volunteer to participate in a research study. This summary explains information about this research.</p>
 <ul>
-<li>Complete <a href="vision-screening.Rmd">pattern acuity test</a>
+<li>The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting and how this ability is related to personal interests and other abilities. The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life.</li>
+<li>You will complete some computer-based surveys about your background, personal interests, spatial and verbal abilities (~25 min). Then, you will complete one or two short (10-20 min) computer tasks in which you will attempt to detect motion or recognize the direction of motion presented on a computer screen.</li>
+<li>All questionnaire and computer task data you provide will be saved using a numeric code. No information about your identity or how to contact you will be saved with the data.</li>
+<li>If you are participating as part of the Psychology Subject Pool, you will receive course credit for participating (at the rate of ½ credit per ½ hours) as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.</li>
+</ul>
+<p>If you have questions, complaints, or concerns about the research, you should contact Yiming Qian at 814-863-3116 or Rick Gilmore at 814-865-3664. If you have questions regarding your rights as a research subject or concerns regarding your privacy, you may contact the Office for Research Protections at 814-865-1775.</p>
+<p>Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer.</p>
+<p>Clicking the “Take The Survey” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. Thank you!</p>
+<p>Once the surveys are complete, say:</p>
+<blockquote>
+<p>“<em>That’s great. Now we’d like to move on to the vision screening portion of the study. Are you ready?</em>”</p>
+</blockquote>
+<ul>
+<li>If the participant says yes, proceed.</li>
+</ul>
+</div>
+<div id="complete-pattern-visual-acuity-testing" class="section level3">
+<h3>Complete pattern visual acuity testing</h3>
+<ul>
+<li>Complete <a href="/vision-screening-protocol.html#snellen_acuity_(childadult)">pattern acuity test</a>
 <ul>
 <li>Adult - HOTV @ 10ft</li>
 </ul></li>
@@ -723,13 +815,13 @@ div.tocify {
 </ul>
 <p>Say:</p>
 <blockquote>
-<p>“You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?”</p>
+<p>“<em>You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?</em>”</p>
 </blockquote>
 </div>
 <div id="experimental-setup" class="section level3">
 <h3>Experimental Setup</h3>
 <ul>
-<li>Guide participant to testing room.</li>
+<li>Guide participant to the testing room.</li>
 <li>Have them sit in the chair.</li>
 <li>Adjust the monitor and participant position.</li>
 <li>The monitor should be located <strong>60cm</strong> from the bridge of the nose on the participant.</li>
@@ -781,13 +873,21 @@ div.tocify {
 <li>Enter the ID in the pop window and speak to the participant.</li>
 </ul>
 <blockquote>
-<p>“Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,…”</p>
+<p>“<em>Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,…</em>”</p>
 </blockquote>
 </div>
 </div>
-<div id="other-test" class="section level3">
-<h3>Other test</h3>
-<p>If there is time left, - Complete <a href="vision-screening.Rmd">Stereo Acuity Test</a> - Complete [C]olor Vision Test](vision-screening.Rmd) &gt;“There is one more test.”</p>
+<div id="optional-stereo-acuity-and-color-vision-tests" class="section level3">
+<h3>Optional stereo acuity and color vision tests</h3>
+<p>If there is time left (5 min before the end of the 1 hr session),</p>
+<blockquote>
+<p>“<em>Thank you so much. It looks like we have time for two more short vision tests. Please come sit over here at this table.</em>”</p>
+</blockquote>
+<p>Escort participant to table.</p>
+<ul>
+<li>Complete <a href="vision-screening-protocol.html">Stereo Acuity Test</a></li>
+<li>Complete [C]olor Vision Test](vision-screening-protocol.html)</li>
+</ul>
 </div>
 </div>
 <div id="after-session-ends" class="section level2">
@@ -796,12 +896,15 @@ div.tocify {
 <li>After the participant finishes all the tests, thank him/her.</li>
 </ul>
 <blockquote>
-<p>“Thank you for participating this experiment. Do you have any questions?”</p>
+<p>“<em>Thank you for participating this experiment. We appreciate your time. Do you have any questions?</em>”</p>
 </blockquote>
+<ul>
+<li>Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.</li>
+</ul>
 <div id="give-participant-credit-on-sona" class="section level3">
 <h3>Give participant credit on SONA</h3>
 <ul>
-<li>Assign credit in SONA.</li>
+<li>Yiming or Andrea will assign credit in SONA.</li>
 </ul>
 </div>
 <div id="clean-up" class="section level3">
@@ -819,7 +922,7 @@ div.tocify {
 <div id="retrieve-behavioral-data" class="section level3">
 <h3>Retrieve Behavioral Data</h3>
 <ul>
-<li><p>Output data files are stored here: /Documents/PsychoPy-Stimuli/<strong>STUDY NAME</strong>/csv</p></li>
+<li><p>Output data files from the computer task are stored here: /Documents/PsychoPy-Stimuli/<strong>STUDY NAME</strong>/csv</p></li>
 <li>Data must be copied to the <strong>Gilmore Lab Participant Data</strong> drive from the testing PC.</li>
 <li>Data will be copied to Box (XXX).</li>
 <li><p>After data export is complete, turn off computer and monitor in 503B.</p></li>
@@ -838,6 +941,12 @@ div.tocify {
 <li>Under <strong>Actions</strong> click to open drop down menu</li>
 <li>Click <strong>view response</strong></li>
 </ul></li>
+</ul>
+</div>
+<div id="transfer-vision-screening-data" class="section level3">
+<h3>Transfer vision screening data</h3>
+<ul>
+<li>Enter the vision screening data using <strong>SPECIFY</strong>.</li>
 </ul>
 </div>
 </div>
@@ -1077,7 +1186,7 @@ div.tocify {
 <p><strong>MUST</strong> - Abramov: 12 cyc/deg, 4 Hz, 3.5 deg diam, 4 reps - Murray: 1.2 cyc/deg, 4 Hz, 3.5 deg diam, 4 reps, 98%contrast</p>
 <p><strong>POSSIBLE, IF TIME</strong> - Abramov: 1.2 cyc/deg (minimize sex differences) - Murray: 3% contrast (minimize sex difference)</p>
 <ul>
-<li>Decided **NOT* to have catch trials, but decide on criteria for dropping participants or runs based on threshold estimation.</li>
+<li>Decided <strong>NOT</strong> to have catch trials, but decide on criteria for dropping participants or runs based on threshold estimation.</li>
 </ul>
 <hr />
 </div>
@@ -1111,54 +1220,6 @@ $(document).ready(function () {
 });
 
 
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3,h4,h5",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

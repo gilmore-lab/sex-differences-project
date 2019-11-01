@@ -1,5 +1,5 @@
 ---
-title: "Set-up Checklist"
+title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
 date: "`r Sys.time()`"
 output:
@@ -14,8 +14,9 @@ output:
 ## Before participant arrives
 
 - Check to see if there have been any cancellations.
+- If the scheduled study is still on the books, proceed as follows.
 
-### Vision Screening 
+### Set-up for Vision Screening  {.tabset}
 
 #### Preparation
 
@@ -25,27 +26,31 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Place Stereo Acuity Test and Glasses on table
 - Place Color Vision Test on table
 
-#### Administation Instructions
+#### Review vision screening procedures
 
-```{r, child="vision-screening.Rmd"}
-```
+The vision screenint protocol may be reviewed at <vision-screening-protocol.html>
 
-### Monitor
+### Set up for computer-based tasks {.tabset}
+
+#### Computer-based task monitor
 
 - Turn on the **CRT monitor** in 503B. 
 
-### Computer(s)
+#### Computer(s)
+
 - Turn on the computer
 - In 503B switch on power of large surge protector on bottom left shelf.
 - Log-in (Gilmore Lab)
 
-- Start Psychopy - Click icon on Task Bar
+- Start Psychopy - Click 'stripes' icon on Task Bar
 
 ![PsychoPy Logo](images/PsychoPy-1.PNG)
 
 - Double-check monitor settings within Windows 
-- Click Settings Logo on Task Bar
+- Click Settings ('gear') icon on Task Bar
+
 ![Settings Logo](images/DispSettings-1.PNG)
+
 - Open one experiment and take note of "Participant ID"
 
 (Type **Display Settings** in Search Bar then open)
@@ -78,7 +83,7 @@ If the participant answers yes, say:
 
 - Store belongings in **X**.
 
->"*Are you <NAME OF PERSON ON SONA SYSTEMS SITE>?*"
+>"*Are you \<NAME OF PERSON ON SONA SYSTEMS SITE SCHEDULED FOR THIS SESSION\>?*"
 
 - If the participant answers yes, say:
 
@@ -102,9 +107,9 @@ Once the surveys are complete, say:
 
 - If the participant says yes, proceed.
 
-### Complete vision testing
+### Complete pattern visual acuity testing
 
-- Complete [pattern acuity test](vision-screening.Rmd)
+- Complete [pattern acuity test](/vision-screening-protocol.html#snellen_acuity_(childadult))
   - Adult - HOTV @ 10ft
 
 ### Questionnaires
@@ -114,20 +119,24 @@ Once the surveys are complete, say:
 
 Say:
 
->"You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?"
+>"*You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?*"
 
-### Experimental Setup
+### Set-up for computer-based tasks
 
-- Guide participant to testing room.
+- Guide participant to the testing room.
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
 - The monitor should be located **60cm** from the bridge of the nose on the participant.
 - The chair height should be set so the participant is looking directly at the **X** in the middle of the screen.
 - Guide the participant to use the arrow keys for responses.
 
-### Run Experiments
+### Run computer-based tasks
 
-The order of the computer experiments will be randomized across participants using **X** procedure.
+#### Select run order
+
+The order of the computer experiments will be randomized across participants by flipping a coin.
+If the coin is HEADS, run the Murray et al. task first; if the coin is TAILS, run the Abramov et al. task first.
+Record the task run first on the experiment run log.
 
 #### Murray et al.
 
@@ -140,29 +149,35 @@ The order of the computer experiments will be randomized across participants usi
 - In PsychoPy, press the green button. 
 - Enter the ID in the pop window and speak to the participant.
 
->“Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,..."
+>“*Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,...*"
 
-### Other test
-If there is time left,
-- Complete [Stereo Acuity Test](vision-screening.Rmd)
-- Complete [C]olor Vision Test](vision-screening.Rmd)
->"There is one more test."
+### (Optional) stereo acuity and color vision tests
+
+If there is time left (5 min before the end of the 1 hr session),
+
+>"*Thank you so much. It looks like we have time for two more short vision tests. Please come sit over here at this table.*"
+
+Escort participant to table.
+
+- Complete [Stereo Acuity Test](vision-screening-protocol.html)
+- Complete [C]olor Vision Test](vision-screening-protocol.html)
 
 ## After session ends
 
+### Thank participant
+
 - After the participant finishes all the tests, thank him/her.
 
->"Thank you for participating this experiment. Do you have any questions?"
+>"*Thank you for participating this experiment. We appreciate your time. Do you have any questions?*"
+
+- Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.
 
 ### Give participant credit on SONA
 
-- Assign credit in SONA.
+- Yiming or Andrea will assign credit in SONA.
 
 ### Clean-up
 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
-
-
-
 
 

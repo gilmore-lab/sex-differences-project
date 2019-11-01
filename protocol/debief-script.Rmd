@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this study, we were examining...
+In this study, we were examining individual differences in visual perception.
 
 Thank you for contributing to the science of visual perception.
 
