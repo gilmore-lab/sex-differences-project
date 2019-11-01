@@ -45,8 +45,8 @@ this_session <- this_session %>%
 ```{r}
 this_session %>%
   ggplot(.) +
-  aes(x = trial, y = stim_secs) +
-  geom_point() +
-  geom_smooth()
+  aes(x = trial, y = stim_secs, shape = accuracy) +
+  geom_point()
+  #geom_smooth()
 ```
 
