@@ -66,7 +66,10 @@ The process of scheduling participants involves the following steps:
 1. Create slots on SONA with specific dates and times
 2. When slot is scheduled, email sent to Yiming and Andrea.
 3. Scheduled slots will be added to lab calendar.
+  - The scheduled RA will be added to the title of the slot
+  - The RA will also be invited to the google calendar event.
 4. Researchers will be contacted by email and Discord by Yiming or Andrea if they are needed for a slot that is not part of their regularly scheduled lab time.
+
 
 ## Weekly testing slots
 
@@ -75,6 +78,22 @@ The process of scheduling participants involves the following steps:
 | Mon         | 09:00a  | Rachel                    | Andrea |
 |             | 10:15a  | Sandy, Emily, Rachel      | Andrea |
 |             | 11:30a  | Sandy, Emily, Amar        | Yiming |
+|             | 1p      |                           | Yiming |
+|             | 2:15p   |                           | Yiming |
+|             | 3:30p   |                           | Yiming |
+|             | 4:45p   |                           | Yiming |
+| Tue         | 9a      | Michelle, Rachel          | Andrea |
+|             | 10:15a  | Michelle, Rachel          | Andrea |
+|             | 11:30a  | Amar, Michelle            | Andrea |
+|             | 12:45p  | Michelle, Joseph, Amar    | Andrea |
+| Wed         | 10a     | Sandy, Rachel, Amar, Emily| Yiming |
+|             | 11:15a  | Sandy, Rachel, Amar, Emily| Andrea |
+|             | 12:30p  | Luka                      | Andrea |
+|             | 1:45p   |                           | Yiming |
+|             | 3p      |                           | Yiming |
+|             | 4:15p   |                           | Yiming |
+|             | 5:30p   |                           | Yiming |
+| Thu         | 9a      | Joseph, Michelle, Luka,Rachel    | Yiming |
 |             | 01:00p  |                           | Yiming |
 |             | 02:15p   |                           | Yiming |
 |             | 03:30p   |                           | Yiming |
