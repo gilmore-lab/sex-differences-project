@@ -34,7 +34,6 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 - Turn on the **CRT monitor** in 503B. The power button is on the front right of the monitor
 
-
 ### Computer(s)
 - Turn on the computer
 - In 503B switch on power of large surge protector on bottom left shelf.
@@ -76,10 +75,8 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 Say:
 
-- Store belongings in X.
 >"*Welcome to the brain, behavior, and development lab. Are you hear for the study about motion perception?*"
 
-- Talk with participant to complete the following 
 If the participant answers yes, say:
 
 >"*Great. You can put your things here.*"
