@@ -13,7 +13,7 @@ output:
 
 ## Before participant arrives
 
-1. Check to see if there have been any cancellations.
+- Check to see if there have been any cancellations.
 
 ### Vision Screening 
 
@@ -32,7 +32,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 ### Monitor
 
-- Turn on the **CRT monitor** in 503B. 
+- Turn on the **CRT monitor** in 503B. The power button is on the front right of the monitor
 
 
 ### Computer(s)
@@ -40,14 +40,12 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - In 503B switch on power of large surge protector on bottom left shelf.
 - Log-in (Gilmore Lab)
 
-- Start Psychopy - Click icon on Task Bar
 
-![PsychoPy Logo](images/PsychoPy-1.PNG)
 
 - Double-check monitor settings within Windows 
-- Click Settings Logo on Task Bar
+  - Click Settings Logo on Task Bar
 ![Settings Logo](images/DispSettings-1.PNG)
-- Open one experiment and take note of "Participant ID"
+
 
 (Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
@@ -56,11 +54,18 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Double-check Brightness/Contrast  
   - Contrast:
   - Brightness:
+
+- Start Psychopy
+  - Click Psychopy Logo on Task Bar ![PsychoPy Logo](images/PsychoPy-1.PNG)  
+- Check monitor settings within Psychopy
+  - Go to Tools > Monitor Center
+    - Screen Distance (cm): 60
+    - Screen resolution: 800 x 600
+    - Screen width (cm): 39.7
   
-- Check monitor within Psychopy
-  - Screen Distance (cm): 60
-  - Screen resolution: 800 x 600
-  - Screen width (cm): 39.7
+  
+- Get Participant ID  
+  - Open one experiment and take note of "Participant ID"
   
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
@@ -78,8 +83,8 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 Say:
 
->*"Welcome. Are you XXX? This project about individual difference in motion perception. You will have ... The risk includes .Do you have any questions? 
-You can withdraw anytime when you feel uncomfortable or .Do you want to go on?”*
+>*"Welcome. My name is XXX. Are you XXX? Thank you for coming in today. This project is about individual differences in motion perception. You will be participating in some vision screening tasks, a computer survey and a visual computer task. The risk includes . Do you have any questions? 
+You can withdraw anytime when you feel uncomfortable or.Do you want to go on?”*
 
 **IMPLIED/VERBAL CONSENT**
 
@@ -130,7 +135,7 @@ The order of the computer experiments will be randomized across participants usi
 ### Other test
 If there is time left,
 - Complete [Stereo Acuity Test](vision-screening.Rmd)
-- Complete [C]olor Vision Test](vision-screening.Rmd)
+- Complete [Color Vision Test](vision-screening.Rmd)
 >"There is one more test."
 
 ## After session ends

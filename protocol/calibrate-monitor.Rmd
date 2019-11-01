@@ -21,14 +21,24 @@ output: html_document
 
 ### Start Calibrating Luminance
 
-- Click **Calibrate Lum**  
+- Turn on the computer
+- In 503B switch on power of large surge protector on bottom left shelf.
+- Log-in (Gilmore Lab)
 
-    ![Luminance Calibration](imgs/LuminanceCalibration2.jpg)
+- Start Psychopy - Click icon on Task Bar
+- Open Monitor Settings - Go to Tools > Monitor Center
+
+- Click **XXXX**  
+
+    ![Luminance Calibration](images/new image.jpg)
 
 - Enter the Monitor Screen Width in centimeters
 - Select **Start**  
-    ![Luminance Calibration - Enter Value](imgs/LuminanceCalibration_EnterValue2.jpg)
+    ![Luminance Calibration - Enter Value](images/new image.jpg)
 
+
+
+## Calibrate Projector
 ### Run Matlab Script
 
 - At a minimum a black (0,0,0) and white (255,255,255) image must be displayed on the projector screen 
