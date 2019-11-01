@@ -1,7 +1,7 @@
 ---
 title: "Vision Screening Instructions"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "`r Sys.time()`"
+date: "2019-11-01 11:29:11"
 output:
   html_document:
     keep_md: true
@@ -13,7 +13,8 @@ output:
 
 <!-- # Vision Screening Instructions -->
 
-##### Snellen Acuity (Child/Adult)
+# Snellen Acuity (Child/Adult)
+
 - Stand 10 feet away from the chart on the wall (black tape on the floor)
 - Start with the top line and have the participant read the first symbols in every line in descending order
 - If they miss a letter, circle it on the score sheet.
@@ -23,7 +24,8 @@ output:
 Report result:
 - Log the acuity for the participant in terms of 10 ft (e.g. 10/10)
 
-##### Color Test (Child/Adult)
+# Color Test (Child/Adult)
+
 - The examination should be done indoors with bright, natural illumination of more than 300 lux.
 - the plates should be held at a distance of 50 - 75 cm (20-30 inches)
 - The first exam:
@@ -49,16 +51,14 @@ Report result:
     - Plate 7: In tracing the winding line between the upper left mark x and lower right mmark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve. If the participants recognize the red curve, ask whether they see any other shape.
     - Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of the abnormal, some can trace either. 
 
-##### Stereo Vision Test
+# Stereo Vision Test
 
 - Have the participant put the stereo glasses on.
-- provide good light, make sure the pictures maintain the proper axis of polarization before the participants at 15 minutes of arc at a distance of 16 inches.
-- Only do circle test. Point to each item on the left hand side of the page going left to right and up to down. 
+- Provide good light, make sure the pictures maintain the proper axis of polarization before the participants at 15 minutes of arc at a distance of 16 inches.
+- Only do the circle test. Point to each item on the left hand side of the page going left to right and up to down. 
 - Start with No.1. Say to the participant:" Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left." Continue until participant gives up trying, or making two successive mistakes.
 - Some participants may develop this perceptual response slowly. So let them study it for a while, if needed.3
 
 Report result:
-- Log the answer to each item on the score sheet.
+- Log the answer to each item on the score sheet (vision-screening-data.md).
 - Record the level of stereopsis at the last one chosen correctly. 
-
-
