@@ -1,0 +1,21 @@
+---
+title: "Subject Pool"
+author: "Yiming Qian"
+date: "11/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# sona system
+https://pennstate.sona-systems.com/
+
+# add time slots
+- [the schedule](master-protocol.html)
+- add multiple time slots
+
+# cancel the time slots
+- delete the participants
+"I am so sorry that I need to delete this time slot because no experimenter will be available at that time. We will open more time slots in the following weeks. You are welcome to sign up for these time slots. Your participation is important to us."
+- delete the time slots
