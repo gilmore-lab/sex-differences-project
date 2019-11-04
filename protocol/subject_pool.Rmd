@@ -13,9 +13,14 @@ https://pennstate.sona-systems.com/
 
 # add time slots
 - [the schedule](master-protocol.html)
-- add multiple time slots
+- in the front page, click "view, add or edit timeslots."![step1](images/timeslot1.png)
+- click "Timeslots"![step2](images/timeslot2.png)
+- click "add a Timeslot" or "add multiple timeslots" ![step3](images/timeslot3.png)
+- Set the timeslots
+- Add
 
 # cancel the time slots
-- delete the participants
+- delete the participants in this timeslot
 "I am so sorry that I need to delete this time slot because no experimenter will be available at that time. We will open more time slots in the following weeks. You are welcome to sign up for these time slots. Your participation is important to us."
 - delete the time slots
+- confirm "delete"

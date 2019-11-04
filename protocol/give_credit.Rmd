@@ -1,0 +1,14 @@
+---
+title: "grant_credit"
+author: "Yiming Qian"
+date: "11/4/2019"
+output: html_document
+---
+
+# sona system
+https://pennstate.sona-systems.com/
+
+# give credit
+- find the participant
+- click in 
+- change status

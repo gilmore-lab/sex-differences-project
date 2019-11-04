@@ -30,6 +30,7 @@ Murray, S. O., Schallmo, M.-P., Kolodny, T., Millin, R., Kale, A., Thomas, P., R
 This protocol, "Individual differences in visual perception in adults," has been assigned protocol number 13345.
 The most recent IRB approval was granted on 2010-10-14.
 Files related to the approved (exempt) submission can be found [here](../irb/2019-10-24).
+Minor modifications of the items in the forms do not need to submit a modification.
 
 # Prior to data collection start {.tabset}
 
@@ -37,7 +38,7 @@ Files related to the approved (exempt) submission can be found [here](../irb/201
 
 First, we need to do benchmark testing to determine what screen resolution will work at the highest temporal resolution (120 Hz).
 This study requires high temporal resolution in order to measure temporal thresholds--the shortest stimulus duration that participants require in order to accurately detect the direction of motion.
-
+Replication of Abramov et al. (2012) study requires the best luminance resolution, which permitted the presentation of very low contrast stimuli.
 Once we have determined the best monitor settings, we will calibrate the monitor before we start collecting data.
 Those steps follow.
 
@@ -64,7 +65,7 @@ The URL is <https://pennstate.sona-systems.com/exp_info.aspx?experiment_id=2587>
 The process of scheduling participants involves the following steps:
 
 1. Create slots on SONA with specific dates and times
-2. When slot is scheduled, email sent to Yiming and Andrea.
+2. When slot is scheduled, email sent to Yiming and Andrea in the system.
 3. Scheduled slots will be added to lab calendar.
   - The scheduled RA will be added to the title of the slot
   - The RA will also be invited to the google calendar event.
@@ -93,7 +94,7 @@ The process of scheduling participants involves the following steps:
 |             | 3p      |                           | Yiming |
 |             | 4:15p   |                           | Yiming |
 |             | 5:30p   |                           | Yiming |
-| Thu         | 9a      | Joseph, Michelle, Luka,Rachel    | Yiming |
+| Thu         | 9a      | Joseph, Michelle, Luka,Rachel  | Yiming |
 |             | 01:00p  |                           | Yiming |
 |             | 02:15p   |                           | Yiming |
 |             | 03:30p   |                           | Yiming |
@@ -112,8 +113,8 @@ The process of scheduling participants involves the following steps:
 | Thu         | 09:00a   | Joseph, Michelle, Luka,Rachel    | Yiming |
 |             | 10:15   | Rachel                    | Yiming |
 |             | 11:30a  | Amar                      | Yiming |
-|             | 01:30p  | Luka                      | Yiming |
-|             | 02:45p  |                           | Yiming |
+|             | 01:30p  | Luka                      | Yiming (every two weeks)|
+|             | 02:45p  |                           | Yiming (every two weeks)|
 |             | 04:00p  |                           | Yiming |
 |             | 05:15p  |                           | Yiming |
 | Fri         | 09:00a  | Rachel                    | Yiming |
@@ -121,8 +122,8 @@ The process of scheduling participants involves the following steps:
 |             | 11:30a  | Rachel, Emily, Amar       | Andrea |
 |             | 12:45p  | Emily, Amar               | Andrea |
 |             | 02:00p  | Michelle                  | Yiming |
-|             | 03:15p   |                           | Yiming |
-|             | 04:30p   |                           | Yiming |
+|             | 03:15p  |                           | Yiming |
+|             | 04:30p  |                           | Yiming |
 
 # Day of visit
 
@@ -153,7 +154,7 @@ The process of scheduling participants involves the following steps:
 
 ### Transfer vision screening data
 
-- Enter the vision screening data using **SPECIFY**.
+- Enter the vision screening data using **SPECIFY**. The experimenter can submit the result in qualtrics.
 
 ## Validation and cleaning
 

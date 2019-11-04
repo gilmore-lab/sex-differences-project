@@ -27,7 +27,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 #### Administation Instructions
 
-```{r, child="vision-screening.Rmd"}
+```{r, child="vision-screening-protocol.Rmd"}
 ```
 
 ### Monitor
@@ -75,14 +75,13 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 Say:
 
->"*Welcome to the brain, behavior, and development lab. Are you hear for the study about motion perception?*"
+>"*Welcome to the brain, behavior, and development lab. Are you here for the study about motion perception?*"
 
 If the participant answers yes, say:
 
 >"*Great. You can put your things here.*"
 
 - Store belongings in **X**.
-
 
 
 >"*Are you <NAME OF PERSON ON SONA SYSTEMS SITE>?*"
@@ -95,15 +94,15 @@ If the participant answers yes, say:
 
 ### Begin the survey
 
-- Enter the ID: YYYY-MM-DD-HHMM based on appointment time
 
 Conduct the implied verbal consent.
 You may say to the participant or have them read the following text:
 
 ```{r, child="implied-consent-language.Rmd"}
 ```
+- Enter the Participant ID: YYYY-MM-DD-HHMM based on appointment time (the note you took from the experiment you opened)
 
-Once the surveys are complete, say:
+After enter the ID, say:
 
 >"*That's great. Now we'd like to move on to the vision screening portion of the study. Are you ready?*"
 
@@ -140,30 +139,33 @@ The order of the computer experiments will be randomized across participants usi
 
 ```{r, child="murray-etal-task.Rmd"}
 ```
+>“Okay. You can follow the instructions and do the tasks in the computer. Do you have any questions now? I am outside this room. When you finish this task, you can call me."
 
 #### Abramov et al.
 
-- Open the files "" located in folder.
-- In PsychoPy, press the green button. 
-- Enter the ID in the pop window and speak to the participant.
+```{r, child="abramov-etal-task.Rmd"}
+```
 
->“Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,..."
+>“Okay. You can follow the instructions and do the tasks in the computer. Do you have any questions now? I am outside this room. When you finish this task, you can call me."
 
 ### Other test
 If there is time left,
 - Complete [Stereo Acuity Test](vision-screening.Rmd)
 - Complete [Color Vision Test](vision-screening.Rmd)
->"There is one more test."
+>"There are two more tests."
 
 ## After session ends
 
 - After the participant finishes all the tests, thank him/her.
+- If participants asked about the visual screening, survey or computer test results, tell them "you are doing a great job. We do not know anything yet and we need to analyze it. 
 
 >"Thank you for participating this experiment. Do you have any questions?"
 
 ### Give participant credit on SONA
 
 - Assign credit in SONA.
+```{r, child="give_credit.Rmd"}
+```
 
 ### Clean-up
 
