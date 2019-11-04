@@ -49,9 +49,9 @@ We may check the monitor calibration during data collection at a frequency we wi
 ## Survey preparation
 
 This study uses Qualtrics to collect implied/oral consent and other data from participants.
-Yiming has generated a draft survey, saved [here](Sex_difference_survey.qsf) as a `*.qsf` text file.
+Yiming has generated a draft survey, saved [here](qualtrics_survey.qsf) as a `*.qsf` format text file.
 
-The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
+The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON>
 
 # Scheduling participants {.tabset}
 
@@ -69,7 +69,6 @@ The process of scheduling participants involves the following steps:
   - The scheduled RA will be added to the title of the slot
   - The RA will also be invited to the google calendar event.
 4. Researchers will be contacted by email and Discord by Yiming or Andrea if they are needed for a slot that is not part of their regularly scheduled lab time.
-
 
 ## Weekly testing slots
 
@@ -147,7 +146,7 @@ The process of scheduling participants involves the following steps:
   - To review total summary, which shows total graph summary of survey distribution 
     - Click on **Distributions** tab
   -  To review individual responses to survey questions
-    -Click on **Data & Analysis** tab
+    - Click on **Data & Analysis** tab
     - Under **Actions** click to open drop down menu
     - Click **view response**
 
