@@ -64,7 +64,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
   
   
 - Get Participant ID  
-  - Open one experiment and take note of "Participant ID"
+  - Open one experiment based on the appointment time and take note of "Participant ID"(YYYY-MM-DD-HHMMSS)
   
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
@@ -100,7 +100,7 @@ You may say to the participant or have them read the following text:
 
 ```{r, child="implied-consent-language.Rmd"}
 ```
-- Enter the Participant ID: YYYY-MM-DD-HHMM based on appointment time (the note you took from the experiment you opened)
+- Enter the Participant ID: YYYY-MM-DD-HHMMSS based on appointment time (the note you took from the experiment you opened)
 
 After enter the ID, say:
 

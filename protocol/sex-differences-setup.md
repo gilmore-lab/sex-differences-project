@@ -1,7 +1,7 @@
 ---
 title: "Set-up Checklist"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-04 17:06:57"
+date: "2019-11-04 17:12:38"
 output:
   html_document:
     keep_md: true
@@ -117,7 +117,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
   
   
 - Get Participant ID  
-  - Open one experiment and take note of "Participant ID"
+  - Open one experiment based on the appointment time and take note of "Participant ID"(YYYY-MM-DD-HHMMSS)
   
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
@@ -170,7 +170,7 @@ Your participation is voluntary and you may decide to stop at any time. You do n
 
 Clicking the “Take The Survey” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
 Thank you!
-- Enter the Participant ID: YYYY-MM-DD-HHMM based on appointment time (the note you took from the experiment you opened)
+- Enter the Participant ID: YYYY-MM-DD-HHMMSS based on appointment time (the note you took from the experiment you opened)
 
 After enter the ID, say:
 
@@ -238,7 +238,7 @@ The order of the computer experiments will be randomized across participants usi
     - From the `File` menu, select the `Open Recent...` command and select the `contrast-sensitivity-task.py` file.
 - When the file opens, run the experiment by pressing the green (running person) button.
     - **Be careful not to type in the programming window.**
-    - Depends on which computer tests are running first. If this experiemnt is the second, enter the participant ID in the pop window, and press the `Ok` button to enter the data.
+    - Depends on which computer tests are running first. If this experiemnt is the second, reenter the participant ID YYYY-MM-DD-HHMMSS in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
 >“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. You can press the LEFT or RIGHT buttons if you see the stripes are horizontal, UP or DOWN button if you see the stripes are vertical. But if you aren't sure, just guess. "

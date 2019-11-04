@@ -10,7 +10,7 @@ output: html_document
     - From the `File` menu, select the `Open Recent...` command and select the `contrast-sensitivity-task.py` file.
 - When the file opens, run the experiment by pressing the green (running person) button.
     - **Be careful not to type in the programming window.**
-    - Depends on which computer tests are running first. If this experiemnt is the second, enter the participant ID in the pop window, and press the `Ok` button to enter the data.
+    - Depends on which computer tests are running first. If this experiemnt is the second, reenter the participant ID YYYY-MM-DD-HHMMSS in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
 >“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. You can press the LEFT or RIGHT buttons if you see the stripes are horizontal, UP or DOWN button if you see the stripes are vertical. But if you aren't sure, just guess. "
