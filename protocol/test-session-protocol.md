@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-01 11:55:08"
+date: "2019-11-05 12:14:46"
 output:
   html_document:
     keep_md: true
@@ -32,46 +32,53 @@ The vision screenint protocol may be reviewed at <vision-screening-protocol.html
 
 ### Set up for computer-based tasks {.tabset}
 
-#### Computer-based task monitor
-
-- Turn on the **CRT monitor** in 503B. 
-
-#### Computer(s)
-
-- Turn on the computer
-- In 503B switch on power of large surge protector on bottom left shelf.
+#### Stimuli Computer
+- In 503B switch on power of the surge protector.
+- Turn on the power of the data collection computer
+- Turn on the CRT monitor in 503B
 - Log-in (Gilmore Lab)
 
-- Start Psychopy - Click 'stripes' icon on Task Bar
+- Start Psychopy - Click **PsychoPy** icon on Task Bar
 
-![PsychoPy Logo](images/PsychoPy-1.PNG)
+ ![PsychoPy_Logo](images/PsychoPy-1.PNG)
 
 - Double-check monitor settings within Windows 
 - Click Settings ('gear') icon on Task Bar
 
-![Settings Logo](images/DispSettings-1.PNG)
+ ![Settings_Logo](images/DispSettings-1.PNG)
 
-- Open one experiment and take note of "Participant ID"
+ - Choose **System**  
+ ![System](images/DS2.PNG)
+ - Choose **Display**  
+ ![Display](images/ds3.PNG)
+ - Choose **Advanced display settings** (You may need to scroll down to see this)  
+ ![Advanced Display](images/DS4.PNG)
+ - Make sure the window that appears has the following Settings
+ 
+ ![Monitor Settings](images/ds5.PNG)
 
-(Type **Display Settings** in Search Bar then open)
-  - Screen resolution: 800 x 600
-  - Refresh rate: 85 Hz
-  
+
 - Double-check Brightness/Contrast  
   - Contrast:
   - Brightness:
   
-- Check monitor within Psychopy
-  - Screen Distance (cm): 60
-  - Screen resolution: 800 x 600
-  - Screen width (cm): 39.7
+- Check monitor within PsychoPy
+
+- Go to **Monitor Settings** 
+ ![Monitor Settings](images/pp2.png)
+- View Settings, they should be as follows  
+
+ ![Specific Settings](images/pp3.PNG)
   
+ 
+#### Survey Computer
+
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
 
-## After participant arrives
+### After participant arrives {.tabset}
 
-### Welcome participant
+#### Welcome participant
 
 Say:
 
@@ -91,7 +98,7 @@ If the participant answers yes, say:
 
 - Have the person sit at the computer where the survey will be taken.
 
-### Begin the survey
+#### Begin the survey
 
 - Enter the ID: YYYY-MM-DD-HHMM based on appointment time
 
@@ -132,7 +139,7 @@ Once the surveys are complete, say:
 ### Questionnaires
 
 - Let the participants finish the items
--	A little break for the participants. If the participant wants to keep going, lead him to the test room
+-	Ask if the participant needs a little break. If the participant wants to keep going, lead him to the test room
 
 Say:
 
@@ -195,7 +202,7 @@ If there is time left (5 min before the end of the 1 hr session),
 Escort participant to table.
 
 - Complete [Stereo Acuity Test](vision-screening-protocol.html)
-- Complete [C]olor Vision Test](vision-screening-protocol.html)
+- Complete [Color Vision Test](vision-screening-protocol.html)
 
 ## After session ends
 

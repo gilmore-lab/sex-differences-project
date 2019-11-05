@@ -40,17 +40,20 @@ The vision screenint protocol may be reviewed at <vision-screening-protocol.html
 
 - Start Psychopy - Click **PsychoPy** icon on Task Bar
 
-![PsychoPy Logo](images/PsychoPy-1.PNG)
+ ![PsychoPy_Logo](images/PsychoPy-1.PNG)
 
 - Double-check monitor settings within Windows 
 - Click Settings ('gear') icon on Task Bar
 
-![Settings Logo](images/DispSettings-1.PNG)
+ ![Settings_Logo](images/DispSettings-1.PNG)
 
- - Choose **System** ![System](images/DS2.PNG)
- - Choose **Display** ![Display](images/ds3.PNG)
- - Choose **Advanced display settings** (You may need to scroll down to see this) ![Advanced Display](images/DS4.PNG)
- - Make sure the windo that appears has the following Settings
+ - Choose **System**  
+ ![System](images/DS2.PNG)
+ - Choose **Display**  
+ ![Display](images/ds3.PNG)
+ - Choose **Advanced display settings** (You may need to scroll down to see this)  
+ ![Advanced Display](images/DS4.PNG)
+ - Make sure the window that appears has the following Settings
  
  ![Monitor Settings](images/ds5.PNG)
 
@@ -59,28 +62,23 @@ The vision screenint protocol may be reviewed at <vision-screening-protocol.html
   - Contrast:
   - Brightness:
   
-- Check monitor within Psychopy
+- Check monitor within PsychoPy
 
-- Go to **Monitor Settings** ![Monitor Settings](images/pp2.PNG)
-- View Settings, they should be as follows
+- Go to **Monitor Settings** 
+ ![Monitor Settings](images/pp2.png)
+- View Settings, they should be as follows  
 
-![Specific Settings](images/pp3.PNG)
+ ![Specific Settings](images/pp3.PNG)
   
-  
-  - Screen Distance (cm): 60
-  - Screen resolution: 800 x 600
-  - Screen width (cm): 39.7
-
-- Open one experiment and take note of "Participant ID"
-
+ 
 #### Survey Computer
 
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
 
-## After participant arrives
+### After participant arrives {.tabset}
 
-### Welcome participant
+#### Welcome participant
 
 Say:
 
@@ -100,7 +98,7 @@ If the participant answers yes, say:
 
 - Have the person sit at the computer where the survey will be taken.
 
-### Begin the survey
+#### Begin the survey
 
 - Enter the ID: YYYY-MM-DD-HHMM based on appointment time
 
@@ -124,7 +122,7 @@ Once the surveys are complete, say:
 ### Questionnaires
 
 - Let the participants finish the items
--	Ask if the participant needs a little break. If the participant wants to keep going, lead him to the test room
+-	Ask if the participant if they need a little break. If the participant wants to keep going, lead him to the test room
 
 Say:
 
