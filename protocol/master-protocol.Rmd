@@ -134,7 +134,9 @@ The process of scheduling participants involves the following steps:
 
 ### Retrieve Behavioral Data
 
-- Output data files from the computer task are stored here: /Documents/PsychoPy-Stimuli/**STUDY NAME**/csv
+- Output data files from the computer task are stored
+  - /Documents/PsychoPy-Stimuli/**Murray Folder Name**/csv
+  - /Documents/PsychoPy-Stimuli/**Abramov Folder Name**/data
 
 - Data must be copied to the **Gilmore Lab Participant Data** drive from the testing PC.
 - Data will be copied to Box (XXX).
@@ -152,7 +154,7 @@ The process of scheduling participants involves the following steps:
 
 ### Transfer vision screening data
 
-- Enter the vision screening data using **SPECIFY**.
+- Vision Screening Data will be entered into the last page of the Qualtrics Survey.
 
 ## Validation and cleaning
 
