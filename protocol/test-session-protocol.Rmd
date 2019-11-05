@@ -33,48 +33,47 @@ The vision screenint protocol may be reviewed at <vision-screening-protocol.html
 ### Set up for computer-based tasks {.tabset}
 
 #### Stimuli Computer
-- In 503B switch on power of the surge protector.
-- Turn on the power of the data collection computer
-- Turn on the CRT monitor in 503B
-- Log-in (Gilmore Lab)
+- *Log into Data Collection Computer*
+  - In 503B switch on power of the surge protector.
+  - Turn on the power of the data collection computer
+  - Turn on the CRT monitor in 503B
+  - Log-in (Gilmore Lab)
 
-- Start Psychopy - Click **PsychoPy** icon on Task Bar
-
- ![PsychoPy_Logo](images/PsychoPy-1.PNG)
-
-- Double-check monitor settings within Windows 
-- Click Settings ('gear') icon on Task Bar
-
- ![Settings_Logo](images/DispSettings-1.PNG)
-
- - Choose **System**  
- ![System](images/DS2.PNG)
- - Choose **Display**  
- ![Display](images/ds3.PNG)
- - Choose **Advanced display settings** (You may need to scroll down to see this)  
- ![Advanced Display](images/DS4.PNG)
- - Make sure the window that appears has the following Settings
- 
- ![Monitor Settings](images/ds5.PNG)
-
-
-- Double-check Brightness/Contrast  
+- *Start Psychopy* 
+  - Click **PsychoPy** icon on Task Bar
+ ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
+- *Double-check monitor settings within Windows* 
+  - Click Settings ('gear') icon on Task Bar
+ ![Settings_Logo](images/DispSettings-1.PNG)  
+  - Choose **System**  
+ ![System](images/DS2.PNG)  
+  - Choose **Display**  
+ ![Display](images/ds3.PNG)  
+  - Choose **Advanced display settings** (You may need to scroll down to see this)  
+ ![Advanced Display](images/DS4.PNG)  
+  - Make sure the window that appears has the following Settings
+ ![Monitor Settings](images/ds5.PNG)  
+- *Double-check Brightness/Contrast of monitor*
   - Contrast:
   - Brightness:
   
-- Check monitor within PsychoPy
-
-- Go to **Monitor Settings** 
- ![Monitor Settings](images/pp2.png)
-- View Settings, they should be as follows  
-
- ![Specific Settings](images/pp3.PNG)
   
+  - Press any button on the monitor (except Signal A/B/OSD OFF and the Power button)
+  - Navigate to the leftmost option in the settings menu (looks like a half moon)
+  - Press the down button on the monitor 
+  - Adjust the Contrast (leftmost option) to the required setting using the +/- buttons on the monitor 
+  - Adjust the Brightness (second option from the left) to the required setting using the +/- buttons on the monitor 
+  
+- *Check monitor within PsychoPy*
+  - Go to **Monitor Settings** 
+ ![Monitor Settings](images/pp2.png)
+  - View Settings, they should be as follows  
+ ![Specific Settings](images/pp3.PNG)  
  
 #### Survey Computer
 
 - Log-in to survey computer
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON>
 
 ### After participant arrives {.tabset}
 
