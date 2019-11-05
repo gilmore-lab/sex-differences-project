@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-05 12:32:13"
+date: "2019-11-05 13:55:39"
 output:
   html_document:
     keep_md: true
