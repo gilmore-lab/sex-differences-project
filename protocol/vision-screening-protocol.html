@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Yiming Qian, Andrea Seisler, &amp; Rick Gilmore" />
@@ -1287,7 +1288,7 @@ window.initializeCodeFolding = function(show) {
 
     // create a collapsable div to wrap the code in
     var div = $('<div class="collapse r-code-collapse"></div>');
-    if (show)
+    if (show || $(this)[0].classList.contains('fold-show'))
       div.addClass('in');
     var id = 'rcode-643E0F36' + currentIndex++;
     div.attr('id', id);
@@ -1403,7 +1404,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -1477,56 +1477,12 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -1620,7 +1576,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Vision Screening Protocol</h1>
 <h4 class="author">Yiming Qian, Andrea Seisler, &amp; Rick Gilmore</h4>
-<h4 class="date">2019-11-01 11:43:35</h4>
+<h4 class="date">2019-11-05 10:53:57</h4>
 
 </div>
 
@@ -1651,7 +1607,8 @@ div.tocify {
 <div id="procedure-1" class="section level2">
 <h2>Procedure</h2>
 <ul>
-<li>The examination should be done indoors with bright, natural illumination of more than 300 lux. -The plates should be held at a distance of 50 - 75 cm (20-30 inches)</li>
+<li>The examination should be done indoors with bright, natural illumination of more than 300 lux.</li>
+<li>The plates should be held at a distance of 50 - 75 cm (20-30 inches)</li>
 <li>The first exam:
 <ul>
 <li>*Skip: Examiner shows the participant plate 1 or 2, tracing the red line. Recognized as “circle”, “square”, or some other design.</li>
@@ -1660,7 +1617,7 @@ div.tocify {
 <li>The second exam:
 <ul>
 <li>Skip: Examiner shows the participant plate 5. Recognized as a curve line.</li>
-<li>Plate 6: In tracing the winding line between the upper left mark x and lower right mmark x, the normal traces the red curve, but the abnormal usually trace the blue.</li>
+<li>Plate 6: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the red curve, but the abnormal usually trace the blue.</li>
 <li>Plate 7: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve.</li>
 <li>Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of the abnormal, some can trace either</li>
 </ul></li>
@@ -1683,9 +1640,13 @@ div.tocify {
 <li>Have the participant put the stereo glasses on.</li>
 <li>Provide good light, make sure the pictures maintain the proper axis of polarization before the participants at 15 minutes of arc at a distance of 16 inches.</li>
 <li>Only do the circle test. Point to each item on the left hand side of the page going left to right and up to down.</li>
-<li>Start with No.1. Say to the participant:&quot; Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.&quot; Continue until participant gives up trying, or making two successive mistakes.</li>
-<li>Some participants may develop this perceptual response slowly. So let them study it for a while, if needed.3</li>
+<li>Start with No.1.</li>
 </ul>
+<p>Say:</p>
+<blockquote>
+<p>“Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.”</p>
+</blockquote>
+<p>Continue until participant gives up trying, or making two successive mistakes. - Some participants may develop this perceptual response slowly. So let them study it for a while, if needed.3</p>
 </div>
 <div id="report-results-2" class="section level3">
 <h3>Report results</h3>
@@ -1715,6 +1676,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

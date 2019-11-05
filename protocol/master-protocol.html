@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Rick Gilmore, Yiming Qian, &amp; Andrea Seisler" />
@@ -88,7 +89,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -162,56 +162,12 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3,h4,h5",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -305,7 +261,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Individual differences in visual perception in adults</h1>
 <h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
-<h4 class="date">2019-11-04 10:28:53</h4>
+<h4 class="date">2019-11-05 10:54:20</h4>
 
 </div>
 
@@ -745,19 +701,14 @@ div.tocify {
 </div>
 <div id="set-up-for-computer-based-tasks" class="section level3 tabset">
 <h3>Set up for computer-based tasks</h3>
-<div id="computer-based-task-monitor" class="section level4">
-<h4>Computer-based task monitor</h4>
+<div id="stimuli-computer" class="section level4">
+<h4>Stimuli Computer</h4>
 <ul>
-<li>Turn on the <strong>CRT monitor</strong> in 503B.</li>
-</ul>
-</div>
-<div id="computers" class="section level4">
-<h4>Computer(s)</h4>
-<ul>
-<li>Turn on the computer</li>
-<li>In 503B switch on power of large surge protector on bottom left shelf.</li>
+<li>In 503B switch on power of the surge protector.</li>
+<li>Turn on the power of the data collection computer</li>
+<li>Turn on the CRT monitor in 503B</li>
 <li><p>Log-in (Gilmore Lab)</p></li>
-<li><p>Start Psychopy - Click ‘stripes’ icon on Task Bar</p></li>
+<li><p>Start Psychopy - Click <strong>PsychoPy</strong> icon on Task Bar</p></li>
 </ul>
 <div class="figure">
 <img src="images/PsychoPy-1.PNG" alt="PsychoPy Logo" />
@@ -772,21 +723,39 @@ div.tocify {
 <p class="caption">Settings Logo</p>
 </div>
 <ul>
-<li>Open one experiment and take note of “Participant ID”</li>
+<li>Choose <strong>System</strong> <img src="images/DS2.PNG" alt="System" /></li>
+<li>Choose <strong>Display</strong> <img src="images/ds3.PNG" alt="Display" /></li>
+<li>Choose <strong>Advanced display settings</strong> (You may need to scroll down to see this) <img src="images/DS4.PNG" alt="Advanced Display" /></li>
+<li>Make sure the windo that appears has the following Settings</li>
 </ul>
-<p>(Type <strong>Display Settings</strong> in Search Bar then open) - Screen resolution: 800 x 600 - Refresh rate: 85 Hz</p>
+<div class="figure">
+<img src="images/ds5.PNG" alt="Monitor Settings" />
+<p class="caption">Monitor Settings</p>
+</div>
 <ul>
 <li>Double-check Brightness/Contrast
 <ul>
 <li>Contrast:</li>
 <li>Brightness:</li>
 </ul></li>
-<li>Check monitor within Psychopy
+<li><p>Check monitor within Psychopy</p></li>
+<li>Go to <strong>Monitor Settings</strong> <img src="images/pp2.PNG" alt="Monitor Settings" /></li>
+<li><p>View Settings, they should be as follows</p></li>
+</ul>
+<div class="figure">
+<img src="images/pp3.PNG" alt="Specific Settings" />
+<p class="caption">Specific Settings</p>
+</div>
 <ul>
 <li>Screen Distance (cm): 60</li>
 <li>Screen resolution: 800 x 600</li>
-<li>Screen width (cm): 39.7</li>
-</ul></li>
+<li><p>Screen width (cm): 39.7</p></li>
+<li><p>Open one experiment and take note of “Participant ID”</p></li>
+</ul>
+</div>
+<div id="survey-computer" class="section level4">
+<h4>Survey Computer</h4>
+<ul>
 <li>Log-in to survey computer</li>
 <li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB</a></li>
 </ul>
@@ -858,7 +827,7 @@ div.tocify {
 <h3>Questionnaires</h3>
 <ul>
 <li>Let the participants finish the items</li>
-<li>A little break for the participants. If the participant wants to keep going, lead him to the test room</li>
+<li>Ask if the participant needs a little break. If the participant wants to keep going, lead him to the test room</li>
 </ul>
 <p>Say:</p>
 <blockquote>
@@ -936,7 +905,7 @@ div.tocify {
 <p>Escort participant to table.</p>
 <ul>
 <li>Complete <a href="vision-screening-protocol.html">Stereo Acuity Test</a></li>
-<li>Complete [C]olor Vision Test](vision-screening-protocol.html)</li>
+<li>Complete <a href="vision-screening-protocol.html">Color Vision Test</a></li>
 </ul>
 </div>
 </div>
@@ -975,10 +944,14 @@ div.tocify {
 <div id="retrieve-behavioral-data" class="section level3">
 <h3>Retrieve Behavioral Data</h3>
 <ul>
-<li><p>Output data files from the computer task are stored here: /Documents/PsychoPy-Stimuli/<strong>STUDY NAME</strong>/csv</p></li>
+<li>Output data files from the computer task are stored
+<ul>
+<li>/Documents/PsychoPy-Stimuli/<strong>Murray Folder Name</strong>/csv</li>
+<li>/Documents/PsychoPy-Stimuli/<strong>Abramov Folder Name</strong>/data</li>
+</ul></li>
 <li>Data must be copied to the <strong>Gilmore Lab Participant Data</strong> drive from the testing PC.</li>
 <li>Data will be copied to Box (XXX).</li>
-<li><p>After data export is complete, turn off computer and monitor in 503B.</p></li>
+<li>After data export is complete, turn off computer and monitor in 503B.</li>
 </ul>
 </div>
 <div id="retrieve-qualtrics-data" class="section level3">
@@ -1000,7 +973,7 @@ div.tocify {
 <div id="transfer-vision-screening-data" class="section level3">
 <h3>Transfer vision screening data</h3>
 <ul>
-<li>Enter the vision screening data using <strong>SPECIFY</strong>.</li>
+<li>Vision Screening Data will be entered into the last page of the Qualtrics Survey.</li>
 </ul>
 </div>
 </div>
@@ -1274,6 +1247,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
