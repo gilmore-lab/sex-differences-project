@@ -162,7 +162,9 @@ survey -> survey_computer -> qualtrics_server -> unspecified_process -> box
 
 ### Retrieve Behavioral Data
 
-- Output data files from the computer task are stored here: /Documents/PsychoPy-Stimuli/**STUDY NAME**/csv
+- Output data files from the computer task are stored
+  - /Documents/PsychoPy-Stimuli/**Murray Folder Name**/csv
+  - /Documents/PsychoPy-Stimuli/**Abramov Folder Name**/data
 
 - Data must be copied to the **Gilmore Lab Participant Data** drive from the testing PC.
 - Data will be copied to Box (XXX).
@@ -180,13 +182,13 @@ survey -> survey_computer -> qualtrics_server -> unspecified_process -> box
 
 ### Transfer vision screening data
 
-- Enter the vision screening data using **SPECIFY**.
+- Vision Screening Data will be entered into the last page of the Qualtrics Survey.
 
 ## Validation and cleaning
 
 The `analysis/session_qa.Rmd` script imports a data file specified as an input parameter, for example: `rmarkdown::render('analysis/session_qa.Rmd', params = list(data_fn='2019-10-29-140253_temp_thresh.csv'))`. 
 The script should be improved to output a custom HTML or PDF report for each participant file.
-To view an example, visit [this link](analysis/session_qa.html).
+To view an example, visit [this link](https://gilmore-lab.github.io/sex-differences-in-motion-perception/analysis/session_qa.html).
 
 ## Visualization
 
