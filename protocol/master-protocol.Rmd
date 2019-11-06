@@ -160,7 +160,7 @@ The process of scheduling participants involves the following steps:
 
 The `analysis/session_qa.Rmd` script imports a data file specified as an input parameter, for example: `rmarkdown::render('analysis/session_qa.Rmd', params = list(data_fn='2019-10-29-140253_temp_thresh.csv'))`. 
 The script should be improved to output a custom HTML or PDF report for each participant file.
-To view an example, visit [this link](analysis/session_qa.html).
+To view an example, visit [this link](/analysis/session_qa.html).
 
 ## Visualization
 

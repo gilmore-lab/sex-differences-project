@@ -4,6 +4,7 @@ output: html_document
 ---
 
 - Open PsychoPy by clicking on the icon located on the desktop.
+![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button.

@@ -108,7 +108,7 @@ You may say to the participant or have them read the following text:
 ```{r, child="implied-consent-language.Rmd"}
 ```
 
-Once the surveys are complete, say:
+Once the consent is complete, say:
 
 >"*That's great. Now we'd like to move on to the vision screening portion of the study. Are you ready?*"
 
@@ -122,7 +122,7 @@ Once the surveys are complete, say:
 ### Questionnaires
 
 - Let the participants finish the items
--	Ask if the participant if they need a little break. If the participant wants to keep going, lead him to the test room
+-	Ask the participant if they need a little break. If the participant wants to keep going, lead them to the test room
 
 Say:
 
@@ -139,7 +139,7 @@ Say:
 
 ### Run computer-based tasks
 
-#### Select run order
+#### *Select run order*
 
 The order of the computer experiments will be randomized across participants by flipping a coin.
 If the coin is HEADS, run the Murray et al. task first; if the coin is TAILS, run the Abramov et al. task first.
