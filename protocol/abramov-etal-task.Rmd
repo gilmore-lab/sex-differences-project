@@ -1,12 +1,12 @@
 ---
-title: "murray-et-al-task"
+title: "abramov-et-al-task"
 output: html_document
 ---
 
 - Open PsychoPy by clicking on the icon located on the desktop.
 ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
-    - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
+    - From the `File` menu, select the `Open Recent...` command and select the `xxx.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
     - **Be careful not to type in the programming window.**
     - A welcome screen with the following message will appear: *Welcome to the motion duration threshold study. Press any key to continue.*
@@ -15,10 +15,12 @@ output: html_document
     - Enter the participant ID and gender in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
->“In this task, you will try to detect whether a small patch of stripes is moving to the left or to the right. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to reliably detect the direction of motion."
+>“In this task, you will try to detect the direction of a small patch of black and white strips are vertical or horizontal. The width of the stripes will get smaller and smaller. Our goal is to find out the smallest stripe width that you need to reliably detect the direction of stripes."
 
 >"This task takes about 2 min to complete. But to make sure that we get reliable results, we'll need to do it 4 times. You can take a short break between the sections."
 
->"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, just guess."
+>"Put your fingers on the down and right arrow keys. You'll press the right arrow if you see horizontal stripes and the down arrow if you see vertical arrow. If you aren't sure, just guess."
+
+>"After you see the black dot, you will press the space bar to start the trial and wait for the white dot to appear to respond.
 
 >"Are you ready. Ok, let's go."

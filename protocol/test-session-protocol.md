@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-05 13:55:39"
+date: "2019-11-06 09:27:47"
 output:
   html_document:
     keep_md: true
@@ -25,16 +25,16 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Make sure the black tape is on the floor 10ft from the HOVT Snellen Acuity Chart which is on the door to 503B
 - Place Stereo Acuity Test and Glasses on table
 - Place Color Vision Test on table
+- Place the Vision Screening Score Sheet on the table
 
 #### Review vision screening procedures
 
-The vision screenint protocol may be reviewed at <vision-screening-protocol.html>
+The vision screening protocol may be reviewed at [this link](vision-screening-protocol.html)
 
 ### Set up for computer-based tasks {.tabset}
 
 #### Stimuli Computer
 - *Log into Data Collection Computer*
-  - In 503B switch on power of the surge protector.
   - Turn on the power of the data collection computer
   - Turn on the CRT monitor in 503B
   - Log-in (Gilmore Lab)
@@ -124,7 +124,7 @@ Your participation is voluntary and you may decide to stop at any time.  You do 
 Clicking the “Take The Survey” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
 Thank you!
 
-Once the surveys are complete, say:
+Once the consent is complete, say:
 
 >"*That's great. Now we'd like to move on to the vision screening portion of the study. Are you ready?*"
 
@@ -132,13 +132,13 @@ Once the surveys are complete, say:
 
 ### Complete pattern visual acuity testing
 
-- Complete [pattern acuity test](/vision-screening-protocol.html#snellen_acuity_(childadult))
+- Complete [pattern acuity test](vision-screening-protocol.html)
   - Adult - HOTV @ 10ft
 
 ### Questionnaires
 
 - Let the participants finish the items
--	Ask if the participant if they need a little break. If the participant wants to keep going, lead him to the test room
+-	Ask the participant if they need a little break. If the participant wants to keep going, lead them to the test room
 
 Say:
 
@@ -155,7 +155,7 @@ Say:
 
 ### Run computer-based tasks
 
-#### Select run order
+#### *Select run order*
 
 The order of the computer experiments will be randomized across participants by flipping a coin.
 If the coin is HEADS, run the Murray et al. task first; if the coin is TAILS, run the Abramov et al. task first.
@@ -166,6 +166,7 @@ Record the task run first on the experiment run log.
 
 
 - Open PsychoPy by clicking on the icon located on the desktop.
+![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button.

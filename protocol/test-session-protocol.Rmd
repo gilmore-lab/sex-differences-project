@@ -35,7 +35,6 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 
 #### Stimuli Computer
 - *Log into Data Collection Computer*
-  - In 503B switch on power of the surge protector.
   - Turn on the power of the data collection computer
   - Turn on the CRT monitor in 503B
   - Log-in (Gilmore Lab)
@@ -86,9 +85,9 @@ Say:
 
 If the participant answers yes, say:
 
->"*Great. You can put your things here.*"
+>"*Great. You can put your coat on the back of the door and your bag here.*"
 
-- Store belongings in **X**.
+- Store coat on back of main door and bags by the file/bookcase.
 
 >"*Are you \<NAME OF PERSON ON SONA SYSTEMS SITE SCHEDULED FOR THIS SESSION\>?*"
 
@@ -121,7 +120,10 @@ Once the consent is complete, say:
 
 ### Questionnaires
 
-- Let the participants finish the items
+>"*Thank you. Now we'd like to move on to the questionnaire portion of the study. Are you ready?*"
+
+- Have the participant sit back down at the computer.
+- Let the participants finish the questionnaire.
 -	Ask the participant if they need a little break. If the participant wants to keep going, lead them to the test room
 
 Say:
@@ -134,16 +136,17 @@ Say:
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
 - The monitor should be located **60cm** from the bridge of the nose on the participant.
-- The chair height should be set so the participant is looking directly at the **X** in the middle of the screen.
-- Guide the participant to use the arrow keys for responses.
+- The chair height should be set so the participant is looking in the middle of the screen.
+- Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
 
 ### Run computer-based tasks
 
-#### *Select run order*
+#### Select run order
 
-The order of the computer experiments will be randomized across participants by flipping a coin.
-If the coin is HEADS, run the Murray et al. task first; if the coin is TAILS, run the Abramov et al. task first.
-Record the task run first on the experiment run log.
+The order of the computer experiments will be randomized across participants in Qualtrics
+- run the Murray et al. task first
+- run the Abramov et al. task first.
+*Record the task run first on the experiment run log.*
 
 #### Murray et al.
 
