@@ -155,11 +155,8 @@ The order of the computer experiments will be randomized across participants in 
 
 #### Abramov et al.
 
-- Open the files "" located in folder.
-- In PsychoPy, press the green button. 
-- Enter the ID in the pop window and speak to the participant.
-
->“*Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,...*"
+```{r, child="abramov-etal-task.Rmd"}
+```
 
 ### (Optional) stereo acuity and color vision tests
 
