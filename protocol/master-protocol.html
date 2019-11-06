@@ -28,6 +28,10 @@
 <script src="master-protocol_files/navigation-1.1/codefolding.js"></script>
 <link href="master-protocol_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="master-protocol_files/highlightjs-9.12.0/highlight.js"></script>
+<script src="master-protocol_files/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="master-protocol_files/viz-0.3/viz.js"></script>
+<link href="master-protocol_files/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="master-protocol_files/grViz-binding-1.0.1/grViz.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -261,7 +265,8 @@ div.tocify {
 
 <h1 class="title toc-ignore">Individual differences in visual perception in adults</h1>
 <h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
-<h4 class="date">2019-11-06 08:29:56</h4>
+<h4 class="date">2019-11-06 10:06:04</h4>
+
 
 </div>
 
@@ -938,6 +943,32 @@ div.tocify {
 </div>
 <div id="data-processing" class="section level1">
 <h1>Data processing</h1>
+<p>The following diagram depicts the post-study data processing workflow.</p>
+<pre class="r"><code>library(DiagrammeR)
+
+DiagrammeR::grViz(&quot;digraph {
+graph [layout = dot, rankdir = LR]
+
+# define the global styles of the nodes. We can override these in box if we wish
+node [shape = rectangle, style = filled, fillcolor = Linen]
+
+murray [label = &#39;Murray&#39;, shape = folder, fillcolor = Beige]
+abramov [label = &#39;Abramov&#39;, shape = folder, fillcolor = Beige]
+survey [label = &#39;Qualtrics&#39;]
+test_computer [label = &#39;Task\ncomputer&#39;]
+survey_computer [label =&#39;Survey\ncomputer&#39;]
+other_computer [label = &#39;Unspecified\ncomputer&#39;]
+flash_drive [label=&#39;Flash\ndrive&#39;]
+unspecified_process [label=&#39;TBD&#39;]
+box [label = &#39;Box.com&#39; fillcolor = White]
+qualtrics_server [label = &#39;Qualtrics\nServer&#39; fillcolor = White]
+
+# edge definitions with the node IDs
+{murray abramov} -&gt; test_computer -&gt; flash_drive -&gt; other_computer -&gt; box
+survey -&gt; survey_computer -&gt; qualtrics_server -&gt; unspecified_process -&gt; box
+}&quot;)</code></pre>
+<div id="htmlwidget-46a250b15bbc3050180a" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-46a250b15bbc3050180a">{"x":{"diagram":"digraph {\ngraph [layout = dot, rankdir = LR]\n\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\n\nmurray [label = \"Murray\", shape = folder, fillcolor = Beige]\nabramov [label = \"Abramov\", shape = folder, fillcolor = Beige]\nsurvey [label = \"Qualtrics\"]\ntest_computer [label = \"Task\ncomputer\"]\nsurvey_computer [label =\"Survey\ncomputer\"]\nother_computer [label = \"Unspecified\ncomputer\"]\nflash_drive [label=\"Flash\ndrive\"]\nunspecified_process [label=\"TBD\"]\nbox [label = \"Box.com\" fillcolor = White]\nqualtrics_server [label = \"Qualtrics\nServer\" fillcolor = White]\n\n# edge definitions with the node IDs\n{murray abramov} -> test_computer -> flash_drive -> other_computer -> box\nsurvey -> survey_computer -> qualtrics_server -> unspecified_process -> box\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <div id="gathering" class="section level2">
 <h2>Gathering</h2>
 <div id="retrieve-behavioral-data" class="section level3">
