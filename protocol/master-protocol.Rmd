@@ -130,6 +130,34 @@ The process of scheduling participants involves the following steps:
 
 # Data processing
 
+The following diagram depicts the post-study data processing workflow.
+
+```{r}
+library(DiagrammeR)
+
+DiagrammeR::grViz("digraph {
+graph [layout = dot, rankdir = LR]
+
+# define the global styles of the nodes. We can override these in box if we wish
+node [shape = rectangle, style = filled, fillcolor = Linen]
+
+murray [label = 'Murray', shape = folder, fillcolor = Beige]
+abramov [label = 'Abramov', shape = folder, fillcolor = Beige]
+survey [label = 'Qualtrics']
+test_computer [label = 'Task\ncomputer']
+survey_computer [label ='Survey\ncomputer']
+other_computer [label = 'Unspecified\ncomputer']
+flash_drive [label='Flash\ndrive']
+unspecified_process [label='TBD']
+box [label = 'Box.com' fillcolor = White]
+qualtrics_server [label = 'Qualtrics\nServer' fillcolor = White]
+
+# edge definitions with the node IDs
+{murray abramov} -> test_computer -> flash_drive -> other_computer -> box
+survey -> survey_computer -> qualtrics_server -> unspecified_process -> box
+}")
+```
+
 ## Gathering
 
 ### Retrieve Behavioral Data

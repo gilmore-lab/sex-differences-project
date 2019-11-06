@@ -1,0 +1,106 @@
+---
+title: "Qualtrics export"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+if !(require('qualtRics')) {
+  install.packages('qualtRics')
+}
+```
+
+# Purpose
+
+This document tests the use of a set of scripts and the `qualtRics` R package for exporting surveys from the Qualtrics API.
+
+# Load package
+
+I installed the package separately via `install.packages('qualtRics')`.
+This document contains (hidden) code to install the package if `require('qualtRics')` returns `FALSE`.
+
+```{r}
+library('qualtRics')
+```
+
+# Set-up credentials
+
+I followed the instructions in <https://www.rdocumentation.org/packages/qualtRics/versions/3.0>:
+
+1. Generated an API token (`api_key`).
+2. Generated a `.qualtrics.yml` file.
+3. Made sure to add `qualtrics.yml` to `protocol/.gitignore`!
+4. Ran `registerOptions()`. This threw an error.
+4. Run `qualtrics_api_credentials()` with the appropriate api_key value and `base_url='pennstate.qualtrics.com`. I did *not* use the `install = TRUE` option to save the credentials for use in a future session.
+
+# List surveys
+
+This generates a 'tibble' of surveys.
+
+```
+surveys <- qualtRics::all_surveys()
+```
+
+The `id` field can be used to grab data from the chosen survey.
+
+```
+this_survey <- surveys[2,]$id
+md <- qualtRics::metadata(this_survey)
+```
+
+The following selects just the questions.
+
+```
+q <- md$questions
+q
+```
+
+# Mapping to specific question groups
+
+It looks like q[1] is the implied assent page.
+q[3] is the participant ID.
+q[4] is the visual acuity.
+q[5] is gender.
+q[7] is age category.
+q[8] is year in school.
+q[9] is planned major.
+q[10] is ethnicity.
+q[11] is handedness.
+q[12] is a practice question about word meanings.
+q[13] is the answer to the practice question.
+q[14] is a page timer.
+q[15] is the first word meaning question.
+
+This is going to be a royal pain.
+
+# Alternative: Export CSV then import
+
+I did the following:
+
+1. Manually opened the survey on the Qualtrics site.
+2. Exported it as a CSV.
+3. Copied the CSV to the `analysis/csv` folder.
+
+I will defer until later figuring out how to do this via the API.
+
+## Import CSV
+
+```
+d <- qualtRics::read_survey("analysis/csv/Sex differences survey OLD_November 4, 2019_15.32.csv")
+dim(d)
+```
+
+This gives a sensible output of `[4,163]`.
+
+```
+names(d)
+```
+
+This also gives something useful.
+For example, `d$`Duration (in seconds)`/60` gives the duration in *minutes* for the questionnaires.
+
+
+
