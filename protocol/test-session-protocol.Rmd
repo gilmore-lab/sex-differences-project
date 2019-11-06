@@ -25,10 +25,11 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Make sure the black tape is on the floor 10ft from the HOVT Snellen Acuity Chart which is on the door to 503B
 - Place Stereo Acuity Test and Glasses on table
 - Place Color Vision Test on table
+- Place the Vision Screening Score Sheet on the table
 
 #### Review vision screening procedures
 
-The vision screenint protocol may be reviewed at <vision-screening-protocol.html>
+The vision screening protocol may be reviewed at [this link](vision-screening-protocol.html)
 
 ### Set up for computer-based tasks {.tabset}
 
@@ -115,7 +116,7 @@ Once the surveys are complete, say:
 
 ### Complete pattern visual acuity testing
 
-- Complete [pattern acuity test](/vision-screening-protocol.html#snellen_acuity_(childadult))
+- Complete [pattern acuity test](vision-screening-protocol.html)
   - Adult - HOTV @ 10ft
 
 ### Questionnaires

@@ -1,4 +1,18 @@
-**Penn State Vision Screening Score Sheet**
+---
+#title: "Vision Screening Score Sheet"
+#author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
+#date: "2019-11-06 07:58:09"
+output:
+  html_document:
+    keep_md: true
+    toc: false
+    toc_depth: 3
+    toc_float: true
+    code_folding: hide
+---
+
+
+# **Penn State Vision Screening Score Sheet**
 
 **ParticipantID:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_**
 
@@ -8,7 +22,7 @@
 
 **Experiment:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_**
 
-1. **Optotype acuity—HOTV**
+# **Optotype acuity—HOTV**
 
 | **Snellen Acuity** | **Circle INCORRECT letter (Left)** | **Circle INCORRECT letter (Binocular)** | **Circle INCORRECT letter (Right)** |
 | ------- | ------------- | ------------- | ------------- |
@@ -26,7 +40,7 @@
 
 Best 50%:                 Left\_\_\_\_\_\_\_\_          Both\_\_\_\_\_\_\_\_\_         Right\_\_\_\_\_\_\_\_\_\_
 
-2. **Ishihara color test**
+# **Ishihara color test**
 
 | **Page #** | **Shape Reported** |   |
 | --- | --- | --- |
@@ -40,7 +54,7 @@ Best 50%:                 Left\_\_\_\_\_\_\_\_          Both\_\_\_\_\_\_\_\_\_  
 | 7 | \_\_\_\_\_\_\_ **green line**  | **\_\_\_\_\_\_\_maroon (red) line** |
 | 8 | \_\_\_\_\_\_\_ **red line**   | \_\_\_\_\_\_\_ **purple line**       |
 
-3. **Worth binocular fusion**
+# **Worth binocular fusion**
 
 |   | **Eye** | **Record number of dots seen of each color** |
 | --- | --- | --- |
@@ -48,7 +62,7 @@ Best 50%:                 Left\_\_\_\_\_\_\_\_          Both\_\_\_\_\_\_\_\_\_  
 | 2 | Right eye covered | \_\_\_\_\_\_\_ green (3) \_\_\_\_\_\_\_red (0) |
 | 3 | Left eye covered  | \_\_\_\_\_\_\_ green (0) \_\_\_\_\_\_\_red (2) |
 
-4. **Stereoacuity Test**
+# **Stereoacuity Test**
 
 | **Stereoacuity (arc sec)** | **Record response** |
 | --- | --- |
