@@ -23,4 +23,6 @@ output: html_document
 
 >"After you see the black dot, you will press the space bar to start the trial and wait for the white dot to appear to respond.
 
+>"Remember, accuracy is more important that speed. Please take your time."
+
 >"Are you ready. Ok, let's go."

@@ -21,4 +21,6 @@ output: html_document
 
 >"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, just guess."
 
+>"Remember, accuracy is more important that speed. Please take your time."
+
 >"Are you ready. Ok, let's go."
