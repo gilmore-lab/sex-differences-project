@@ -19,7 +19,7 @@ output: html_document
 
 >"This task takes about 2 min to complete. But to make sure that we get reliable results, we'll need to do it 4 times. You can take a short break between the sections."
 
->"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, just guess."
+>"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
 
 >"Remember, accuracy is more important that speed. Please take your time."
 

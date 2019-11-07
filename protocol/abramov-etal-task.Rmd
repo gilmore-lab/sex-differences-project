@@ -19,7 +19,7 @@ output: html_document
 
 >"This task takes about 2 min to complete. But to make sure that we get reliable results, we'll need to do it 4 times. You can take a short break between the sections."
 
->"Put your fingers on the down and right arrow keys. You'll press the right arrow if you see horizontal stripes and the down arrow if you see vertical arrow. If you aren't sure, just guess."
+>"Put your fingers on the down and right arrow keys. You'll press the right arrow if you see horizontal stripes and the down arrow if you see vertical stripes If you aren't sure, make your best guess."
 
 >"After you see the black dot, you will press the space bar to start the trial and wait for the white dot to appear to respond.
 
