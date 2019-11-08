@@ -3,6 +3,9 @@ title: "Individual differences in visual perception in adults"
 author: "Rick Gilmore, Yiming Qian, & Andrea Seisler"
 date: "`r Sys.time()`"
 output: 
+  pdf_document:
+    toc: true
+    toc_depth: 5   
   html_document:
     toc: true
     toc_depth: 5
@@ -40,6 +43,8 @@ This study requires high temporal resolution in order to measure temporal thresh
 
 Once we have determined the best monitor settings, we will calibrate the monitor before we start collecting data.
 Those steps follow.
+
+## Calibrate Monitor  
 
 ```{r, child="calibrate-monitor.Rmd"}
 ```
@@ -123,12 +128,12 @@ The process of scheduling participants involves the following steps:
 |             | 03:15p   |                           | Yiming |
 |             | 04:30p   |                           | Yiming |
 
-# Day of visit
+# Day of visit {.tabset}
 
 ```{r, child="test-session-protocol.Rmd"}
 ```
 
-# Data processing
+# Data processing {.tabset}
 
 ## Gathering
 
@@ -166,7 +171,7 @@ To view an example, visit [this link](https://gilmore-lab.github.io/sex-differen
 
 ## Analysis
 
-# Appendices
+# Appendices {.tabset}
 
 ```{r terminology, child="terminology.Rmd"}
 ```

@@ -51,8 +51,8 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
  ![Display](images/ds3.PNG)  
   - Choose **Advanced display settings** (You may need to scroll down to see this)  
  ![Advanced Display](images/DS4.PNG)  
-  - Make sure the window that appears has the following Settings
- ![Monitor Settings](images/ds5.PNG)  
+  - Make sure the window that appears has the following Settings  
+ ![Monitor Settings](images/ds5.PNG)   
 - *Double-check Brightness/Contrast of monitor*
   - Contrast:
   - Brightness:
@@ -64,11 +64,11 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
   - Adjust the Contrast (leftmost option) to the required setting using the +/- buttons on the monitor 
   - Adjust the Brightness (second option from the left) to the required setting using the +/- buttons on the monitor 
   
-- *Check monitor within PsychoPy*
-  - Go to **Monitor Settings** 
- ![Monitor Settings](images/pp2.png)
-  - View Settings, they should be as follows  
- ![Specific Settings](images/pp3.PNG)  
+- *Check monitor within PsychoPy*  
+  - Go to **Monitor Settings**   
+ ![Monitor Settings](images/pp2.png)  
+  - View Settings, they should be as follows    
+ ![Specific Settings](images/pp3.PNG)   
  
 #### Survey Computer
 
