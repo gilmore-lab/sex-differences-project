@@ -9,18 +9,18 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-You are being invited to volunteer to participate in a research study. This summary explains information about this research.	
+You are being invited to participate in a research study. 
 
--	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting and how this ability is related to personal interests and other abilities. 
+-	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting.
 The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life. 
--	You will complete some computer-based surveys about your background, personal interests, spatial and verbal abilities (~25 min). Then, you will complete one or two short (10-20 min) computer tasks in which you will attempt to detect motion or recognize the direction of motion presented on a computer screen.
+-	You will complete one computer-based surveys. Then, you will complete two short computer tasks in which you will attempt to detect motion on a computer screen.
 -	All questionnaire and computer task data you provide will be saved using a numeric code. No information about your identity or how to contact you will be saved with the data. 
--	If you are participating as part of the Psychology Subject Pool, you will receive course credit for participating (at the rate of ½ credit per ½ hours) as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.
+-	If you are participating as part of the Psychology Subject Pool, you will receive course credit for participation as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.
 
-If you have questions, complaints, or concerns about the research, you should contact Yiming Qian at 814-863-3116 or Rick Gilmore at 814-865-3664.
-If you have questions regarding your rights as a research subject or concerns regarding your privacy, you may contact the Office for Research Protections at 814-865-1775. 
+If you have questions, complaints, or concerns about the research, you could contact principal investigator Yiming Qian or her advisor Rick Gilmore.
+If you have questions regarding your rights as a research subject or concerns regarding your privacy, you could contact the Office for Research Protections. 
 
 Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. 
 
-Clicking the “Take The Survey” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
+Clicking the "Next” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
 Thank you!

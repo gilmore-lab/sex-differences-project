@@ -9,39 +9,28 @@ title: "abramov-et-al-task"
 output: html_document
 ---
 
-- Open PsychoPy by clicking on the icon located on the desktop.
-<<<<<<< HEAD
-- When PsychoPy opens, open the file for this experiment.
-    - From the `File` menu, select the `Open Recent...` command and select the `contrast-sensitivity-task.py` file.
-- When the file opens, run the experiment by pressing the green (running person) button.
-    - **Be careful not to type in the programming window.**
-    - Depends on which computer tests are running first. If this experiemnt is the second, reenter the participant ID YYYY-MM-DD-HHMMSS in the pop window, and press the `Ok` button to enter the data.
-- Speak to the participant
-
->“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. You can press the LEFT or RIGHT buttons if you see the stripes are horizontal, UP or DOWN button if you see the stripes are vertical. But if you aren't sure, just guess. "
-
->"When you are you ready. Hit any button to continue."
-=======
 ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
     - From the `File` menu, select the `Open Recent...` command and select the `xxx.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
     - **Be careful not to type in the programming window.**
-    - A welcome screen with the following message will appear: *Welcome to the motion duration threshold study. Press any key to continue.*
-- When you are ready to enter the participant ID, press a key on the keyboard.
+- Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Enter the participant ID and gender in the pop window, and press the `Ok` button to enter the data.
+    - Participant ID in the pop-up window have shown "YYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
->“In this task, you will try to detect the direction of a small patch of black and white strips are vertical or horizontal. The width of the stripes will get smaller and smaller. Our goal is to find out the smallest stripe width that you need to reliably detect the direction of stripes."
+>“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. You can press the LEFT or RIGHT buttons if you see the stripes are horizontal, UP or DOWN button if you see the stripes are vertical. But if you aren't sure, just guess. "
 
->"This task takes about 2 min to complete. But to make sure that we get reliable results, we'll need to do it 4 times. You can take a short break between the sections."
 
->"Put your fingers on the down and right arrow keys. You'll press the right arrow if you see horizontal stripes and the down arrow if you see vertical stripes If you aren't sure, make your best guess."
+>“In this task, you will see a small patch of black and white stripes and need to detect the direction of these strips, rather than their moving direction. The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
 
->"After you see the black dot, you will press the space bar to start the trial and wait for the white dot to appear to respond.
+>"Which hand do you prefer to press the arrow keys?"
+>"Put your fingers on the left and down arrow keys. You'll press the left arrow if you see see horizontal stripes and the down arrow if you see vertical stripes. If you aren't sure, make your best guess."
+>For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
 
 >"Remember, accuracy is more important that speed. Please take your time."
 
->"Are you ready. Ok, let's go."
->>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
+>"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You could take a short break between the sections."
+
+>"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."

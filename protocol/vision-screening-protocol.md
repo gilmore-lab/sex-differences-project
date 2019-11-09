@@ -1,7 +1,7 @@
 ---
 title: "Vision Screening Protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-06 08:01:58"
+date: "2019-11-09 13:32:40"
 output:
   html_document:
     keep_md: true
@@ -19,14 +19,21 @@ output:
 
 - Have participant stand 10 feet away from the chart on the wall (black tape on the floor)
 - Ask the participant to start with the top line and have the participant read the first symbols in every line in descending order
+
+>"Could you read the first symbols in each line, beginning from the top?" 
+
 - If they miss a letter, circle it on the score sheet.
 - Move back up one line and ask the participant to identify all the optotypes on that line. If the participant identifies all symbols correctly, go to the next line with smaller optotypes and ask the participant to identify all optotypes on the line.
+
+> "Could you read all the symbols in this line? And this line?" 
+
 - Their visual acuity will be the one that matches the line on which 50% (3 of 5, 4 of 6) of the symbols are identified correctly.
 
 ## Report results
 
 - Log the answer to each item on the [score sheet](vision-screening-score-sheet.html).
 - Log the acuity for the participant in terms of 10 ft (e.g. 10/10)
+- Report the result into Qualtrics
 
 # Color Test (Child/Adult)
 
@@ -34,6 +41,11 @@ output:
 
 - The examination should be done indoors with bright, natural illumination of more than 300 lux.
 - The plates should be held at a distance of 50 - 75 cm (20-30 inches)
+
+Say:
+
+>"Look at this picture and tell me what you see." 
+
 - The first exam:
     - *Skip: Examiner shows the participant plate 1 or 2, tracing the red line. Recognized as "circle", "square", or some other design.
     - Plate 3 and 4. The participants are required to say outloud "circle", "square", or some other design. If the shape is correctly recognized, mark as normal.If the shape is not correctly recognized, mark as abnormal.
@@ -49,7 +61,7 @@ output:
 - Those who can not recognize any curve in plate 8 at all, or any lower curve are definitely abnormal.
 - They might be abnormal if they misjudge more than 3 plates among plates 3,4,6,7
 - If they misjudge 1-2 plates among plates 3,4,6,7, it is better to re-examine him in details from plate 1-8. 
-
+- Report the result into Qualtrics
 # Stereo Vision Test
 
 ## Procedure
@@ -69,4 +81,4 @@ Continue until participant gives up trying, or making two successive mistakes.
 ## Report results
 
 - Log the answer to each item on the [score sheet](vision-screening-score-sheet.html).
-- Record the level of stereopsis at the last one chosen correctly. 
+- Record the level of stereopsis into Qualtrics at the last one chosen correctly. 

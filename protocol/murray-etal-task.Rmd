@@ -9,18 +9,22 @@ output: html_document
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
     - **Be careful not to type in the programming window.**
-    - A welcome screen with the following message will appear: *Welcome to the motion duration threshold study. Press any key to continue.*
-- When you are ready to enter the participant ID, press a key on the keyboard.
+- Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Enter the participant ID and gender in the pop window, and press the `Ok` button to enter the data.
+    - Participant ID in the pop-up window have shown "YYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
->“In this task, you will try to detect whether a small patch of stripes is moving to the left or to the right. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to reliably detect the direction of motion."
+>“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion."
 
->"This task takes about 2 min to complete. But to make sure that we get reliable results, we'll need to do it 4 times. You can take a short break between the sections."
-
+>"Which hand do you prefer to press the arrow keys?"
 >"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
+>For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
+
+>"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dots appear.
 
 >"Remember, accuracy is more important that speed. Please take your time."
 
->"Are you ready. Ok, let's go."
+>"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You can take a short break between the sections."
+
+>"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."

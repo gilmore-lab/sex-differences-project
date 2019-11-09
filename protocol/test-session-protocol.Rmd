@@ -81,7 +81,7 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 
 Say:
 
->"*Welcome to the brain, behavior, and development lab. Are you hear for the study about motion perception?*"
+>"*Welcome to the brain, behavior, and development lab. Are you here for the study about individual difference of motion perception?*"
 
 If the participant answers yes, say:
 
@@ -99,7 +99,7 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- Enter the ID: YYYY-MM-DD-HHMM based on appointment time
+- You will see the Participant ID on the top of implied consent. Take a note of this participant ID.
 
 Conduct the implied verbal consent.
 You may say to the participant or have them read the following text:
@@ -107,11 +107,9 @@ You may say to the participant or have them read the following text:
 ```{r, child="implied-consent-language.Rmd"}
 ```
 
-Once the consent is complete, say:
+Once the consent is complete (It means the participant clicks to the next page), say:
 
->"*That's great. Now we'd like to move on to the vision screening portion of the study. Are you ready?*"
-
-- If the participant says yes, proceed.
+>"*That's great. Now we'd like to move on to the vision screening portion of the study. Could you stand behind this line?*"
 
 ### Complete pattern visual acuity testing
 
@@ -120,11 +118,16 @@ Once the consent is complete, say:
 
 ### Questionnaires
 
->"*Thank you. Now we'd like to move on to the questionnaire portion of the study. Are you ready?*"
+>"*Thank you. Now we'd like to move on to the questionnaire portion of the study. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. And let me know when you finish it.*"
 
 - Have the participant sit back down at the computer.
 - Let the participants finish the questionnaire.
--	Ask the participant if they need a little break. If the participant wants to keep going, lead them to the test room
+- Answer the questions if the participants have any, when they works on the questionnaires. But in careful in the hobby page, spatial and verbal page, because the time are recorded. The page will vanish when the time have passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.  
+After answering the question, say:
+>"*Beware: there is a time limit for this page. *"
+
+- If the participants have questions in the instruction page of hobby test, spatial and verbal test, answer careful and make sure the participants understand well. 
+-	After the participants finish the questionnaire, ask them if they need a little break. If the participant wants to keep going, lead them to the test room
 
 Say:
 
@@ -143,17 +146,17 @@ Say:
 
 #### Select run order
 
-The order of the computer experiments will be randomized across participants in Qualtrics
-- run the Murray et al. task first
-- run the Abramov et al. task first.
+The order of the computer experiments will be randomized across participants based on the participant ID shown in Qualtrics
+- run the temporal duration threshold task first (Murray et al.) if the ID number is even.
+- run the contrast sensitivity task (Abramov et al.) first if the ID number is odd.
 *Record the task run first on the experiment run log.*
 
-#### Murray et al.
+#### Temporal duration threshold task (Murray et al.)
 
 ```{r, child="murray-etal-task.Rmd"}
 ```
 
-#### Abramov et al.
+#### Contrast sensitivity task (Abramov et al.)
 
 ```{r, child="abramov-etal-task.Rmd"}
 ```
