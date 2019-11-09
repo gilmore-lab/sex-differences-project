@@ -3,6 +3,9 @@ title: "Individual differences in visual perception in adults"
 author: "Rick Gilmore, Yiming Qian, & Andrea Seisler"
 date: "`r Sys.time()`"
 output: 
+  pdf_document:
+    toc: true
+    toc_depth: 5   
   html_document:
     toc: true
     toc_depth: 5
@@ -42,6 +45,8 @@ Replication of Abramov et al. (2012) study requires the best luminance resolutio
 Once we have determined the best monitor settings, we will calibrate the monitor before we start collecting data.
 Those steps follow.
 
+## Calibrate Monitor  
+
 ```{r, child="calibrate-monitor.Rmd"}
 ```
 
@@ -50,9 +55,9 @@ We may check the monitor calibration during data collection at a frequency we wi
 ## Survey preparation
 
 This study uses Qualtrics to collect implied/oral consent and other data from participants.
-Yiming has generated a draft survey, saved [here](Sex_difference_survey.qsf) as a `*.qsf` text file.
+Yiming has generated a draft survey, saved [here](qualtrics_survey.qsf) as a `*.qsf` format text file.
 
-The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
+The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON>
 
 # Scheduling participants {.tabset}
 
@@ -70,7 +75,6 @@ The process of scheduling participants involves the following steps:
   - The scheduled RA will be added to the title of the slot
   - The RA will also be invited to the google calendar event.
 4. Researchers will be contacted by email and Discord by Yiming or Andrea if they are needed for a slot that is not part of their regularly scheduled lab time.
-
 
 ## Weekly testing slots
 
@@ -125,18 +129,20 @@ The process of scheduling participants involves the following steps:
 |             | 03:15p  |                           | Yiming |
 |             | 04:30p  |                           | Yiming |
 
-# Day of visit
+# Day of visit {.tabset}
 
 ```{r, child="test-session-protocol.Rmd"}
 ```
 
-# Data processing
+# Data processing {.tabset}
 
 ## Gathering
 
 ### Retrieve Behavioral Data
 
-- Output data files from the computer task are stored here: /Documents/PsychoPy-Stimuli/**STUDY NAME**/csv
+- Output data files from the computer task are stored
+  - /Documents/PsychoPy-Stimuli/**Murray Folder Name**/csv
+  - /Documents/PsychoPy-Stimuli/**Abramov Folder Name**/data
 
 - Data must be copied to the **Gilmore Lab Participant Data** drive from the testing PC.
 - Data will be copied to Box (XXX).
@@ -148,25 +154,29 @@ The process of scheduling participants involves the following steps:
   - To review total summary, which shows total graph summary of survey distribution 
     - Click on **Distributions** tab
   -  To review individual responses to survey questions
-    -Click on **Data & Analysis** tab
+    - Click on **Data & Analysis** tab
     - Under **Actions** click to open drop down menu
     - Click **view response**
 
 ### Transfer vision screening data
 
+<<<<<<< HEAD
 - Enter the vision screening data using **SPECIFY**. The experimenter can submit the result in qualtrics.
+=======
+- Vision Screening Data will be entered into the last page of the Qualtrics Survey.
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
 
 ## Validation and cleaning
 
 The `analysis/session_qa.Rmd` script imports a data file specified as an input parameter, for example: `rmarkdown::render('analysis/session_qa.Rmd', params = list(data_fn='2019-10-29-140253_temp_thresh.csv'))`. 
 The script should be improved to output a custom HTML or PDF report for each participant file.
-To view an example, visit [this link](analysis/session_qa.html).
+To view an example, visit [this link](https://gilmore-lab.github.io/sex-differences-in-motion-perception/analysis/session_qa.html).
 
 ## Visualization
 
 ## Analysis
 
-# Appendices
+# Appendices {.tabset}
 
 ```{r terminology, child="terminology.Rmd"}
 ```

@@ -1,7 +1,11 @@
 ---
 title: "Set-up Checklist"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
+<<<<<<< HEAD
 date: "2019-11-04 17:12:38"
+=======
+date: "2019-11-04 10:30:48"
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
 output:
   html_document:
     keep_md: true
@@ -25,7 +29,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Place Stereo Acuity Test and Glasses on table
 - Place Color Vision Test on table
 
-#### Administation Instructions
+#### Administration Instructions
 
 
 
@@ -40,9 +44,15 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - If they miss a letter, circle it on the score sheet.
 - Move back up one line and ask the participant to identify all the optotypes on that line. If the participants identifies all symbols correctly, go to the next line with smaller optotypes and ask the child to identify all optotypes on the line.
 - Their visual acuity will be the one that matches the line on which 50% (3 of 5, 4 of 6) of the symbols are identified correctly.
+<<<<<<< HEAD
 
 ## Report results
 
+=======
+
+## Report results
+
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
 - Log the answer to each item on the [score sheet](vision-screening-data.md).
 - Log the acuity for the participant in terms of 10 ft (e.g. 10/10)
 
@@ -92,6 +102,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - In 503B switch on power of large surge protector on bottom left shelf.
 - Log-in (Gilmore Lab)
 
+<<<<<<< HEAD
 
 
 - Double-check monitor settings within Windows 
@@ -99,6 +110,12 @@ Materials for vision screening are stored on the table next to Andrea's office.
 ![Settings Logo](images/DispSettings-1.PNG)
 
 
+=======
+- Double-check monitor settings within Windows 
+  - Click Settings Logo on Task Bar
+![Settings Logo](images/DispSettings-1.PNG)
+
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
 (Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
   - Refresh rate: 85 Hz
@@ -115,12 +132,17 @@ Materials for vision screening are stored on the table next to Andrea's office.
     - Screen resolution: 800 x 600
     - Screen width (cm): 39.7
   
+<<<<<<< HEAD
   
 - Get Participant ID  
   - Open one experiment based on the appointment time and take note of "Participant ID"(YYYY-MM-DD-HHMMSS)
+=======
+- Get Participant ID  
+  - Open one experiment and take note of "Participant ID"
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
   
 - Log-in to survey computer
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON>
 
 ## After participant arrives
 
@@ -128,6 +150,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 Say:
 
+<<<<<<< HEAD
 >"*Welcome to the brain, behavior, and development lab. Are you here for the study about motion perception?*"
 
 If the participant answers yes, say:
@@ -182,6 +205,72 @@ After enter the ID, say:
 
 - Complete [pattern acuity test](vision-screening.Rmd)
   - Adult - HOTV @ 10ft
+=======
+>"*Welcome to the brain, behavior, and development lab. Are you hear for the study about motion perception?*"
+
+If the participant answers yes, say:
+
+>"*Great. You can put your things here.*"
+
+- Store belongings in **X**.
+
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
+
+
+>"*Are you <NAME OF PERSON ON SONA SYSTEMS SITE>?*"
+
+- If the participant answers yes, say:
+
+>"*Ok. We want to make sure that you get credit for participation. Please sit here for the first portion of the study.*"
+
+- Have the person sit at the computer where the survey will be taken.
+
+### Begin the survey
+
+<<<<<<< HEAD
+- Let the participants finish the items
+-	A little break for the participants. If the participant wants to keep going, lead him to the test room
+=======
+- Enter the ID: YYYY-MM-DD-HHMM based on appointment time
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
+
+Conduct the implied verbal consent.
+You may say to the participant or have them read the following text:
+
+
+
+
+
+You are being invited to volunteer to participate in a research study. This summary explains information about this research.	
+
+-	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting and how this ability is related to personal interests and other abilities. 
+The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life. 
+-	You will complete some computer-based surveys about your background, personal interests, spatial and verbal abilities (~25 min). Then, you will complete one or two short (10-20 min) computer tasks in which you will attempt to detect motion or recognize the direction of motion presented on a computer screen.
+-	All questionnaire and computer task data you provide will be saved using a numeric code. No information about your identity or how to contact you will be saved with the data. 
+-	If you are participating as part of the Psychology Subject Pool, you will receive course credit for participating (at the rate of ½ credit per ½ hours) as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.
+
+If you have questions, complaints, or concerns about the research, you should contact Yiming Qian at 814-863-3116 or Rick Gilmore at 814-865-3664.
+If you have questions regarding your rights as a research subject or concerns regarding your privacy, you may contact the Office for Research Protections at 814-865-1775. 
+
+Your participation is voluntary and you may decide to stop at any time.  You do not have to answer any questions that you do not want to answer. 
+
+Clicking the “Take The Survey” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
+Thank you!
+
+Once the surveys are complete, say:
+
+>"*That's great. Now we'd like to move on to the vision screening portion of the study. Are you ready?*"
+
+<<<<<<< HEAD
+>"You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?"
+
+=======
+- If the participant says yes, proceed.
+
+### Complete vision testing
+
+- Complete [pattern acuity test](vision-screening.Rmd)
+  - Adult - HOTV @ 10ft
 
 ### Questionnaires
 
@@ -192,6 +281,7 @@ Say:
 
 >"You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?"
 
+>>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
 ### Experimental Setup
 
 - Guide participant to testing room.
@@ -252,6 +342,12 @@ If there is time left,
 - Complete [Stereo Acuity Test](vision-screening.Rmd)
 - Complete [Color Vision Test](vision-screening.Rmd)
 >"There are two more tests."
+
+### Other test
+If there is time left,
+- Complete [Stereo Acuity Test](vision-screening.Rmd)
+- Complete [Color Vision Test](vision-screening.Rmd)
+>"There is one more test."
 
 ## After session ends
 

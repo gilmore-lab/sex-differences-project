@@ -1,0 +1,85 @@
+---
+#title: "Vision Screening Score Sheet"
+#author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
+#date: "2019-11-06 07:58:09"
+output:
+  html_document:
+    keep_md: true
+    toc: false
+    toc_depth: 3
+    toc_float: true
+    code_folding: hide
+---
+
+
+# **Penn State Vision Screening Score Sheet**
+
+**ParticipantID:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_**
+
+**Date:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_**
+
+**RAs:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_**
+
+**Experiment:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_**
+
+# **Optotype acuity—HOTV**
+
+| **Snellen Acuity** | **Circle INCORRECT letter (Left)** | **Circle INCORRECT letter (Binocular)** | **Circle INCORRECT letter (Right)** |
+| ------- | ------------- | ------------- | ------------- |
+| 10/80   |     T V O     |     T V O     |     T V O     |
+| 10/63   |    O H V T    |    O H V T    |    O H V T    |
+| 10/50   |   H V O T V   |   H V O T V   |   H V O T V   |
+| 10/40   |  T H O V T O  |  T H O V T O  |  T H O V T O  |
+| 10/32   | O T H V T O H | O T H V T O H | O T H V T O H |
+| 10/25   |  V O T H T O  |  V O T H T O  |  V O T H T O  |
+| 10/20   |   H V O T O   |   H V O T O   |   H V O T O   |
+| 10/16   |  V H T O H V  |  V H T O H V  |  V H T O H V  |
+| 10/12.5 |  T O H V O H  |  T O H V O H  |  T O H V O H  |
+| 10/10   |  V T O H V T  |  V T O H V T  |  V T O H V T  |
+| 10/8    |  H O V O T V  |  H O V O T V  |  H O V O T V  |
+
+Best 50%:                 Left\_\_\_\_\_\_\_\_          Both\_\_\_\_\_\_\_\_\_         Right\_\_\_\_\_\_\_\_\_\_
+
+# **Ishihara color test**
+
+| **Page #** | **Shape Reported** |   |
+| --- | --- | --- |
+| 1 | \_\_\_\_\_\_\_ **circle** | \_\_\_\_\_\_\_square      |
+| 2 | \_\_\_\_\_\_\_circle      | \_\_\_\_\_\_\_ **square** |
+| 3 | \_\_\_\_\_\_\_ **circle** | \_\_\_\_\_\_\_square      |
+| 4 | \_\_\_\_\_\_\_circle      | \_\_\_\_\_\_\_ **square** |
+|   |**Line Drawn** | |
+| 5 | \_\_\_\_\_\_\_ **orange line** |   |
+| 6 | \_\_\_\_\_\_\_ **red line**    | \_\_\_\_\_\_\_ **green line**       |
+| 7 | \_\_\_\_\_\_\_ **green line**  | **\_\_\_\_\_\_\_maroon (red) line** |
+| 8 | \_\_\_\_\_\_\_ **red line**   | \_\_\_\_\_\_\_ **purple line**       |
+
+# **Worth binocular fusion**
+
+|   | **Eye** | **Record number of dots seen of each color** |
+| --- | --- | --- |
+| 1 | Both eyes open    | \_\_\_\_\_\_\_ green (2)\_\_\_\_\_\_\_red (2)  |
+| 2 | Right eye covered | \_\_\_\_\_\_\_ green (3) \_\_\_\_\_\_\_red (0) |
+| 3 | Left eye covered  | \_\_\_\_\_\_\_ green (0) \_\_\_\_\_\_\_red (2) |
+
+# **Stereoacuity Test**
+
+| **Stereoacuity (arc sec)** | **Record response** |
+| --- | --- |
+| 800 | 1.\_\_ **bottom**   \_\_top        \_\_\_left         \_\_\_right |
+| 400 | 2.\_\_bottom        \_\_top        \_\_\_ **left**    \_\_\_right |
+| 200 | 3.\_\_ **bottom**   \_\_top        \_\_\_left         \_\_\_right |
+| 140 | 4.\_\_bottom        \_\_ **top**   \_\_\_left         \_\_\_right |
+| 100 | 5.\_\_bottom        \_\_ **top**   \_\_\_left         \_\_\_right |
+| 80  | 6.\_\_bottom        \_\_top        \_\_\_ **left**    \_\_\_right |
+| 60  | 7.\_\_bottom        \_\_top        \_\_\_left         \_\_\_ **right** |
+| 50  | 8.\_\_bottom        \_\_top        \_\_\_ **left**    \_\_\_right |
+| 40  | 9.\_\_bottom        \_\_top        \_\_\_left         \_\_\_ **right** |
+| 400 | A.\_\_\_\_ **cat** \_\_\_\_rabbit      \_\_\_monkey      \_\_\_\_other |
+| 200 | B.\_\_\_\_cat      \_\_\_\_ **rabbit** \_\_\_monkey      \_\_\_\_other |
+| 100 | C.\_\_\_\_cat      \_\_\_\_\_rabbit    \_\_\_ **monkey** \_\_\_\_other |
+| 2000| \_\_\_\_\_ Top of Butterfly upper wings traced |
+| 1150| \_\_\_\_\_ Bottom of Butterfly lower wingsButterfly traced |
+| 700 | \_\_\_\_\_ Tip of Butterfly abdomen traced |
+
+Best Acuity: \_\_\_\_\_\_\_\_\_\_\_\_\_

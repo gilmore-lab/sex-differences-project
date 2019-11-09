@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Rick Gilmore, Yiming Qian, &amp; Andrea Seisler" />
@@ -88,7 +89,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -162,56 +162,12 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3,h4,h5",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -305,7 +261,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Individual differences in visual perception in adults</h1>
 <h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
-<h4 class="date">2019-11-01 13:47:03</h4>
+<h4 class="date">2019-11-07 13:33:16</h4>
 
 </div>
 
@@ -351,16 +307,24 @@ div.tocify {
 <div id="start-calibrating-luminance" class="section level3">
 <h3>Start Calibrating Luminance</h3>
 <ul>
-<li><p>Click <strong>Calibrate Lum</strong></p>
+<li>Turn on the computer</li>
+<li>In 503B switch on power of large surge protector on bottom left shelf.</li>
+<li><p>Log-in (Gilmore Lab)</p></li>
+<li>Start Psychopy - Click icon on Task Bar</li>
+<li><p>Open Monitor Settings - Go to Tools &gt; Monitor Center</p></li>
+<li><p>Click <strong>XXXX</strong></p>
 <div class="figure">
-<img src="imgs/LuminanceCalibration2.jpg" alt="Luminance Calibration" />
+<img src="images/new%20image.jpg" alt="Luminance Calibration" />
 <p class="caption">Luminance Calibration</p>
 </div></li>
 <li>Enter the Monitor Screen Width in centimeters</li>
 <li><p>Select <strong>Start</strong><br />
-<img src="imgs/LuminanceCalibration_EnterValue2.jpg" alt="Luminance Calibration - Enter Value" /></p></li>
+<img src="images/new%20image.jpg" alt="Luminance Calibration - Enter Value" /></p></li>
 </ul>
 </div>
+</div>
+<div id="calibrate-projector" class="section level2">
+<h2>Calibrate Projector</h2>
 <div id="run-matlab-script" class="section level3">
 <h3>Run Matlab Script</h3>
 <ul>
@@ -384,8 +348,8 @@ div.tocify {
 </div>
 <div id="survey-preparation" class="section level2">
 <h2>Survey preparation</h2>
-<p>This study uses Qualtrics to collect implied/oral consent and other data from participants. Yiming has generated a draft survey, saved <a href="Sex_difference_survey.qsf">here</a> as a <code>*.qsf</code> text file.</p>
-<p>The URL for the survey is <a href="https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB</a></p>
+<p>This study uses Qualtrics to collect implied/oral consent and other data from participants. Yiming has generated a draft survey, saved <a href="qualtrics_survey.qsf">here</a> as a <code>*.qsf</code> format text file.</p>
+<p>The URL for the survey is <a href="https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON</a></p>
 </div>
 </div>
 <div id="scheduling-participants" class="section level1 tabset">
@@ -398,6 +362,12 @@ div.tocify {
 <li>Create slots on SONA with specific dates and times</li>
 <li>When slot is scheduled, email sent to Yiming and Andrea.</li>
 <li>Scheduled slots will be added to lab calendar.</li>
+</ol>
+<ul>
+<li>The scheduled RA will be added to the title of the slot</li>
+<li>The RA will also be invited to the google calendar event.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
 <li>Researchers will be contacted by email and Discord by Yiming or Andrea if they are needed for a slot that is not part of their regularly scheduled lab time.</li>
 </ol>
 </div>
@@ -429,6 +399,102 @@ div.tocify {
 <td></td>
 <td>11:30a</td>
 <td>Sandy, Emily, Amar</td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>1p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>2:15p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>3:30p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4:45p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td>Tue</td>
+<td>9a</td>
+<td>Michelle, Rachel</td>
+<td>Andrea</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>10:15a</td>
+<td>Michelle, Rachel</td>
+<td>Andrea</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>11:30a</td>
+<td>Amar, Michelle</td>
+<td>Andrea</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>12:45p</td>
+<td>Michelle, Joseph, Amar</td>
+<td>Andrea</td>
+</tr>
+<tr class="even">
+<td>Wed</td>
+<td>10a</td>
+<td>Sandy, Rachel, Amar, Emily</td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>11:15a</td>
+<td>Sandy, Rachel, Amar, Emily</td>
+<td>Andrea</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>12:30p</td>
+<td>Luka</td>
+<td>Andrea</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>1:45p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>3p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4:15p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>5:30p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td>Thu</td>
+<td>9a</td>
+<td>Joseph, Michelle, Luka,Rachel</td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
@@ -626,77 +692,86 @@ div.tocify {
 <li>Make sure the black tape is on the floor 10ft from the HOVT Snellen Acuity Chart which is on the door to 503B</li>
 <li>Place Stereo Acuity Test and Glasses on table</li>
 <li>Place Color Vision Test on table</li>
+<li>Place the Vision Screening Score Sheet on the table</li>
 </ul>
 </div>
 <div id="review-vision-screening-procedures" class="section level4">
 <h4>Review vision screening procedures</h4>
-<p>The vision screenint protocol may be reviewed at &lt;vision-screening-protocol.html&gt;</p>
+<p>The vision screening protocol may be reviewed at <a href="vision-screening-protocol.html">this link</a></p>
 </div>
 </div>
 <div id="set-up-for-computer-based-tasks" class="section level3 tabset">
 <h3>Set up for computer-based tasks</h3>
-<div id="computer-based-task-monitor" class="section level4">
-<h4>Computer-based task monitor</h4>
+<div id="stimuli-computer" class="section level4">
+<h4>Stimuli Computer</h4>
 <ul>
-<li>Turn on the <strong>CRT monitor</strong> in 503B.</li>
-</ul>
-</div>
-<div id="computers" class="section level4">
-<h4>Computer(s)</h4>
+<li><em>Log into Data Collection Computer</em>
 <ul>
-<li>Turn on the computer</li>
-<li>In 503B switch on power of large surge protector on bottom left shelf.</li>
-<li><p>Log-in (Gilmore Lab)</p></li>
-<li><p>Start Psychopy - Click ‘stripes’ icon on Task Bar</p></li>
-</ul>
-<div class="figure">
-<img src="images/PsychoPy-1.PNG" alt="PsychoPy Logo" />
-<p class="caption">PsychoPy Logo</p>
-</div>
+<li>Turn on the power of the data collection computer</li>
+<li>Turn on the CRT monitor in 503B</li>
+<li>Log-in (Gilmore Lab)</li>
+</ul></li>
+<li><em>Start Psychopy</em>
 <ul>
-<li>Double-check monitor settings within Windows</li>
-<li>Click Settings (‘gear’) icon on Task Bar</li>
-</ul>
-<div class="figure">
-<img src="images/DispSettings-1.PNG" alt="Settings Logo" />
-<p class="caption">Settings Logo</p>
-</div>
+<li>Click <strong>PsychoPy</strong> icon on Task Bar <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
+</li>
+</ul></li>
+<li><em>Double-check monitor settings within Windows</em>
 <ul>
-<li>Open one experiment and take note of “Participant ID”</li>
-</ul>
-<p>(Type <strong>Display Settings</strong> in Search Bar then open) - Screen resolution: 800 x 600 - Refresh rate: 85 Hz</p>
-<ul>
-<li>Double-check Brightness/Contrast
+<li>Click Settings (‘gear’) icon on Task Bar <img src="images/DispSettings-1.PNG" alt="Settings_Logo" /><br />
+</li>
+<li>Choose <strong>System</strong><br />
+<img src="images/DS2.PNG" alt="System" /><br />
+</li>
+<li>Choose <strong>Display</strong><br />
+<img src="images/ds3.PNG" alt="Display" /><br />
+</li>
+<li>Choose <strong>Advanced display settings</strong> (You may need to scroll down to see this)<br />
+<img src="images/DS4.PNG" alt="Advanced Display" /><br />
+</li>
+<li>Make sure the window that appears has the following Settings <img src="images/ds5.PNG" alt="Monitor Settings" /><br />
+</li>
+</ul></li>
+<li><em>Double-check Brightness/Contrast of monitor</em>
 <ul>
 <li>Contrast:</li>
-<li>Brightness:</li>
+<li><p>Brightness:</p></li>
+<li>Press any button on the monitor (except Signal A/B/OSD OFF and the Power button)</li>
+<li>Navigate to the leftmost option in the settings menu (looks like a half moon)</li>
+<li>Press the down button on the monitor</li>
+<li>Adjust the Contrast (leftmost option) to the required setting using the +/- buttons on the monitor</li>
+<li><p>Adjust the Brightness (second option from the left) to the required setting using the +/- buttons on the monitor</p></li>
 </ul></li>
-<li>Check monitor within Psychopy
+<li><em>Check monitor within PsychoPy</em>
 <ul>
-<li>Screen Distance (cm): 60</li>
-<li>Screen resolution: 800 x 600</li>
-<li>Screen width (cm): 39.7</li>
+<li>Go to <strong>Monitor Settings</strong> <img src="images/pp2.png" alt="Monitor Settings" /></li>
+<li>View Settings, they should be as follows<br />
+<img src="images/pp3.PNG" alt="Specific Settings" /></li>
 </ul></li>
+</ul>
+</div>
+<div id="survey-computer" class="section level4">
+<h4>Survey Computer</h4>
+<ul>
 <li>Log-in to survey computer</li>
-<li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB</a></li>
+<li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON</a></li>
 </ul>
 </div>
 </div>
-</div>
-<div id="after-participant-arrives" class="section level2">
-<h2>After participant arrives</h2>
-<div id="welcome-participant" class="section level3">
-<h3>Welcome participant</h3>
+<div id="after-participant-arrives" class="section level3 tabset">
+<h3>After participant arrives</h3>
+<div id="welcome-participant" class="section level4">
+<h4>Welcome participant</h4>
 <p>Say:</p>
 <blockquote>
 <p>“<em>Welcome to the brain, behavior, and development lab. Are you hear for the study about motion perception?</em>”</p>
 </blockquote>
 <p>If the participant answers yes, say:</p>
 <blockquote>
-<p>“<em>Great. You can put your things here.</em>”</p>
+<p>“<em>Great. You can put your coat on the back of the door and your bag here.</em>”</p>
 </blockquote>
 <ul>
-<li>Store belongings in <strong>X</strong>.</li>
+<li>Store coat on back of main door and bags by the file/bookcase.</li>
 </ul>
 <blockquote>
 <p>“<em>Are you &lt;NAME OF PERSON ON SONA SYSTEMS SITE SCHEDULED FOR THIS SESSION&gt;?</em>”</p>
@@ -711,8 +786,8 @@ div.tocify {
 <li>Have the person sit at the computer where the survey will be taken.</li>
 </ul>
 </div>
-<div id="begin-the-survey" class="section level3">
-<h3>Begin the survey</h3>
+<div id="begin-the-survey" class="section level4">
+<h4>Begin the survey</h4>
 <ul>
 <li>Enter the ID: YYYY-MM-DD-HHMM based on appointment time</li>
 </ul>
@@ -727,7 +802,7 @@ div.tocify {
 <p>If you have questions, complaints, or concerns about the research, you should contact Yiming Qian at 814-863-3116 or Rick Gilmore at 814-865-3664. If you have questions regarding your rights as a research subject or concerns regarding your privacy, you may contact the Office for Research Protections at 814-865-1775.</p>
 <p>Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer.</p>
 <p>Clicking the “Take The Survey” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. Thank you!</p>
-<p>Once the surveys are complete, say:</p>
+<p>Once the consent is complete, say:</p>
 <blockquote>
 <p>“<em>That’s great. Now we’d like to move on to the vision screening portion of the study. Are you ready?</em>”</p>
 </blockquote>
@@ -735,10 +810,11 @@ div.tocify {
 <li>If the participant says yes, proceed.</li>
 </ul>
 </div>
+</div>
 <div id="complete-pattern-visual-acuity-testing" class="section level3">
 <h3>Complete pattern visual acuity testing</h3>
 <ul>
-<li>Complete <a href="/vision-screening-protocol.html#snellen_acuity_(childadult)">pattern acuity test</a>
+<li>Complete <a href="vision-screening-protocol.html">pattern acuity test</a>
 <ul>
 <li>Adult - HOTV @ 10ft</li>
 </ul></li>
@@ -746,9 +822,13 @@ div.tocify {
 </div>
 <div id="questionnaires" class="section level3">
 <h3>Questionnaires</h3>
+<blockquote>
+<p>“<em>Thank you. Now we’d like to move on to the questionnaire portion of the study. Are you ready?</em>”</p>
+</blockquote>
 <ul>
-<li>Let the participants finish the items</li>
-<li>A little break for the participants. If the participant wants to keep going, lead him to the test room</li>
+<li>Have the participant sit back down at the computer.</li>
+<li>Let the participants finish the questionnaire.</li>
+<li>Ask the participant if they need a little break. If the participant wants to keep going, lead them to the test room</li>
 </ul>
 <p>Say:</p>
 <blockquote>
@@ -762,25 +842,26 @@ div.tocify {
 <li>Have them sit in the chair.</li>
 <li>Adjust the monitor and participant position.</li>
 <li>The monitor should be located <strong>60cm</strong> from the bridge of the nose on the participant.</li>
-<li>The chair height should be set so the participant is looking directly at the <strong>X</strong> in the middle of the screen.</li>
-<li>Guide the participant to use the arrow keys for responses.</li>
+<li>The chair height should be set so the participant is looking in the middle of the screen.</li>
+<li>Guide the participant to use the arrow keys for responses and the space bar to advance the screen.</li>
 </ul>
 </div>
 <div id="run-computer-based-tasks" class="section level3">
 <h3>Run computer-based tasks</h3>
 <div id="select-run-order" class="section level4">
 <h4>Select run order</h4>
-<p>The order of the computer experiments will be randomized across participants by flipping a coin. If the coin is HEADS, run the Murray et al. task first; if the coin is TAILS, run the Abramov et al. task first. Record the task run first on the experiment run log.</p>
+<p>The order of the computer experiments will be randomized across participants in Qualtrics - run the Murray et al. task first - run the Abramov et al. task first. <em>Record the task run first on the experiment run log.</em></p>
 </div>
 <div id="murray-et-al." class="section level4">
 <h4>Murray et al.</h4>
 <ul>
-<li>Open PsychoPy by clicking on the icon located on the desktop.</li>
+<li>Open PsychoPy by clicking on the icon located on the desktop. <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
+</li>
 <li>When PsychoPy opens, open the file for this experiment.
 <ul>
 <li>From the <code>File</code> menu, select the <code>Open Recent...</code> command and select the <code>motion-temporal-threshold.py</code> file.</li>
 </ul></li>
-<li>When the file opens, run the experiment by pressing press the green (running person) button.
+<li>When the file opens, run the experiment by pressing press the green (running person) button. <img src="images/PPrunningMan.png" alt="PsychoPy_Run" />
 <ul>
 <li><strong>Be careful not to type in the programming window.</strong></li>
 <li>A welcome screen with the following message will appear: <em>Welcome to the motion duration threshold study. Press any key to continue.</em></li>
@@ -788,7 +869,7 @@ div.tocify {
 <li>When you are ready to enter the participant ID, press a key on the keyboard.
 <ul>
 <li>A pop-up window will appear.</li>
-<li>Enter the participant ID in the pop window, and press the <code>Ok</code> button to enter the data.</li>
+<li>Enter the participant ID and gender in the pop window, and press the <code>Ok</code> button to enter the data.</li>
 </ul></li>
 <li>Speak to the participant</li>
 </ul>
@@ -799,7 +880,10 @@ div.tocify {
 <p>“This task takes about 2 min to complete. But to make sure that we get reliable results, we’ll need to do it 4 times. You can take a short break between the sections.”</p>
 </blockquote>
 <blockquote>
-<p>“Put your fingers on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, just guess.”</p>
+<p>“Put your fingers on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, make your best guess.”</p>
+</blockquote>
+<blockquote>
+<p>“Remember, accuracy is more important that speed. Please take your time.”</p>
 </blockquote>
 <blockquote>
 <p>“Are you ready. Ok, let’s go.”</p>
@@ -808,12 +892,41 @@ div.tocify {
 <div id="abramov-et-al." class="section level4">
 <h4>Abramov et al.</h4>
 <ul>
-<li>Open the files &quot;&quot; located in folder.</li>
-<li>In PsychoPy, press the green button.</li>
-<li>Enter the ID in the pop window and speak to the participant.</li>
+<li>Open PsychoPy by clicking on the icon located on the desktop. <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
+</li>
+<li>When PsychoPy opens, open the file for this experiment.
+<ul>
+<li>From the <code>File</code> menu, select the <code>Open Recent...</code> command and select the <code>xxx.py</code> file.</li>
+</ul></li>
+<li>When the file opens, run the experiment by pressing press the green (running person) button. <img src="images/PPrunningMan.png" alt="PsychoPy_Run" />
+<ul>
+<li><strong>Be careful not to type in the programming window.</strong></li>
+<li>A welcome screen with the following message will appear: <em>Welcome to the motion duration threshold study. Press any key to continue.</em></li>
+</ul></li>
+<li>When you are ready to enter the participant ID, press a key on the keyboard.
+<ul>
+<li>A pop-up window will appear.</li>
+<li>Enter the participant ID and gender in the pop window, and press the <code>Ok</code> button to enter the data.</li>
+</ul></li>
+<li>Speak to the participant</li>
 </ul>
 <blockquote>
-<p>“<em>Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,…</em>”</p>
+<p>“In this task, you will try to detect the direction of a small patch of black and white strips are vertical or horizontal. The width of the stripes will get smaller and smaller. Our goal is to find out the smallest stripe width that you need to reliably detect the direction of stripes.”</p>
+</blockquote>
+<blockquote>
+<p>“This task takes about 2 min to complete. But to make sure that we get reliable results, we’ll need to do it 4 times. You can take a short break between the sections.”</p>
+</blockquote>
+<blockquote>
+<p>“Put your fingers on the down and right arrow keys. You’ll press the right arrow if you see horizontal stripes and the down arrow if you see vertical stripes If you aren’t sure, make your best guess.”</p>
+</blockquote>
+<blockquote>
+<p>&quot;After you see the black dot, you will press the space bar to start the trial and wait for the white dot to appear to respond.</p>
+</blockquote>
+<blockquote>
+<p>“Remember, accuracy is more important that speed. Please take your time.”</p>
+</blockquote>
+<blockquote>
+<p>“Are you ready. Ok, let’s go.”</p>
 </blockquote>
 </div>
 </div>
@@ -826,7 +939,7 @@ div.tocify {
 <p>Escort participant to table.</p>
 <ul>
 <li>Complete <a href="vision-screening-protocol.html">Stereo Acuity Test</a></li>
-<li>Complete [C]olor Vision Test](vision-screening-protocol.html)</li>
+<li>Complete <a href="vision-screening-protocol.html">Color Vision Test</a></li>
 </ul>
 </div>
 </div>
@@ -865,10 +978,14 @@ div.tocify {
 <div id="retrieve-behavioral-data" class="section level3">
 <h3>Retrieve Behavioral Data</h3>
 <ul>
-<li><p>Output data files from the computer task are stored here: /Documents/PsychoPy-Stimuli/<strong>STUDY NAME</strong>/csv</p></li>
+<li>Output data files from the computer task are stored
+<ul>
+<li>/Documents/PsychoPy-Stimuli/<strong>Murray Folder Name</strong>/csv</li>
+<li>/Documents/PsychoPy-Stimuli/<strong>Abramov Folder Name</strong>/data</li>
+</ul></li>
 <li>Data must be copied to the <strong>Gilmore Lab Participant Data</strong> drive from the testing PC.</li>
 <li>Data will be copied to Box (XXX).</li>
-<li><p>After data export is complete, turn off computer and monitor in 503B.</p></li>
+<li>After data export is complete, turn off computer and monitor in 503B.</li>
 </ul>
 </div>
 <div id="retrieve-qualtrics-data" class="section level3">
@@ -880,7 +997,8 @@ div.tocify {
 <ul>
 <li>Click on <strong>Distributions</strong> tab</li>
 </ul></li>
-<li>To review individual responses to survey questions -Click on <strong>Data &amp; Analysis</strong> tab</li>
+<li>To review individual responses to survey questions</li>
+<li>Click on <strong>Data &amp; Analysis</strong> tab</li>
 <li>Under <strong>Actions</strong> click to open drop down menu</li>
 <li>Click <strong>view response</strong></li>
 </ul></li>
@@ -889,13 +1007,13 @@ div.tocify {
 <div id="transfer-vision-screening-data" class="section level3">
 <h3>Transfer vision screening data</h3>
 <ul>
-<li>Enter the vision screening data using <strong>SPECIFY</strong>.</li>
+<li>Vision Screening Data will be entered into the last page of the Qualtrics Survey.</li>
 </ul>
 </div>
 </div>
 <div id="validation-and-cleaning" class="section level2">
 <h2>Validation and cleaning</h2>
-<p>The <code>analysis/session_qa.Rmd</code> script imports a data file specified as an input parameter, for example: <code>rmarkdown::render('analysis/session_qa.Rmd', params = list(data_fn='2019-10-29-140253_temp_thresh.csv'))</code>. The script should be improved to output a custom HTML or PDF report for each participant file. To view an example, visit <a href="analysis/session_qa.html">this link</a>.</p>
+<p>The <code>analysis/session_qa.Rmd</code> script imports a data file specified as an input parameter, for example: <code>rmarkdown::render('analysis/session_qa.Rmd', params = list(data_fn='2019-10-29-140253_temp_thresh.csv'))</code>. The script should be improved to output a custom HTML or PDF report for each participant file. To view an example, visit <a href="https://gilmore-lab.github.io/sex-differences-in-motion-perception/analysis/session_qa.html">this link</a>.</p>
 </div>
 <div id="visualization" class="section level2">
 <h2>Visualization</h2>
@@ -1163,6 +1281,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

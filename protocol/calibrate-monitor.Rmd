@@ -5,7 +5,7 @@ date: "`r Sys.time()`"
 output: html_document
 ---
 
-## Calibrate Monitor
+<!-- ## Calibrate Monitor -->
 
 ### Prepare Computers
 
@@ -30,24 +30,24 @@ output: html_document
 
 - Click **XXXX**  
 
-    ![Luminance Calibration](images/new image.jpg)
+    <!-- #![Luminance Calibration](images/new_image.jpg) -->
 
 - Enter the Monitor Screen Width in centimeters
 - Select **Start**  
-    ![Luminance Calibration - Enter Value](images/new image.jpg)
+    <!-- #![Luminance Calibration - Enter Value](images/new_image.jpg) -->
 
 
 
-## Calibrate Projector
-### Run Matlab Script
+<!-- ## Calibrate Projector -->
+<!-- ### Run Matlab Script -->
 
-- At a minimum a black (0,0,0) and white (255,255,255) image must be displayed on the projector screen 
-- The script to do this is located on Github: https://gilmore-lab.github.io/photometer_proj
- 
-### Measure Luminance
+<!-- - At a minimum a black (0,0,0) and white (255,255,255) image must be displayed on the projector screen  -->
+<!-- - The script to do this is located on Github: https://gilmore-lab.github.io/photometer_proj -->
 
-- Measure the value of each image on the projector screen with the light meter.
+<!-- ### Measure Luminance -->
 
-### Log values
+<!-- - Measure the value of each image on the projector screen with the light meter. -->
 
-- Log the values in the file Box Sync/gilmore-lab/protocols-procedures/projector-calibration.xls
+<!-- ### Log values -->
+
+<!-- - Log the values in the file Box Sync/gilmore-lab/protocols-procedures/projector-calibration.xls -->

@@ -25,7 +25,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - Place Stereo Acuity Test and Glasses on table
 - Place Color Vision Test on table
 
-#### Administation Instructions
+#### Administration Instructions
 
 ```{r, child="vision-screening-protocol.Rmd"}
 ```
@@ -39,12 +39,9 @@ Materials for vision screening are stored on the table next to Andrea's office.
 - In 503B switch on power of large surge protector on bottom left shelf.
 - Log-in (Gilmore Lab)
 
-
-
 - Double-check monitor settings within Windows 
   - Click Settings Logo on Task Bar
 ![Settings Logo](images/DispSettings-1.PNG)
-
 
 (Type **Display Settings** in Search Bar then open)
   - Screen resolution: 800 x 600
@@ -62,12 +59,11 @@ Materials for vision screening are stored on the table next to Andrea's office.
     - Screen resolution: 800 x 600
     - Screen width (cm): 39.7
   
-  
 - Get Participant ID  
   - Open one experiment based on the appointment time and take note of "Participant ID"(YYYY-MM-DD-HHMMSS)
   
 - Log-in to survey computer
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_3Cr1Wqh8visKiQB>
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON>
 
 ## After participant arrives
 

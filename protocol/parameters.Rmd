@@ -101,7 +101,7 @@ Murray, S. O., Schallmo, M.-P., Kolodny, T., Millin, R., Kale, A., Thomas, P., R
 - Abramov: 1.2 cyc/deg (minimize sex differences)
 - Murray: 3\% contrast (minimize sex difference)
   
-- Decided **NOT** to have catch trials, but decide on criteria for dropping participants or runs based on threshold estimation.
+- Decided **NOT** to have catch trials, but decide on criteria for dropping participants or runs based on threshold estimation.  
 
 ---
 
