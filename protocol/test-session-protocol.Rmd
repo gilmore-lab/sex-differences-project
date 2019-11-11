@@ -99,7 +99,7 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- You will see the Participant ID on the top of implied consent. Take a note of this participant ID.
+- You will see the Participant ID on the top of implied consent. Take a note of this participant ID (only the numeric code without comma or hyphen).
 
 Conduct the implied verbal consent.
 You may say to the participant or have them read the following text:

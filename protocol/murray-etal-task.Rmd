@@ -11,7 +11,7 @@ output: html_document
     - **Be careful not to type in the programming window.**
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Participant ID in the pop-up window have shown "YYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Participant ID in the pop-up window have shown "YYYYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
