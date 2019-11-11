@@ -87,22 +87,6 @@ The process of scheduling participants involves the following steps:
 |             | 2:15p   |                           | Yiming |
 |             | 3:30p   |                           | Yiming |
 |             | 4:45p   |                           | Yiming |
-| Tue         | 9a      | Michelle, Rachel          | Andrea |
-|             | 10:15a  | Michelle, Rachel          | Andrea |
-|             | 11:30a  | Amar, Michelle            | Andrea |
-|             | 12:45p  | Michelle, Joseph, Amar    | Andrea |
-| Wed         | 10a     | Sandy, Rachel, Amar, Emily| Yiming |
-|             | 11:15a  | Sandy, Rachel, Amar, Emily| Andrea |
-|             | 12:30p  | Luka                      | Andrea |
-|             | 1:45p   |                           | Yiming |
-|             | 3p      |                           | Yiming |
-|             | 4:15p   |                           | Yiming |
-|             | 5:30p   |                           | Yiming |
-| Thu         | 9a      | Joseph, Michelle, Luka,Rachel  | Yiming |
-|             | 01:00p  |                           | Yiming |
-|             | 02:15p   |                           | Yiming |
-|             | 03:30p   |                           | Yiming |
-|             | 04:45p   |                           | Yiming |
 | Tue         | 09:00a   | Michelle, Rachel          | Andrea |
 |             | 10:15a   | Michelle, Rachel          | Andrea |
 |             | 11:30a   | Amar, Michelle            | Andrea |
@@ -160,11 +144,7 @@ The process of scheduling participants involves the following steps:
 
 ### Transfer vision screening data
 
-<<<<<<< HEAD
 - Enter the vision screening data using **SPECIFY**. The experimenter can submit the result in qualtrics.
-=======
-- Vision Screening Data will be entered into the last page of the Qualtrics Survey.
->>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
 
 ## Validation and cleaning
 

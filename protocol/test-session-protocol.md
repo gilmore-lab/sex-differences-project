@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-06 09:27:47"
+date: "2019-11-11 11:54:13"
 output:
   html_document:
     keep_md: true
@@ -51,8 +51,8 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
  ![Display](images/ds3.PNG)  
   - Choose **Advanced display settings** (You may need to scroll down to see this)  
  ![Advanced Display](images/DS4.PNG)  
-  - Make sure the window that appears has the following Settings
- ![Monitor Settings](images/ds5.PNG)  
+  - Make sure the window that appears has the following Settings  
+ ![Monitor Settings](images/ds5.PNG)   
 - *Double-check Brightness/Contrast of monitor*
   - Contrast:
   - Brightness:
@@ -64,16 +64,16 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
   - Adjust the Contrast (leftmost option) to the required setting using the +/- buttons on the monitor 
   - Adjust the Brightness (second option from the left) to the required setting using the +/- buttons on the monitor 
   
-- *Check monitor within PsychoPy*
-  - Go to **Monitor Settings** 
- ![Monitor Settings](images/pp2.png)
-  - View Settings, they should be as follows  
- ![Specific Settings](images/pp3.PNG)  
+- *Check monitor within PsychoPy*  
+  - Go to **Monitor Settings**   
+ ![Monitor Settings](images/pp2.png)  
+  - View Settings, they should be as follows    
+ ![Specific Settings](images/pp3.PNG)   
  
 #### Survey Computer
 
 - Log-in to survey computer
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_1FCXbmrfTWprQON>
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV>
 
 ### After participant arrives {.tabset}
 
@@ -81,13 +81,13 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 
 Say:
 
->"*Welcome to the brain, behavior, and development lab. Are you hear for the study about motion perception?*"
+>"*Welcome to the brain, behavior, and development lab. Are you here for the study about individual difference of motion perception?*"
 
 If the participant answers yes, say:
 
->"*Great. You can put your things here.*"
+>"*Great. You can put your coat on the back of the door and your bag here.*"
 
-- Store belongings in **X**.
+- Store coat on back of main door and bags by the file/bookcase.
 
 >"*Are you \<NAME OF PERSON ON SONA SYSTEMS SITE SCHEDULED FOR THIS SESSION\>?*"
 
@@ -99,7 +99,7 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- Enter the ID: YYYY-MM-DD-HHMM based on appointment time
+- You will see the Participant ID on the top of implied consent. Take a note of this participant ID (only the numeric code without comma or hyphen).
 
 Conduct the implied verbal consent.
 You may say to the participant or have them read the following text:
@@ -108,27 +108,25 @@ You may say to the participant or have them read the following text:
 
 
 
-You are being invited to volunteer to participate in a research study. This summary explains information about this research.	
+You are being invited to participate in a research study. 
 
--	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting and how this ability is related to personal interests and other abilities. 
+-	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting.
 The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life. 
--	You will complete some computer-based surveys about your background, personal interests, spatial and verbal abilities (~25 min). Then, you will complete one or two short (10-20 min) computer tasks in which you will attempt to detect motion or recognize the direction of motion presented on a computer screen.
+-	You will complete one computer-based surveys. Then, you will complete two short computer tasks in which you will attempt to detect motion on a computer screen.
 -	All questionnaire and computer task data you provide will be saved using a numeric code. No information about your identity or how to contact you will be saved with the data. 
--	If you are participating as part of the Psychology Subject Pool, you will receive course credit for participating (at the rate of ½ credit per ½ hours) as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.
+-	If you are participating as part of the Psychology Subject Pool, you will receive course credit for participation as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.
 
-If you have questions, complaints, or concerns about the research, you should contact Yiming Qian at 814-863-3116 or Rick Gilmore at 814-865-3664.
-If you have questions regarding your rights as a research subject or concerns regarding your privacy, you may contact the Office for Research Protections at 814-865-1775. 
+If you have questions, complaints, or concerns about the research, you could contact principal investigator Yiming Qian or her advisor Rick Gilmore.
+If you have questions regarding your rights as a research subject or concerns regarding your privacy, you could contact the Office for Research Protections. 
 
-Your participation is voluntary and you may decide to stop at any time.  You do not have to answer any questions that you do not want to answer. 
+Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. 
 
-Clicking the “Take The Survey” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
+Clicking the "Next” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
 Thank you!
 
-Once the consent is complete, say:
+Once the consent is complete (It means the participant clicks to the next page), say:
 
->"*That's great. Now we'd like to move on to the vision screening portion of the study. Are you ready?*"
-
-- If the participant says yes, proceed.
+>"*That's great. Now we'd like to move on to the vision screening portion of the study. Could you stand behind this line?*"
 
 ### Complete pattern visual acuity testing
 
@@ -137,8 +135,16 @@ Once the consent is complete, say:
 
 ### Questionnaires
 
-- Let the participants finish the items
--	Ask the participant if they need a little break. If the participant wants to keep going, lead them to the test room
+>"*Thank you. Now we'd like to move on to the questionnaire portion of the study. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. And let me know when you finish it.*"
+
+- Have the participant sit back down at the computer.
+- Let the participants finish the questionnaire.
+- Answer the questions if the participants have any, when they works on the questionnaires. But in careful in the hobby page, spatial and verbal page, because the time are recorded. The page will vanish when the time have passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.  
+After answering the question, say:
+>"*Beware: there is a time limit for this page. *"
+
+- If the participants have questions in the instruction page of hobby test, spatial and verbal test, answer careful and make sure the participants understand well. 
+-	After the participants finish the questionnaire, ask them if they need a little break. If the participant wants to keep going, lead them to the test room
 
 Say:
 
@@ -150,18 +156,19 @@ Say:
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
 - The monitor should be located **60cm** from the bridge of the nose on the participant.
-- The chair height should be set so the participant is looking directly at the **X** in the middle of the screen.
-- Guide the participant to use the arrow keys for responses.
+- The chair height should be set so the participant is looking in the middle of the screen.
+- Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
 
 ### Run computer-based tasks
 
-#### *Select run order*
+#### Select run order
 
-The order of the computer experiments will be randomized across participants by flipping a coin.
-If the coin is HEADS, run the Murray et al. task first; if the coin is TAILS, run the Abramov et al. task first.
-Record the task run first on the experiment run log.
+The order of the computer experiments will be randomized across participants based on the participant ID shown in Qualtrics
+- run the temporal duration threshold task first (Murray et al.) if the ID number is even.
+- run the contrast sensitivity task (Abramov et al.) first if the ID number is odd.
+*Record the task run first on the experiment run log.*
 
-#### Murray et al.
+#### Temporal duration threshold task (Murray et al.)
 
 
 
@@ -169,29 +176,57 @@ Record the task run first on the experiment run log.
 ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
-- When the file opens, run the experiment by pressing press the green (running person) button.
+- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
     - **Be careful not to type in the programming window.**
-    - A welcome screen with the following message will appear: *Welcome to the motion duration threshold study. Press any key to continue.*
-- When you are ready to enter the participant ID, press a key on the keyboard.
+- Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Enter the participant ID in the pop window, and press the `Ok` button to enter the data.
+    - Participant ID in the pop-up window have shown "YYYYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
->“In this task, you will try to detect whether a small patch of stripes is moving to the left or to the right. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to reliably detect the direction of motion."
+>“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion."
 
->"This task takes about 2 min to complete. But to make sure that we get reliable results, we'll need to do it 4 times. You can take a short break between the sections."
+>"Which hand do you prefer to press the arrow keys?"
+>"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
+>For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
 
->"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, just guess."
+>"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dots appear.
 
->"Are you ready. Ok, let's go."
+>"Remember, accuracy is more important that speed. Please take your time."
 
-#### Abramov et al.
+>"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You can take a short break between the sections."
 
-- Open the files "" located in folder.
-- In PsychoPy, press the green button. 
-- Enter the ID in the pop window and speak to the participant.
+>"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
 
->“*Okay. You can follow the instructions and do the tasks in the computer. I am outside this room, if you have questions,...*"
+#### Contrast sensitivity task (Abramov et al.)
+
+
+
+![PsychoPy_Logo](images/PsychoPy-1.PNG)  
+- When PsychoPy opens, open the file for this experiment.
+    - From the `File` menu, select the `Open Recent...` command and select the `xxx.py` file.
+- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
+    - **Be careful not to type in the programming window.**
+- Experimenters need to fill in the participant ID and gender.
+    - A pop-up window will appear.
+    - Participant ID in the pop-up window have shown "YYYYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
+- Speak to the participant
+
+>“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. You can press the LEFT or RIGHT buttons if you see the stripes are horizontal, UP or DOWN button if you see the stripes are vertical. But if you aren't sure, just guess. "
+
+
+>“In this task, you will see a small patch of black and white stripes and need to detect the direction of these strips, rather than their moving direction. The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
+
+>"Which hand do you prefer to press the arrow keys?"
+>"Put your fingers on the left and down arrow keys. You'll press the left arrow if you see see horizontal stripes and the down arrow if you see vertical stripes. If you aren't sure, make your best guess."
+>For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
+
+>"Remember, accuracy is more important that speed. Please take your time."
+
+>"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You could take a short break between the sections."
+
+>"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
 
 ### (Optional) stereo acuity and color vision tests
 
