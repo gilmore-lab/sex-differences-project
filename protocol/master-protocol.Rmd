@@ -11,7 +11,8 @@ output:
     toc_depth: 5
     toc_float: true
     self_contained: false
-    code_folding: hide    
+    code_folding: hide  
+knit:  rmarkdown::render('master-protocol.Rmd', output_format = 'all')
 ---
 
 ```{r, include=FALSE}
