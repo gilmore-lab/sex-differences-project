@@ -1,14 +1,18 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-12 11:38:19"
+date: "2019-11-12 13:23:16"
 output:
-  html_document:
-    keep_md: true
-    toc: true
+  pdf_document:
+    toc: yes
     toc_depth: 3
-    toc_float: true
+  html_document:
     code_folding: hide
+    keep_md: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+knit:  rmarkdown::render('test-session-protocol.Rmd', output_format = 'all')
 ---
 
 ## Before participant arrives

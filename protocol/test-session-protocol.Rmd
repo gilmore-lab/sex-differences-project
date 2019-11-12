@@ -5,13 +5,14 @@ date: "`r Sys.time()`"
 output:
   pdf_document:
     toc: yes
-    toc_depth: '3'
+    toc_depth: 3
   html_document:
     code_folding: hide
     keep_md: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
+knit:  rmarkdown::render('test-session-protocol.Rmd', output_format = 'all')
 ---
 
 ## Before participant arrives
