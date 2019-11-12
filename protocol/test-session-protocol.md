@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-11 11:54:13"
+date: "2019-11-12 11:38:19"
 output:
   html_document:
     keep_md: true
@@ -139,7 +139,8 @@ Once the consent is complete (It means the participant clicks to the next page),
 
 - Have the participant sit back down at the computer.
 - Let the participants finish the questionnaire.
-- Answer the questions if the participants have any, when they works on the questionnaires. But in careful in the hobby page, spatial and verbal page, because the time are recorded. The page will vanish when the time have passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.  
+- Answer the questions if the participants have any, when they works on the questionnaires. But in careful in the hobby page, spatial and verbal page, because the time are recorded. The page will vanish when the time have passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.
+- close the door for participants
 After answering the question, say:
 >"*Beware: there is a time limit for this page. *"
 

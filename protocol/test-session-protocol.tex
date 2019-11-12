@@ -1,0 +1,611 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Testing session protocol},
+            pdfauthor={Yiming Qian, Andrea Seisler, \& Rick Gilmore},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Testing session protocol}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Yiming Qian, Andrea Seisler, \& Rick Gilmore}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{2019-11-12 11:39:14}
+
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\subsection{Before participant
+arrives}\label{before-participant-arrives}
+
+\begin{itemize}
+\tightlist
+\item
+  Check to see if there have been any cancellations.
+\item
+  If the scheduled study is still on the books, proceed as follows.
+\end{itemize}
+
+\subsubsection{Set-up for Vision
+Screening}\label{set-up-for-vision-screening}
+
+\paragraph{Preparation}\label{preparation}
+
+Materials for vision screening are stored on the table next to Andrea's
+office.
+
+\begin{itemize}
+\tightlist
+\item
+  Make sure the black tape is on the floor 10ft from the HOVT Snellen
+  Acuity Chart which is on the door to 503B
+\item
+  Place Stereo Acuity Test and Glasses on table
+\item
+  Place Color Vision Test on table
+\item
+  Place the Vision Screening Score Sheet on the table
+\end{itemize}
+
+\paragraph{Review vision screening
+procedures}\label{review-vision-screening-procedures}
+
+The vision screening protocol may be reviewed at
+\href{vision-screening-protocol.html}{this link}
+
+\subsubsection{Set up for computer-based
+tasks}\label{set-up-for-computer-based-tasks}
+
+\paragraph{Stimuli Computer}\label{stimuli-computer}
+
+\begin{itemize}
+\item
+  \emph{Log into Data Collection Computer}
+\item
+  Turn on the power of the data collection computer
+\item
+  Turn on the CRT monitor in 503B
+\item
+  Log-in (Gilmore Lab)
+\item
+  \emph{Start Psychopy}
+\item
+  Click \textbf{PsychoPy} icon on Task Bar
+  \includegraphics{images/PsychoPy-1.PNG}\\
+\item
+  \emph{Double-check monitor settings within Windows}
+\item
+  Click Settings (`gear') icon on Task Bar
+  \includegraphics{images/DispSettings-1.PNG}\\
+\item
+  Choose \textbf{System}\\
+  \includegraphics{images/DS2.PNG}\\
+\item
+  Choose \textbf{Display}\\
+  \includegraphics{images/ds3.PNG}\\
+\item
+  Choose \textbf{Advanced display settings} (You may need to scroll down
+  to see this)\\
+  \includegraphics{images/DS4.PNG}\\
+\item
+  Make sure the window that appears has the following Settings\\
+  \includegraphics{images/ds5.PNG}\\
+\item
+  \emph{Double-check Brightness/Contrast of monitor}
+\item
+  Contrast:
+\item
+  Brightness:
+\item
+  Press any button on the monitor (except Signal A/B/OSD OFF and the
+  Power button)
+\item
+  Navigate to the leftmost option in the settings menu (looks like a
+  half moon)
+\item
+  Press the down button on the monitor
+\item
+  Adjust the Contrast (leftmost option) to the required setting using
+  the +/- buttons on the monitor
+\item
+  Adjust the Brightness (second option from the left) to the required
+  setting using the +/- buttons on the monitor
+\item
+  \emph{Check monitor within PsychoPy}\\
+\item
+  Go to \textbf{Monitor Settings}\\
+  \includegraphics{images/pp2.png}\\
+\item
+  View Settings, they should be as follows\\
+  \includegraphics{images/pp3.PNG}
+\end{itemize}
+
+\paragraph{Survey Computer}\label{survey-computer}
+
+\begin{itemize}
+\tightlist
+\item
+  Log-in to survey computer
+\item
+  Load page with surveys:
+  \url{https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV}
+\end{itemize}
+
+\subsubsection{After participant
+arrives}\label{after-participant-arrives}
+
+\paragraph{Welcome participant}\label{welcome-participant}
+
+Say:
+
+\begin{quote}
+``\emph{Welcome to the brain, behavior, and development lab. Are you
+here for the study about individual difference of motion perception?}''
+\end{quote}
+
+If the participant answers yes, say:
+
+\begin{quote}
+``\emph{Great. You can put your coat on the back of the door and your
+bag here.}''
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  Store coat on back of main door and bags by the file/bookcase.
+\end{itemize}
+
+\begin{quote}
+``\emph{Are you \textless{}NAME OF PERSON ON SONA SYSTEMS SITE SCHEDULED
+FOR THIS SESSION\textgreater{}?}''
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  If the participant answers yes, say:
+\end{itemize}
+
+\begin{quote}
+``\emph{Ok. We want to make sure that you get credit for participation.
+Please sit here for the first portion of the study.}''
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  Have the person sit at the computer where the survey will be taken.
+\end{itemize}
+
+\paragraph{Begin the survey}\label{begin-the-survey}
+
+\begin{itemize}
+\tightlist
+\item
+  You will see the Participant ID on the top of implied consent. Take a
+  note of this participant ID (only the numeric code without comma or
+  hyphen).
+\end{itemize}
+
+Conduct the implied verbal consent. You may say to the participant or
+have them read the following text:
+
+You are being invited to participate in a research study.
+
+\begin{itemize}
+\tightlist
+\item
+  The purpose of this voluntary research study is to investigate how
+  human beings perceive motion in an experimental setting. The results
+  of this research study will help scientists gain a deeper
+  understanding of what contributes to individual differences in motion
+  perception, and whether or how motion perception is correlated with
+  other aspects of life.
+\item
+  You will complete one computer-based surveys. Then, you will complete
+  two short computer tasks in which you will attempt to detect motion on
+  a computer screen.
+\item
+  All questionnaire and computer task data you provide will be saved
+  using a numeric code. No information about your identity or how to
+  contact you will be saved with the data.
+\item
+  If you are participating as part of the Psychology Subject Pool, you
+  will receive course credit for participation as specified in the
+  syllabus provided by your instructor. This means you will get 1 credit
+  for participating this research. Alternative means for earning this
+  course credit are available as specified in the syllabus.
+\end{itemize}
+
+If you have questions, complaints, or concerns about the research, you
+could contact principal investigator Yiming Qian or her advisor Rick
+Gilmore. If you have questions regarding your rights as a research
+subject or concerns regarding your privacy, you could contact the Office
+for Research Protections.
+
+Your participation is voluntary and you may decide to stop at any time.
+You do not have to answer any questions that you do not want to answer.
+
+Clicking the ``Next'' button implies two things: (1) that you are at
+least 18 years of age, and (2) you voluntarily consent to participate in
+the research. Thank you!
+
+Once the consent is complete (It means the participant clicks to the
+next page), say:
+
+\begin{quote}
+``\emph{That's great. Now we'd like to move on to the vision screening
+portion of the study. Could you stand behind this line?}''
+\end{quote}
+
+\subsubsection{Complete pattern visual acuity
+testing}\label{complete-pattern-visual-acuity-testing}
+
+\begin{itemize}
+\tightlist
+\item
+  Complete \href{vision-screening-protocol.html}{pattern acuity test}
+\item
+  Adult - HOTV @ 10ft
+\end{itemize}
+
+\subsubsection{Questionnaires}\label{questionnaires}
+
+\begin{quote}
+``\emph{Thank you. Now we'd like to move on to the questionnaire portion
+of the study. Please sit down. You can follow the instructions and
+finish the survey. Feel free to ask me if you have any questions. And
+let me know when you finish it.}''
+\end{quote}
+
+\begin{itemize}
+\item
+  Have the participant sit back down at the computer.
+\item
+  Let the participants finish the questionnaire.
+\item
+  Answer the questions if the participants have any, when they works on
+  the questionnaires. But in careful in the hobby page, spatial and
+  verbal page, because the time are recorded. The page will vanish when
+  the time have passed. So, depending on the nature of the questions,
+  answer them fast and emphasize the time is recorded in this page.
+\item
+  close the door for participants After answering the question, say:
+  \textgreater{}``\emph{Beware: there is a time limit for this page. }''
+\item
+  If the participants have questions in the instruction page of hobby
+  test, spatial and verbal test, answer careful and make sure the
+  participants understand well.
+\item
+  After the participants finish the questionnaire, ask them if they need
+  a little break. If the participant wants to keep going, lead them to
+  the test room
+\end{itemize}
+
+Say:
+
+\begin{quote}
+``\emph{You have finished the first part of testing. Next you have
+behavorial testing. Do you want to continue or have a little break?}''
+\end{quote}
+
+\subsubsection{Set-up for computer-based
+tasks}\label{set-up-for-computer-based-tasks-1}
+
+\begin{itemize}
+\tightlist
+\item
+  Guide participant to the testing room.
+\item
+  Have them sit in the chair.
+\item
+  Adjust the monitor and participant position.
+\item
+  The monitor should be located \textbf{60cm} from the bridge of the
+  nose on the participant.
+\item
+  The chair height should be set so the participant is looking in the
+  middle of the screen.
+\item
+  Guide the participant to use the arrow keys for responses and the
+  space bar to advance the screen.
+\end{itemize}
+
+\subsubsection{Run computer-based tasks}\label{run-computer-based-tasks}
+
+\paragraph{Select run order}\label{select-run-order}
+
+The order of the computer experiments will be randomized across
+participants based on the participant ID shown in Qualtrics - run the
+temporal duration threshold task first (Murray et al.) if the ID number
+is even. - run the contrast sensitivity task (Abramov et al.) first if
+the ID number is odd. \emph{Record the task run first on the experiment
+run log.}
+
+\paragraph{Temporal duration threshold task (Murray et
+al.)}\label{temporal-duration-threshold-task-murray-et-al.}
+
+\begin{itemize}
+\tightlist
+\item
+  Open PsychoPy by clicking on the icon located on the desktop.
+  \includegraphics{images/PsychoPy-1.PNG}\\
+\item
+  When PsychoPy opens, open the file for this experiment.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    From the \texttt{File} menu, select the \texttt{Open\ Recent...}
+    command and select the \texttt{motion-temporal-threshold.py} file.
+  \end{itemize}
+\item
+  When the file opens, run the experiment by pressing press the green
+  (running person) button. \includegraphics{images/PPrunningMan.png}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Be careful not to type in the programming window.}
+  \end{itemize}
+\item
+  Experimenters need to fill in the participant ID and gender.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A pop-up window will appear.
+  \item
+    Participant ID in the pop-up window have shown ``YYYYMMDD'', which
+    is the first part of participant ID. Enter the rest numbers of
+    participant ID based on the note you take from the beginning of
+    qualtrics.
+  \item
+    Enter gender (enter ``f'' or ``m'', no upper case) in the pop
+    window, and press the \texttt{Ok} button to enter the data.
+  \end{itemize}
+\item
+  Speak to the participant
+\end{itemize}
+
+\begin{quote}
+``In this task, you need to detect the moving direction of a small patch
+of stripes. The time the patch appears on the display will get shorter
+and shorter. Our goal is to find out the shortest duration you need to
+detect the direction of motion.''
+\end{quote}
+
+\begin{quote}
+``Which hand do you prefer to press the arrow keys?'' ``Put your fingers
+on the left and right arrow keys. You'll press the left arrow if you see
+motion to the left and the right arrow if you see motion to the right.
+If you aren't sure, make your best guess.'' For the left-handed: ``You
+could press this ENTER key on the right side to preceed instead of space
+bar.''
+\end{quote}
+
+\begin{quote}
+``On the computer screen, you will see a black dot at first. When the
+black dot appear, press the space bar to start the trial. Then you will
+see the patch. Make responses of left or right when the white dots
+appear.
+\end{quote}
+
+\begin{quote}
+``Remember, accuracy is more important that speed. Please take your
+time.''
+\end{quote}
+
+\begin{quote}
+``This task takes about 1 min to complete. But to make sure that we get
+reliable results, there are 4 sections. You can take a short break
+between the sections.''
+\end{quote}
+
+\begin{quote}
+``Do you have any questions right now? Okay. I will leave you in the
+room. Follow the instructions on the screen. Call me when you finished
+this part.''
+\end{quote}
+
+\paragraph{Contrast sensitivity task (Abramov et
+al.)}\label{contrast-sensitivity-task-abramov-et-al.}
+
+\includegraphics{images/PsychoPy-1.PNG}\\
+- When PsychoPy opens, open the file for this experiment. - From the
+\texttt{File} menu, select the \texttt{Open\ Recent...} command and
+select the \texttt{xxx.py} file. - When the file opens, run the
+experiment by pressing press the green (running person) button.
+\includegraphics{images/PPrunningMan.png}\\
+- \textbf{Be careful not to type in the programming window.} -
+Experimenters need to fill in the participant ID and gender. - A pop-up
+window will appear. - Participant ID in the pop-up window have shown
+``YYYYMMDD'', which is the first part of participant ID. Enter the rest
+numbers of participant ID based on the note you take from the beginning
+of qualtrics. - Enter gender (enter ``f'' or ``m'', no upper case) in
+the pop window, and press the \texttt{Ok} button to enter the data. -
+Speak to the participant
+
+\begin{quote}
+``You will see a small patch of black and white stripes which is
+horizontal or vertical.Be careful. You need to detect the direction of
+the stripes not the moving direction. You can press the LEFT or RIGHT
+buttons if you see the stripes are horizontal, UP or DOWN button if you
+see the stripes are vertical. But if you aren't sure, just guess.''
+\end{quote}
+
+\begin{quote}
+``In this task, you will see a small patch of black and white stripes
+and need to detect the direction of these strips, rather than their
+moving direction. The luminance of the stripes will get smaller and
+smaller. Our goal is to find out the smallest luminance that you need to
+detect the direction of stripes.''
+\end{quote}
+
+\begin{quote}
+``Which hand do you prefer to press the arrow keys?'' ``Put your fingers
+on the left and down arrow keys. You'll press the left arrow if you see
+see horizontal stripes and the down arrow if you see vertical stripes.
+If you aren't sure, make your best guess.'' For the left-handed: ``You
+could press this ENTER key on the right side to preceed instead of space
+bar.''
+\end{quote}
+
+\begin{quote}
+``Remember, accuracy is more important that speed. Please take your
+time.''
+\end{quote}
+
+\begin{quote}
+``This task takes about 1 min to complete. But to make sure that we get
+reliable results, there are 4 sections. You could take a short break
+between the sections.''
+\end{quote}
+
+\begin{quote}
+``Do you have any questions right now? Okay. I will leave you in the
+room. Follow the instructions on the screen. Call me when you finish
+this part.''
+\end{quote}
+
+\subsubsection{(Optional) stereo acuity and color vision
+tests}\label{optional-stereo-acuity-and-color-vision-tests}
+
+If there is time left (5 min before the end of the 1 hr session),
+
+\begin{quote}
+``\emph{Thank you so much. It looks like we have time for two more short
+vision tests. Please come sit over here at this table.}''
+\end{quote}
+
+Escort participant to table.
+
+\begin{itemize}
+\tightlist
+\item
+  Complete \href{vision-screening-protocol.html}{Stereo Acuity Test}
+\item
+  Complete \href{vision-screening-protocol.html}{Color Vision Test}
+\end{itemize}
+
+\subsection{After session ends}\label{after-session-ends}
+
+\subsubsection{Thank participant}\label{thank-participant}
+
+\begin{itemize}
+\tightlist
+\item
+  After the participant finishes all the tests, thank him/her.
+\end{itemize}
+
+\begin{quote}
+``\emph{Thank you for participating this experiment. We appreciate your
+time. Do you have any questions?}''
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  Answer any questions the participant might have. You may direct them
+  to Yiming or to Dr.~Gilmore if you are unable to answer the question.
+\end{itemize}
+
+\subsubsection{Give participant credit on
+SONA}\label{give-participant-credit-on-sona}
+
+\begin{itemize}
+\tightlist
+\item
+  Yiming or Andrea will assign credit in SONA.
+\end{itemize}
+
+\subsubsection{Clean-up}\label{clean-up}
+
+\begin{itemize}
+\tightlist
+\item
+  Clean keyboard, mouse and table and begin
+  \href{sex-differences-data-export.md}{data export} (separate
+  protocols).
+\end{itemize}
+
+
+\end{document}
