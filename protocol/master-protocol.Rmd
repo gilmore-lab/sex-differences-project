@@ -3,15 +3,15 @@ title: "Individual differences in visual perception in adults"
 author: "Rick Gilmore, Yiming Qian, & Andrea Seisler"
 date: "`r Sys.time()`"
 output: 
+  pdf_document:
+    toc: true
+    toc_depth: 5   
   html_document:
     toc: true
     toc_depth: 5
     toc_float: true
     self_contained: false
     code_folding: hide    
-  pdf_document:
-    toc: true
-    toc_depth: 5   
 ---
 
 ```{r, include=FALSE}
