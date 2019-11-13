@@ -56,7 +56,7 @@ Say:
 
 Say:
 
->"This test assesses your stereoacuity. Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left." 
+>"This test assesses your stereoacuity. Do you see the butterfly? Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left." 
 
 Continue until participant gives up trying, or making two successive mistakes.
 - Some participants may develop this perceptual response slowly. So let them study it for a while or let them change the viewing angle, if needed.
