@@ -20,7 +20,7 @@ output:
 - Have participant stand 10 feet away from the chart on the wall (black tape on the floor)
 - Ask the participant to start with the top line and have the participant read the first symbols in every line in descending order
 
->"Could you read the first symbols in each line, beginning from the top?" 
+>"Could you read the first symbols in each line for me from the top to bottom?" 
 
 - If they miss a letter, circle it on the score sheet.
 - Move back up one line and ask the participant to identify all the optotypes on that line. If the participant identifies all symbols correctly, go to the next line with smaller optotypes and ask the participant to identify all optotypes on the line.

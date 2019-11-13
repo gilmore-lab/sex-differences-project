@@ -101,7 +101,7 @@ The process of scheduling participants involves the following steps:
 |             | 05:30p   |                           | Yiming |
 | Thu         | 09:00a   | Joseph, Michelle, Luka,Rachel    | Yiming |
 |             | 10:15   | Rachel                    | Yiming |
-|             | 11:30a  | Amar                      | Yiming |
+|             | 11:30a  | Amar                      |  |
 |             | 01:30p  | Luka                      | Yiming (every two weeks)|
 |             | 02:45p  |                           | Yiming (every two weeks)|
 |             | 04:00p  |                           | Yiming |
@@ -126,8 +126,8 @@ The process of scheduling participants involves the following steps:
 ### Retrieve Behavioral Data
 
 - Output data files from the computer task are stored
-  - /Documents/PsychoPy-Stimuli/**Murray Folder Name**/motion_temporal_threshold_data
-  - /Documents/PsychoPy-Stimuli/**Abramov Folder Name**/contrast_sensitivity_task_data
+  - /Documents/PsychoPy-Stimuli/sex-diffs-murray-2018-replication/motion_temporal_threshold_data
+  - /Documents/PsychoPy-Stimuli/sex-diffs-abramov-2012-replication/contrast_sensitivity_task_data
 
 - Data must be copied to the **Gilmore Lab Participant Data** drive from the testing PC.
 - Data will be copied to Box (XXX).

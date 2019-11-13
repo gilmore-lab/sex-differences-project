@@ -87,9 +87,10 @@ Say:
 
 >"*Welcome to the brain, behavior, and development lab. Are you here for the study about individual difference of motion perception?*"
 
+Close the door.
 If the participant answers yes, say:
 
->"*Great. You can put your coat on the back of the door and your bag here.*"
+>"*Great. You can sit in this chair and put your coat and bags beside you.*"
 
 - Store coat on back of main door and bags by the file/bookcase.
 
@@ -103,17 +104,21 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- You will see the Participant ID on the top of implied consent. Take a note of this participant ID (only the numeric code without comma or hyphen).
+- You will see the Participant ID on the top of implied consent. *Take a note* of this participant ID (only the numeric code without comma or hyphen) in "Penn State Vision Screening Score Sheet".
 
 Conduct the implied verbal consent.
-You may say to the participant or have them read the following text:
+
+>"*Welcome to this study. You could read the research summary of this study and click next button to move to the next page.
+There is one thing I want to highlight: your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. *"
+
+Optional: You may say to the participant or have them read the following text:
 
 ```{r, child="implied-consent-language.Rmd"}
 ```
 
 Once the consent is complete (It means the participant clicks to the next page), say:
 
->"*That's great. Now we'd like to move on to the vision screening portion of the study. Could you stand behind this line?*"
+>"*That's great. Now we'd like to move on to the vision screening test of the study. Could you stand behind this line?*"
 
 ### Complete pattern visual acuity testing
 
@@ -123,12 +128,12 @@ Once the consent is complete (It means the participant clicks to the next page),
 
 ### Questionnaires
 
->"*Thank you. Now we'd like to move on to the questionnaire portion of the study. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. And let me know when you finish it.*"
+>"*Thank you. Now we'd like to move on to the questionnaires. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. And let me know when you finish it.*"
 
 - Have the participant sit back down at the computer.
 - Let the participants finish the questionnaire.
 - Answer the questions if the participants have any, when they works on the questionnaires. But in careful in the hobby page, spatial and verbal page, because the time are recorded. The page will vanish when the time have passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.
-- close the door for participants
+
 After answering the question, say:
 >"*Beware: there is a time limit for this page. *"
 
@@ -137,7 +142,7 @@ After answering the question, say:
 
 Say:
 
->"*You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?*"
+>"*You have finished this part. Next you have two computer tests. Do you want to continue or have a little break?*"
 
 ### Set-up for computer-based tasks
 
@@ -145,14 +150,20 @@ Say:
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
 - The monitor should be located **60cm** from the bridge of the nose on the participant.
+- *place the rear legs of the chair exactly in front of black strips*
 - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
+
+Say:
+
+>"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.*"
 
 ### Run computer-based tasks
 
 #### Select run order
 
 The order of the computer experiments will be randomized across participants based on the participant ID shown in Qualtrics
+
 - run the temporal duration threshold task first (Murray et al.) if the ID number is even.
 - run the contrast sensitivity task (Abramov et al.) first if the ID number is odd.
 *Record the task run first on the experiment run log.*
@@ -189,6 +200,10 @@ Escort participant to table.
 
 - Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.
 
+>"*Okay. The principle investigator will give you the credit later today.*"
+
+- Say bye to participants
+
 ### Give participant credit on SONA
 
 - Yiming or Andrea will assign credit in SONA.
@@ -196,5 +211,6 @@ Escort participant to table.
 ### Clean-up
 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
+- Copy the data of this participant into hard drive
 
 

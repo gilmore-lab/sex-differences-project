@@ -1,17 +1,12 @@
 ---
-<<<<<<< HEAD
 title: "Abramov-et-al-task"
-author: "Yiming Qian"
-date: "11/4/2019"
-=======
-title: "abramov-et-al-task"
->>>>>>> 3f08e7b7d9f03c9b1a6948404f665e0e75e81bd9
 output: html_document
 ---
 
+- Open PsychoPy by clicking on the icon located on the desktop.
 ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
-    - From the `File` menu, select the `Open Recent...` command and select the `xxx.py` file.
+    - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
     - **Be careful not to type in the programming window.**
 - Experimenters need to fill in the participant ID and gender.
@@ -20,17 +15,18 @@ output: html_document
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
->“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. You can press the LEFT or RIGHT buttons if you see the stripes are horizontal, UP or DOWN button if you see the stripes are vertical. But if you aren't sure, just guess. "
+>“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. (Show her the example pictures put in the left side of desk). You can press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical. But if you aren't sure, just guess. "
 
-
->“In this task, you will see a small patch of black and white stripes and need to detect the direction of these strips, rather than their moving direction. The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
+>“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
 
 >"Which hand do you prefer to press the arrow keys?"
->"Put your fingers on the left and down arrow keys. You'll press the left arrow if you see see horizontal stripes and the down arrow if you see vertical stripes. If you aren't sure, make your best guess."
+>"Put your fingers on the left and down keys. You'll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren't sure, make your best guess."
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
 
->"Remember, accuracy is more important that speed. Please take your time."
+>"Remember, accuracy is more important than speed. Please take your time."
 
 >"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You could take a short break between the sections."
 
 >"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
+
+- close the door for participants

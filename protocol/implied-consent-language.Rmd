@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-You are being invited to participate in a research study. 
+"You are being invited to participate in a research study. 
 
 -	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting.
 The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life. 
@@ -23,4 +23,4 @@ If you have questions regarding your rights as a research subject or concerns re
 Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. 
 
 Clicking the "Next” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
-Thank you!
+Thank you!"
