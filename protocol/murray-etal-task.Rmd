@@ -18,7 +18,9 @@ output: html_document
 >“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion."
 
 >"Which hand do you prefer to press the arrow keys?"
+
 >"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
+
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
 
 >"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dot appears.

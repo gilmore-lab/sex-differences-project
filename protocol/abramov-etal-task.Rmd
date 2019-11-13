@@ -20,7 +20,9 @@ output: html_document
 >“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
 
 >"Which hand do you prefer to press the arrow keys?"
+
 >"Put your fingers on the left and down keys. You'll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren't sure, make your best guess."
+
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
 
 >"Remember, accuracy is more important than speed. Please take your time."
