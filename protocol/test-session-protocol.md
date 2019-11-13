@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-13 10:39:54"
+date: "2019-11-13 16:19:41"
 output:
   pdf_document:
     toc: yes
@@ -87,9 +87,10 @@ Say:
 
 >"*Welcome to the brain, behavior, and development lab. Are you here for the study about individual difference of motion perception?*"
 
+Close the door.
 If the participant answers yes, say:
 
->"*Great. You can put your coat on the back of the door and your bag here.*"
+>"*Great. You can sit in this chair and put your coat and bags beside you.*"
 
 - Store coat on back of main door and bags by the file/bookcase.
 
@@ -103,16 +104,20 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- You will see the Participant ID on the top of implied consent. Take a note of this participant ID (only the numeric code without comma or hyphen).
+- You will see the Participant ID on the top of implied consent. *Take a note* of this participant ID (only the numeric code without comma or hyphen) in "Penn State Vision Screening Score Sheet".
 
 Conduct the implied verbal consent.
-You may say to the participant or have them read the following text:
+
+>"*Welcome to this study. You could read the summary explanation of this study and click next button to move to the next page.
+There is one thing I want to highlight: your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. *"
+
+Optional: You may say to the participant or have them read the following text:
 
 
 
 
 
-You are being invited to participate in a research study. 
+"You are being invited to participate in a research study. 
 
 -	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting.
 The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life. 
@@ -126,25 +131,50 @@ If you have questions regarding your rights as a research subject or concerns re
 Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. 
 
 Clicking the "Next” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
-Thank you!
+Thank you!"
 
 Once the consent is complete (It means the participant clicks to the next page), say:
 
->"*That's great. Now we'd like to move on to the vision screening portion of the study. Could you stand behind this line?*"
+>"*Great. Now we'd like to move on to the vision screening test. Could you stand behind this line?*"
 
 ### Complete pattern visual acuity testing
 
-- Complete [pattern acuity test](vision-screening-protocol.html)
-  - Adult - HOTV @ 10ft
+
+
+<!-- # Vision Screening Instructions -->
+
+<!-- #### Snellen Acuity (Child/Adult) -->
+
+##### Procedure
+
+- Have participant stand 10 feet away from the chart on the wall (black tape on the floor)
+- Ask the participant to start with the top line and have the participant read the first symbols in every line in descending order
+
+>"Could you read the first symbols in each line for me from the top to bottom?" 
+
+- If they miss a letter, circle it on the score sheet.
+- Move back up one line and ask the participant to identify all the optotypes on that line. If the participant identifies all symbols correctly, go to the next line with smaller optotypes and ask the participant to identify all optotypes on the line.
+
+> "Could you read all the symbols in this line? And this line?" 
+
+- Their visual acuity will be the one that matches the line on which 50% (3 of 5, 4 of 6) of the symbols are identified correctly.
+
+##### Report results
+
+- Log the answer to each item on the [score sheet](vision-screening-score-sheet.html).
+- Log the acuity for the participant in terms of 10 ft (e.g. 10/10)
+- Report the result into Qualtrics
+
+
 
 ### Questionnaires
 
->"*Thank you. Now we'd like to move on to the questionnaire portion of the study. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. And let me know when you finish it.*"
+>"*Thank you. Now we'd like to move on to the questionnaires. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. And let me know when you finish it.*"
 
 - Have the participant sit back down at the computer.
 - Let the participants finish the questionnaire.
 - Answer the questions if the participants have any, when they works on the questionnaires. But in careful in the hobby page, spatial and verbal page, because the time are recorded. The page will vanish when the time have passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.
-- close the door for participants
+
 After answering the question, say:
 >"*Beware: there is a time limit for this page. *"
 
@@ -153,7 +183,7 @@ After answering the question, say:
 
 Say:
 
->"*You have finished the first part of testing. Next you have behavorial testing. Do you want to continue or have a little break?*"
+>"*You have finished this part. Next you have two computer tests. Do you want to continue or have a little break?*"
 
 ### Set-up for computer-based tasks
 
@@ -161,14 +191,20 @@ Say:
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
 - The monitor should be located **60cm** from the bridge of the nose on the participant.
+- *place the rear legs of the chair exactly in front of black strips*
 - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
+
+Say:
+
+>"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.*"
 
 ### Run computer-based tasks
 
 #### Select run order
 
 The order of the computer experiments will be randomized across participants based on the participant ID shown in Qualtrics
+
 - run the temporal duration threshold task first (Murray et al.) if the ID number is even.
 - run the contrast sensitivity task (Abramov et al.) first if the ID number is odd.
 *Record the task run first on the experiment run log.*
@@ -195,21 +231,24 @@ The order of the computer experiments will be randomized across participants bas
 >"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
 
->"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dots appear.
+>"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dot appears.
 
->"Remember, accuracy is more important that speed. Please take your time."
+>"Remember, accuracy is more important than speed. Please take your time."
 
->"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You can take a short break between the sections."
+>"This task takes about 1 min to complete. But to get reliable results, there are 4 sections. You can take a short break between the sections."
 
 >"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
+
+- close the door for participants
 
 #### Contrast sensitivity task (Abramov et al.)
 
 
 
+- Open PsychoPy by clicking on the icon located on the desktop.
 ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
-    - From the `File` menu, select the `Open Recent...` command and select the `xxx.py` file.
+    - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
     - **Be careful not to type in the programming window.**
 - Experimenters need to fill in the participant ID and gender.
@@ -218,20 +257,21 @@ The order of the computer experiments will be randomized across participants bas
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
->“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. You can press the LEFT or RIGHT buttons if you see the stripes are horizontal, UP or DOWN button if you see the stripes are vertical. But if you aren't sure, just guess. "
+>“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. (Show her the example pictures put in the left side of desk). You can press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical. But if you aren't sure, just guess. "
 
-
->“In this task, you will see a small patch of black and white stripes and need to detect the direction of these strips, rather than their moving direction. The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
+>“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
 
 >"Which hand do you prefer to press the arrow keys?"
->"Put your fingers on the left and down arrow keys. You'll press the left arrow if you see see horizontal stripes and the down arrow if you see vertical stripes. If you aren't sure, make your best guess."
+>"Put your fingers on the left and down keys. You'll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren't sure, make your best guess."
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
 
->"Remember, accuracy is more important that speed. Please take your time."
+>"Remember, accuracy is more important than speed. Please take your time."
 
 >"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You could take a short break between the sections."
 
 >"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
+
+- close the door for participants
 
 ### (Optional) stereo acuity and color vision tests
 
@@ -241,8 +281,65 @@ If there is time left (5 min before the end of the 1 hr session),
 
 Escort participant to table.
 
-- Complete [Stereo Acuity Test](vision-screening-protocol.html)
-- Complete [Color Vision Test](vision-screening-protocol.html)
+
+
+<!-- # Vision Screening Instructions -->
+
+#### Color Test
+
+##### Procedure
+
+- The examination should be done indoors with bright, natural illumination of more than 300 lux.
+- The plates should be held at a distance of 50 - 75 cm (20-30 inches)
+
+Say:
+
+>"This test assesses your color vision. Look at this picture and tell me what you see." 
+>"Now trace the curve."
+
+- The first exam:
+    - *Skip: Examiner shows the participant plate 1 or 2, tracing the red line. Recognized as "circle", "square", or some other design.
+    - Plate 3 and 4. The participants are required to say outloud "circle", "square", or some other design. If the shape is correctly recognized, mark as normal.If the shape is not correctly recognized, mark as abnormal.
+- The second exam:
+    - Skip: Examiner shows the participant plate 5. Recognized as a curve line. 
+    - Plate 6: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the red curve, but the abnormal usually trace the blue.
+    - Plate 7: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve.
+    - Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of the abnormal, some can trace either 
+
+- You could provide some feedback to them, say
+>" You have done excellent job." 
+
+##### Report results
+
+- Log the answer to each item on the score [score sheet](vision-screening-score-sheet.html).
+- Those who can not recognize any curve in plate 8 at all, or any lower curve are definitely abnormal.
+- They might be abnormal if they misjudge more than 3 plates among plates 3,4,6,7
+- If they misjudge 1-2 plates among plates 3,4,6,7, it is better to re-examine him in details from plate 1-8. 
+- Report the result into Qualtrics
+
+#### Stereo Vision Test
+
+##### Procedure
+
+- Have the participant put the stereo glasses on.
+- Provide good light, make sure the pictures maintain the proper axis of polarization before the participants at 15 minutes of arc at a distance of 16 inches.
+- Only do the circle test. Point to each item on the left hand side of the page going left to right and up to down. 
+- Start with No.1. 
+
+Say:
+
+>"This test assesses your stereoacuity. Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left." 
+
+Continue until participant gives up trying, or making two successive mistakes.
+- Some participants may develop this perceptual response slowly. So let them study it for a while or let them change the viewing angle, if needed.
+- You could provide some feedback to them, say
+>" You have very good stereo vision." 
+
+##### Report results
+
+- Log the answer to each item on the [score sheet](vision-screening-score-sheet.html).
+- Record the level of stereopsis into Qualtrics at the last one chosen correctly. 
+
 
 ## After session ends
 
@@ -250,9 +347,22 @@ Escort participant to table.
 
 - After the participant finishes all the tests, thank him/her.
 
->"*Thank you for participating this experiment. We appreciate your time. Do you have any questions?*"
+>"*These are all. Thank you for participation. We appreciate your time. Do you have any questions?*"
 
 - Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.
+- If the participant ask the purpose of this study, read the debrief
+
+
+
+#### debrief
+"In this study, the visual scuity test, color vision test and stereo vision test are conducted to make sure you have normal vision to detect the motion in short period or low luminance. 
+
+You also have done two computer tests, which examine your performance in motion perception. In this study, we want to investigate whether or how motion perception is correlated with individual's verbal ability, spatial ability, or personal interests. "
+
+
+>"*Okay. The principle investigator will give you the credit later today.*"
+
+- Say bye to participants
 
 ### Give participant credit on SONA
 
@@ -261,5 +371,6 @@ Escort participant to table.
 ### Clean-up
 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
+- Copy the data of this participant into hard drive
 
 

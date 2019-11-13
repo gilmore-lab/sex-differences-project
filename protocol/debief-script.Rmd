@@ -5,13 +5,8 @@ date: "`r Sys.time()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+#### debrief
+"In this study, the visual scuity test, color vision test and stereo vision test are conducted to make sure you have normal vision to detect the motion in short period or low luminance. 
 
-In this study, we were examining...
-In this study, we were examining individual differences in visual perception.
+You also have done two computer tests, which examine your performance in motion perception. In this study, we want to investigate whether or how motion perception is correlated with individual's verbal ability, spatial ability, or personal interests. "
 
-Thank you for contributing to the science of visual perception.
-
-If you have any questions, please contact Yiming Qian...or Rick Gilmore <rog1@psu.edu>.

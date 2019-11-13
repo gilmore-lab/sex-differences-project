@@ -108,7 +108,7 @@ If the participant answers yes, say:
 
 Conduct the implied verbal consent.
 
->"*Welcome to this study. You could read the research summary of this study and click next button to move to the next page.
+>"*Welcome to this study. You could read the summary explanation of this study and click next button to move to the next page.
 There is one thing I want to highlight: your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. *"
 
 Optional: You may say to the participant or have them read the following text:
@@ -118,7 +118,7 @@ Optional: You may say to the participant or have them read the following text:
 
 Once the consent is complete (It means the participant clicks to the next page), say:
 
->"*That's great. Now we'd like to move on to the vision screening test of the study. Could you stand behind this line?*"
+>"*Great. Now we'd like to move on to the vision screening test. Could you stand behind this line?*"
 
 ### Complete pattern visual acuity testing
 
@@ -196,9 +196,13 @@ Escort participant to table.
 
 - After the participant finishes all the tests, thank him/her.
 
->"*Thank you for participating this experiment. We appreciate your time. Do you have any questions?*"
+>"*These are all. Thank you for participation. We appreciate your time. Do you have any questions?*"
 
 - Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.
+- If the participant ask the purpose of this study, read the debrief
+
+```{r, child="debief-script.Rmd"}
+```
 
 >"*Okay. The principle investigator will give you the credit later today.*"
 
