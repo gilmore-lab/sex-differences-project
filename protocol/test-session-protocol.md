@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-12 13:28:43"
+date: "2019-11-13 10:39:54"
 output:
   pdf_document:
     toc: yes
@@ -20,7 +20,7 @@ knit:  rmarkdown::render('test-session-protocol.Rmd', output_format = 'all')
 - Check to see if there have been any cancellations.
 - If the scheduled study is still on the books, proceed as follows.
 
-### Set-up for Vision Screening  {.tabset}
+### Set-up for Vision Screening  
 
 #### Preparation
 
@@ -35,7 +35,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 The vision screening protocol may be reviewed at [this link](vision-screening-protocol.html)
 
-### Set up for computer-based tasks {.tabset}
+### Set up for computer-based tasks 
 
 #### Stimuli Computer
 - *Log into Data Collection Computer*
@@ -79,7 +79,7 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV>
 
-### After participant arrives {.tabset}
+### After participant arrives 
 
 #### Welcome participant
 

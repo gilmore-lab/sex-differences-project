@@ -5,10 +5,10 @@ date: "`r Sys.time()`"
 output: 
   pdf_document:
     toc: true
-    toc_depth: 5   
+    toc_depth: 3   
   html_document:
     toc: true
-    toc_depth: 5
+    toc_depth: 3
     toc_float: true
     self_contained: false
     code_folding: hide  
@@ -36,7 +36,7 @@ The most recent IRB approval was granted on 2010-10-14.
 Files related to the approved (exempt) submission can be found [here](../irb/2019-10-24).
 Minor modifications of the items in the forms do not need to submit a modification.
 
-# Prior to data collection start {.tabset}
+# Prior to data collection start 
 
 ## Equipment preparation
 
@@ -60,7 +60,7 @@ Yiming has generated a draft survey, saved [here](qualtrics_survey.qsf) as a `*.
 
 The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV>
 
-# Scheduling participants {.tabset}
+# Scheduling participants 
 
 ## Overview
 
@@ -84,7 +84,7 @@ The process of scheduling participants involves the following steps:
 | Mon         | 09:00a  | Rachel                    | Andrea |
 |             | 10:15a  | Sandy, Emily, Rachel      | Andrea |
 |             | 11:30a  | Sandy, Emily, Amar        | Yiming |
-|             | 1p      |                           | Yiming |
+|             | 1p      | Emily                     | Yiming |
 |             | 2:15p   |                           | Yiming |
 |             | 3:30p   |                           | Yiming |
 |             | 4:45p   |                           | Yiming |
@@ -94,7 +94,7 @@ The process of scheduling participants involves the following steps:
 |             | 12:45p   | Michelle, Joseph, Amar    | Andrea |
 | Wed         | 10:00a   | Sandy, Rachel, Amar       | Yiming |
 |             | 11:15a   | Sandy, Rachel, Amar, Emily| Andrea |
-|             | 12:30p   | Luka                      | Andrea |
+|             | 12:30p   | Luka, Emily               | Andrea |
 |             | 01:45p   |                           | Yiming |
 |             | 03:00p   |                           | Yiming |
 |             | 04:15p   |                           | Yiming |
@@ -105,7 +105,7 @@ The process of scheduling participants involves the following steps:
 |             | 01:30p  | Luka                      | Yiming (every two weeks)|
 |             | 02:45p  |                           | Yiming (every two weeks)|
 |             | 04:00p  |                           | Yiming |
-|             | 05:15p  |                           | Yiming |
+|             | 05:15p  | Emily                     | Yiming |
 | Fri         | 09:00a  | Rachel                    | Yiming |
 |             | 10:15a  | Rachel, Emily, Amar       | Yiming |
 |             | 11:30a  | Rachel, Emily, Amar       | Andrea |
@@ -114,12 +114,12 @@ The process of scheduling participants involves the following steps:
 |             | 03:15p  |                           | Yiming |
 |             | 04:30p  |                           | Yiming |
 
-# Day of visit {.tabset}
+# Day of visit 
 
 ```{r, child="test-session-protocol.Rmd"}
 ```
 
-# Data processing {.tabset}
+# Data processing 
 
 ## Gathering
 
@@ -157,7 +157,7 @@ To view an example, visit [this link](https://gilmore-lab.github.io/sex-differen
 
 ## Analysis
 
-# Appendices {.tabset}
+# Appendices 
 
 ```{r terminology, child="terminology.Rmd"}
 ```

@@ -20,7 +20,7 @@ knit:  rmarkdown::render('test-session-protocol.Rmd', output_format = 'all')
 - Check to see if there have been any cancellations.
 - If the scheduled study is still on the books, proceed as follows.
 
-### Set-up for Vision Screening  {.tabset}
+### Set-up for Vision Screening  
 
 #### Preparation
 
@@ -35,7 +35,7 @@ Materials for vision screening are stored on the table next to Andrea's office.
 
 The vision screening protocol may be reviewed at [this link](vision-screening-protocol.html)
 
-### Set up for computer-based tasks {.tabset}
+### Set up for computer-based tasks 
 
 #### Stimuli Computer
 - *Log into Data Collection Computer*
@@ -79,7 +79,7 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 - Log-in to survey computer
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV>
 
-### After participant arrives {.tabset}
+### After participant arrives 
 
 #### Welcome participant
 
@@ -117,8 +117,9 @@ Once the consent is complete (It means the participant clicks to the next page),
 
 ### Complete pattern visual acuity testing
 
-- Complete [pattern acuity test](vision-screening-protocol.html)
-  - Adult - HOTV @ 10ft
+```{r, child="snellen-screening-protocol.Rmd"}
+```
+
 
 ### Questionnaires
 
@@ -174,8 +175,9 @@ If there is time left (5 min before the end of the 1 hr session),
 
 Escort participant to table.
 
-- Complete [Stereo Acuity Test](vision-screening-protocol.html)
-- Complete [Color Vision Test](vision-screening-protocol.html)
+```{r, child="color-stereo-screening-protocol.Rmd"}
+```
+
 
 ## After session ends
 
