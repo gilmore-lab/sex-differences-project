@@ -1,0 +1,13 @@
+---
+title: "Gather and Clean Contrast Sensitivity (Abramov)"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+params:
+  path_2_data:  '~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+

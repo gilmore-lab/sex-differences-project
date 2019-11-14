@@ -7,7 +7,6 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Yiming Qian, Andrea Seisler, &amp; Rick Gilmore" />
@@ -1478,12 +1477,56 @@ summary {
 }
 </style>
 
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <style type="text/css">
 
@@ -1577,7 +1620,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Testing session protocol</h1>
 <h4 class="author">Yiming Qian, Andrea Seisler, &amp; Rick Gilmore</h4>
-<h4 class="date">2019-11-13 16:19:41</h4>
+<h4 class="date">2019-11-14 08:15:31</h4>
 
 </div>
 
@@ -1824,7 +1867,13 @@ div.tocify {
 <p>“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion.”</p>
 </blockquote>
 <blockquote>
-<p>“Which hand do you prefer to press the arrow keys?” “Put your fingers on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, make your best guess.” For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
+<p>“Which hand do you prefer to press the arrow keys?”</p>
+</blockquote>
+<blockquote>
+<p>“Put your fingers on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, make your best guess.”</p>
+</blockquote>
+<blockquote>
+<p>For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
 </blockquote>
 <blockquote>
 <p>&quot;On the computer screen, you will see a black dot at first. When the black dot appear, press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dot appears.</p>
@@ -1870,7 +1919,13 @@ div.tocify {
 <p>“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes.”</p>
 </blockquote>
 <blockquote>
-<p>“Which hand do you prefer to press the arrow keys?” “Put your fingers on the left and down keys. You’ll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren’t sure, make your best guess.” For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
+<p>“Which hand do you prefer to press the arrow keys?”</p>
+</blockquote>
+<blockquote>
+<p>“Put your fingers on the left and down keys. You’ll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren’t sure, make your best guess.”</p>
+</blockquote>
+<blockquote>
+<p>For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
 </blockquote>
 <blockquote>
 <p>“Remember, accuracy is more important than speed. Please take your time.”</p>
@@ -1917,10 +1972,13 @@ div.tocify {
 <li>Skip: Examiner shows the participant plate 5. Recognized as a curve line.</li>
 <li>Plate 6: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the red curve, but the abnormal usually trace the blue.</li>
 <li>Plate 7: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve.</li>
-<li>Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of the abnormal, some can trace either</li>
+<li>Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of abnormal color vision, some can trace either contour.</li>
 </ul></li>
-<li>You could provide some feedback to them, say &gt;&quot; You have done excellent job.&quot;</li>
 </ul>
+<p>When the participant is finished, say:</p>
+<blockquote>
+<p>“Great. Thank you.”</p>
+</blockquote>
 </div>
 <div id="report-results-1" class="section level5">
 <h5>Report results</h5>
@@ -1945,9 +2003,9 @@ div.tocify {
 </ul>
 <p>Say:</p>
 <blockquote>
-<p>“This test assesses your stereoacuity. Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.”</p>
+<p>“<em>This test assesses your stereoacuity. Do you see the butterfly? Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.</em>”</p>
 </blockquote>
-<p>Continue until participant gives up trying, or making two successive mistakes. - Some participants may develop this perceptual response slowly. So let them study it for a while or let them change the viewing angle, if needed. - You could provide some feedback to them, say &gt;&quot; You have very good stereo vision.&quot;</p>
+<p>Continue until participant gives up trying, or making two successive mistakes. - Some participants may develop this perceptual response slowly. So let them study it for a while or let them change the viewing angle, if needed.</p>
 </div>
 <div id="report-results-2" class="section level5">
 <h5>Report results</h5>
@@ -1967,7 +2025,7 @@ div.tocify {
 <li>After the participant finishes all the tests, thank him/her.</li>
 </ul>
 <blockquote>
-<p>“<em>These are all. Thank you for participation. We appreciate your time. Do you have any questions?</em>”</p>
+<p>“<em>These are all the tasks for today. Thank you for participation. We appreciate your time. Do you have any questions?</em>”</p>
 </blockquote>
 <ul>
 <li>Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.</li>
@@ -1978,7 +2036,7 @@ div.tocify {
 <p>&quot;In this study, the visual scuity test, color vision test and stereo vision test are conducted to make sure you have normal vision to detect the motion in short period or low luminance.</p>
 <p>You also have done two computer tests, which examine your performance in motion perception. In this study, we want to investigate whether or how motion perception is correlated with individual’s verbal ability, spatial ability, or personal interests. &quot;</p>
 <blockquote>
-<p>“<em>Okay. The principle investigator will give you the credit later today.</em>”</p>
+<p>“<em>Okay. The principal investigator will give you the credit later today.</em>”</p>
 </blockquote>
 <ul>
 <li>Say bye to participants</li>
@@ -2018,54 +2076,6 @@ $(document).ready(function () {
 });
 
 
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

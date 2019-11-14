@@ -1,0 +1,9 @@
+--------------
+api_token: 2G75emuP6GteicTGFnxJb8c21l2ktkYGSTJarQS4
+base_url: pennstate.qualtrics.com
+verbose: TRUE
+uselabels: TRUE
+convertvariables: TRUE
+uselocaltime: FALSE
+datewarning: TRUE
+--------------

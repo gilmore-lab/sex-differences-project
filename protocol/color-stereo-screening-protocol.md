@@ -1,7 +1,7 @@
 ---
 title: "Color and Stereo Vision Screening Protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "`r Sys.time()`"
+date: "2019-11-14 08:15:23"
 output:
   html_document:
     keep_md: true

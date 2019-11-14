@@ -189,14 +189,13 @@ Escort participant to table.
 ```{r, child="color-stereo-screening-protocol.Rmd"}
 ```
 
-
 ## After session ends
 
 ### Thank participant
 
 - After the participant finishes all the tests, thank him/her.
 
->"*These are all. Thank you for participation. We appreciate your time. Do you have any questions?*"
+>"*These are all the tasks for today. Thank you for participation. We appreciate your time. Do you have any questions?*"
 
 - Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.
 - If the participant ask the purpose of this study, read the debrief
@@ -204,7 +203,7 @@ Escort participant to table.
 ```{r, child="debief-script.Rmd"}
 ```
 
->"*Okay. The principle investigator will give you the credit later today.*"
+>"*Okay. The principal investigator will give you the credit later today.*"
 
 - Say bye to participants
 

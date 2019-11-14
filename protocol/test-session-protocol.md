@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-13 16:19:41"
+date: "2019-11-14 08:15:31"
 output:
   pdf_document:
     toc: yes
@@ -228,7 +228,9 @@ The order of the computer experiments will be randomized across participants bas
 >“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion."
 
 >"Which hand do you prefer to press the arrow keys?"
+
 >"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
+
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
 
 >"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dot appears.
@@ -262,7 +264,9 @@ The order of the computer experiments will be randomized across participants bas
 >“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
 
 >"Which hand do you prefer to press the arrow keys?"
+
 >"Put your fingers on the left and down keys. You'll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren't sure, make your best guess."
+
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
 
 >"Remember, accuracy is more important than speed. Please take your time."
@@ -304,10 +308,11 @@ Say:
     - Skip: Examiner shows the participant plate 5. Recognized as a curve line. 
     - Plate 6: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the red curve, but the abnormal usually trace the blue.
     - Plate 7: In tracing the winding line between the upper left mark x and lower right mark x, the normal traces the upper green curve, but the abnormal usually trace the lower red curve.
-    - Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of the abnormal, some can trace either 
+    - Plate 8: In tracing the winding line between the upper left mark x, the normal can trace upper and lower curve and come back to the starting mark. In case of abnormal color vision, some can trace either contour.
 
-- You could provide some feedback to them, say
->" You have done excellent job." 
+When the participant is finished, say:
+
+>"Great. Thank you." 
 
 ##### Report results
 
@@ -328,18 +333,15 @@ Say:
 
 Say:
 
->"This test assesses your stereoacuity. Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left." 
+>"*This test assesses your stereoacuity. Do you see the butterfly? Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.*" 
 
 Continue until participant gives up trying, or making two successive mistakes.
 - Some participants may develop this perceptual response slowly. So let them study it for a while or let them change the viewing angle, if needed.
-- You could provide some feedback to them, say
->" You have very good stereo vision." 
 
 ##### Report results
 
 - Log the answer to each item on the [score sheet](vision-screening-score-sheet.html).
 - Record the level of stereopsis into Qualtrics at the last one chosen correctly. 
-
 
 ## After session ends
 
@@ -347,7 +349,7 @@ Continue until participant gives up trying, or making two successive mistakes.
 
 - After the participant finishes all the tests, thank him/her.
 
->"*These are all. Thank you for participation. We appreciate your time. Do you have any questions?*"
+>"*These are all the tasks for today. Thank you for participation. We appreciate your time. Do you have any questions?*"
 
 - Answer any questions the participant might have. You may direct them to Yiming or to Dr. Gilmore if you are unable to answer the question.
 - If the participant ask the purpose of this study, read the debrief
@@ -360,7 +362,7 @@ Continue until participant gives up trying, or making two successive mistakes.
 You also have done two computer tests, which examine your performance in motion perception. In this study, we want to investigate whether or how motion perception is correlated with individual's verbal ability, spatial ability, or personal interests. "
 
 
->"*Okay. The principle investigator will give you the credit later today.*"
+>"*Okay. The principal investigator will give you the credit later today.*"
 
 - Say bye to participants
 
