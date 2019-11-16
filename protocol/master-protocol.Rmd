@@ -81,37 +81,37 @@ The process of scheduling participants involves the following steps:
 
 | Day of Week | Time    | Researcher(s)             | Lead   |     
 |-------------|---------|---------------------------|--------|
-| Mon         | 09:00a  | Rachel                    | Andrea |
+| Mon         | 09:00a  |                           | Andrea |
 |             | 10:15a  | Sandy, Emily, Rachel      | Andrea |
 |             | 11:30a  | Sandy, Emily, Amar        | Yiming |
 |             | 1p      | Emily                     | Yiming |
 |             | 2:15p   |                           | Yiming |
-|             | 3:30p   |                           | Yiming |
+|             | 3:30p   | Rachel                    | Yiming |
 |             | 4:45p   |                           | Yiming |
 | Tue         | 09:00a   | Michelle, Rachel          | Andrea |
 |             | 10:15a   | Michelle, Rachel          | Andrea |
 |             | 11:30a   | Amar, Michelle            | Andrea |
-|             | 12:45p   | Michelle, Joseph, Amar    | Andrea |
+|             | 12:45p   | Michelle, Joseph, Amar, Luka    | Andrea |
 | Wed         | 10:00a   | Sandy, Rachel, Amar       | Yiming |
 |             | 11:15a   | Sandy, Rachel, Amar, Emily| Andrea |
 |             | 12:30p   | Luka, Emily               | Andrea |
-|             | 01:45p   |                           | Yiming |
-|             | 03:00p   |                           | Yiming |
-|             | 04:15p   |                           | Yiming |
-|             | 05:30p   |                           | Yiming |
+|             | 01:45p   | Luka                      | Yiming |
+|             | 03:00p   | Luka, Rachel              | Yiming |
+|             | 04:15p   | Luka                      | Yiming |
+|             | 05:30p   | Luka                      | Yiming |
 | Thu         | 09:00a   | Joseph, Michelle, Luka,Rachel    | Yiming |
 |             | 10:15   | Rachel                    | Yiming |
-|             | 11:30a  | Amar                      |  |
-|             | 01:30p  | Luka                      | Yiming (every two weeks)|
+|             | 11:30a  | Amar, Rachel              |  |
+|             | 01:30p  | Amar, Luka                | Yiming (every two weeks)|
 |             | 02:45p  |                           | Yiming (every two weeks)|
 |             | 04:00p  |                           | Yiming |
-|             | 05:15p  | Emily                     | Yiming |
+|             | 05:15p  | Emily (some days)         | Yiming |
 | Fri         | 09:00a  | Rachel                    | Yiming |
 |             | 10:15a  | Rachel, Emily, Amar       | Yiming |
 |             | 11:30a  | Rachel, Emily, Amar       | Andrea |
 |             | 12:45p  | Emily, Amar               | Andrea |
 |             | 02:00p  | Michelle                  | Yiming |
-|             | 03:15p  |                           | Yiming |
+|             | 03:15p  |                            | Yiming |
 |             | 04:30p  |                           | Yiming |
 
 # Day of visit 
