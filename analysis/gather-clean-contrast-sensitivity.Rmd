@@ -43,14 +43,21 @@ csv_files
 ```{r}
 s1 <- readr::read_csv(csv_files[1])
 
-s1_subset <- s1 %>%
+s1_clean <- s1 %>%
+  mutate(., correctAns = stringr::str_extract(correctAns, "left|down|right|up")) %>%
+  mutate(., corr = if_else(resp == correctAns, 1, 0)) %>%
+  rename(., contr = loop_trial.intensity,
+         trial_n = loop_trial.thisN)
+
+s1_subset <- s1_clean %>%
   dplyr::select(., Participant, Gender,
-                loop_trial.thisN,
-                loop_trial.intensity,
+                trial_n,
+                contr,
                 correctAns,
                 resp,
+                corr,
                 resp.rt) %>%
-  dplyr::filter(., loop_trial.thisN >= 0) %>%
+  dplyr::filter(., trial_n >= 0) %>%
   dplyr::mutate(run = rep(1:4, each=30))
 s1_subset
 ```
@@ -59,11 +66,48 @@ s1_subset
 
 ```{r}
 s1_subset %>% ggplot(.) +
-  aes(x = loop_trial.thisN, y = loop_trial.intensity) +
-  facet_grid(. ~ run) +
-  geom_point() +
-  geom_smooth()
+  aes(x = trial_n, y = contr) +
+  facet_grid(correctAns ~ run) +
+  geom_smooth() +
+  geom_point(aes(shape = factor(corr, labels = c("incorr", "corr"))))
 ```
+
+### Cumulative performance across runs
+
+```{r}
+s1_subset <- s1_subset %>%
+  dplyr::group_by(., run) %>%
+  dplyr::arrange(., contr) %>%
+  dplyr::mutate(., cum_sum = cumsum(corr),
+                cum_p = cum_sum/n())
+
+s1_subset %>% ggplot(.) +
+  aes(x = contr, y = cum_p) +
+  facet_grid(correctAns ~ run) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+```
+
+```{r}
+s1_subset %>%
+  dplyr::group_by(., run, correctAns) %>%
+  dplyr::summarise(p_corr = sum(corr)/n()) %>%
+  ggplot(.) +
+  aes(x = run, y = p_corr) +
+  facet_grid(correctAns ~ .) +
+  geom_col()
+```
+
+```{r}
+s1_subset %>%
+  ggplot(.) +
+  aes(x = trial_n, y = resp.rt) +
+  facet_grid(. ~ run) + 
+  geom_point()
+```
+
+
+## Subject 2
 
 ```{r}
 s2 <- readr::read_csv(csv_files[2])

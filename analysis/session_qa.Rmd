@@ -15,38 +15,27 @@ library(tidyverse)
 
 ## Purpose
 
-This script imports, summarizes, and shows basic visualizations of an individual's session data.
+This script describes the process for doing quality assurance (QA) review on each session.
 
-## Import
+## QA criteria
 
-```{r}
-this_session <- readr::read_csv(paste0(params$csv_path, params$data_fn))
-names(this_session)
-```
+1. There are two datafiles for each participant:
+  - One for the Abramov et al contrast sensitivity task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/`
+  - One for the Murray et al temporal threshold task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/motion_sensitivity_task_data/`
+2. There is survey data for each participant in `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_data/`
+3. There are four runs for each of two computer-based tasks, each run consisting of $n=30$ trials.
+4. The computer-based tasks have the participant gender.
 
-## Clean
+## QA steps
 
-Add a trial variable.
-
-```{r}
-this_session <- this_session %>%
-  dplyr::mutate(., trial = 1:length(observer)[1])
-```
-
-Make correct/incorrect a factor for plotting.
-
-```{r}
-this_session <- this_session %>%
-  dplyr::mutate(accuracy = factor(correct, labels = c("incorrect", "correct")))
-```
-
-## Visualize
-
-```{r}
-this_session %>%
-  ggplot(.) +
-  aes(x = trial, y = stim_secs, shape = accuracy) +
-  geom_point()
-  #geom_smooth()
-```
+1. Move `*.csv`, `*.pydat`, and `*.log` files to separate subdirectories.
+2. List `*.csv` contrast sensitivity files
+3. List `*.csv` temporal threshold files
+4. Do lists align?
+  - If not, do what?
+5. Determine if QA has already been run.
+  - How?
+    - Determine if `*.html` file exists for this subject
+6. If QA not-run, run QA.
+  - Create `*.html` file from `*.Rmd` template.
 
