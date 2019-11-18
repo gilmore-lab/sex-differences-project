@@ -77,7 +77,7 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 #### Survey Computer
 
 - Log-in to survey computer
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV>
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh>. **UPDATED 2019-11-18**.
 
 ### After participant arrives 
 
@@ -215,5 +215,3 @@ Escort participant to table.
 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
 - Copy the data of this participant into hard drive
-
-
