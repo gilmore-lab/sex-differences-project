@@ -7,7 +7,6 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Rick Gilmore, Yiming Qian, &amp; Andrea Seisler" />
@@ -89,6 +88,7 @@ code {
 }
 img {
   max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -162,12 +162,56 @@ summary {
 }
 </style>
 
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <style type="text/css">
 
@@ -261,7 +305,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Individual differences in visual perception in adults</h1>
 <h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
-<h4 class="date">2019-11-16 15:01:18</h4>
+<h4 class="date">2019-11-18 11:48:50</h4>
 
 </div>
 
@@ -1010,7 +1054,10 @@ div.tocify {
 <li>/Documents/PsychoPy-Stimuli/sex-diffs-abramov-2012-replication/contrast_sensitivity_task_data</li>
 </ul></li>
 <li>Data must be copied to the <strong>Gilmore Lab Participant Data</strong> drive from the testing PC.</li>
-<li>Data will be copied to Box (XXX).</li>
+<li>Data will be copied to Box <code>&quot;~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/</code>.
+<ul>
+<li>There are separate subfolders for each task: <code>contrast_sensitivity_task_data</code> and <code>motion_temporal_threshold_data</code>.</li>
+</ul></li>
 <li>After data export is complete, turn off computer and monitor in 503B.</li>
 </ul>
 </div>
@@ -1037,12 +1084,24 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="validation-and-cleaning" class="section level2">
-<h2>Validation and cleaning</h2>
-<p>The <code>analysis/session_qa.Rmd</code> script imports a data file specified as an input parameter, for example: <code>rmarkdown::render('analysis/session_qa.Rmd', params = list(data_fn='2019-10-29-140253_temp_thresh.csv'))</code>. The script should be improved to output a custom HTML or PDF report for each participant file. To view an example, visit <a href="https://gilmore-lab.github.io/sex-differences-in-motion-perception/analysis/session_qa.html">this link</a>.</p>
+<div id="validation" class="section level2">
+<h2>Validation</h2>
+<p>Run the group QA report periodically, e.g., at least twice a week:</p>
+<ol style="list-style-type: decimal">
+<li>From the <code>sex-differences-in-motion-perception</code> project, run <code>rmarkdown::render('analysis/session_qa.Rmd')</code>.</li>
+<li>Review the generated report in your browser located at <code>analysis/session_qa.html</code>.</li>
+</ol>
 </div>
 <div id="visualization" class="section level2">
 <h2>Visualization</h2>
+<p>A set of commands to generate separate <code>*.html</code> reports for each computer task and session can be run:</p>
+<ol style="list-style-type: decimal">
+<li>Run <code>source(&quot;analysis/R/batch_qa.R&quot;)</code> from the console to load the scripts into the working environment.</li>
+<li>Run <code>visualize_all_computer_task_data()</code> to generate a set of reports.</li>
+<li>Run <code>copy_qa_rpts_to_box()</code> to copy these reports to Box.</li>
+</ol>
+<p>Note that data files and summaries should <strong>NOT</strong> go on GitHub. This workflow ensures that this doesn’t happen.</p>
+<p>These commands presume that your local Box folder for the project is mounted locally at <code>~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/</code>. If you have a different local path, e.g. <code>&lt;MY_PATH&gt;</code> to Box, you will need to enter it as a parameter to <code>visualize_all_computer_task_data(&lt;MY_PATH&gt;)</code> and <code>copy_qa_rpts_to_box(&lt;MY_PATH&gt;)</code>.</p>
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
@@ -1307,54 +1366,6 @@ $(document).ready(function () {
 });
 
 
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
