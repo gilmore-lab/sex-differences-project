@@ -5,8 +5,10 @@ date: "`r Sys.time()`"
 output: 
   html_document:
     self_contained: no
+    code_folding: hide
 params:
-  path_2_data:  "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/"
+  this_csv_fn:  "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/csv/2019111309492663_contrast_sensitivity_task.csv"
+  this_sub_id: "2019111309492663"
 ---
 
 ```{r setup, include=FALSE}
@@ -20,30 +22,16 @@ library(ggplot2)
 
 This script imports, summarizes, and shows basic visualizations of an individual's session data.
 
+## Report for `r params$this_sub_id`
+
 ## Import
 
 ```{r}
-csv_files <- list.files(params$path_2_data, pattern = "\\.csv$", full.names = TRUE)
-
-extract_subj_data <- function(fl) {
-  s_data <- readr::read_csv(fl)
-}
-
-# Participant is participant ID YYYYMMDDHHMMSSnn
-# Gender should be in c('m', 'f')
-# loop_trial.intensity is the contrast level
-# 
-# loop_trial.thisN is in 0..29
-# correctAns is left/right for correct orientation
-# resp is 1, 0 for correct/incorrect
-# resp.rt is RT in seconds
-csv_files
+s_data <- readr::read_csv(params$this_csv_fn)
 ```
 
 ```{r}
-s1 <- readr::read_csv(csv_files[1])
-
-s1_clean <- s1 %>%
+s1_clean <- s_data %>%
   mutate(., correctAns = stringr::str_extract(correctAns, "left|down|right|up")) %>%
   mutate(., corr = if_else(resp == correctAns, 1, 0)) %>%
   rename(., contr = loop_trial.intensity,
@@ -64,17 +52,18 @@ s1_subset
 
 ## Visualize
 
-```{r}
+```{r contrast-sensitivity-by-trial}
 s1_subset %>% ggplot(.) +
   aes(x = trial_n, y = contr) +
-  facet_grid(correctAns ~ run) +
+  facet_grid(. ~ run) +
   geom_smooth() +
-  geom_point(aes(shape = factor(corr, labels = c("incorr", "corr"))))
+  geom_point() +
+  ggtitle("Contrast sensitivity data")
 ```
 
 ### Cumulative performance across runs
 
-```{r}
+```{r contrast-sensitivity-cum-p}
 s1_subset <- s1_subset %>%
   dplyr::group_by(., run) %>%
   dplyr::arrange(., contr) %>%
@@ -83,52 +72,18 @@ s1_subset <- s1_subset %>%
 
 s1_subset %>% ggplot(.) +
   aes(x = contr, y = cum_p) +
-  facet_grid(correctAns ~ run) +
+  facet_grid(. ~ run) +
   geom_point() +
-  geom_smooth(se = FALSE)
+  geom_smooth(se = FALSE) +
+  ggtitle("Contrast sensitivity data")
 ```
 
-```{r}
-s1_subset %>%
-  dplyr::group_by(., run, correctAns) %>%
-  dplyr::summarise(p_corr = sum(corr)/n()) %>%
-  ggplot(.) +
-  aes(x = run, y = p_corr) +
-  facet_grid(correctAns ~ .) +
-  geom_col()
-```
 
-```{r}
+```{r contrast-sensitivity-rt}
 s1_subset %>%
   ggplot(.) +
   aes(x = trial_n, y = resp.rt) +
   facet_grid(. ~ run) + 
-  geom_point()
-```
-
-
-## Subject 2
-
-```{r}
-s2 <- readr::read_csv(csv_files[2])
-
-s2_subset <- s2 %>%
-  dplyr::select(., Participant, Gender,
-                loop_trial.thisN,
-                loop_trial.intensity,
-                correctAns,
-                resp,
-                resp.rt) %>%
-  dplyr::filter(., loop_trial.thisN >= 0) %>%
-  dplyr::mutate(run = rep(1:4, each=30))
-s2_subset
-```
-
-```{r}
-s2_subset %>% ggplot(.) +
-  aes(x = loop_trial.thisN, y = loop_trial.intensity) +
-  facet_grid(. ~ run) +
   geom_point() +
-  geom_smooth()
+  ggtitle("Contrast sensitivity data")
 ```
-

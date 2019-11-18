@@ -1,11 +1,14 @@
 ---
-title: "Individual session QA"
+title: "Post-processing Quality Assurance"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
 params:
-  csv_path: "csv/"
-  data_fn: "2019-10-29-140253_temp_thresh.csv"
+  contrast_raw_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data"
+  motion_raw_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/motion_temporal_threshold_data"
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -28,14 +31,85 @@ This script describes the process for doing quality assurance (QA) review on eac
 
 ## QA steps
 
-1. Move `*.csv`, `*.pydat`, and `*.log` files to separate subdirectories.
-2. List `*.csv` contrast sensitivity files
-3. List `*.csv` temporal threshold files
-4. Do lists align?
+1. For each of the computer tasks
+  - Move `*.csv`, `*.pydat`, and `*.log` files to separate subdirectories.
+  - List the `*.csv` contrast files
+2. Do lists align?
   - If not, do what?
 5. Determine if QA has already been run.
   - How?
     - Determine if `*.html` file exists for this subject
 6. If QA not-run, run QA.
   - Create `*.html` file from `*.Rmd` template.
+
+## Post processing
+
+<!-- ### Copy files to `.csv`, `.psydat`, and `.log` directories -->
+
+<!-- ```{r list-files} -->
+<!-- # Now incorporated into copy_data_files() -->
+<!-- # contrast_sens_files <- list.files(params$contrast_raw_path, pattern = "\\.csv$", full.names = TRUE) -->
+<!-- # motion_thresh_files <- list.files(params$motion_raw_path, pattern = "\\.csv$", full.names = TRUE) -->
+<!-- ``` -->
+
+<!-- ```{r create-copy_data_files-function } -->
+<!-- copy_data_files <- -->
+<!--   function(df_path = params$contrast_raw_path, -->
+<!--            df_type = "csv") { -->
+<!--     these_files <- -->
+<!--       list.files( -->
+<!--         path = df_path, -->
+<!--         pattern = paste0("\\.", df_type, "$"), -->
+<!--         full.names = TRUE -->
+<!--       ) -->
+<!--     file.copy(from = these_files, to = paste0(df_path, "/", df_type, "/.")) -->
+<!--   } -->
+<!-- ``` -->
+
+<!-- ```{r copy-contrast-sens-files} -->
+<!-- copy_data_files(params$contrast_raw_path, df_type = "csv") -->
+<!-- copy_data_files(params$contrast_raw_path, df_type = "log") -->
+<!-- copy_data_files(params$contrast_raw_path, df_type = "psydat") -->
+<!-- ``` -->
+
+<!-- ```{r copy-motion-thresh-files} -->
+<!-- copy_data_files(params$motion_raw_path, df_type = "csv") -->
+<!-- copy_data_files(params$motion_raw_path, df_type = "psydat") -->
+<!-- ``` -->
+
+### Create lists of `.csv` files
+
+```{r csv-file-lists}
+contrast_csvs <- list.files(paste0(params$contrast_raw_path), pattern = "\\.csv$")
+motion_csvs <- list.files(paste0(params$motion_raw_path), pattern = "\\.csv$")
+```
+
+There are `r length(contrast_csvs)` files for the Abramov contrast sensitivity task, and `r length(motion_csvs)` files for the Murray motion temporal threshold task.
+
+```{r}
+extract_sub_ids <- function(df_path = params$contrast_raw_path) {
+  fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
+  stringr::str_sub(fn_only, 1, 16)
+}
+```
+
+Compare the two lists and determine the number of files uploaded to Box for each task.
+
+```{r}
+contrast_sub_ids <- extract_sub_ids(params$contrast_raw_path)
+motion_sub_ids <- extract_sub_ids(params$motion_raw_path)
+id <- 1:max(length(contrast_sub_ids), length(motion_sub_ids))
+
+computer_task_df <- dplyr::tibble(id = id,
+                                      contrast_task = contrast_sub_ids,
+                               motion_task = motion_sub_ids)
+
+computer_task_df <- computer_task_df %>%
+  tidyr::gather(task, sub_id, -id)
+
+computer_task_df %>%
+  dplyr::group_by(., sub_id) %>%
+  dplyr::summarise(n_tasks = n()) %>%
+  knitr::kable(.)
+```
 

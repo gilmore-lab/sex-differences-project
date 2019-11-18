@@ -1,0 +1,85 @@
+---
+title: "Gather and Clean Motion Temporal Threshold (Murray)"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: 
+  html_document:
+    self_contained: no
+    code_folding: hide
+params:
+  this_csv_fn:  "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/motion_temporal_threshold_data/csv/2019111309492663_motion_temporal_threshold.csv"
+  this_sub_id: "2019111309492663"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+```
+
+## Purpose
+
+This script imports, summarizes, and shows basic visualizations of an individual's session data.
+
+## Report for `r params$this_sub_id`
+
+## Import
+
+```{r}
+s_data <- readr::read_csv(params$this_csv_fn)
+```
+
+```{r}
+s1_clean <- s_data %>%
+  mutate(., run = run_n + 1) %>%
+  rename(., corr = correct,
+         dur_s = FWHM)
+
+s1_subset <- s1_clean %>%
+  dplyr::select(.,
+                run,
+                trial_n,
+                dur_s,
+                corr,
+                rt)
+s1_subset
+```
+
+## Visualize
+
+```{r motion-temporal-threshold-by-trial}
+s1_subset %>% ggplot(.) +
+  aes(x = trial_n, y = dur_s) +
+  facet_grid(. ~ run) +
+  geom_smooth() +
+  geom_point() +
+  ggtitle("Motion temporal duration threshold data")
+```
+
+### Cumulative performance across runs
+
+```{r motion-temporal-threshold-rt-cum-p}
+s1_subset <- s1_subset %>%
+  dplyr::group_by(., run) %>%
+  dplyr::arrange(., dur_s) %>%
+  dplyr::mutate(., cum_sum = cumsum(corr),
+                cum_p = cum_sum/n())
+
+s1_subset %>% ggplot(.) +
+  aes(x = dur_s, y = cum_p) +
+  facet_grid(. ~ run) +
+  geom_point() +
+  geom_smooth(se = FALSE)  +
+  ggtitle("Motion temporal duration threshold data")
+```
+
+
+```{r motion-temporal-threshold-rt}
+s1_subset %>%
+  ggplot(.) +
+  aes(x = trial_n, y = rt) +
+  facet_grid(. ~ run) + 
+  geom_point()  +
+  ggtitle("Motion temporal duration threshold data")
+```
