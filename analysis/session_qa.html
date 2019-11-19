@@ -452,7 +452,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Post-processing Quality Assurance</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2019-11-18 11:41:50</h4>
+<h4 class="date">2019-11-18 18:29:41</h4>
 
 </div>
 
@@ -541,22 +541,49 @@ $(document).ready(function () {
 <h3>Create lists of <code>.csv</code> files</h3>
 <pre class="r"><code>contrast_csvs &lt;- list.files(paste0(params$contrast_raw_path), pattern = &quot;\\.csv$&quot;)
 motion_csvs &lt;- list.files(paste0(params$motion_raw_path), pattern = &quot;\\.csv$&quot;)</code></pre>
-<p>There are 5 files for the Abramov contrast sensitivity task, and 5 files for the Murray motion temporal threshold task.</p>
+<p>There are 9 files for the Abramov contrast sensitivity task, and 10 files for the Murray motion temporal threshold task.</p>
 <pre class="r"><code>extract_sub_ids &lt;- function(df_path = params$contrast_raw_path) {
   fn_only &lt;- list.files(paste0(df_path), pattern = &quot;\\.csv$&quot;)
-  stringr::str_sub(fn_only, 1, 16)
+  stringr::str_sub(fn_only, 1, 14)
 }</code></pre>
-<p>Compare the two lists and determine the number of files uploaded to Box for each task.</p>
-<pre class="r"><code>contrast_sub_ids &lt;- extract_sub_ids(params$contrast_raw_path)
-motion_sub_ids &lt;- extract_sub_ids(params$motion_raw_path)
-id &lt;- 1:max(length(contrast_sub_ids), length(motion_sub_ids))
+<pre class="r"><code># Compare the two lists and determine the number of files uploaded to Box for each task.
+contrast_sub_ids &lt;- extract_sub_ids(params$contrast_raw_path)
+motion_sub_ids &lt;- extract_sub_ids(params$motion_raw_path)</code></pre>
+<pre class="r"><code>ids_identical &lt;- (contrast_sub_ids == motion_sub_ids)</code></pre>
+<pre><code>## Warning in contrast_sub_ids == motion_sub_ids: longer object length is not
+## a multiple of shorter object length</code></pre>
+<pre class="r"><code>if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
+  reference_ids &lt;- contrast_sub_ids
+  missing_ids &lt;-
+    motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]
+  message(paste0(
+    &quot;File(s) &quot;,
+    missing_ids,
+    &quot; is/are missing from the contrast task.\n&quot;
+  ))
+} else if (length(contrast_sub_ids) &gt; length(motion_sub_ids)) {
+  reference_ids &lt;- motion_sub_ids
+  missing_ids &lt;-
+    contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]
+  message(paste0(
+    &quot;File(s) &quot;,
+    missing_ids,
+    &quot; is/are missing from the motion task.\n&quot;
+  ))
+} else if ((length(ids_identical) == length(contrast_sub_ids)) &amp;&amp;
+              (length(ids_identical) == length(motion_sub_ids))) {
+  message(&quot;There are the same number of files for both tasks and the sub_ids match.&quot;)
+  reference_ids &lt;- contrast_sub_ids
+}</code></pre>
+<pre><code>## File(s) 20191118144828 is/are missing from the contrast task.</code></pre>
+<pre class="r"><code>id &lt;- 1:max(length(reference_ids), length(reference_ids))
 
 computer_task_df &lt;- dplyr::tibble(id = id,
-                                      contrast_task = contrast_sub_ids,
-                               motion_task = motion_sub_ids)
+                                  contrast_task = contrast_sub_ids[contrast_sub_ids %in% reference_ids],
+                                  motion_task = motion_sub_ids[motion_sub_ids %in% reference_ids])
 
 computer_task_df &lt;- computer_task_df %&gt;%
-  tidyr::gather(task, sub_id, -id)
+  tidyr::gather(task, sub_id,-id)
 
 computer_task_df %&gt;%
   dplyr::group_by(., sub_id) %&gt;%
@@ -571,23 +598,39 @@ computer_task_df %&gt;%
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2019111309492663</td>
+<td align="left">20191113094926</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="left">2019111311102420</td>
+<td align="left">20191113111024</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
-<td align="left">2019111313380357</td>
+<td align="left">20191113133803</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="left">2019111314560277</td>
+<td align="left">20191113145602</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
-<td align="left">2019111316121877</td>
+<td align="left">20191113161218</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">20191118083974</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">20191118112649</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">20191118124517</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">20191118135808</td>
 <td align="right">2</td>
 </tr>
 </tbody>

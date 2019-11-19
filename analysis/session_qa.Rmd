@@ -89,23 +89,53 @@ There are `r length(contrast_csvs)` files for the Abramov contrast sensitivity t
 ```{r}
 extract_sub_ids <- function(df_path = params$contrast_raw_path) {
   fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
-  stringr::str_sub(fn_only, 1, 16)
+  stringr::str_sub(fn_only, 1, 14)
 }
 ```
 
-Compare the two lists and determine the number of files uploaded to Box for each task.
-
 ```{r}
+# Compare the two lists and determine the number of files uploaded to Box for each task.
 contrast_sub_ids <- extract_sub_ids(params$contrast_raw_path)
 motion_sub_ids <- extract_sub_ids(params$motion_raw_path)
-id <- 1:max(length(contrast_sub_ids), length(motion_sub_ids))
+```
+
+```{r}
+ids_identical <- (contrast_sub_ids == motion_sub_ids)
+
+if (length(contrast_sub_ids) < length(motion_sub_ids)) {
+  reference_ids <- contrast_sub_ids
+  missing_ids <-
+    motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]
+  message(paste0(
+    "File(s) ",
+    missing_ids,
+    " is/are missing from the contrast task.\n"
+  ))
+} else if (length(contrast_sub_ids) > length(motion_sub_ids)) {
+  reference_ids <- motion_sub_ids
+  missing_ids <-
+    contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]
+  message(paste0(
+    "File(s) ",
+    missing_ids,
+    " is/are missing from the motion task.\n"
+  ))
+} else if ((length(ids_identical) == length(contrast_sub_ids)) &&
+              (length(ids_identical) == length(motion_sub_ids))) {
+  message("There are the same number of files for both tasks and the sub_ids match.")
+  reference_ids <- contrast_sub_ids
+}
+```
+
+```{r}
+id <- 1:max(length(reference_ids), length(reference_ids))
 
 computer_task_df <- dplyr::tibble(id = id,
-                                      contrast_task = contrast_sub_ids,
-                               motion_task = motion_sub_ids)
+                                  contrast_task = contrast_sub_ids[contrast_sub_ids %in% reference_ids],
+                                  motion_task = motion_sub_ids[motion_sub_ids %in% reference_ids])
 
 computer_task_df <- computer_task_df %>%
-  tidyr::gather(task, sub_id, -id)
+  tidyr::gather(task, sub_id,-id)
 
 computer_task_df %>%
   dplyr::group_by(., sub_id) %>%
