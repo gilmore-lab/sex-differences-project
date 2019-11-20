@@ -8,6 +8,7 @@ output:
 params:
   contrast_raw_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data"
   motion_raw_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/motion_temporal_threshold_data"
+  qualtrics_csv_dir: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data/csv"
   
 ---
 
@@ -105,6 +106,46 @@ extract_sub_ids <- function(df_path = params$contrast_raw_path) {
   stringr::str_sub(fn_only, 1, 14)
 }
 ```
+
+### Qualtrics
+
+```{r}
+qualtrics_fns <- list.files(params$qualtrics_csv_dir, pattern = "\\.csv$", full.names = TRUE)
+this_fn <- qualtrics_fns[1]
+qualtrics_df <- readr::read_csv(this_fn)
+
+# Trim first two rows
+n_rows <- dim(qualtrics_df)[1]
+qualtrics_trim <- qualtrics_df[3:n_rows,]
+
+demog_df <- qualtrics_trim %>%
+  dplyr::filter(., !is.na(`Participant ID`)) %>%
+  dplyr::rename(p_id = `Participant ID`) %>%
+  dplyr::rename(vis_acuity = `Q81`) %>%
+  dplyr::rename(gender = `Q1`) %>%
+  dplyr::rename(age_yrs = `Q4`) %>%
+  dplyr::rename(school_yr = `Q2`) %>%
+  dplyr::rename(major = `Q3`) %>%
+  dplyr::rename(ethnicity = `Q89`) %>%
+  dplyr::rename(preferred_hand = `Q88`) %>%
+  dplyr::rename(stereo_vision = `Q92`) %>%
+  dplyr::rename(color_p6 = `Q93_1`) %>%
+  dplyr::rename(color_p7 = `Q93_2`) %>%
+  dplyr::rename(color_p8 = `Q93_3`) %>%
+  dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr,
+                major, ethnicity, preferred_hand, stereo_vision,
+                color_p6, color_p7, color_p8)
+
+# Some cleaning
+demog_df <- demog_df %>%
+  dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>%
+  dplyr::select(., p_id, gender, age_yrs)
+
+demog_df %>%
+  knitr::kable(.)
+```
+
+There are `r dim(demog_df)[1]` Qualtrics datasets.
 
 ## File by file QA
 
@@ -233,4 +274,3 @@ computer_task_df %>%
   dplyr::summarise(n_tasks = n()) %>%
   knitr::kable(.)
 ```
-
