@@ -99,3 +99,58 @@ list_common_participant_ids <- function(contr_path = "~/Box\ Sync/Project_Sex_di
 #   }
 #   mapply(visualize_both_tasks_data, contr_fn, motion_fn, contr_ids)
 # }
+
+
+has_enough_trials <- function(data_df, n_trials = 4*30) {
+  dim(data_df)[1] >= n_trials
+}
+
+observer_id_in_file <- function(data_df, task='contr') {
+  if (task=='contr') {
+    sum(!(is.na(data_df$Participant))) == length(data_df$Participant)
+  } else {
+    sum(!(is.na(data_df$observer))) == length(data_df$observer)
+  }
+}
+
+gender_in_file <- function(data_df, task = 'contr') {
+  if (task == 'contr') {
+    sum(!(is.na(data_df$Gender))) > 0    
+  } else {
+    sum(!(is.na(data_df$gender))) > 0 
+  }
+}
+
+sub_id_matches_fn <- function(data_fn, task='contr') {
+  data_df <- readr::read_csv(data_fn)
+  if (task=='contr') {
+    sub_id <- as.character(data_df$Participant)
+  } else {
+    sub_id <- as.character(data_df$observer)
+  }
+  sub_id_fn <- stringr::str_extract(basename(data_fn), "[0-9]+")
+  sum(sub_id == sub_id_fn) == length(sub_id)
+} 
+
+essential_vars_in_file <- function(data_df, task = 'contr') {
+  if (task == 'contr') {
+    essential_vars <- c("correctAns", "loop_trial.intensity", "loop_trial.thisN",
+                                            "Participant", "Gender", "resp.rt")
+  } else {
+    essential_vars <- c("run_n", "correct", "trial_n", "stim_secs", "correct", "rt",
+                        "observer", "FWHM", "actual_frame")
+  }
+  (sum(essential_vars %in% names(data_df)) == length(essential_vars))
+}
+
+make_qa_df <- function(data_fn, task = 'contr') {
+  fn <- basename(data_fn)
+  data_df <- readr::read_csv(data_fn)
+  data.frame(task = task, fn,
+             id_matches_fn = sub_id_matches_fn(data_fn, task = task),
+             id_in_file = observer_id_in_file(data_df, task = task),
+             enough_trials = has_enough_trials(data_df),
+             has_key_vars = essential_vars_in_file(data_df, task = task),
+             gender_var = gender_in_file(data_df, task = task)
+             )
+}

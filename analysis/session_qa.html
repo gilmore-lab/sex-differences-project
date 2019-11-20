@@ -452,7 +452,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Post-processing Quality Assurance</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2019-11-18 18:29:41</h4>
+<h4 class="date">2019-11-20 10:50:43</h4>
 
 </div>
 
@@ -473,7 +473,9 @@ $(document).ready(function () {
 <ol start="2" style="list-style-type: decimal">
 <li>There is survey data for each participant in <code>~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_data/</code></li>
 <li>There are four runs for each of two computer-based tasks, each run consisting of <span class="math inline">\(n=30\)</span> trials.</li>
-<li>The computer-based tasks have the participant gender.</li>
+<li>The computer-based tasks have recorded the participant gender.</li>
+<li>The data files have recorded the participant ID and the participant ID matches the initial portion of the file name.</li>
+<li>The data files include the most essential variables for analysis.</li>
 </ol>
 </div>
 <div id="qa-steps" class="section level2">
@@ -482,7 +484,6 @@ $(document).ready(function () {
 <li>For each of the computer tasks</li>
 </ol>
 <ul>
-<li>Move <code>*.csv</code>, <code>*.pydat</code>, and <code>*.log</code> files to separate subdirectories.</li>
 <li>List the <code>*.csv</code> contrast files</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
@@ -539,20 +540,357 @@ $(document).ready(function () {
 <!-- ``` -->
 <div id="create-lists-of-.csv-files" class="section level3">
 <h3>Create lists of <code>.csv</code> files</h3>
+<div id="contrast" class="section level4">
+<h4>Contrast</h4>
 <pre class="r"><code>contrast_csvs &lt;- list.files(paste0(params$contrast_raw_path), pattern = &quot;\\.csv$&quot;)
-motion_csvs &lt;- list.files(paste0(params$motion_raw_path), pattern = &quot;\\.csv$&quot;)</code></pre>
-<p>There are 9 files for the Abramov contrast sensitivity task, and 10 files for the Murray motion temporal threshold task.</p>
+contrast_csvs %&gt;% knitr::kable(.)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2019111309492663_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019111311102420_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111313380357_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019111314560277_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111316121877_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="even">
+<td align="left">20191118083974_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111811264955_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019111812451739_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111813580899_contrast_sensitivity_task.csv</td>
+</tr>
+</tbody>
+</table>
+<p>There are 9 files for the Abramov contrast sensitivity task.</p>
+</div>
+<div id="motion" class="section level4">
+<h4>Motion</h4>
+<pre class="r"><code>motion_csvs &lt;- list.files(paste0(params$motion_raw_path), pattern = &quot;\\.csv$&quot;)
+motion_csvs %&gt;% knitr::kable(.)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2019111309492663_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019111311102420_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111313380357_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019111314560277_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111316121877_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">20191118083974_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111811264955_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019111812451739_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111813580899_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019111814482814_motion_temporal_threshold.csv</td>
+</tr>
+</tbody>
+</table>
+<p>There are 10 files for the Murray motion temporal threshold task.</p>
 <pre class="r"><code>extract_sub_ids &lt;- function(df_path = params$contrast_raw_path) {
   fn_only &lt;- list.files(paste0(df_path), pattern = &quot;\\.csv$&quot;)
   stringr::str_sub(fn_only, 1, 14)
 }</code></pre>
+</div>
+</div>
+</div>
+<div id="file-by-file-qa" class="section level2">
+<h2>File by file QA</h2>
+<pre class="r"><code>has_enough_trials &lt;- function(data_df, n_trials = 4*30) {
+  dim(data_df)[1] &gt;= n_trials
+}
+
+observer_id_in_file &lt;- function(data_df, task='contr') {
+  if (task=='contr') {
+    sum(!(is.na(data_df$Participant))) == length(data_df$Participant)
+  } else {
+    sum(!(is.na(data_df$observer))) == length(data_df$observer)
+  }
+}
+
+gender_in_file &lt;- function(data_df, task = 'contr') {
+  if (task == 'contr') {
+    sum(!(is.na(data_df$Gender))) &gt; 0    
+  } else {
+    sum(!(is.na(data_df$gender))) &gt; 0 
+  }
+}
+
+sub_id_matches_fn &lt;- function(data_fn, task='contr') {
+  data_df &lt;- readr::read_csv(data_fn)
+  if (task=='contr') {
+    sub_id &lt;- as.character(data_df$Participant)
+  } else {
+    sub_id &lt;- as.character(data_df$observer)
+  }
+  sub_id_fn &lt;- stringr::str_extract(basename(data_fn), &quot;[0-9]+&quot;)
+  sum(sub_id == sub_id_fn) == length(sub_id)
+} 
+
+essential_vars_in_file &lt;- function(data_df, task = 'contr') {
+  if (task == 'contr') {
+    essential_vars &lt;- c(&quot;correctAns&quot;, &quot;loop_trial.intensity&quot;, &quot;loop_trial.thisN&quot;,
+                                            &quot;Participant&quot;, &quot;Gender&quot;, &quot;resp.rt&quot;)
+  } else {
+    essential_vars &lt;- c(&quot;run_n&quot;, &quot;correct&quot;, &quot;trial_n&quot;, &quot;stim_secs&quot;, &quot;correct&quot;, &quot;rt&quot;,
+                        &quot;observer&quot;, &quot;FWHM&quot;, &quot;actual_frame&quot;)
+  }
+  (sum(essential_vars %in% names(data_df)) == length(essential_vars))
+}
+
+make_qa_df &lt;- function(data_fn, task = 'contr') {
+  fn &lt;- basename(data_fn)
+  data_df &lt;- readr::read_csv(data_fn)
+  data.frame(fn,
+             id_matches_fn = sub_id_matches_fn(data_fn, task),
+             id_in_file = observer_id_in_file(data_df, task),
+             enough_trials = has_enough_trials(data_df),
+             has_key_vars = essential_vars_in_file(data_df, task),
+             gender_var = gender_in_file(data_df, task)
+             )
+}</code></pre>
+<div id="contrast-1" class="section level3">
+<h3>Contrast</h3>
+<pre class="r"><code>contr_fns &lt;- contrast_csvs &lt;- list.files(paste0(params$contrast_raw_path), pattern = &quot;\\.csv$&quot;, full.names = TRUE)
+dfl &lt;- lapply(contr_fns, make_qa_df, task = &quot;contr&quot;)
+dfs &lt;- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
+dfs %&gt;% knitr::kable(.)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">fn</th>
+<th align="left">id_matches_fn</th>
+<th align="left">id_in_file</th>
+<th align="left">enough_trials</th>
+<th align="left">has_key_vars</th>
+<th align="left">gender_var</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2019111309492663_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">2019111311102420_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111313380357_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019111314560277_contrast_sensitivity_task.csv</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111316121877_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">20191118083974_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111811264955_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019111812451739_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111813580899_contrast_sensitivity_task.csv</td>
+<td align="left">NA</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="motion-1" class="section level3">
+<h3>Motion</h3>
+<pre class="r"><code>motion_fns &lt;- list.files(paste0(params$motion_raw_path), pattern = &quot;\\.csv$&quot;, full.names = TRUE)
+dfl &lt;- lapply(motion_fns, make_qa_df, task = &quot;motion&quot;)
+dfs &lt;- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
+dfs %&gt;% knitr::kable(.)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">fn</th>
+<th align="left">id_matches_fn</th>
+<th align="left">id_in_file</th>
+<th align="left">enough_trials</th>
+<th align="left">has_key_vars</th>
+<th align="left">gender_var</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2019111309492663_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019111311102420_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111313380357_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019111314560277_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111316121877_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">20191118083974_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111811264955_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019111812451739_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111813580899_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019111814482814_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="compare-task-lists" class="section level2">
+<h2>Compare task lists</h2>
 <pre class="r"><code># Compare the two lists and determine the number of files uploaded to Box for each task.
 contrast_sub_ids &lt;- extract_sub_ids(params$contrast_raw_path)
 motion_sub_ids &lt;- extract_sub_ids(params$motion_raw_path)</code></pre>
-<pre class="r"><code>ids_identical &lt;- (contrast_sub_ids == motion_sub_ids)</code></pre>
-<pre><code>## Warning in contrast_sub_ids == motion_sub_ids: longer object length is not
-## a multiple of shorter object length</code></pre>
-<pre class="r"><code>if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
+<pre class="r"><code>ids_identical &lt;- (contrast_sub_ids == motion_sub_ids)
+
+if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
   reference_ids &lt;- contrast_sub_ids
   missing_ids &lt;-
     motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]
@@ -575,7 +913,6 @@ motion_sub_ids &lt;- extract_sub_ids(params$motion_raw_path)</code></pre>
   message(&quot;There are the same number of files for both tasks and the sub_ids match.&quot;)
   reference_ids &lt;- contrast_sub_ids
 }</code></pre>
-<pre><code>## File(s) 20191118144828 is/are missing from the contrast task.</code></pre>
 <pre class="r"><code>id &lt;- 1:max(length(reference_ids), length(reference_ids))
 
 computer_task_df &lt;- dplyr::tibble(id = id,
@@ -635,7 +972,6 @@ computer_task_df %&gt;%
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 
 
