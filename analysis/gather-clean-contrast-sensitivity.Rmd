@@ -1,5 +1,5 @@
 ---
-title: "Gather and Clean Contrast Sensitivity (Abramov)"
+title: "Contrast Sensitivity (Abramov)"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
 output: 
@@ -28,6 +28,7 @@ This script imports, summarizes, and shows basic visualizations of an individual
 
 ```{r}
 s_data <- readr::read_csv(params$this_csv_fn)
+message(paste0("Reading data for `", params$this_csv_fn, "'"))
 ```
 
 ```{r import-contrast-sens}

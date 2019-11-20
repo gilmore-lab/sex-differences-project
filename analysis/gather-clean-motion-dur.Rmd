@@ -1,5 +1,5 @@
 ---
-title: "Gather and Clean Motion Temporal Threshold (Murray)"
+title: "Motion Duration (Murray)"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
 output: 

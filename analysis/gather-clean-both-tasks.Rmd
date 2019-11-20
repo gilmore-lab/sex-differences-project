@@ -34,6 +34,36 @@ This script imports, summarizes, and shows basic visualizations of an individual
 s_data <- readr::read_csv(params$this_contr_csv_fn)
 ```
 
+#### File-level checks
+
+At least 130 trials?
+
+```{r n-trials}
+n_trials <- dim(s_data)[1]
+```
+
+File has $n=$ `r n_trials` rows.
+
+Are all of the critical fields in the file?
+
+```{r}
+essential_fields <- c("correctAns", "loop_trial.intensity", "loop_trial.thisN",
+                      "Participant", "Gender", "resp.rt")
+
+all_fields <- essential_fields %in% names(s_data)
+```
+
+Of the `r length(essential_fields)`, `r sum(all_fields)` are in the file.
+
+Is the gender variable specified?
+
+```{r}
+gender_specified <- !(is.na(s_data$Gender))
+```
+
+
+#### Clean and rename variables
+
 ```{r import-contrast-sens}
 s1_clean <- s_data %>%
   mutate(., correctAns = stringr::str_extract(correctAns, "left|down|right|up")) %>%
