@@ -452,7 +452,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Post-processing Quality Assurance</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2019-11-20 16:42:26</h4>
+<h4 class="date">2019-11-21 05:39:12</h4>
 
 </div>
 
@@ -542,7 +542,7 @@ $(document).ready(function () {
 <h3>Create lists of <code>.csv</code> files</h3>
 <div id="contrast" class="section level4">
 <h4>Contrast</h4>
-<pre class="r"><code>contrast_csvs &lt;- list.files(paste0(params$contrast_raw_path), pattern = &quot;\\.csv$&quot;)
+<pre class="r"><code>contrast_csvs &lt;- list.files(paste0(params$data_path, &quot;/&quot;, params$contrast_raw_path), pattern = &quot;\\.csv$&quot;)
 contrast_csvs %&gt;% knitr::kable(.)</code></pre>
 <table>
 <thead>
@@ -567,24 +567,36 @@ contrast_csvs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">2019111316121877_contrast_sensitivity_task.csv</td>
 </tr>
 <tr class="even">
+<td align="left">2019111808390374_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
 <td align="left">20191118083974_contrast_sensitivity_task.csv</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111811264955_contrast_sensitivity_task.csv</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">2019111812451739_contrast_sensitivity_task.csv</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111813580899_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112013401963_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019112014532376_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112016110741_contrast_sensitivity_task.csv</td>
 </tr>
 </tbody>
 </table>
-<p>There are 9 files for the Abramov contrast sensitivity task.</p>
+<p>There are 13 files for the Abramov contrast sensitivity task.</p>
 </div>
 <div id="motion" class="section level4">
 <h4>Motion</h4>
-<pre class="r"><code>motion_csvs &lt;- list.files(paste0(params$motion_raw_path), pattern = &quot;\\.csv$&quot;)
+<pre class="r"><code>motion_csvs &lt;- list.files(paste0(params$data_path, &quot;/&quot;, params$motion_raw_path), pattern = &quot;\\.csv$&quot;)
 motion_csvs %&gt;% knitr::kable(.)</code></pre>
 <table>
 <thead>
@@ -609,140 +621,134 @@ motion_csvs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">2019111316121877_motion_temporal_threshold.csv</td>
 </tr>
 <tr class="even">
+<td align="left">2019111808390374_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="odd">
 <td align="left">20191118083974_motion_temporal_threshold.csv</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111811264955_motion_temporal_threshold.csv</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">2019111812451739_motion_temporal_threshold.csv</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111813580899_motion_temporal_threshold.csv</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">2019111814482814_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019112013401963_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112014532376_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019112016110741_motion_temporal_threshold.csv</td>
 </tr>
 </tbody>
 </table>
-<p>There are 10 files for the Murray motion temporal threshold task.</p>
-<pre class="r"><code>extract_sub_ids &lt;- function(df_path = params$contrast_raw_path) {
-  fn_only &lt;- list.files(paste0(df_path), pattern = &quot;\\.csv$&quot;)
-  stringr::str_sub(fn_only, 1, 14)
-}</code></pre>
+<p>There are 14 files for the Murray motion temporal threshold task.</p>
 </div>
 </div>
 <div id="qualtrics" class="section level3">
 <h3>Qualtrics</h3>
-<pre class="r"><code>qualtrics_fns &lt;- list.files(params$qualtrics_csv_dir, pattern = &quot;\\.csv$&quot;, full.names = TRUE)
-this_fn &lt;- qualtrics_fns[1]
-qualtrics_df &lt;- readr::read_csv(this_fn)
+<pre class="r"><code>active_survey_name &lt;- &quot;Sex difference survey REV 2019-11-11&quot;
+#active_survey_name &lt;- &quot;Sex difference survey REV 2019-11-18&quot;
+surveys &lt;- qualtRics::all_surveys()
 
-# Trim first two rows
-n_rows &lt;- dim(qualtrics_df)[1]
-qualtrics_trim &lt;- qualtrics_df[3:n_rows,]
+active_survey &lt;- surveys %&gt;%
+  filter(., name == active_survey_name)
 
-demog_df &lt;- qualtrics_trim %&gt;%
-  dplyr::filter(., !is.na(`Participant ID`)) %&gt;%
-  dplyr::rename(p_id = `Participant ID`) %&gt;%
-  dplyr::rename(vis_acuity = `Q81`) %&gt;%
-  dplyr::rename(gender = `Q1`) %&gt;%
-  dplyr::rename(age_yrs = `Q4`) %&gt;%
-  dplyr::rename(school_yr = `Q2`) %&gt;%
-  dplyr::rename(major = `Q3`) %&gt;%
-  dplyr::rename(ethnicity = `Q89`) %&gt;%
-  dplyr::rename(preferred_hand = `Q88`) %&gt;%
-  dplyr::rename(stereo_vision = `Q92`) %&gt;%
-  dplyr::rename(color_p6 = `Q93_1`) %&gt;%
-  dplyr::rename(color_p7 = `Q93_2`) %&gt;%
-  dplyr::rename(color_p8 = `Q93_3`) %&gt;%
-  dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr,
-                major, ethnicity, preferred_hand, stereo_vision,
-                color_p6, color_p7, color_p8)
-
-# Some cleaning
-demog_df &lt;- demog_df %&gt;%
+sex_diff_resp &lt;- qualtRics::fetch_survey(surveyID = active_survey$id,
+                                     verbose = TRUE,
+                                     force_request = TRUE)</code></pre>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<pre class="r"><code>sex_diff_quest &lt;- qualtRics::survey_questions(surveyID = active_survey$id)
+sex_diff_meta &lt;- qualtRics::metadata(surveyID = active_survey$id)</code></pre>
+<pre class="r"><code>sex_diff_demo &lt;- sex_diff_resp %&gt;%
+  tidyr::gather(., key=&quot;quest&quot;, value=&quot;ethnicity&quot;, Q89_1, Q89_2, Q89_3, Q89_4, Q89_5) %&gt;%
+  dplyr::filter(., !is.na(ethnicity)) %&gt;%
+  dplyr::select(., -quest) %&gt;%
+  dplyr::rename(., p_id = `Participant ID`) %&gt;%
   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, &quot;[:-]&quot;)) %&gt;%
-  dplyr::select(., p_id, gender, age_yrs)
+  dplyr::rename(., vis_acuity = `Q81`) %&gt;%
+  dplyr::rename(., gender = `Q1`) %&gt;%
+  dplyr::rename(., age_yrs = `Q4`) %&gt;%
+  dplyr::rename(., school_yr = `Q2`) %&gt;%
+  dplyr::rename(., major = `Q3`) %&gt;%
+  dplyr::rename(., preferred_hand = `Q88`) %&gt;%
+  dplyr::rename(., stereo_vision = `Q92`) %&gt;%
+  dplyr::select(., p_id, gender, age_yrs, school_yr, major,
+                preferred_hand, vis_acuity, stereo_vision)
 
-demog_df %&gt;%
+xtabs(~ gender + age_yrs, data = sex_diff_demo) %&gt;%
   knitr::kable(.)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">p_id</th>
-<th align="left">gender</th>
-<th align="left">age_yrs</th>
+<th></th>
+<th align="right">18-19</th>
+<th align="right">20-21</th>
+<th align="right">22-23</th>
+<th align="right">older than 23</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2019111211565218</td>
-<td align="left">Female</td>
-<td align="left">older than 23</td>
+<td>Male</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">2019111309492632</td>
-<td align="left">Female</td>
-<td align="left">older than 23</td>
-</tr>
-<tr class="odd">
-<td align="left">2019111311102438</td>
-<td align="left">Female</td>
-<td align="left">18-19</td>
-</tr>
-<tr class="even">
-<td align="left">2019111313380337</td>
-<td align="left">Female</td>
-<td align="left">20-21</td>
-</tr>
-<tr class="odd">
-<td align="left">2019111314560233</td>
-<td align="left">Female</td>
-<td align="left">20-21</td>
-</tr>
-<tr class="even">
-<td align="left">2019111316121898</td>
-<td align="left">Female</td>
-<td align="left">18-19</td>
-</tr>
-<tr class="odd">
-<td align="left">2019111808393927</td>
-<td align="left">Male</td>
-<td align="left">18-19</td>
-</tr>
-<tr class="even">
-<td align="left">2019111811264976</td>
-<td align="left">Female</td>
-<td align="left">20-21</td>
-</tr>
-<tr class="odd">
-<td align="left">2019111812451738</td>
-<td align="left">Female</td>
-<td align="left">18-19</td>
-</tr>
-<tr class="even">
-<td align="left">2019111813580893</td>
-<td align="left">Male</td>
-<td align="left">20-21</td>
-</tr>
-<tr class="odd">
-<td align="left">2019111814482896</td>
-<td align="left">Female</td>
-<td align="left">18-19</td>
-</tr>
-<tr class="even">
-<td align="left">2019112013401983</td>
-<td align="left">Female</td>
-<td align="left">18-19</td>
-</tr>
-<tr class="odd">
-<td align="left">2019112014532351</td>
-<td align="left">Female</td>
-<td align="left">18-19</td>
+<td>Female</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table>
+<!-- ```{r} -->
+<!-- qualtrics_fns <- list.files(paste0(params$data_path, "/", params$qualtrics_csv_dir), pattern = "\\.csv$", full.names = TRUE) -->
+<!-- this_fn <- qualtrics_fns[1] -->
+<!-- qualtrics_df <- readr::read_csv(this_fn) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- # Trim first two rows -->
+<!-- n_rows <- dim(qualtrics_df)[1] -->
+<!-- qualtrics_trim <- qualtrics_df[3:n_rows,] -->
+<!-- demog_df <- qualtrics_trim %>% -->
+<!--   dplyr::filter(., !is.na(`Participant ID`)) %>% -->
+<!--   dplyr::rename(p_id = `Participant ID`) %>% -->
+<!--   dplyr::rename(vis_acuity = `Q81`) %>% -->
+<!--   dplyr::rename(gender = `Q1`) %>% -->
+<!--   dplyr::rename(age_yrs = `Q4`) %>% -->
+<!--   dplyr::rename(school_yr = `Q2`) %>% -->
+<!--   dplyr::rename(major = `Q3`) %>% -->
+<!--   dplyr::rename(ethnicity = `Q89`) %>% -->
+<!--   dplyr::rename(preferred_hand = `Q88`) %>% -->
+<!--   dplyr::rename(stereo_vision = `Q92`) %>% -->
+<!--   dplyr::rename(color_p6 = `Q93_1`) %>% -->
+<!--   dplyr::rename(color_p7 = `Q93_2`) %>% -->
+<!--   dplyr::rename(color_p8 = `Q93_3`) %>% -->
+<!--   dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr, -->
+<!--                 major, ethnicity, preferred_hand, stereo_vision, -->
+<!--                 color_p6, color_p7, color_p8) -->
+<!-- # Some cleaning -->
+<!-- demog_df <- demog_df %>% -->
+<!--   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>% -->
+<!--   dplyr::select(., p_id, gender, age_yrs) -->
+<!-- demog_df %>% -->
+<!--   knitr::kable(.) -->
+<!-- ``` -->
 <p>There are 13 Qualtrics datasets.</p>
 </div>
 </div>
@@ -803,7 +809,7 @@ make_qa_df &lt;- function(data_fn, task = 'contr') {
 }</code></pre>
 <div id="contrast-1" class="section level3">
 <h3>Contrast</h3>
-<pre class="r"><code>contr_fns &lt;- contrast_csvs &lt;- list.files(paste0(params$contrast_raw_path), pattern = &quot;\\.csv$&quot;, full.names = TRUE)
+<pre class="r"><code>contr_fns &lt;- contrast_csvs &lt;- list.files(paste0(params$data_path, &quot;/&quot;, params$contrast_raw_path), pattern = &quot;\\.csv$&quot;, full.names = TRUE)
 dfl &lt;- lapply(contr_fns, make_qa_df, task = &quot;contr&quot;)
 dfs &lt;- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
 dfs %&gt;% knitr::kable(.)</code></pre>
@@ -860,6 +866,14 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 </tr>
 <tr class="even">
+<td align="left">2019111808390374_contrast_sensitivity_task.csv</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
 <td align="left">20191118083974_contrast_sensitivity_task.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -867,7 +881,7 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111811264955_contrast_sensitivity_task.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -875,7 +889,7 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">2019111812451739_contrast_sensitivity_task.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -883,7 +897,7 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111813580899_contrast_sensitivity_task.csv</td>
 <td align="left">NA</td>
 <td align="left">FALSE</td>
@@ -891,12 +905,36 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
 </tr>
+<tr class="odd">
+<td align="left">2019112013401963_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019112014532376_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112016110741_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
 </tbody>
 </table>
 </div>
 <div id="motion-1" class="section level3">
 <h3>Motion</h3>
-<pre class="r"><code>motion_fns &lt;- list.files(paste0(params$motion_raw_path), pattern = &quot;\\.csv$&quot;, full.names = TRUE)
+<pre class="r"><code>motion_fns &lt;- list.files(paste0(params$data_path, &quot;/&quot;, params$motion_raw_path), pattern = &quot;\\.csv$&quot;, full.names = TRUE)
 dfl &lt;- lapply(motion_fns, make_qa_df, task = &quot;motion&quot;)
 dfs &lt;- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
 dfs %&gt;% knitr::kable(.)</code></pre>
@@ -953,6 +991,14 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 </tr>
 <tr class="even">
+<td align="left">2019111808390374_motion_temporal_threshold.csv</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
 <td align="left">20191118083974_motion_temporal_threshold.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -960,7 +1006,7 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111811264955_motion_temporal_threshold.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -968,7 +1014,7 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">2019111812451739_motion_temporal_threshold.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -976,7 +1022,7 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">2019111813580899_motion_temporal_threshold.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -984,8 +1030,32 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">2019111814482814_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019112013401963_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112014532376_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019112016110741_motion_temporal_threshold.csv</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
@@ -996,11 +1066,30 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 </table>
 </div>
 </div>
-<div id="compare-task-lists" class="section level2">
-<h2>Compare task lists</h2>
+<div id="compare-across-tasks" class="section level2">
+<h2>Compare across tasks</h2>
 <pre class="r"><code># Compare the two lists and determine the number of files uploaded to Box for each task.
-contrast_sub_ids &lt;- extract_sub_ids(params$contrast_raw_path)
-motion_sub_ids &lt;- extract_sub_ids(params$motion_raw_path)</code></pre>
+extract_sub_ids &lt;-
+  function(df_path = paste0(paste0(params$data_path, &quot;/&quot;, params$contrast_raw_path))) {
+    fn_only &lt;- list.files(paste0(df_path), pattern = &quot;\\.csv$&quot;)
+    stringr::str_sub(fn_only, 1, 16)
+  }
+
+contrast_sub_ids &lt;-
+  extract_sub_ids(paste0(params$data_path, &quot;/&quot;, params$contrast_raw_path))
+
+motion_sub_ids &lt;-
+  extract_sub_ids(paste0(params$data_path, &quot;/&quot;, params$motion_raw_path))
+
+qualtrics_sub_ids &lt;- sex_diff_demo$p_id</code></pre>
+<pre><code>contrast_sub_ids
+motion_sub_ids
+qualtrics_sub_ids</code></pre>
+<p>These contrast file(s) are not matched by a motion file:</p>
+<p>20191118083974_c</p>
+<p>These motion files are not matched by a contrast file:</p>
+<p>20191118083974_m, 2019111814482814</p>
+<p>The Qualtrics data have different ‘suffixes’, so we will compare them separately.</p>
 <pre class="r"><code>ids_identical &lt;- (contrast_sub_ids == motion_sub_ids)
 
 if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
@@ -1022,69 +1111,22 @@ if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
     &quot; is/are missing from the motion task.\n&quot;
   ))
 } else if ((length(ids_identical) == length(contrast_sub_ids)) &amp;&amp;
-              (length(ids_identical) == length(motion_sub_ids))) {
+           (length(ids_identical) == length(motion_sub_ids))) {
   message(&quot;There are the same number of files for both tasks and the sub_ids match.&quot;)
   reference_ids &lt;- contrast_sub_ids
 }</code></pre>
-<pre class="r"><code>id &lt;- 1:max(length(reference_ids), length(reference_ids))
-
-computer_task_df &lt;- dplyr::tibble(id = id,
-                                  contrast_task = contrast_sub_ids[contrast_sub_ids %in% reference_ids],
-                                  motion_task = motion_sub_ids[motion_sub_ids %in% reference_ids])
-
-computer_task_df &lt;- computer_task_df %&gt;%
-  tidyr::gather(task, sub_id,-id)
-
-computer_task_df %&gt;%
-  dplyr::group_by(., sub_id) %&gt;%
-  dplyr::summarise(n_tasks = n()) %&gt;%
-  knitr::kable(.)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">sub_id</th>
-<th align="right">n_tasks</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">20191113094926</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">20191113111024</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">20191113133803</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">20191113145602</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">20191113161218</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">20191118083974</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">20191118112649</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">20191118124517</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">20191118135808</td>
-<td align="right">2</td>
-</tr>
-</tbody>
-</table>
+<!-- ```{r create-computer-task-df} -->
+<!-- id <- 1:max(length(reference_ids), length(reference_ids)) -->
+<!-- computer_task_df <- dplyr::tibble(id = id, -->
+<!--                                   contrast_task = contrast_sub_ids[contrast_sub_ids %in% reference_ids], -->
+<!--                                   motion_task = motion_sub_ids[motion_sub_ids %in% reference_ids]) -->
+<!-- computer_task_df <- computer_task_df %>% -->
+<!--   tidyr::gather(task, sub_id,-id) -->
+<!-- computer_task_df %>% -->
+<!--   dplyr::group_by(., sub_id) %>% -->
+<!--   dplyr::summarise(n_tasks = n()) %>% -->
+<!--   knitr::kable(.) -->
+<!-- ``` -->
 </div>
 
 
