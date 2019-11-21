@@ -452,7 +452,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Post-processing Quality Assurance</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2019-11-21 05:39:12</h4>
+<h4 class="date">2019-11-21 07:56:42</h4>
 
 </div>
 
@@ -716,40 +716,73 @@ xtabs(~ gender + age_yrs, data = sex_diff_demo) %&gt;%
 </tr>
 </tbody>
 </table>
-<!-- ```{r} -->
-<!-- qualtrics_fns <- list.files(paste0(params$data_path, "/", params$qualtrics_csv_dir), pattern = "\\.csv$", full.names = TRUE) -->
-<!-- this_fn <- qualtrics_fns[1] -->
-<!-- qualtrics_df <- readr::read_csv(this_fn) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- # Trim first two rows -->
-<!-- n_rows <- dim(qualtrics_df)[1] -->
-<!-- qualtrics_trim <- qualtrics_df[3:n_rows,] -->
-<!-- demog_df <- qualtrics_trim %>% -->
-<!--   dplyr::filter(., !is.na(`Participant ID`)) %>% -->
-<!--   dplyr::rename(p_id = `Participant ID`) %>% -->
-<!--   dplyr::rename(vis_acuity = `Q81`) %>% -->
-<!--   dplyr::rename(gender = `Q1`) %>% -->
-<!--   dplyr::rename(age_yrs = `Q4`) %>% -->
-<!--   dplyr::rename(school_yr = `Q2`) %>% -->
-<!--   dplyr::rename(major = `Q3`) %>% -->
-<!--   dplyr::rename(ethnicity = `Q89`) %>% -->
-<!--   dplyr::rename(preferred_hand = `Q88`) %>% -->
-<!--   dplyr::rename(stereo_vision = `Q92`) %>% -->
-<!--   dplyr::rename(color_p6 = `Q93_1`) %>% -->
-<!--   dplyr::rename(color_p7 = `Q93_2`) %>% -->
-<!--   dplyr::rename(color_p8 = `Q93_3`) %>% -->
-<!--   dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr, -->
-<!--                 major, ethnicity, preferred_hand, stereo_vision, -->
-<!--                 color_p6, color_p7, color_p8) -->
-<!-- # Some cleaning -->
-<!-- demog_df <- demog_df %>% -->
-<!--   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>% -->
-<!--   dplyr::select(., p_id, gender, age_yrs) -->
-<!-- demog_df %>% -->
-<!--   knitr::kable(.) -->
-<!-- ``` -->
 <p>There are 13 Qualtrics datasets.</p>
+<pre class="r"><code>sex_diff_demo %&gt;%
+  dplyr::select(., p_id, gender) %&gt;%
+  dplyr::arrange(., p_id) %&gt;%
+  knitr::kable(.)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">p_id</th>
+<th align="left">gender</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2019111309492632</td>
+<td align="left">Female</td>
+</tr>
+<tr class="even">
+<td align="left">2019111311102438</td>
+<td align="left">Female</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111313380337</td>
+<td align="left">Female</td>
+</tr>
+<tr class="even">
+<td align="left">2019111313380337</td>
+<td align="left">Female</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111314560233</td>
+<td align="left">Female</td>
+</tr>
+<tr class="even">
+<td align="left">2019111316121898</td>
+<td align="left">Female</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111808393927</td>
+<td align="left">Male</td>
+</tr>
+<tr class="even">
+<td align="left">2019111811264976</td>
+<td align="left">Female</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111812451738</td>
+<td align="left">Female</td>
+</tr>
+<tr class="even">
+<td align="left">2019111813580893</td>
+<td align="left">Male</td>
+</tr>
+<tr class="odd">
+<td align="left">2019111814482896</td>
+<td align="left">Female</td>
+</tr>
+<tr class="even">
+<td align="left">2019112014532351</td>
+<td align="left">Female</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112016110713</td>
+<td align="left">Female</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="file-by-file-qa" class="section level2">
@@ -1082,13 +1115,30 @@ motion_sub_ids &lt;-
   extract_sub_ids(paste0(params$data_path, &quot;/&quot;, params$motion_raw_path))
 
 qualtrics_sub_ids &lt;- sex_diff_demo$p_id</code></pre>
-<pre><code>contrast_sub_ids
-motion_sub_ids
-qualtrics_sub_ids</code></pre>
-<p>These contrast file(s) are not matched by a motion file:</p>
+<p>Constrast subject IDs</p>
+<pre class="r"><code>contrast_sub_ids</code></pre>
+<pre><code>##  [1] &quot;2019111309492663&quot; &quot;2019111311102420&quot; &quot;2019111313380357&quot;
+##  [4] &quot;2019111314560277&quot; &quot;2019111316121877&quot; &quot;2019111808390374&quot;
+##  [7] &quot;20191118083974_c&quot; &quot;2019111811264955&quot; &quot;2019111812451739&quot;
+## [10] &quot;2019111813580899&quot; &quot;2019112013401963&quot; &quot;2019112014532376&quot;
+## [13] &quot;2019112016110741&quot;</code></pre>
+<p>These contrast file(s) have no matching motion file:</p>
 <p>20191118083974_c</p>
-<p>These motion files are not matched by a contrast file:</p>
+<p>Motion subject IDs</p>
+<pre class="r"><code>motion_sub_ids</code></pre>
+<pre><code>##  [1] &quot;2019111309492663&quot; &quot;2019111311102420&quot; &quot;2019111313380357&quot;
+##  [4] &quot;2019111314560277&quot; &quot;2019111316121877&quot; &quot;2019111808390374&quot;
+##  [7] &quot;20191118083974_m&quot; &quot;2019111811264955&quot; &quot;2019111812451739&quot;
+## [10] &quot;2019111813580899&quot; &quot;2019111814482814&quot; &quot;2019112013401963&quot;
+## [13] &quot;2019112014532376&quot; &quot;2019112016110741&quot;</code></pre>
+<p>These motion files have no matching contrast file:</p>
 <p>20191118083974_m, 2019111814482814</p>
+<pre class="r"><code>qualtrics_sub_ids</code></pre>
+<pre><code>##  [1] &quot;2019111313380337&quot; &quot;2019111316121898&quot; &quot;2019111813580893&quot;
+##  [4] &quot;2019111814482896&quot; &quot;2019111812451738&quot; &quot;2019111309492632&quot;
+##  [7] &quot;2019111311102438&quot; &quot;2019111313380337&quot; &quot;2019111314560233&quot;
+## [10] &quot;2019111808393927&quot; &quot;2019111811264976&quot; &quot;2019112014532351&quot;
+## [13] &quot;2019112016110713&quot;</code></pre>
 <p>The Qualtrics data have different ‘suffixes’, so we will compare them separately.</p>
 <pre class="r"><code>ids_identical &lt;- (contrast_sub_ids == motion_sub_ids)
 

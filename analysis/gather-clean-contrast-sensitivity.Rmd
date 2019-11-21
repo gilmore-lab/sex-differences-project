@@ -78,7 +78,6 @@ s1_subset %>% ggplot(.) +
   ggtitle("Contrast sensitivity data")
 ```
 
-
 ```{r contrast-sensitivity-rt}
 s1_subset %>%
   ggplot(.) +
@@ -87,3 +86,16 @@ s1_subset %>%
   geom_point() +
   ggtitle("Contrast sensitivity data")
 ```
+
+Speed/accuracy trade-off
+
+```{r}
+s1_subset %>%
+  ggplot(.) +
+  aes(x = contr, y = resp.rt) +
+  facet_grid(. ~ run) + 
+  geom_point() +
+  geom_smooth() +
+  ggtitle("Contrast sensitivity data")
+```
+

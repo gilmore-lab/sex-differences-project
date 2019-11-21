@@ -154,3 +154,18 @@ make_qa_df <- function(data_fn, task = 'contr') {
              gender_var = gender_in_file(data_df, task = task)
              )
 }
+
+run_session_qa_report <- function() {
+  rmarkdown::render("analysis/session_qa.Rmd", 
+                    output_forat = "html_document", output_dir = "analysis/qa",
+                    output_file = paste0(Sys.Date(), "-qa-report.html"),
+                    params = list(data_path = "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data",
+                                  contrast_raw_path = "contrast_sensitivity_task_data",
+                                  motion_raw_path = "motion_temporal_threshold_data",
+                                  qualtrics_csv_dir = "qualtrics_survey_data/csv"))
+  
+}
+
+generate_pid <- function(){
+  paste0(lubridate::yday(Sys.Date()), format(Sys.time(), "%H%M%S"))
+}

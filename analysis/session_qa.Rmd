@@ -140,45 +140,14 @@ xtabs(~ gender + age_yrs, data = sex_diff_demo) %>%
   knitr::kable(.)
 ```
 
-<!-- ```{r} -->
-<!-- qualtrics_fns <- list.files(paste0(params$data_path, "/", params$qualtrics_csv_dir), pattern = "\\.csv$", full.names = TRUE) -->
-<!-- this_fn <- qualtrics_fns[1] -->
-<!-- qualtrics_df <- readr::read_csv(this_fn) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # Trim first two rows -->
-<!-- n_rows <- dim(qualtrics_df)[1] -->
-<!-- qualtrics_trim <- qualtrics_df[3:n_rows,] -->
-
-<!-- demog_df <- qualtrics_trim %>% -->
-<!--   dplyr::filter(., !is.na(`Participant ID`)) %>% -->
-<!--   dplyr::rename(p_id = `Participant ID`) %>% -->
-<!--   dplyr::rename(vis_acuity = `Q81`) %>% -->
-<!--   dplyr::rename(gender = `Q1`) %>% -->
-<!--   dplyr::rename(age_yrs = `Q4`) %>% -->
-<!--   dplyr::rename(school_yr = `Q2`) %>% -->
-<!--   dplyr::rename(major = `Q3`) %>% -->
-<!--   dplyr::rename(ethnicity = `Q89`) %>% -->
-<!--   dplyr::rename(preferred_hand = `Q88`) %>% -->
-<!--   dplyr::rename(stereo_vision = `Q92`) %>% -->
-<!--   dplyr::rename(color_p6 = `Q93_1`) %>% -->
-<!--   dplyr::rename(color_p7 = `Q93_2`) %>% -->
-<!--   dplyr::rename(color_p8 = `Q93_3`) %>% -->
-<!--   dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr, -->
-<!--                 major, ethnicity, preferred_hand, stereo_vision, -->
-<!--                 color_p6, color_p7, color_p8) -->
-
-<!-- # Some cleaning -->
-<!-- demog_df <- demog_df %>% -->
-<!--   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>% -->
-<!--   dplyr::select(., p_id, gender, age_yrs) -->
-
-<!-- demog_df %>% -->
-<!--   knitr::kable(.) -->
-<!-- ``` -->
-
 There are `r dim(sex_diff_demo)[1]` Qualtrics datasets.
+
+```{r}
+sex_diff_demo %>%
+  dplyr::select(., p_id, gender) %>%
+  dplyr::arrange(., p_id) %>%
+  knitr::kable(.)
+```
 
 ## File by file QA
 
@@ -275,21 +244,33 @@ motion_sub_ids <-
 qualtrics_sub_ids <- sex_diff_demo$p_id
 ```
 
-```
+
+Constrast subject IDs
+
+```{r}
 contrast_sub_ids
-motion_sub_ids
-qualtrics_sub_ids
 ```
 
-These contrast file(s) are not matched by a motion file:
+These contrast file(s) have no matching motion file:
 
 `r contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]`
 
-These motion files are not matched by a contrast file:
+Motion subject IDs
+
+```{r}
+motion_sub_ids
+```
+
+These motion files have no matching contrast file:
 
 `r motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]`
 
+```{r}
+qualtrics_sub_ids
+```
+
 The Qualtrics data have different 'suffixes', so we will compare them separately.
+
 
 ```{r compare-ids}
 ids_identical <- (contrast_sub_ids == motion_sub_ids)
@@ -335,4 +316,3 @@ if (length(contrast_sub_ids) < length(motion_sub_ids)) {
 <!--   dplyr::summarise(n_tasks = n()) %>% -->
 <!--   knitr::kable(.) -->
 <!-- ``` -->
-
