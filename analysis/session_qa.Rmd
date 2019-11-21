@@ -105,18 +105,29 @@ There are `r length(motion_csvs)` files for the Murray motion temporal threshold
 ### Qualtrics
 
 ```{r get-qualtrics}
-active_survey_name <- "Sex difference survey REV 2019-11-11"
-#active_survey_name <- "Sex difference survey REV 2019-11-18"
+survey_1_name <- "Sex difference survey REV 2019-11-11"
+survey_2_name <- "Sex difference survey REV 2019-11-18"
+
 surveys <- qualtRics::all_surveys()
 
-active_survey <- surveys %>%
-  filter(., name == active_survey_name)
+survey_1 <- surveys %>%
+  filter(., name == survey_1_name)
+survey_2 <- surveys %>%
+  filter(., name == survey_2_name)
 
-sex_diff_resp <- qualtRics::fetch_survey(surveyID = active_survey$id,
+sex_diff_resp_1 <- qualtRics::fetch_survey(surveyID = survey_1$id,
                                      verbose = TRUE,
                                      force_request = TRUE)
-sex_diff_quest <- qualtRics::survey_questions(surveyID = active_survey$id)
-sex_diff_meta <- qualtRics::metadata(surveyID = active_survey$id)
+sex_diff_resp_2 <- qualtRics::fetch_survey(surveyID = survey_2$id,
+                                     verbose = TRUE,
+                                     force_request = TRUE)
+
+sex_diff_quest <- qualtRics::survey_questions(surveyID = survey_1$id)
+
+sex_diff_meta_1 <- qualtRics::metadata(surveyID = survey_1$id)
+sex_diff_meta_2 <- qualtRics::metadata(surveyID = survey_2$id)
+
+sex_diff_resp <- rbind(sex_diff_resp_1, sex_diff_resp_2)
 ```
 
 ```{r qualtrics-demo-data}
@@ -148,6 +159,7 @@ sex_diff_demo %>%
   dplyr::arrange(., p_id) %>%
   knitr::kable(.)
 ```
+
 
 ## File by file QA
 
@@ -244,12 +256,15 @@ motion_sub_ids <-
 qualtrics_sub_ids <- sex_diff_demo$p_id
 ```
 
-
-Constrast subject IDs
+Trim IDs to `YYYYMMDDHHMMSS` or 14 characters.
 
 ```{r}
-contrast_sub_ids
+contrast_sub_ids <- stringr::str_sub(contrast_sub_ids, 1, 14)
+motion_sub_ids <- stringr::str_sub(motion_sub_ids, 1, 14)
+qualtrics_sub_ids <- stringr::str_sub(qualtrics_sub_ids, 1, 14)
 ```
+
+Constrast subject IDs
 
 These contrast file(s) have no matching motion file:
 
@@ -269,8 +284,13 @@ These motion files have no matching contrast file:
 qualtrics_sub_ids
 ```
 
-The Qualtrics data have different 'suffixes', so we will compare them separately.
+These Qualtrics subs have no matching contrast file:
 
+`r qualtrics_sub_ids[!(qualtrics_sub_ids %in% contrast_sub_ids)]`
+
+These Qualtrics subs have no matching motion file:
+
+`r qualtrics_sub_ids[!(qualtrics_sub_ids %in% motion_sub_ids)]`
 
 ```{r compare-ids}
 ids_identical <- (contrast_sub_ids == motion_sub_ids)

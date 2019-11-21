@@ -157,7 +157,7 @@ make_qa_df <- function(data_fn, task = 'contr') {
 
 run_session_qa_report <- function() {
   rmarkdown::render("analysis/session_qa.Rmd", 
-                    output_forat = "html_document", output_dir = "analysis/qa",
+                    output_format = "html_document", output_dir = "analysis/qa",
                     output_file = paste0(Sys.Date(), "-qa-report.html"),
                     params = list(data_path = "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data",
                                   contrast_raw_path = "contrast_sensitivity_task_data",

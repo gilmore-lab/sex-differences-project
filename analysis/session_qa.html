@@ -452,7 +452,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Post-processing Quality Assurance</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2019-11-21 07:56:42</h4>
+<h4 class="date">2019-11-21 15:02:54</h4>
 
 </div>
 
@@ -590,9 +590,18 @@ contrast_csvs %&gt;% knitr::kable(.)</code></pre>
 <tr class="odd">
 <td align="left">2019112016110741_contrast_sensitivity_task.csv</td>
 </tr>
+<tr class="even">
+<td align="left">2019112110260325_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112111415316_contrast_sensitivity_task.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019112112563983_contrast_sensitivity_task.csv</td>
+</tr>
 </tbody>
 </table>
-<p>There are 13 files for the Abramov contrast sensitivity task.</p>
+<p>There are 16 files for the Abramov contrast sensitivity task.</p>
 </div>
 <div id="motion" class="section level4">
 <h4>Motion</h4>
@@ -647,21 +656,33 @@ motion_csvs %&gt;% knitr::kable(.)</code></pre>
 <tr class="even">
 <td align="left">2019112016110741_motion_temporal_threshold.csv</td>
 </tr>
+<tr class="odd">
+<td align="left">2019112110260325_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="even">
+<td align="left">2019112111415316_motion_temporal_threshold.csv</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112112563983_motion_temporal_threshold.csv</td>
+</tr>
 </tbody>
 </table>
-<p>There are 14 files for the Murray motion temporal threshold task.</p>
+<p>There are 17 files for the Murray motion temporal threshold task.</p>
 </div>
 </div>
 <div id="qualtrics" class="section level3">
 <h3>Qualtrics</h3>
-<pre class="r"><code>active_survey_name &lt;- &quot;Sex difference survey REV 2019-11-11&quot;
-#active_survey_name &lt;- &quot;Sex difference survey REV 2019-11-18&quot;
+<pre class="r"><code>survey_1_name &lt;- &quot;Sex difference survey REV 2019-11-11&quot;
+survey_2_name &lt;- &quot;Sex difference survey REV 2019-11-18&quot;
+
 surveys &lt;- qualtRics::all_surveys()
 
-active_survey &lt;- surveys %&gt;%
-  filter(., name == active_survey_name)
+survey_1 &lt;- surveys %&gt;%
+  filter(., name == survey_1_name)
+survey_2 &lt;- surveys %&gt;%
+  filter(., name == survey_2_name)
 
-sex_diff_resp &lt;- qualtRics::fetch_survey(surveyID = active_survey$id,
+sex_diff_resp_1 &lt;- qualtRics::fetch_survey(surveyID = survey_1$id,
                                      verbose = TRUE,
                                      force_request = TRUE)</code></pre>
 <pre><code>## 
@@ -669,8 +690,20 @@ sex_diff_resp &lt;- qualtRics::fetch_survey(surveyID = active_survey$id,
   |                                                                 |   0%
   |                                                                       
   |=================================================================| 100%</code></pre>
-<pre class="r"><code>sex_diff_quest &lt;- qualtRics::survey_questions(surveyID = active_survey$id)
-sex_diff_meta &lt;- qualtRics::metadata(surveyID = active_survey$id)</code></pre>
+<pre class="r"><code>sex_diff_resp_2 &lt;- qualtRics::fetch_survey(surveyID = survey_2$id,
+                                     verbose = TRUE,
+                                     force_request = TRUE)</code></pre>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<pre class="r"><code>sex_diff_quest &lt;- qualtRics::survey_questions(surveyID = survey_1$id)
+
+sex_diff_meta_1 &lt;- qualtRics::metadata(surveyID = survey_1$id)
+sex_diff_meta_2 &lt;- qualtRics::metadata(surveyID = survey_2$id)
+
+sex_diff_resp &lt;- rbind(sex_diff_resp_1, sex_diff_resp_2)</code></pre>
 <pre class="r"><code>sex_diff_demo &lt;- sex_diff_resp %&gt;%
   tidyr::gather(., key=&quot;quest&quot;, value=&quot;ethnicity&quot;, Q89_1, Q89_2, Q89_3, Q89_4, Q89_5) %&gt;%
   dplyr::filter(., !is.na(ethnicity)) %&gt;%
@@ -702,21 +735,21 @@ xtabs(~ gender + age_yrs, data = sex_diff_demo) %&gt;%
 <tbody>
 <tr class="odd">
 <td>Male</td>
-<td align="right">1</td>
+<td align="right">2</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td>Female</td>
-<td align="right">6</td>
+<td align="right">8</td>
 <td align="right">4</td>
 <td align="right">0</td>
 <td align="right">1</td>
 </tr>
 </tbody>
 </table>
-<p>There are 13 Qualtrics datasets.</p>
+<p>There are 16 Qualtrics datasets.</p>
 <pre class="r"><code>sex_diff_demo %&gt;%
   dplyr::select(., p_id, gender) %&gt;%
   dplyr::arrange(., p_id) %&gt;%
@@ -780,6 +813,18 @@ xtabs(~ gender + age_yrs, data = sex_diff_demo) %&gt;%
 <tr class="odd">
 <td align="left">2019112016110713</td>
 <td align="left">Female</td>
+</tr>
+<tr class="even">
+<td align="left">2019112110260382</td>
+<td align="left">Female</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112111415360</td>
+<td align="left">Female</td>
+</tr>
+<tr class="even">
+<td align="left">2019112112563962</td>
+<td align="left">Male</td>
 </tr>
 </tbody>
 </table>
@@ -962,6 +1007,30 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
+<tr class="even">
+<td align="left">2019112110260325_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112111415316_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019112112563983_contrast_sensitivity_task.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1095,6 +1164,30 @@ dfs %&gt;% knitr::kable(.)</code></pre>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
+<tr class="odd">
+<td align="left">2019112110260325_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">2019112111415316_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">2019112112563983_motion_temporal_threshold.csv</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1115,31 +1208,30 @@ motion_sub_ids &lt;-
   extract_sub_ids(paste0(params$data_path, &quot;/&quot;, params$motion_raw_path))
 
 qualtrics_sub_ids &lt;- sex_diff_demo$p_id</code></pre>
+<p>Trim IDs to <code>YYYYMMDDHHMMSS</code> or 14 characters.</p>
+<pre class="r"><code>contrast_sub_ids &lt;- stringr::str_sub(contrast_sub_ids, 1, 14)
+motion_sub_ids &lt;- stringr::str_sub(motion_sub_ids, 1, 14)
+qualtrics_sub_ids &lt;- stringr::str_sub(qualtrics_sub_ids, 1, 14)</code></pre>
 <p>Constrast subject IDs</p>
-<pre class="r"><code>contrast_sub_ids</code></pre>
-<pre><code>##  [1] &quot;2019111309492663&quot; &quot;2019111311102420&quot; &quot;2019111313380357&quot;
-##  [4] &quot;2019111314560277&quot; &quot;2019111316121877&quot; &quot;2019111808390374&quot;
-##  [7] &quot;20191118083974_c&quot; &quot;2019111811264955&quot; &quot;2019111812451739&quot;
-## [10] &quot;2019111813580899&quot; &quot;2019112013401963&quot; &quot;2019112014532376&quot;
-## [13] &quot;2019112016110741&quot;</code></pre>
 <p>These contrast file(s) have no matching motion file:</p>
-<p>20191118083974_c</p>
 <p>Motion subject IDs</p>
 <pre class="r"><code>motion_sub_ids</code></pre>
-<pre><code>##  [1] &quot;2019111309492663&quot; &quot;2019111311102420&quot; &quot;2019111313380357&quot;
-##  [4] &quot;2019111314560277&quot; &quot;2019111316121877&quot; &quot;2019111808390374&quot;
-##  [7] &quot;20191118083974_m&quot; &quot;2019111811264955&quot; &quot;2019111812451739&quot;
-## [10] &quot;2019111813580899&quot; &quot;2019111814482814&quot; &quot;2019112013401963&quot;
-## [13] &quot;2019112014532376&quot; &quot;2019112016110741&quot;</code></pre>
+<pre><code>##  [1] &quot;20191113094926&quot; &quot;20191113111024&quot; &quot;20191113133803&quot; &quot;20191113145602&quot;
+##  [5] &quot;20191113161218&quot; &quot;20191118083903&quot; &quot;20191118083974&quot; &quot;20191118112649&quot;
+##  [9] &quot;20191118124517&quot; &quot;20191118135808&quot; &quot;20191118144828&quot; &quot;20191120134019&quot;
+## [13] &quot;20191120145323&quot; &quot;20191120161107&quot; &quot;20191121102603&quot; &quot;20191121114153&quot;
+## [17] &quot;20191121125639&quot;</code></pre>
 <p>These motion files have no matching contrast file:</p>
-<p>20191118083974_m, 2019111814482814</p>
+<p>20191118144828</p>
 <pre class="r"><code>qualtrics_sub_ids</code></pre>
-<pre><code>##  [1] &quot;2019111313380337&quot; &quot;2019111316121898&quot; &quot;2019111813580893&quot;
-##  [4] &quot;2019111814482896&quot; &quot;2019111812451738&quot; &quot;2019111309492632&quot;
-##  [7] &quot;2019111311102438&quot; &quot;2019111313380337&quot; &quot;2019111314560233&quot;
-## [10] &quot;2019111808393927&quot; &quot;2019111811264976&quot; &quot;2019112014532351&quot;
-## [13] &quot;2019112016110713&quot;</code></pre>
-<p>The Qualtrics data have different ‘suffixes’, so we will compare them separately.</p>
+<pre><code>##  [1] &quot;20191113133803&quot; &quot;20191113161218&quot; &quot;20191118135808&quot; &quot;20191118144828&quot;
+##  [5] &quot;20191118124517&quot; &quot;20191121114153&quot; &quot;20191113094926&quot; &quot;20191113111024&quot;
+##  [9] &quot;20191113133803&quot; &quot;20191113145602&quot; &quot;20191118083939&quot; &quot;20191118112649&quot;
+## [13] &quot;20191120145323&quot; &quot;20191120161107&quot; &quot;20191121102603&quot; &quot;20191121125639&quot;</code></pre>
+<p>These Qualtrics subs have no matching contrast file:</p>
+<p>20191118144828, 20191118083939</p>
+<p>These Qualtrics subs have no matching motion file:</p>
+<p>20191118083939</p>
 <pre class="r"><code>ids_identical &lt;- (contrast_sub_ids == motion_sub_ids)
 
 if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
