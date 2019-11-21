@@ -6,9 +6,10 @@ output:
   html_document:
     code_folding: hide
 params:
-  contrast_raw_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data"
-  motion_raw_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/motion_temporal_threshold_data"
-  qualtrics_csv_dir: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data/csv"
+  data_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data"
+  contrast_raw_path: "contrast_sensitivity_task_data"
+  motion_raw_path: "motion_temporal_threshold_data"
+  qualtrics_csv_dir: "qualtrics_survey_data/csv"
   
 ---
 
@@ -16,6 +17,7 @@ params:
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, error = FALSE,
                       message = FALSE)
 library(tidyverse)
+library(qualtRics)
 ```
 
 ## Purpose
@@ -84,8 +86,8 @@ This script describes the process for doing quality assurance (QA) review on eac
 
 #### Contrast
 
-```{r csv-file-lists}
-contrast_csvs <- list.files(paste0(params$contrast_raw_path), pattern = "\\.csv$")
+```{r contrast-csvs}
+contrast_csvs <- list.files(paste0(params$data_path, "/", params$contrast_raw_path), pattern = "\\.csv$")
 contrast_csvs %>% knitr::kable(.)
 ```
 
@@ -93,59 +95,90 @@ There are `r length(contrast_csvs)` files for the Abramov contrast sensitivity t
 
 #### Motion
 
-```{r}
-motion_csvs <- list.files(paste0(params$motion_raw_path), pattern = "\\.csv$")
+```{r motion-csvs}
+motion_csvs <- list.files(paste0(params$data_path, "/", params$motion_raw_path), pattern = "\\.csv$")
 motion_csvs %>% knitr::kable(.)
 ```
 
 There are `r length(motion_csvs)` files for the Murray motion temporal threshold task.
 
-```{r}
-extract_sub_ids <- function(df_path = params$contrast_raw_path) {
-  fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
-  stringr::str_sub(fn_only, 1, 14)
-}
-```
-
 ### Qualtrics
 
-```{r}
-qualtrics_fns <- list.files(params$qualtrics_csv_dir, pattern = "\\.csv$", full.names = TRUE)
-this_fn <- qualtrics_fns[1]
-qualtrics_df <- readr::read_csv(this_fn)
+```{r get-qualtrics}
+active_survey_name <- "Sex difference survey REV 2019-11-11"
+#active_survey_name <- "Sex difference survey REV 2019-11-18"
+surveys <- qualtRics::all_surveys()
 
-# Trim first two rows
-n_rows <- dim(qualtrics_df)[1]
-qualtrics_trim <- qualtrics_df[3:n_rows,]
+active_survey <- surveys %>%
+  filter(., name == active_survey_name)
 
-demog_df <- qualtrics_trim %>%
-  dplyr::filter(., !is.na(`Participant ID`)) %>%
-  dplyr::rename(p_id = `Participant ID`) %>%
-  dplyr::rename(vis_acuity = `Q81`) %>%
-  dplyr::rename(gender = `Q1`) %>%
-  dplyr::rename(age_yrs = `Q4`) %>%
-  dplyr::rename(school_yr = `Q2`) %>%
-  dplyr::rename(major = `Q3`) %>%
-  dplyr::rename(ethnicity = `Q89`) %>%
-  dplyr::rename(preferred_hand = `Q88`) %>%
-  dplyr::rename(stereo_vision = `Q92`) %>%
-  dplyr::rename(color_p6 = `Q93_1`) %>%
-  dplyr::rename(color_p7 = `Q93_2`) %>%
-  dplyr::rename(color_p8 = `Q93_3`) %>%
-  dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr,
-                major, ethnicity, preferred_hand, stereo_vision,
-                color_p6, color_p7, color_p8)
+sex_diff_resp <- qualtRics::fetch_survey(surveyID = active_survey$id,
+                                     verbose = TRUE,
+                                     force_request = TRUE)
+sex_diff_quest <- qualtRics::survey_questions(surveyID = active_survey$id)
+sex_diff_meta <- qualtRics::metadata(surveyID = active_survey$id)
+```
 
-# Some cleaning
-demog_df <- demog_df %>%
+```{r qualtrics-demo-data}
+sex_diff_demo <- sex_diff_resp %>%
+  tidyr::gather(., key="quest", value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, Q89_5) %>%
+  dplyr::filter(., !is.na(ethnicity)) %>%
+  dplyr::select(., -quest) %>%
+  dplyr::rename(., p_id = `Participant ID`) %>%
   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>%
-  dplyr::select(., p_id, gender, age_yrs)
+  dplyr::rename(., vis_acuity = `Q81`) %>%
+  dplyr::rename(., gender = `Q1`) %>%
+  dplyr::rename(., age_yrs = `Q4`) %>%
+  dplyr::rename(., school_yr = `Q2`) %>%
+  dplyr::rename(., major = `Q3`) %>%
+  dplyr::rename(., preferred_hand = `Q88`) %>%
+  dplyr::rename(., stereo_vision = `Q92`) %>%
+  dplyr::select(., p_id, gender, age_yrs, school_yr, major,
+                preferred_hand, vis_acuity, stereo_vision)
 
-demog_df %>%
+xtabs(~ gender + age_yrs, data = sex_diff_demo) %>%
   knitr::kable(.)
 ```
 
-There are `r dim(demog_df)[1]` Qualtrics datasets.
+<!-- ```{r} -->
+<!-- qualtrics_fns <- list.files(paste0(params$data_path, "/", params$qualtrics_csv_dir), pattern = "\\.csv$", full.names = TRUE) -->
+<!-- this_fn <- qualtrics_fns[1] -->
+<!-- qualtrics_df <- readr::read_csv(this_fn) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # Trim first two rows -->
+<!-- n_rows <- dim(qualtrics_df)[1] -->
+<!-- qualtrics_trim <- qualtrics_df[3:n_rows,] -->
+
+<!-- demog_df <- qualtrics_trim %>% -->
+<!--   dplyr::filter(., !is.na(`Participant ID`)) %>% -->
+<!--   dplyr::rename(p_id = `Participant ID`) %>% -->
+<!--   dplyr::rename(vis_acuity = `Q81`) %>% -->
+<!--   dplyr::rename(gender = `Q1`) %>% -->
+<!--   dplyr::rename(age_yrs = `Q4`) %>% -->
+<!--   dplyr::rename(school_yr = `Q2`) %>% -->
+<!--   dplyr::rename(major = `Q3`) %>% -->
+<!--   dplyr::rename(ethnicity = `Q89`) %>% -->
+<!--   dplyr::rename(preferred_hand = `Q88`) %>% -->
+<!--   dplyr::rename(stereo_vision = `Q92`) %>% -->
+<!--   dplyr::rename(color_p6 = `Q93_1`) %>% -->
+<!--   dplyr::rename(color_p7 = `Q93_2`) %>% -->
+<!--   dplyr::rename(color_p8 = `Q93_3`) %>% -->
+<!--   dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr, -->
+<!--                 major, ethnicity, preferred_hand, stereo_vision, -->
+<!--                 color_p6, color_p7, color_p8) -->
+
+<!-- # Some cleaning -->
+<!-- demog_df <- demog_df %>% -->
+<!--   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>% -->
+<!--   dplyr::select(., p_id, gender, age_yrs) -->
+
+<!-- demog_df %>% -->
+<!--   knitr::kable(.) -->
+<!-- ``` -->
+
+There are `r dim(sex_diff_demo)[1]` Qualtrics datasets.
 
 ## File by file QA
 
@@ -207,8 +240,8 @@ make_qa_df <- function(data_fn, task = 'contr') {
 
 ### Contrast
 
-```{r}
-contr_fns <- contrast_csvs <- list.files(paste0(params$contrast_raw_path), pattern = "\\.csv$", full.names = TRUE)
+```{r contr-fns}
+contr_fns <- contrast_csvs <- list.files(paste0(params$data_path, "/", params$contrast_raw_path), pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(contr_fns, make_qa_df, task = "contr")
 dfs <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
 dfs %>% knitr::kable(.)
@@ -217,21 +250,48 @@ dfs %>% knitr::kable(.)
 ### Motion
 
 ```{r}
-motion_fns <- list.files(paste0(params$motion_raw_path), pattern = "\\.csv$", full.names = TRUE)
+motion_fns <- list.files(paste0(params$data_path, "/", params$motion_raw_path), pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(motion_fns, make_qa_df, task = "motion")
 dfs <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
 dfs %>% knitr::kable(.)
 ```
 
-## Compare task lists
+## Compare across tasks
 
-```{r}
+```{r extract-sub-ids}
 # Compare the two lists and determine the number of files uploaded to Box for each task.
-contrast_sub_ids <- extract_sub_ids(params$contrast_raw_path)
-motion_sub_ids <- extract_sub_ids(params$motion_raw_path)
+extract_sub_ids <-
+  function(df_path = paste0(paste0(params$data_path, "/", params$contrast_raw_path))) {
+    fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
+    stringr::str_sub(fn_only, 1, 16)
+  }
+
+contrast_sub_ids <-
+  extract_sub_ids(paste0(params$data_path, "/", params$contrast_raw_path))
+
+motion_sub_ids <-
+  extract_sub_ids(paste0(params$data_path, "/", params$motion_raw_path))
+
+qualtrics_sub_ids <- sex_diff_demo$p_id
 ```
 
-```{r}
+```
+contrast_sub_ids
+motion_sub_ids
+qualtrics_sub_ids
+```
+
+These contrast file(s) are not matched by a motion file:
+
+`r contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]`
+
+These motion files are not matched by a contrast file:
+
+`r motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]`
+
+The Qualtrics data have different 'suffixes', so we will compare them separately.
+
+```{r compare-ids}
 ids_identical <- (contrast_sub_ids == motion_sub_ids)
 
 if (length(contrast_sub_ids) < length(motion_sub_ids)) {
@@ -253,24 +313,26 @@ if (length(contrast_sub_ids) < length(motion_sub_ids)) {
     " is/are missing from the motion task.\n"
   ))
 } else if ((length(ids_identical) == length(contrast_sub_ids)) &&
-              (length(ids_identical) == length(motion_sub_ids))) {
+           (length(ids_identical) == length(motion_sub_ids))) {
   message("There are the same number of files for both tasks and the sub_ids match.")
   reference_ids <- contrast_sub_ids
 }
 ```
 
-```{r}
-id <- 1:max(length(reference_ids), length(reference_ids))
 
-computer_task_df <- dplyr::tibble(id = id,
-                                  contrast_task = contrast_sub_ids[contrast_sub_ids %in% reference_ids],
-                                  motion_task = motion_sub_ids[motion_sub_ids %in% reference_ids])
+<!-- ```{r create-computer-task-df} -->
+<!-- id <- 1:max(length(reference_ids), length(reference_ids)) -->
 
-computer_task_df <- computer_task_df %>%
-  tidyr::gather(task, sub_id,-id)
+<!-- computer_task_df <- dplyr::tibble(id = id, -->
+<!--                                   contrast_task = contrast_sub_ids[contrast_sub_ids %in% reference_ids], -->
+<!--                                   motion_task = motion_sub_ids[motion_sub_ids %in% reference_ids]) -->
 
-computer_task_df %>%
-  dplyr::group_by(., sub_id) %>%
-  dplyr::summarise(n_tasks = n()) %>%
-  knitr::kable(.)
-```
+<!-- computer_task_df <- computer_task_df %>% -->
+<!--   tidyr::gather(task, sub_id,-id) -->
+
+<!-- computer_task_df %>% -->
+<!--   dplyr::group_by(., sub_id) %>% -->
+<!--   dplyr::summarise(n_tasks = n()) %>% -->
+<!--   knitr::kable(.) -->
+<!-- ``` -->
+
