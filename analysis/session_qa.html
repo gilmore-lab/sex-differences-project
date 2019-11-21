@@ -452,7 +452,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Post-processing Quality Assurance</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2019-11-21 15:02:54</h4>
+<h4 class="date">2019-11-21 15:40:15</h4>
 
 </div>
 
@@ -1212,10 +1212,23 @@ qualtrics_sub_ids &lt;- sex_diff_demo$p_id</code></pre>
 <pre class="r"><code>contrast_sub_ids &lt;- stringr::str_sub(contrast_sub_ids, 1, 14)
 motion_sub_ids &lt;- stringr::str_sub(motion_sub_ids, 1, 14)
 qualtrics_sub_ids &lt;- stringr::str_sub(qualtrics_sub_ids, 1, 14)</code></pre>
-<p>Constrast subject IDs</p>
+<p>Create helper function to detect duplicates.</p>
+<pre class="r"><code>detect_duplicate_ids &lt;- function(ids) {
+  as.logical((sum(length(unique(ids)) != length(ids))))
+}</code></pre>
+<div id="constrast-sub-ids" class="section level3">
+<h3>Constrast sub IDs</h3>
+<pre class="r"><code>sort(contrast_sub_ids)</code></pre>
+<pre><code>##  [1] &quot;20191113094926&quot; &quot;20191113111024&quot; &quot;20191113133803&quot; &quot;20191113145602&quot;
+##  [5] &quot;20191113161218&quot; &quot;20191118083903&quot; &quot;20191118083974&quot; &quot;20191118112649&quot;
+##  [9] &quot;20191118124517&quot; &quot;20191118135808&quot; &quot;20191120134019&quot; &quot;20191120145323&quot;
+## [13] &quot;20191120161107&quot; &quot;20191121102603&quot; &quot;20191121114153&quot; &quot;20191121125639&quot;</code></pre>
 <p>These contrast file(s) have no matching motion file:</p>
-<p>Motion subject IDs</p>
-<pre class="r"><code>motion_sub_ids</code></pre>
+<p>Are there duplicate contrast files? FALSE</p>
+</div>
+<div id="motion-sub-ids" class="section level3">
+<h3>Motion sub IDs</h3>
+<pre class="r"><code>sort(motion_sub_ids)</code></pre>
 <pre><code>##  [1] &quot;20191113094926&quot; &quot;20191113111024&quot; &quot;20191113133803&quot; &quot;20191113145602&quot;
 ##  [5] &quot;20191113161218&quot; &quot;20191118083903&quot; &quot;20191118083974&quot; &quot;20191118112649&quot;
 ##  [9] &quot;20191118124517&quot; &quot;20191118135808&quot; &quot;20191118144828&quot; &quot;20191120134019&quot;
@@ -1223,15 +1236,20 @@ qualtrics_sub_ids &lt;- stringr::str_sub(qualtrics_sub_ids, 1, 14)</code></pre>
 ## [17] &quot;20191121125639&quot;</code></pre>
 <p>These motion files have no matching contrast file:</p>
 <p>20191118144828</p>
-<pre class="r"><code>qualtrics_sub_ids</code></pre>
-<pre><code>##  [1] &quot;20191113133803&quot; &quot;20191113161218&quot; &quot;20191118135808&quot; &quot;20191118144828&quot;
-##  [5] &quot;20191118124517&quot; &quot;20191121114153&quot; &quot;20191113094926&quot; &quot;20191113111024&quot;
-##  [9] &quot;20191113133803&quot; &quot;20191113145602&quot; &quot;20191118083939&quot; &quot;20191118112649&quot;
-## [13] &quot;20191120145323&quot; &quot;20191120161107&quot; &quot;20191121102603&quot; &quot;20191121125639&quot;</code></pre>
+<p>Are there duplicate motion files? FALSE</p>
+</div>
+<div id="qualtrics-sub-ids" class="section level3">
+<h3>Qualtrics sub IDs</h3>
+<pre class="r"><code>sort(qualtrics_sub_ids)</code></pre>
+<pre><code>##  [1] &quot;20191113094926&quot; &quot;20191113111024&quot; &quot;20191113133803&quot; &quot;20191113133803&quot;
+##  [5] &quot;20191113145602&quot; &quot;20191113161218&quot; &quot;20191118083939&quot; &quot;20191118112649&quot;
+##  [9] &quot;20191118124517&quot; &quot;20191118135808&quot; &quot;20191118144828&quot; &quot;20191120145323&quot;
+## [13] &quot;20191120161107&quot; &quot;20191121102603&quot; &quot;20191121114153&quot; &quot;20191121125639&quot;</code></pre>
 <p>These Qualtrics subs have no matching contrast file:</p>
 <p>20191118144828, 20191118083939</p>
 <p>These Qualtrics subs have no matching motion file:</p>
 <p>20191118083939</p>
+<p>Are there duplicate Qualtrics entries? TRUE</p>
 <pre class="r"><code>ids_identical &lt;- (contrast_sub_ids == motion_sub_ids)
 
 if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
@@ -1269,6 +1287,7 @@ if (length(contrast_sub_ids) &lt; length(motion_sub_ids)) {
 <!--   dplyr::summarise(n_tasks = n()) %>% -->
 <!--   knitr::kable(.) -->
 <!-- ``` -->
+</div>
 </div>
 
 

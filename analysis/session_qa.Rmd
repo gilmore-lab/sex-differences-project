@@ -160,7 +160,6 @@ sex_diff_demo %>%
   knitr::kable(.)
 ```
 
-
 ## File by file QA
 
 ```{r define-qa-functions}
@@ -224,8 +223,8 @@ make_qa_df <- function(data_fn, task = 'contr') {
 ```{r contr-fns}
 contr_fns <- contrast_csvs <- list.files(paste0(params$data_path, "/", params$contrast_raw_path), pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(contr_fns, make_qa_df, task = "contr")
-dfs <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
-dfs %>% knitr::kable(.)
+contrast_file_qa <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
+contrast_file_qa %>% knitr::kable(.)
 ```
 
 ### Motion
@@ -233,8 +232,8 @@ dfs %>% knitr::kable(.)
 ```{r}
 motion_fns <- list.files(paste0(params$data_path, "/", params$motion_raw_path), pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(motion_fns, make_qa_df, task = "motion")
-dfs <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
-dfs %>% knitr::kable(.)
+motion_file_qa <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
+motion_file_qa %>% knitr::kable(.)
 ```
 
 ## Compare across tasks
@@ -264,24 +263,42 @@ motion_sub_ids <- stringr::str_sub(motion_sub_ids, 1, 14)
 qualtrics_sub_ids <- stringr::str_sub(qualtrics_sub_ids, 1, 14)
 ```
 
-Constrast subject IDs
+Create helper function to detect duplicates.
+
+```{r}
+detect_duplicate_ids <- function(ids) {
+  as.logical((sum(length(unique(ids)) != length(ids))))
+}
+```
+
+### Constrast sub IDs
+
+```{r}
+sort(contrast_sub_ids)
+```
 
 These contrast file(s) have no matching motion file:
 
 `r contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]`
 
-Motion subject IDs
+Are there duplicate contrast files? `r detect_duplicate_ids(contrast_sub_ids)`
+
+### Motion sub IDs
 
 ```{r}
-motion_sub_ids
+sort(motion_sub_ids)
 ```
 
 These motion files have no matching contrast file:
 
 `r motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]`
 
+Are there duplicate motion files? `r detect_duplicate_ids(motion_sub_ids)`
+
+### Qualtrics sub IDs
+
 ```{r}
-qualtrics_sub_ids
+sort(qualtrics_sub_ids)
 ```
 
 These Qualtrics subs have no matching contrast file:
@@ -292,32 +309,41 @@ These Qualtrics subs have no matching motion file:
 
 `r qualtrics_sub_ids[!(qualtrics_sub_ids %in% motion_sub_ids)]`
 
-```{r compare-ids}
-ids_identical <- (contrast_sub_ids == motion_sub_ids)
+Are there duplicate Qualtrics entries? `r detect_duplicate_ids(qualtrics_sub_ids)`
 
-if (length(contrast_sub_ids) < length(motion_sub_ids)) {
-  reference_ids <- contrast_sub_ids
-  missing_ids <-
-    motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]
-  message(paste0(
-    "File(s) ",
-    missing_ids,
-    " is/are missing from the contrast task.\n"
-  ))
-} else if (length(contrast_sub_ids) > length(motion_sub_ids)) {
-  reference_ids <- motion_sub_ids
-  missing_ids <-
-    contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]
-  message(paste0(
-    "File(s) ",
-    missing_ids,
-    " is/are missing from the motion task.\n"
-  ))
-} else if ((length(ids_identical) == length(contrast_sub_ids)) &&
-           (length(ids_identical) == length(motion_sub_ids))) {
-  message("There are the same number of files for both tasks and the sub_ids match.")
-  reference_ids <- contrast_sub_ids
-}
+## Run computer task visualization summaries
+
+Choose:
+
+1. Unique sub_ids for each task (remove duplicates, if any).
+2. Files that have `enough_trials` and `has_key_vars` values `==TRUE`
+
+```{r compare-ids}
+# ids_identical <- (contrast_sub_ids == motion_sub_ids)
+# 
+# if (length(contrast_sub_ids) < length(motion_sub_ids)) {
+#   reference_ids <- contrast_sub_ids
+#   missing_ids <-
+#     motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]
+#   message(paste0(
+#     "File(s) ",
+#     missing_ids,
+#     " is/are missing from the contrast task.\n"
+#   ))
+# } else if (length(contrast_sub_ids) > length(motion_sub_ids)) {
+#   reference_ids <- motion_sub_ids
+#   missing_ids <-
+#     contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]
+#   message(paste0(
+#     "File(s) ",
+#     missing_ids,
+#     " is/are missing from the motion task.\n"
+#   ))
+# } else if ((length(ids_identical) == length(contrast_sub_ids)) &&
+#            (length(ids_identical) == length(motion_sub_ids))) {
+#   message("There are the same number of files for both tasks and the sub_ids match.")
+#   reference_ids <- contrast_sub_ids
+# }
 ```
 
 
