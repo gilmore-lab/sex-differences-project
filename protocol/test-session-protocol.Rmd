@@ -142,7 +142,7 @@ After answering the question, say:
 
 Say:
 
->"*You have finished this part. Next you have two computer tests. Do you want to continue or have a little break?*"
+>"*You have finished this part. Next you have two computer tests in this room. Do you want to continue or have a little break? Please put your phone outside the room.*"
 
 ### Set-up for computer-based tasks
 
