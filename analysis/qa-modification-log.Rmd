@@ -1,0 +1,53 @@
+---
+title: "QA reconciliation Log"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: 
+  html_document:
+    code_folding: hide
+params:
+  data_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data"
+  contrast_raw_path: "contrast_sensitivity_task_data"
+  motion_raw_path: "motion_temporal_threshold_data"
+  qualtrics_csv_dir: "qualtrics_survey_data/csv"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Purpose
+
+This document summarizes the file- or directory specific modifications made to address problems identified in the QA report.
+
+# Report specific responses
+
+## Copy 'duplicate' contrast task files to `old/`
+
+- 2019-11-25. ROG copied `20191118083974_contrast_sensitivity_task.*{csv,log,psydat}` to `old/`. These files duplicate `2019111808390374_contrast_sensitivity_task.*{csv,log,psydat}` that are already in `contrast_sensitivity_task_data/`.
+
+## Delete initial practice rows due to restart
+
+- 2019-11-25. ROG edited `2019111813580899_contrast_sensitivity_task.csv` by deleting the initial practice trials. Apparently, during data collection the task had to be restarted, and the new data were appended to the old. This created an error when trying to generate the task summary Rmarkdown report (`analysis/gather-clean-contrast-sensitivity.Rmd"`). After editing the data file, the error no longer occurs and the task summary page report can be generated.
+
+## Change file name for matching sessions across tasks
+
+- Motion task file `20191118083974_*` had no matching contrast task file.
+
+```{r}
+list.files(paste0(params$data_path, "/", params$motion_raw_path), pattern="201911180839")
+
+list.files(paste0(params$data_path, "/", params$contrast_raw_path), pattern="201911180839")
+```
+
+This occurred because of manual file name changes to the contrast task. On 2019-11-25, ROG moved the duplicate `20191118083974_motion_temporal_threshold.*{csv,psydat}` files to `old/`.
+
+## Note missing data due to experimenter error
+
+- Motion session `20191118144828*` has no matching contrast task file. This participant did not complete the contrast task due to experimenter error.
+
+## Note participant ID anomalies between Qualtrics and computer tasks
+
+- Qualtrics participant `20191118083939*` has no matching contrast or motion file. This occurs because this participants' files were renamed to `2019111808390374` after the session. 
+    - Solution 1: We may have to take the 12 character ID across all files: `YYYYMMDDHHMM` when we merge data.
+    - Solution 2: Rename the motion and contrast task data files to comply with the Qualtrics name.
