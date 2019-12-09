@@ -376,7 +376,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Gather &amp; Clean Qualtrics</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2019-11-21 05:07:23</h4>
+<h4 class="date">2019-11-25 13:46:34</h4>
 
 </div>
 
@@ -429,6 +429,11 @@ sex_diff_resp &lt;- qualtRics::fetch_survey(surveyID = active_survey$id,
 ##   # ... with 27 more columns
 ## )</code></pre>
 <pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre><code>## Warning in infer_data_types(data, surveyID): The 'StartDate', 'EndDate' and 'RecordedDate' variables were converted without passing
+## a specific timezone. If you like to set these timestamps to your own timezone, please
+## visit https://www.qualtrics.com/support/survey-platform/getting-started/managing-your-account/
+## (under 'User Settings'). See https://api.qualtrics.com/docs/dates-and-times for more
+## information about how the Qualtrics API handles dates and times.</code></pre>
 <pre class="r"><code>sex_diff_quest &lt;- qualtRics::survey_questions(surveyID = active_survey$id)
 sex_diff_meta &lt;- qualtRics::metadata(surveyID = active_survey$id)</code></pre>
 <p>There are 14 surveys.</p>

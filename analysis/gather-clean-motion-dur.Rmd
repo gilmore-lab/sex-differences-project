@@ -93,5 +93,5 @@ s1_subset %>%
   facet_grid(. ~ run) + 
   geom_point() +
   geom_smooth() +
-  ggtitle("Contrast sensitivity data")
+  ggtitle("Motion temporal duration data")
 ```
