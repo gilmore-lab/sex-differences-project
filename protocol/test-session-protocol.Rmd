@@ -153,10 +153,12 @@ Say:
 - *place the rear legs of the chair exactly in front of black strips*
 - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
+- *check with participants that they do not bring the cell phone to the dark room*
 
 Say:
 
 >"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.*"
+>"* Do you have cell phone with you?*"
 
 ### Run computer-based tasks
 
