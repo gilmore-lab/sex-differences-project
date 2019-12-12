@@ -19,7 +19,7 @@ output: html_document
 
 >"Which hand do you prefer to press the arrow keys?"
 
->"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
+>"Put your fingers  of your prefered hand on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
 
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
 

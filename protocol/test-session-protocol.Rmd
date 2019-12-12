@@ -157,8 +157,8 @@ Say:
 
 Say:
 
->"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.*"
->"* Do you have cell phone with you?*"
+>"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpants are at the same distance to the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.*"
+>"Could you have your cell phone outside this room?*"
 
 ### Run computer-based tasks
 
