@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-12-12 15:03:02"
+date: "2019-12-12 15:07:34"
 output:
   pdf_document:
     toc: yes
@@ -199,7 +199,7 @@ Say:
 Say:
 
 >"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpants are at the same distance to the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.*"
->"Could you have your cell phone outside this room?*"
+>"Could you have your cell phone outside this room?"
 
 ### Run computer-based tasks
 
