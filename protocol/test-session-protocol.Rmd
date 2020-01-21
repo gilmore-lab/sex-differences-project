@@ -108,17 +108,11 @@ If the participant answers yes, say:
 
 Conduct the implied verbal consent.
 
->"*Welcome to this study. You could read the summary explanation of this study and click next button to move to the next page.
-There is one thing I want to highlight: your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. *"
-
-Optional: You may say to the participant or have them read the following text:
-
-```{r, child="implied-consent-language.Rmd"}
-```
+>"*Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?*"
 
 Once the consent is complete (It means the participant clicks to the next page), say:
 
->"*Great. Now we'd like to move on to the vision screening test. Could you stand behind this line?*"
+>"*Great. Now we'd like to move on to the first vision screening test. Could you stand behind this line?*"
 
 ### Complete pattern visual acuity testing
 
@@ -142,7 +136,7 @@ After answering the question, say:
 
 Say:
 
->"*You have finished this part. Next you have two computer tests. Do you want to continue or have a little break?*"
+>"*You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?*"
 
 ### Set-up for computer-based tasks
 
@@ -154,9 +148,14 @@ Say:
 - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
 
+>"*Do you have your cell phone or is it with your bag/coat? If you have your cell phone, please place it with your bag/coat."
+
 Say:
 
 >"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.*"
+
+>"*Please do you best and focus on the center of the screen during these tasks.*"
+
 
 ### Run computer-based tasks
 
@@ -178,11 +177,9 @@ The order of the computer experiments will be randomized across participants bas
 ```{r, child="abramov-etal-task.Rmd"}
 ```
 
-### (Optional) stereo acuity and color vision tests
+### Stereo acuity and color vision tests
 
-If there is time left (5 min before the end of the 1 hr session),
-
->"*Thank you so much. It looks like we have time for two more short vision tests. Please come sit over here at this table.*"
+>"*Thank you so much. We are going to complete two more short vision tests. Please come sit over here at this table.*"
 
 Escort participant to table.
 
