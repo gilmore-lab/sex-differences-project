@@ -91,10 +91,10 @@ The process of scheduling participants involves the following steps:
 |             | 04:00p  | Amar                         | Yiming |
 |             | 05:00p  | Rachel*                      |  |
 | Tue         | 09:00a  |                              | Yiming, Andrea|
-|             | 10:00a  |                              | Yiming, Andrea |
-|             | 11:00a  | Amar                         | Yiming, Andrea |
-|             | 12:00p  | Luka, Michelle, Rachel       | Yiming, Andrea |
-|             | 01:00p  | Luka, Michelle, Rachel       | Yiming, Andrea |
+|             | 10:00a  | Michelle                     | Yiming, Andrea |
+|             | 11:00a  | Amar, Michelle               | Yiming, Andrea |
+|             | 12:00p  | Luka, Rachel                 | Yiming, Andrea |
+|             | 01:00p  | Luka, Rachel                 | Yiming, Andrea |
 |             | 02:00p  | Luka, Rachel                 |  |
 |             | 03:00p  |                              |  |
 |             | 04:00p  |                              |  |

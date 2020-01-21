@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-21 11:41:21"
+date: "2020-01-21 11:57:54"
 output:
   pdf_document:
     toc: yes
@@ -162,6 +162,7 @@ Say:
 
 >"*You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?*"
 
+
 ### Set-up for computer-based tasks
 
 - Guide participant to the testing room.
@@ -171,12 +172,15 @@ Say:
 - *place the rear legs of the chair exactly in front of black strips*
 - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
+- *check with participants that they do not bring the cell phone to the dark room*
 
->"*Do you have your cell phone or is it with your bag/coat? If you have your cell phone, please place it with your bag/coat."
+>"*Do you have your cell phone or is it with your bag/coat? If you have your cell phone, please place it with your bag/coat.*"
 
 Say:
 
->"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.*"
+
+>"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is at the same distance to the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.*"
+
 
 >"*Please do you best and focus on the center of the screen during these tasks.*"
 
@@ -211,7 +215,7 @@ The order of the computer experiments will be randomized across participants bas
 
 >"Which hand do you prefer to press the arrow keys?"
 
->"Put your fingers on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
+>"Put your fingers  of your prefered hand on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
 
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
 
@@ -247,7 +251,7 @@ The order of the computer experiments will be randomized across participants bas
 
 >"Which hand do you prefer to press the arrow keys?"
 
->"Put your fingers on the left and down keys. You'll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren't sure, make your best guess."
+>"Put your fingers of your prefered hand on the left and down keys. You'll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren't sure, make your best guess."
 
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
 
