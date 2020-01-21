@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Rick Gilmore, Yiming Qian, &amp; Andrea Seisler" />
@@ -88,7 +89,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -162,56 +162,12 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -305,7 +261,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Individual differences in visual perception in adults</h1>
 <h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
-<h4 class="date">2019-11-18 17:13:39</h4>
+<h4 class="date">2020-01-21 11:57:45</h4>
 
 </div>
 
@@ -413,140 +369,152 @@ div.tocify {
 <tr class="odd">
 <td>Mon</td>
 <td>09:00a</td>
-<td></td>
-<td>Andrea</td>
+<td>Emily, Luka</td>
+<td>Andrea, Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>10:15a</td>
-<td>Sandy, Emily, Rachel</td>
-<td>Andrea</td>
+<td>10:00a</td>
+<td>Emily, Luka</td>
+<td>Andrea, Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>11:30a</td>
-<td>Sandy, Emily, Amar</td>
+<td>11:00a</td>
+<td>Emily, Luka</td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>1p</td>
+<td>12:00p</td>
+<td>Sandy</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>01:00p</td>
 <td>Emily</td>
 <td>Yiming</td>
 </tr>
+<tr class="even">
+<td></td>
+<td>02:00p</td>
+<td>Amar</td>
+<td>Yiming</td>
+</tr>
 <tr class="odd">
 <td></td>
-<td>2:15p</td>
-<td></td>
+<td>03:00p</td>
+<td>Amar</td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>3:30p</td>
-<td>Rachel</td>
+<td>04:00p</td>
+<td>Amar</td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>4:45p</td>
+<td>05:00p</td>
+<td>Rachel*</td>
 <td></td>
-<td>Yiming</td>
 </tr>
 <tr class="even">
 <td>Tue</td>
 <td>09:00a</td>
-<td>Michelle, Rachel</td>
-<td>Andrea</td>
+<td></td>
+<td>Yiming, Andrea</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>10:15a</td>
-<td>Michelle, Rachel</td>
-<td>Andrea</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>11:30a</td>
-<td>Amar, Michelle</td>
-<td>Andrea</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>12:45p</td>
-<td>Michelle, Joseph, Amar, Luka</td>
-<td>Andrea</td>
-</tr>
-<tr class="even">
-<td>Wed</td>
 <td>10:00a</td>
-<td>Sandy, Rachel, Amar</td>
-<td>Yiming</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>11:15a</td>
-<td>Sandy, Rachel, Amar, Emily</td>
-<td>Andrea</td>
+<td>Michelle</td>
+<td>Yiming, Andrea</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>12:30p</td>
-<td>Luka, Emily</td>
-<td>Andrea</td>
+<td>11:00a</td>
+<td>Amar, Michelle</td>
+<td>Yiming, Andrea</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>01:45p</td>
-<td>Luka</td>
-<td>Yiming</td>
+<td>12:00p</td>
+<td>Luka, Rachel</td>
+<td>Yiming, Andrea</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>01:00p</td>
+<td>Luka, Rachel</td>
+<td>Yiming, Andrea</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>02:00p</td>
+<td>Luka, Rachel</td>
+<td></td>
 </tr>
 <tr class="even">
 <td></td>
 <td>03:00p</td>
-<td>Luka, Rachel</td>
-<td>Yiming</td>
+<td></td>
+<td></td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>04:15p</td>
-<td>Luka</td>
-<td>Yiming</td>
-</tr>
-<tr class="even">
+<td>04:00p</td>
 <td></td>
-<td>05:30p</td>
-<td>Luka</td>
-<td>Yiming</td>
-</tr>
-<tr class="odd">
-<td>Thu</td>
-<td>09:00a</td>
-<td>Joseph, Michelle, Luka,Rachel</td>
-<td>Yiming</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>10:15</td>
-<td>Rachel</td>
-<td>Yiming</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>11:30a</td>
-<td>Amar, Rachel</td>
 <td></td>
 </tr>
 <tr class="even">
 <td></td>
-<td>01:30p</td>
-<td>Amar, Luka</td>
-<td>Yiming (every two weeks)</td>
+<td>05:00p</td>
+<td>Michelle*</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>02:45p</td>
+<td>06:00p</td>
+<td>Michelle*</td>
 <td></td>
-<td>Yiming (every two weeks)</td>
+</tr>
+<tr class="even">
+<td>Wed</td>
+<td>10:00a</td>
+<td></td>
+<td>Andrea</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>11:00a</td>
+<td></td>
+<td>Andrea</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>12:00p</td>
+<td>Sandy</td>
+<td>Andrea</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>01:00p</td>
+<td>Sandy</td>
+<td>Andrea</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>02:00p</td>
+<td>Amar</td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>03:00p</td>
+<td>Amar</td>
+<td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
@@ -556,54 +524,128 @@ div.tocify {
 </tr>
 <tr class="odd">
 <td></td>
-<td>05:15p</td>
-<td>Emily (some days)</td>
+<td>05:00p</td>
+<td>Rachel*</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Thu</td>
+<td>09:00a</td>
+<td></td>
 <td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>10:00a</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>11:00a</td>
+<td>Amar</td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>12:00p</td>
+<td>Amar, Luka, Michelle,Rachel</td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>01:00p</td>
+<td>Luka, Michelle,Rachel</td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>02:00p</td>
+<td>Luka, Michelle</td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>03:00</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>04:00</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>05:00p</td>
+<td>Michelle*</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>06:00p</td>
+<td>Michelle*</td>
+<td></td>
 </tr>
 <tr class="even">
 <td>Fri</td>
 <td>09:00a</td>
-<td>Rachel</td>
+<td>Emily</td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>10:15a</td>
-<td>Rachel, Emily, Amar</td>
+<td>10:00a</td>
+<td>Emily</td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>11:30a</td>
-<td>Rachel, Emily, Amar</td>
-<td>Andrea</td>
+<td>11:00a</td>
+<td></td>
+<td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>12:45p</td>
-<td>Emily, Amar</td>
-<td>Andrea</td>
+<td>12:00p</td>
+<td></td>
+<td>Yiming</td>
 </tr>
 <tr class="even">
+<td></td>
+<td>01:00p</td>
+<td></td>
+<td>Yiming</td>
+</tr>
+<tr class="odd">
 <td></td>
 <td>02:00p</td>
-<td>Michelle</td>
+<td>Amar*</td>
+<td>Yiming</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>03:00p</td>
+<td>Amar*</td>
 <td>Yiming</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>03:15p</td>
+<td>04:00p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>04:30p</td>
+<td>05:00p</td>
 <td></td>
 <td>Yiming</td>
 </tr>
 </tbody>
 </table>
+<p>Notes: * Possible<br />
+* Luka available most evenings</p>
 </div>
 </div>
 <div id="day-of-visit" class="section level1">
@@ -640,7 +682,7 @@ div.tocify {
 <ul>
 <li>Turn on the power of the data collection computer</li>
 <li>Turn on the CRT monitor in 503B</li>
-<li>Log-in (Gilmore Lab)</li>
+<li>Log-in (use your indiviual PSU login)</li>
 </ul></li>
 <li><em>Start Psychopy</em>
 <ul>
@@ -687,7 +729,7 @@ div.tocify {
 <div id="survey-computer" class="section level4">
 <h4>Survey Computer</h4>
 <ul>
-<li>Log-in to survey computer</li>
+<li>Log-in to survey computer with your individual PSU login</li>
 <li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh</a>. <strong>UPDATED 2019-11-18</strong>.</li>
 </ul>
 </div>
@@ -727,22 +769,11 @@ div.tocify {
 </ul>
 <p>Conduct the implied verbal consent.</p>
 <blockquote>
-<p>“<em>Welcome to this study. You could read the summary explanation of this study and click next button to move to the next page. There is one thing I want to highlight: your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. </em>”</p>
+<p>“<em>Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?</em>”</p>
 </blockquote>
-<p>Optional: You may say to the participant or have them read the following text:</p>
-<p>&quot;You are being invited to participate in a research study.</p>
-<ul>
-<li>The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting. The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life.</li>
-<li>You will complete one computer-based surveys. Then, you will complete two short computer tasks in which you will attempt to detect motion on a computer screen.</li>
-<li>All questionnaire and computer task data you provide will be saved using a numeric code. No information about your identity or how to contact you will be saved with the data.</li>
-<li>If you are participating as part of the Psychology Subject Pool, you will receive course credit for participation as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.</li>
-</ul>
-<p>If you have questions, complaints, or concerns about the research, you could contact principal investigator Yiming Qian or her advisor Rick Gilmore. If you have questions regarding your rights as a research subject or concerns regarding your privacy, you could contact the Office for Research Protections.</p>
-<p>Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer.</p>
-<p>Clicking the “Next” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. Thank you!&quot;</p>
 <p>Once the consent is complete (It means the participant clicks to the next page), say:</p>
 <blockquote>
-<p>“<em>Great. Now we’d like to move on to the vision screening test. Could you stand behind this line?</em>”</p>
+<p>“<em>Great. Now we’d like to move on to the first vision screening test. Could you stand behind this line?</em>”</p>
 </blockquote>
 </div>
 </div>
@@ -796,7 +827,7 @@ div.tocify {
 </ul>
 <p>Say:</p>
 <blockquote>
-<p>“<em>You have finished this part. Next you have two computer tests. Do you want to continue or have a little break?</em>”</p>
+<p>“<em>You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?</em>”</p>
 </blockquote>
 </div>
 <div id="set-up-for-computer-based-tasks-1" class="section level3">
@@ -809,10 +840,17 @@ div.tocify {
 <li><em>place the rear legs of the chair exactly in front of black strips</em></li>
 <li>The chair height should be set so the participant is looking in the middle of the screen.</li>
 <li>Guide the participant to use the arrow keys for responses and the space bar to advance the screen.</li>
+<li><em>check with participants that they do not bring the cell phone to the dark room</em></li>
 </ul>
+<blockquote>
+<p>“<em>Do you have your cell phone or is it with your bag/coat? If you have your cell phone, please place it with your bag/coat.</em>”</p>
+</blockquote>
 <p>Say:</p>
 <blockquote>
-<p>“<em>Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.</em>”</p>
+<p>“<em>Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is at the same distance to the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.</em>”</p>
+</blockquote>
+<blockquote>
+<p>“<em>Please do you best and focus on the center of the screen during these tasks.</em>”</p>
 </blockquote>
 </div>
 <div id="run-computer-based-tasks" class="section level3">
@@ -853,7 +891,7 @@ div.tocify {
 <p>“Which hand do you prefer to press the arrow keys?”</p>
 </blockquote>
 <blockquote>
-<p>“Put your fingers on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, make your best guess.”</p>
+<p>“Put your fingers of your prefered hand on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, make your best guess.”</p>
 </blockquote>
 <blockquote>
 <p>For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
@@ -905,7 +943,7 @@ div.tocify {
 <p>“Which hand do you prefer to press the arrow keys?”</p>
 </blockquote>
 <blockquote>
-<p>“Put your fingers on the left and down keys. You’ll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren’t sure, make your best guess.”</p>
+<p>“Put your fingers of your prefered hand on the left and down keys. You’ll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren’t sure, make your best guess.”</p>
 </blockquote>
 <blockquote>
 <p>For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
@@ -924,11 +962,10 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="optional-stereo-acuity-and-color-vision-tests" class="section level3">
-<h3>(Optional) stereo acuity and color vision tests</h3>
-<p>If there is time left (5 min before the end of the 1 hr session),</p>
+<div id="stereo-acuity-and-color-vision-tests" class="section level3">
+<h3>Stereo acuity and color vision tests</h3>
 <blockquote>
-<p>“<em>Thank you so much. It looks like we have time for two more short vision tests. Please come sit over here at this table.</em>”</p>
+<p>“<em>Thank you so much. We are going to complete two more short vision tests. Please come sit over here at this table.</em>”</p>
 </blockquote>
 <p>Escort participant to table.</p>
 <!-- # Vision Screening Instructions -->
@@ -1366,6 +1403,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
