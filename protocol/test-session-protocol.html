@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Yiming Qian, Andrea Seisler, &amp; Rick Gilmore" />
@@ -1477,56 +1478,12 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -1620,7 +1577,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Testing session protocol</h1>
 <h4 class="author">Yiming Qian, Andrea Seisler, &amp; Rick Gilmore</h4>
-<h4 class="date">2019-11-14 08:15:31</h4>
+<h4 class="date">2019-12-12 15:07:34</h4>
 
 </div>
 
@@ -1705,7 +1662,7 @@ div.tocify {
 <h4>Survey Computer</h4>
 <ul>
 <li>Log-in to survey computer</li>
-<li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV</a></li>
+<li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh</a>. <strong>UPDATED 2019-11-18</strong>.</li>
 </ul>
 </div>
 </div>
@@ -1813,7 +1770,7 @@ div.tocify {
 </ul>
 <p>Say:</p>
 <blockquote>
-<p>“<em>You have finished this part. Next you have two computer tests. Do you want to continue or have a little break?</em>”</p>
+<p>“<em>You have finished this part. Next you have two computer tests in this room. Do you want to continue or have a little break? Please put your phone outside the room.</em>”</p>
 </blockquote>
 </div>
 <div id="set-up-for-computer-based-tasks-1" class="section level3">
@@ -1826,10 +1783,11 @@ div.tocify {
 <li><em>place the rear legs of the chair exactly in front of black strips</em></li>
 <li>The chair height should be set so the participant is looking in the middle of the screen.</li>
 <li>Guide the participant to use the arrow keys for responses and the space bar to advance the screen.</li>
+<li><em>check with participants that they do not bring the cell phone to the dark room</em></li>
 </ul>
 <p>Say:</p>
 <blockquote>
-<p>“<em>Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.</em>”</p>
+<p>“<em>Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpants are at the same distance to the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.</em>” “Could you have your cell phone outside this room?”</p>
 </blockquote>
 </div>
 <div id="run-computer-based-tasks" class="section level3">
@@ -1870,7 +1828,7 @@ div.tocify {
 <p>“Which hand do you prefer to press the arrow keys?”</p>
 </blockquote>
 <blockquote>
-<p>“Put your fingers on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, make your best guess.”</p>
+<p>“Put your fingers of your prefered hand on the left and right arrow keys. You’ll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren’t sure, make your best guess.”</p>
 </blockquote>
 <blockquote>
 <p>For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
@@ -1922,7 +1880,7 @@ div.tocify {
 <p>“Which hand do you prefer to press the arrow keys?”</p>
 </blockquote>
 <blockquote>
-<p>“Put your fingers on the left and down keys. You’ll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren’t sure, make your best guess.”</p>
+<p>“Put your fingers of your prefered hand on the left and down keys. You’ll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren’t sure, make your best guess.”</p>
 </blockquote>
 <blockquote>
 <p>For the left-handed: “You could press this ENTER key on the right side to preceed instead of space bar.”</p>
@@ -2076,6 +2034,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
