@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2019-11-14 08:15:31"
+date: "2020-01-21 11:41:21"
 output:
   pdf_document:
     toc: yes
@@ -41,7 +41,7 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 - *Log into Data Collection Computer*
   - Turn on the power of the data collection computer
   - Turn on the CRT monitor in 503B
-  - Log-in (Gilmore Lab)
+  - Log-in (use your indiviual PSU login)
 
 - *Start Psychopy* 
   - Click **PsychoPy** icon on Task Bar
@@ -76,8 +76,8 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
  
 #### Survey Computer
 
-- Log-in to survey computer
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_0Cad5AtrbQN0GKV>
+- Log-in to survey computer with your individual PSU login
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh>. **UPDATED 2019-11-18**.
 
 ### After participant arrives 
 
@@ -108,34 +108,11 @@ If the participant answers yes, say:
 
 Conduct the implied verbal consent.
 
->"*Welcome to this study. You could read the summary explanation of this study and click next button to move to the next page.
-There is one thing I want to highlight: your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. *"
-
-Optional: You may say to the participant or have them read the following text:
-
-
-
-
-
-"You are being invited to participate in a research study. 
-
--	The purpose of this voluntary research study is to investigate how human beings perceive motion in an experimental setting.
-The results of this research study will help scientists gain a deeper understanding of what contributes to individual differences in motion perception, and whether or how motion perception is correlated with other aspects of life. 
--	You will complete one computer-based surveys. Then, you will complete two short computer tasks in which you will attempt to detect motion on a computer screen.
--	All questionnaire and computer task data you provide will be saved using a numeric code. No information about your identity or how to contact you will be saved with the data. 
--	If you are participating as part of the Psychology Subject Pool, you will receive course credit for participation as specified in the syllabus provided by your instructor. This means you will get 1 credit for participating this research. Alternative means for earning this course credit are available as specified in the syllabus.
-
-If you have questions, complaints, or concerns about the research, you could contact principal investigator Yiming Qian or her advisor Rick Gilmore.
-If you have questions regarding your rights as a research subject or concerns regarding your privacy, you could contact the Office for Research Protections. 
-
-Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. 
-
-Clicking the "Next” button implies two things: (1) that you are at least 18 years of age, and (2) you voluntarily consent to participate in the research. 
-Thank you!"
+>"*Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?*"
 
 Once the consent is complete (It means the participant clicks to the next page), say:
 
->"*Great. Now we'd like to move on to the vision screening test. Could you stand behind this line?*"
+>"*Great. Now we'd like to move on to the first vision screening test. Could you stand behind this line?*"
 
 ### Complete pattern visual acuity testing
 
@@ -183,7 +160,7 @@ After answering the question, say:
 
 Say:
 
->"*You have finished this part. Next you have two computer tests. Do you want to continue or have a little break?*"
+>"*You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?*"
 
 ### Set-up for computer-based tasks
 
@@ -195,9 +172,14 @@ Say:
 - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
 
+>"*Do you have your cell phone or is it with your bag/coat? If you have your cell phone, please place it with your bag/coat."
+
 Say:
 
 >"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure you are at the right distance to the computer screen. Please sit straight and have you back touching the chair.Do not move your chair.*"
+
+>"*Please do you best and focus on the center of the screen during these tasks.*"
+
 
 ### Run computer-based tasks
 
@@ -277,11 +259,9 @@ The order of the computer experiments will be randomized across participants bas
 
 - close the door for participants
 
-### (Optional) stereo acuity and color vision tests
+### Stereo acuity and color vision tests
 
-If there is time left (5 min before the end of the 1 hr session),
-
->"*Thank you so much. It looks like we have time for two more short vision tests. Please come sit over here at this table.*"
+>"*Thank you so much. We are going to complete two more short vision tests. Please come sit over here at this table.*"
 
 Escort participant to table.
 
@@ -374,5 +354,3 @@ You also have done two computer tests, which examine your performance in motion 
 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
 - Copy the data of this participant into hard drive
-
-
