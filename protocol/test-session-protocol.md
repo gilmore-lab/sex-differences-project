@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-21 12:29:53"
+date: "2020-01-21 12:32:02"
 output:
   pdf_document:
     toc: yes
@@ -179,7 +179,7 @@ Say:
 Say:
 
 
->"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is at the same distance to the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.*"
+>"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is the same distance from the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.*"
 
 
 >"*Please do you best and focus on the center of the screen during these tasks.*"
