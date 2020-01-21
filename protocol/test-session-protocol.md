@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-21 11:57:54"
+date: "2020-01-21 12:29:53"
 output:
   pdf_document:
     toc: yes
