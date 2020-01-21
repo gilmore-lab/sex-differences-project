@@ -56,6 +56,10 @@ visualize_all_contr_sens_data <- function(df_p = "~/Box\ Sync/Project_Sex_differ
   
   fns <- list_full_fns_in_path(df_p)
   ids <- extract_ids_from_fns(df_p)
+  
+  assertthat::is.string(fns)
+  assertthat::is.string(ids)
+  
   mapply(visualize_contr_sens_data, fns, ids)
 }
 
@@ -66,6 +70,10 @@ visualize_all_motion_dur_data <- function(df_p = "~/Box\ Sync/Project_Sex_differ
   
   fns <- list_full_fns_in_path(df_p)
   ids <- extract_ids_from_fns(df_p)
+  
+  assertthat::is.string(fns)
+  assertthat::is.string(ids)
+  
   mapply(visualize_motion_dur_data, fns, ids)
 }
 
@@ -225,7 +233,7 @@ run_session_qa_report <- function() {
   
   rmarkdown::render("analysis/session_qa.Rmd", 
                     output_format = "html_document", output_dir = "analysis/qa",
-                    output_file = paste0(Sys.Date(), "-qa-report.html"),
+                    output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
                     params = list(data_path = "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data",
                                   contrast_raw_path = "contrast_sensitivity_task_data",
                                   motion_raw_path = "motion_temporal_threshold_data",
@@ -239,4 +247,13 @@ generate_pid <- function(){
   assertthat::is.string(id)
   
   id
+}
+
+generate_qa_vis_rpts <- function() {
+  run_session_qa_report()
+  
+  visualize_all_contr_sens_data()
+  visualize_all_motion_dur_data()
+  
+  copy_qa_rpts_to_box()
 }

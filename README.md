@@ -7,6 +7,7 @@ Files related to the experimental study of sex differences in motion perception
     - Master protocol: [HTML](https://gilmore-lab.github.io/sex-differences-in-motion-perception/protocol/master-protocol.html)
 - `analysis/` : files related to data analysis.
     - Data Quality Assurance (QA) [report](https://gilmore-lab.github.io/sex-differences-in-motion-perception/analysis/session_qa.html)
+    - Data Qualtity Assurance modification [log](https://gilmore-lab.github.io/sex-differences-in-motion-perception/analysis/qa-modification-log.html)
 - `meeting_notes/`: files related to project meetings.
   - [HTML notes](https://gilmore-lab.github.io/sex-differences-in-motion-perception/meeting_notes/meeting-notes.html)
 
