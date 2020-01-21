@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-21 12:29:53"
+date: "2020-01-21 13:47:40"
 output:
   pdf_document:
     toc: yes
@@ -17,7 +17,8 @@ knit:  rmarkdown::render('test-session-protocol.Rmd', output_format = 'all')
 
 ## Before participant arrives
 
-- Check to see if there have been any cancellations.
+- Please arrive *10 minutes prior* to the participant testing time.
+- Check with Andrea/Yiming to see if there have been any cancellations or check the green folder with the daily schedule in it.
 - If the scheduled study is still on the books, proceed as follows.
 
 ### Set-up for Vision Screening  
@@ -104,7 +105,11 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- You will see the Participant ID on the top of implied consent. *Take a note* of this participant ID (only the numeric code without comma or hyphen) in "Penn State Vision Screening Score Sheet".
+- There is a Participant ID blank spot on the top of implied consent. Please use the lowest number available on the white board. *Take a note* of this participant ID in "Penn State Vision Screening Score Sheet". Enter this number into the Qualtrics Survey and each of the computer tasks. 
+
+- Do not choose a number before the participant arrives.
+
+- When you use a Participant ID from the white board, please cross it out with the brown dry erase marker. All used numbers will be erased at the end of the day.
 
 Conduct the implied verbal consent.
 
@@ -179,7 +184,7 @@ Say:
 Say:
 
 
->"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is at the same distance to the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.*"
+>"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is the same distance from the computer screen. Please sit straight and have you back touching the chair. Do not move your chair.*"
 
 
 >"*Please do you best and focus on the center of the screen during these tasks.*"
@@ -189,10 +194,10 @@ Say:
 
 #### Select run order
 
-The order of the computer experiments will be randomized across participants based on the participant ID shown in Qualtrics
+The order of the computer experiments will be randomized across participants based on the participant ID entered into Qualtrics.
 
-- run the temporal duration threshold task first (Murray et al.) if the ID number is even.
-- run the contrast sensitivity task (Abramov et al.) first if the ID number is odd.
+- run the *temporal duration threshold task* first (Murray et al.) if the ID number is *EVEN*.
+- run the *contrast sensitivity task* first (Abramov et al.) if the ID number is *ODD*.
 *Record the task run first on the experiment run log.*
 
 #### Temporal duration threshold task (Murray et al.)
@@ -346,7 +351,7 @@ Continue until participant gives up trying, or making two successive mistakes.
 You also have done two computer tests, which examine your performance in motion perception. In this study, we want to investigate whether or how motion perception is correlated with individual's verbal ability, spatial ability, or personal interests. "
 
 
->"*Okay. The principal investigator will give you the credit later today.*"
+>"*Okay. The principal investigator will give you the credit by the end of the next business day.*"
 
 - Say bye to participants
 
@@ -356,5 +361,11 @@ You also have done two computer tests, which examine your performance in motion 
 
 ### Clean-up
 
+- Mark on the daily schedule sheet in the green folder if:  
+    - the participant was Present or a No Show  
+    - the number used for that participant if Present  
+
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
-- Copy the data of this participant into hard drive
+
+For the last participant of the day:
+- Copy the data of this participant to the hard drive
