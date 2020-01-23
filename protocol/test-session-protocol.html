@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -1465,6 +1464,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -1496,6 +1496,12 @@ summary {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -1576,7 +1582,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Testing session protocol</h1>
 <h4 class="author">Yiming Qian, Andrea Seisler, &amp; Rick Gilmore</h4>
-<h4 class="date">2020-01-21 13:47:40</h4>
+<h4 class="date">2020-01-23 10:06:17</h4>
 
 </div>
 
@@ -1662,7 +1668,7 @@ div.tocify {
 <h4>Survey Computer</h4>
 <ul>
 <li>Log-in to survey computer with your individual PSU login</li>
-<li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh</a>. <strong>UPDATED 2019-11-18</strong>.</li>
+<li>Load page with surveys: <a href="https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh" class="uri">https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh</a>. <strong>UPDATED 2020-1-23</strong>.</li>
 </ul>
 </div>
 </div>
@@ -1696,16 +1702,17 @@ div.tocify {
 </div>
 <div id="begin-the-survey" class="section level4">
 <h4>Begin the survey</h4>
-<ul>
-<li><p>There is a Participant ID blank spot on the top of implied consent. Please use the lowest number available on the white board. <em>Take a note</em> of this participant ID in “Penn State Vision Screening Score Sheet”. Enter this number into the Qualtrics Survey and each of the computer tasks.</p></li>
-<li><p>Do not choose a number before the participant arrives.</p></li>
-<li><p>When you use a Participant ID from the white board, please cross it out with the brown dry erase marker. All used numbers will be erased at the end of the day.</p></li>
-</ul>
 <p>Conduct the implied verbal consent.</p>
 <blockquote>
 <p>“<em>Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?</em>”</p>
 </blockquote>
-<p>Once the consent is complete (It means the participant clicks to the next page), say:</p>
+<p>Once the consent is complete (It means the participant clicks to the next page), enter participant ID</p>
+<ul>
+<li><p>Following the consent page, there is a Participant ID blank spot on the top of visual acuity test page. Please use the smallest number available on the white board. <em>Take a note</em> of this participant ID in “Penn State Vision Screening Score Sheet”. Enter this number into the Qualtrics Survey and each of the computer tasks.</p></li>
+<li><p>Do not choose a number before the participant arrives.</p></li>
+<li><p>When you use a Participant ID from the white board, please cross it out with the brown dry erase marker. All used numbers will be erased at the end of the day.</p></li>
+</ul>
+<p>Then say,</p>
 <blockquote>
 <p>“<em>Great. Now we’d like to move on to the first vision screening test. Could you stand behind this line?</em>”</p>
 </blockquote>
@@ -1813,7 +1820,7 @@ div.tocify {
 <li>Experimenters need to fill in the participant ID and gender.
 <ul>
 <li>A pop-up window will appear.</li>
-<li>Participant ID in the pop-up window have shown “YYYYMMDD”, which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.</li>
+<li>Enter participant ID. Make sure it is the same ID as that in qualtrics.</li>
 <li>Enter gender (enter “f” or “m”, no upper case) in the pop window, and press the <code>Ok</code> button to enter the data.</li>
 </ul></li>
 <li>Speak to the participant</li>
@@ -1835,9 +1842,6 @@ div.tocify {
 </blockquote>
 <blockquote>
 <p>“Remember, accuracy is more important than speed. Please take your time.”</p>
-</blockquote>
-<blockquote>
-<p>“This task takes about 1 min to complete. But to get reliable results, there are 4 sections. You can take a short break between the sections.”</p>
 </blockquote>
 <blockquote>
 <p>“Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part.”</p>
@@ -1862,7 +1866,7 @@ div.tocify {
 <li>Experimenters need to fill in the participant ID and gender.
 <ul>
 <li>A pop-up window will appear.</li>
-<li>Participant ID in the pop-up window have shown “YYYYMMDD”, which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.</li>
+<li>Enter participant ID. Make sure it is the same ID as that in qualtrics.</li>
 <li>Enter gender (enter “f” or “m”, no upper case) in the pop window, and press the <code>Ok</code> button to enter the data.</li>
 </ul></li>
 <li>Speak to the participant</li>
@@ -1884,9 +1888,6 @@ div.tocify {
 </blockquote>
 <blockquote>
 <p>“Remember, accuracy is more important than speed. Please take your time.”</p>
-</blockquote>
-<blockquote>
-<p>“This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You could take a short break between the sections.”</p>
 </blockquote>
 <blockquote>
 <p>“Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part.”</p>

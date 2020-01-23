@@ -58,7 +58,7 @@ We may check the monitor calibration during data collection at a frequency we wi
 This study uses Qualtrics to collect implied/oral consent and other data from participants.
 Yiming has generated a draft survey, saved [here](qualtrics_survey.qsf) as a `*.qsf` format text file.
 
-The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh>. **NOTE updated 2019-11-18**
+The URL for the survey is <https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh>. **UPDATED 2020-1-23**.
 
 # Scheduling participants 
 

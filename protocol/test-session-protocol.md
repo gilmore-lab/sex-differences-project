@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-21 13:47:40"
+date: "2020-01-23 10:06:17"
 output:
   pdf_document:
     toc: yes
@@ -78,7 +78,7 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 #### Survey Computer
 
 - Log-in to survey computer with your individual PSU login
-- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh>. **UPDATED 2019-11-18**.
+- Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh>. **UPDATED 2020-1-23**.
 
 ### After participant arrives 
 
@@ -105,17 +105,19 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- There is a Participant ID blank spot on the top of implied consent. Please use the lowest number available on the white board. *Take a note* of this participant ID in "Penn State Vision Screening Score Sheet". Enter this number into the Qualtrics Survey and each of the computer tasks. 
+Conduct the implied verbal consent.
+
+>"*Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?*"
+
+Once the consent is complete (It means the participant clicks to the next page), enter participant ID
+
+- Following the consent page, there is a Participant ID blank spot on the top of visual acuity test page. Please use the smallest number available on the white board. *Take a note* of this participant ID in "Penn State Vision Screening Score Sheet". Enter this number into the Qualtrics Survey and each of the computer tasks. 
 
 - Do not choose a number before the participant arrives.
 
 - When you use a Participant ID from the white board, please cross it out with the brown dry erase marker. All used numbers will be erased at the end of the day.
 
-Conduct the implied verbal consent.
-
->"*Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?*"
-
-Once the consent is complete (It means the participant clicks to the next page), say:
+Then say,
 
 >"*Great. Now we'd like to move on to the first vision screening test. Could you stand behind this line?*"
 
@@ -212,7 +214,7 @@ The order of the computer experiments will be randomized across participants bas
     - **Be careful not to type in the programming window.**
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Participant ID in the pop-up window have shown "YYYYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Enter participant ID. Make sure it is the same ID as that in qualtrics.
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
@@ -227,8 +229,6 @@ The order of the computer experiments will be randomized across participants bas
 >"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dot appears.
 
 >"Remember, accuracy is more important than speed. Please take your time."
-
->"This task takes about 1 min to complete. But to get reliable results, there are 4 sections. You can take a short break between the sections."
 
 >"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
 
@@ -246,7 +246,7 @@ The order of the computer experiments will be randomized across participants bas
     - **Be careful not to type in the programming window.**
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Participant ID in the pop-up window have shown "YYYYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Enter participant ID. Make sure it is the same ID as that in qualtrics.
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
@@ -261,8 +261,6 @@ The order of the computer experiments will be randomized across participants bas
 >For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
 
 >"Remember, accuracy is more important than speed. Please take your time."
-
->"This task takes about 1 min to complete. But to make sure that we get reliable results, there are 4 sections. You could take a short break between the sections."
 
 >"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
 
