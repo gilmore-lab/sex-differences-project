@@ -11,7 +11,7 @@ output: html_document
     - **Be careful not to type in the programming window.**
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Participant ID in the pop-up window have shown "YYYYMMDD", which is the first part of participant ID. Enter the rest numbers of participant ID based on the note you take from the beginning of qualtrics.
+    - Enter participant ID. Make sure it is the same ID as that in qualtrics.
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
@@ -26,8 +26,6 @@ output: html_document
 >"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dot appears.
 
 >"Remember, accuracy is more important than speed. Please take your time."
-
->"This task takes about 1 min to complete. But to get reliable results, there are 4 sections. You can take a short break between the sections."
 
 >"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
 

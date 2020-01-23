@@ -105,17 +105,19 @@ If the participant answers yes, say:
 
 #### Begin the survey
 
-- There is a Participant ID blank spot on the top of implied consent. Please use the lowest number available on the white board. *Take a note* of this participant ID in "Penn State Vision Screening Score Sheet". Enter this number into the Qualtrics Survey and each of the computer tasks. 
+Conduct the implied verbal consent.
+
+>"*Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?*"
+
+Once the consent is complete (It means the participant clicks to the next page), enter participant ID
+
+- Following the consent page, there is a Participant ID blank spot on the top of visual acuity test page. Please use the smallest number available on the white board. *Take a note* of this participant ID in "Penn State Vision Screening Score Sheet". Enter this number into the Qualtrics Survey and each of the computer tasks. 
 
 - Do not choose a number before the participant arrives.
 
 - When you use a Participant ID from the white board, please cross it out with the brown dry erase marker. All used numbers will be erased at the end of the day.
 
-Conduct the implied verbal consent.
-
->"*Welcome. Today you are going to participate in a set of questionnaires, two computer visual tasks and a few vision screening measures. Your participation is voluntary and you may decide to stop at any time. You do not have to answer any questions that you do not want to answer. You will receive course credit for your participation. You may review the consent form on the screen in front of you. Do you have any questions?*"
-
-Once the consent is complete (It means the participant clicks to the next page), say:
+Then say,
 
 >"*Great. Now we'd like to move on to the first vision screening test. Could you stand behind this line?*"
 
