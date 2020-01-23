@@ -1,0 +1,36 @@
+---
+title: "checklist_for_experimenters"
+output: html_document
+author: Yiming Qian
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+- [ ] Sign in two computers
+- [ ] Open survey & computer tasks before the participant comes
+- [ ] Get participant name from work sheets
+- [ ] Welcome the participants
+- [ ] Show the participant the form of implied consent 
+- [ ] Get ID from white board, write down in the work sheet and enter it in Qualtrics
+- [ ] Conduct visual Acuity test 
+     - [ ] after the black line
+     - [ ] Do the participants need to wear glasses?
+     - [ ] enter the correct score (the last line with more than 50% accuracy)
+- [ ] Qualtric Survey
+- [ ] Two computer tasks
+    - [ ] right sequence of tasks
+    - [ ] Maintain 60 cm to the computer screen and provide proper instruction of this
+    - [ ] keep distractors (esp, cell phone) out of the room
+    - [ ] provide instruction to emphasize accuracy
+     - [ ] provide instruction to the tasks
+- [ ] Visual color test
+- [ ] Visual stereo test
+     - [ ] ALlow the participants to take the book by themself and switch angles
+     - [ ] Double check with partipants if they cannot see standout dot (allow them to switch angles, change distance and have longer time to see)
+- [ ] Fill in the scores of color test and stereo test and take note of what happens in experiment at the end
+- [ ] Cross out the ID used in the white board
+- [ ] Fill paticipant ID and status (Present/No show) in work sheet
+- [ ] sign out
+- [ ] clean the computers and table surface
