@@ -11,7 +11,7 @@ output: html_document
     - **Be careful not to type in the programming window.**
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
-    - Enter participant ID. Make sure it is the same ID as that in qualtrics.
+    - Enter participant ID. Make sure it is the same ID that you entered into Qualtrics.
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
@@ -19,14 +19,16 @@ output: html_document
 
 >"Which hand do you prefer to press the arrow keys?"
 
->"Put your fingers  of your prefered hand on the left and right arrow keys. You'll press the left arrow if you see motion to the left and the right arrow if you see motion to the right. If you aren't sure, make your best guess."
+>"Put your fingers  of your prefered hand on the left and right arrow keys. **You'll press the LEFT arrow if you see motion to the left and the RIGHT arrow if you see motion to the right.** If you aren't sure, make your best guess."
 
->For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar. "
+>"Press the SPACE BAR to proceed to the next trial."
 
->"On the computer screen, you will see a black dot at first. When the black dot appear,  press the space bar to start the trial. Then you will see the patch. Make responses of left or right when the white dot appears.
+>For the left-handed: "You could press this ENTER key on the right side to proceed instead of SPACE BAR. "
+
+>"On the computer screen, you will see a black dot at first. When the black dot appears,  press the SPACE BAR to start the trial. Then you will see the patch. Make responses of LEFT or RIGHT when the white dot appears.
 
 >"Remember, accuracy is more important than speed. Please take your time."
 
->"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
+>"Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
 
 - close the door for participants

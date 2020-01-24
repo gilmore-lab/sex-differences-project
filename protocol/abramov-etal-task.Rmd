@@ -15,18 +15,20 @@ output: html_document
     - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
 - Speak to the participant
 
->“You will see a small patch of black and white stripes which is horizontal or vertical.Be careful. You need to detect the direction of the stripes not the moving direction. (Show her the example pictures put in the left side of desk). You can press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical. But if you aren't sure, just guess. "
+>“You will see a small patch of black and white stripes which are horizontal or vertical.Be careful. You need to detect the DIRECTION OF THE STRIPES not the moving direction. (Show the example pictures put in the left side of desk). You can **press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical.** But if you aren't sure, just guess. "
 
 >“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
 
 >"Which hand do you prefer to press the arrow keys?"
 
->"Put your fingers of your prefered hand on the left and down keys. You'll press the left key if you see see horizontal stripes and the down key if you see vertical stripes. If you aren't sure, make your best guess."
+>"Put your fingers of your prefered hand on the left and down keys. You'll press the LEFT key if you see HORIZONTAL stripes and the DOWN key if you see VERTICAL stripes. If you aren't sure, make your best guess."
 
->For the left-handed: "You could press this ENTER key on the right side to preceed instead of space bar."
+>"Press the SPACE BAR to proceed to the next trial."
+
+>For the left-handed: "You could press this ENTER key on the right side to proceed instead of space bar."
 
 >"Remember, accuracy is more important than speed. Please take your time."
 
->"Do you have any questions right now? Okay. I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
+>"Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
 
 - close the door for participants

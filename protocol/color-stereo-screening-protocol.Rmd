@@ -17,7 +17,7 @@ output:
 
 ##### Procedure
 
-- The examination should be done indoors with bright, natural illumination of more than 300 lux.
+- The examination should be done indoors with bright, natural illumination of more than 300 lux ([lux](https://en.wikipedia.org/wiki/Lux) is a unit of illuminance. 320-500 lux is equivalent to office lighting.
 - The plates should be held at a distance of 50 - 75 cm (20-30 inches)
 
 Say:
@@ -51,13 +51,14 @@ When the participant is finished, say:
 ##### Procedure
 
 - Have the participant put the stereo glasses on.
+- Have the participant sit at the desk and hold the book at arms length approximately perpindicular to their line of sight.
 - Provide good light, make sure the pictures maintain the proper axis of polarization before the participants at 15 minutes of arc at a distance of 16 inches.
 - Only do the circle test. Point to each item on the left hand side of the page going left to right and up to down. 
 - Start with No.1. 
 
 Say:
 
->"*This test assesses your stereoacuity. Do you see the butterfly? Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.*" 
+>"*This test assesses your stereoacuity. Do you see the butterfly? Can please trace it? Look at each of the four circles and tell me which one seems to come out closer to you-top, bottom, right, or left.*" 
 
 Continue until participant gives up trying, or making two successive mistakes.
 - Some participants may develop this perceptual response slowly. So let them study it for a while or let them change the viewing angle, if needed.

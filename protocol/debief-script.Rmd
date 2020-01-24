@@ -6,7 +6,7 @@ output: html_document
 ---
 
 #### debrief
-"In this study, the visual scuity test, color vision test and stereo vision test are conducted to make sure you have normal vision to detect the motion in short period or low luminance. 
+"In this study, the visual acuity test, color vision test and stereo vision test are conducted to make sure you have normal vision to detect the motion in short period or low luminance. 
 
 You also have done two computer tests, which examine your performance in motion perception. In this study, we want to investigate whether or how motion perception is correlated with individual's verbal ability, spatial ability, or personal interests. "
 
