@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-24 10:19:09"
+date: "2020-01-24 10:30:15"
 output:
   pdf_document:
     toc: yes
@@ -79,6 +79,18 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
 
 - Log-in to survey computer with your individual PSU login
 - Load page with surveys: <https://pennstate.qualtrics.com/jfe/form/SV_5AoCVwYH7ZsXFQh>. **UPDATED 2020-1-23**.
+
+#### Pick Participant ID
+- Participant IDs are listed on the whiteboard in the lab.
+- Please select the smallest number
+    - Enter this into the Qualtrics Survey
+    - Enter this into the Temporal duration threshold task
+    - Enter this into the Contrast sensitivity task
+    - Write this on the Vision Scoring Sheet
+- Cross this number out with the brown marker on the whiteboard.
+
+#### Daily Schedule
+- The Daily Schedule will be located in the green folder
 
 ### After participant arrives 
 
