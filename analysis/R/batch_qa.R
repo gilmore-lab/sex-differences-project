@@ -250,10 +250,20 @@ generate_pid <- function(){
 }
 
 generate_qa_vis_rpts <- function() {
+  
+  start_time <- Sys.time()
+  
+  message("Generating session QA report.")
   run_session_qa_report()
   
+  message("Generating subject-specific pages for contrast sensitivity task.")
   visualize_all_contr_sens_data()
+  
+  message("Generating subject-specific pages for motion duration threshold task.")
   visualize_all_motion_dur_data()
   
   copy_qa_rpts_to_box()
+  
+  end_time <- Sys.time()
+  message(paste0("Execution time: ", as.numeric(end_time-start_time, "minutes")))
 }

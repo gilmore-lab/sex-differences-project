@@ -30,9 +30,10 @@ This script imports, summarizes, and shows basic visualizations of an individual
 s_data <- readr::read_csv(params$this_csv_fn)
 ```
 
-```{r}
+```{r, include=FALSE}
 s1_clean <- s_data %>%
-  mutate(., run = run_n + 1) %>%
+  mutate(., run = run_n + 1,
+         run = as.factor(run)) %>%
   rename(., corr = correct,
          dur_s = FWHM)
 
@@ -43,16 +44,26 @@ s1_subset <- s1_clean %>%
                 dur_s,
                 corr,
                 rt)
-s1_subset
 ```
 
 ## Visualize
 
-```{r motion-temporal-threshold-by-trial}
+### Durations by trial and run
+
+```{r motion-temporal-threshold-by-trial, include=FALSE}
 s1_subset %>% ggplot(.) +
   aes(x = trial_n, y = dur_s) +
   facet_grid(. ~ run) +
   geom_smooth() +
+  geom_point() +
+  ggtitle("Motion temporal duration threshold data")
+```
+
+```{r motion-temporal-threshold-by-trial-2}
+s1_subset %>% ggplot(.) +
+  aes(x = trial_n, y = dur_s, color=run) +
+  #facet_grid(. ~ run) +
+  geom_smooth(se = FALSE) +
   geom_point() +
   ggtitle("Motion temporal duration threshold data")
 ```
@@ -66,32 +77,43 @@ s1_subset <- s1_subset %>%
   dplyr::mutate(., cum_sum = cumsum(corr),
                 cum_p = cum_sum/n())
 
-s1_subset %>% ggplot(.) +
-  aes(x = dur_s, y = cum_p) +
-  facet_grid(. ~ run) +
-  geom_point() +
-  geom_smooth(se = FALSE)  +
-  ggtitle("Motion temporal duration threshold data")
+# s1_subset %>% ggplot(.) +
+#   aes(x = dur_s, y = cum_p) +
+#   facet_grid(. ~ run) +
+#   geom_point() +
+#   geom_smooth(se = FALSE)  +
+#   ggtitle("Motion temporal duration threshold data")
 ```
 
+```{r}
+s1_subset %>% ggplot(.) +
+  aes(x = dur_s, y = cum_p, color=run) +
+  #facet_grid(. ~ run) +
+  geom_point() +
+  geom_smooth(se = FALSE)  +
+  ggtitle("Cumulative p(corr) by duration and run")
+```
+
+### RT by trial and run
 
 ```{r motion-temporal-threshold-rt}
 s1_subset %>%
   ggplot(.) +
-  aes(x = trial_n, y = rt) +
-  facet_grid(. ~ run) + 
+  aes(x = trial_n, y = rt, color=run) +
+  #facet_grid(. ~ run) + 
   geom_point()  +
-  ggtitle("Motion temporal duration threshold data")
+  geom_smooth(se = FALSE)  +
+  ggtitle("RT by trial and run")
 ```
 
-Speed/accuracy trade-off
+### RT by stimulus duration
 
 ```{r}
 s1_subset %>%
   ggplot(.) +
-  aes(x = dur_s, y = rt) +
-  facet_grid(. ~ run) + 
+  aes(x = dur_s, y = rt, color = run) +
+  #facet_grid(. ~ run) + 
   geom_point() +
-  geom_smooth() +
-  ggtitle("Motion temporal duration data")
+  geom_smooth(se = FALSE) +
+  ggtitle("RT by duration and run")
 ```

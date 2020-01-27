@@ -78,7 +78,6 @@ xtabs(~ gender + age_yrs, data = sex_diff_demo) %>%
 ## Manually download the data file
 
 The data file must be exported from Qualtrics.
-Only Rick can do this.
 
 ## Open the data file
 

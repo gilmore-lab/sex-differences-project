@@ -47,21 +47,24 @@ s1_subset <- s1_clean %>%
                 corr,
                 resp.rt) %>%
   dplyr::filter(., trial_n >= 0) %>%
-  dplyr::mutate(run = rep(1:4, each=30))
+  dplyr::mutate(run = rep(1:4, each=30),
+                run = as.factor(run))
 ```
 
 ## Visualize
 
+### Contrast by trial and run
+
 ```{r contrast-sensitivity-by-trial}
 s1_subset %>% ggplot(.) +
-  aes(x = trial_n, y = contr) +
-  facet_grid(. ~ run) +
+  aes(x = trial_n, y = contr, color = run) +
+  #facet_grid(. ~ run) +
   geom_smooth() +
   geom_point() +
-  ggtitle("Contrast sensitivity data")
+  ggtitle("Contrast by trial and run")
 ```
 
-### Cumulative performance across runs
+### Cumulative performance by contrast across runs
 
 ```{r contrast-sensitivity-cum-p}
 s1_subset <- s1_subset %>%
@@ -71,31 +74,34 @@ s1_subset <- s1_subset %>%
                 cum_p = cum_sum/n())
 
 s1_subset %>% ggplot(.) +
-  aes(x = contr, y = cum_p) +
-  facet_grid(. ~ run) +
+  aes(x = contr, y = cum_p, color = run) +
+  #facet_grid(. ~ run) +
   geom_point() +
   geom_smooth(se = FALSE) +
-  ggtitle("Contrast sensitivity data")
+  ggtitle("Cumulative p(corr) by contrast and run")
 ```
+
+### RT by trial and run
 
 ```{r contrast-sensitivity-rt}
 s1_subset %>%
   ggplot(.) +
-  aes(x = trial_n, y = resp.rt) +
-  facet_grid(. ~ run) + 
+  aes(x = trial_n, y = resp.rt, color = run) +
+  #facet_grid(. ~ run) + 
   geom_point() +
-  ggtitle("Contrast sensitivity data")
+  geom_smooth(se = FALSE) +
+  ggtitle("RT by trial and run")
 ```
 
-Speed/accuracy trade-off
+### RT by contrast across runs
 
 ```{r}
 s1_subset %>%
   ggplot(.) +
-  aes(x = contr, y = resp.rt) +
-  facet_grid(. ~ run) + 
+  aes(x = contr, y = resp.rt, color = run) +
+  # facet_grid(. ~ run) + 
   geom_point() +
-  geom_smooth() +
+  geom_smooth(se = FALSE) +
   ggtitle("Contrast sensitivity data")
 ```
 
