@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-24 10:30:15"
+date: "2020-01-27 13:17:53"
 output:
   pdf_document:
     toc: yes
@@ -43,10 +43,20 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
   - Turn on the power of the data collection computer
   - Turn on the CRT monitor in 503B
   - Log-in (use your indiviual PSU login)
-
+  
+- Check Speaker/Headphone Volume
+  - On the right side of the task bar, make sure that the volume is ON ![Volume_ON](images/volume_on.png)   
+    - If the volume is OFF ![Volume_OFF](images/audio_off.jpeg) click to turn ON
+    - Ensure volume level is set at 68%  
+  
 - *Start Psychopy* 
   - Click **PsychoPy** icon on Task Bar
  ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
+  - Open Studies: 
+    - File > Open Recent
+    OR  
+    - File > Open > Windows(C:) > Experiment > PsycoPy-Stimuli
+    
 - *Double-check monitor settings within Windows* 
   - Click Settings ('gear') icon on Task Bar
  ![Settings_Logo](images/DispSettings-1.PNG)  
@@ -59,8 +69,8 @@ The vision screening protocol may be reviewed at [this link](vision-screening-pr
   - Make sure the window that appears has the following Settings  
  ![Monitor Settings](images/ds5.PNG)   
 - *Double-check Brightness/Contrast of monitor*
-  - Contrast:
-  - Brightness:
+  - Contrast: 86%  
+  - Brightness: 92%  
   
   
   - Press any button on the monitor (except Signal A/B/OSD OFF and the Power button)
@@ -175,7 +185,7 @@ Then say,
 - But be in careful in the hobby page, spatial and verbal page, because the time is recorded. The page will vanish when the time has passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.
 
 After answering the question, say:   
->"*Beware: there is a time limit for this page. *"
+>"*Be aware: there is a time limit for this page. *"
 
 - If the participant has questions in the instruction page of the hobby test, spatial and verbal test, answer carefully and make sure the participants understand. 
 -	After the participants finish the questionnaire, ask them if they need a little break. If the participant wants to keep going, lead them to the test room
