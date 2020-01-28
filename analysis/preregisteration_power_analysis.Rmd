@@ -1,0 +1,37 @@
+---
+title: "poweranalysis"
+author: "Yiming Qian"
+date: "January 23, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This script is to use to calulate the power, type 1 and type 2 error in Sex difference in visual perception project.
+
+### Type 1 error in one-tailed two sample t test with uneuqal sample size
+Because there is 4 variables, 0.05/4=0.0125, So we choose p=0.01 as our criterion.
+
+### power analysis
+```{r power_analysis}
+# Power Calculations For Two Samples (Different Sizes) T-Tests Of Means
+library(pwr)
+# assume 50 males and 250 females are collected. Males are predicted to have lower threshold than females. So we use one-tailed t test
+pwr.t2n.test(n1 =50, n2= 250, d = NULL, sig.level = 0.05/4
+          , power = 0.8,
+ alternative = c( "less"))
+```
+```{r power_analysis_correlation_male}
+# Power Calculations For Correlation Test
+#  power of test or determine parameters to obtain target power (same as power.anova.test).
+# Assume 50 males, negative correlation with spatial ability and hobbies
+pwr.r.test(n = 50, r = NULL, sig.level = 0.05/4, power = 0.8,
+    alternative = c("less"))
+```
+```{r power_analysis_correlation_female}
+# Assume 250 females, negative correlation with spatial ability and hobbies
+pwr.r.test(n = 250, r = NULL, sig.level = 0.05/4, power = 0.8,
+    alternative = c("less"))
+```
