@@ -17,7 +17,17 @@ output: html_document
 - Set it up by plugging in the power and the light meter.
 - Turn on the photometer
 - Ensure the following settings: 
-- Zero the photometer by placing the cap on the light meter and pressing the 'zero' button
+
+#### Input the New Factor
+- Select Factor = 1
+- Chang from Data to Factor
+- Ensure Auto is NOT (set 100%)
+- Input the new factor on the Optical Calibration Certificate
+
+### Zero Photometer
+
+- Place the cap on the light meter
+- Press the 'zero' button
 
 ### Start Calibrating Luminance
 
@@ -35,6 +45,19 @@ output: html_document
 - Enter the Monitor Screen Width in centimeters
 - Select **Start**  
     <!-- #![Luminance Calibration - Enter Value](images/new_image.jpg) -->
+    
+
+### Calibration Results for Mitsibushi Monitor 01-28-2020
+
+||0|36|72|109|145|182|218|255|
+|---|---|---|---|---|---|---|---|---|---|
+|lum|0.604|2.58|6.86|14.5|25.8|41.8|62.2|86.4|
+|R|0.604|0.852|1.58|2.92|4.99|7.98|11.8|16.9|
+|G|0.604|2.20|5.64|11.2|19.3|30.7|44.7|62.4|
+|B|0.604|0.738|1.11|1.82|2.89|4.47|6.48|9.04|
+
+Black (0,0,0) cd/m
+
 
 
 

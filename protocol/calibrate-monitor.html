@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -331,6 +330,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -364,30 +364,45 @@ summary {
 
 <h1 class="title toc-ignore">Monitor calibration protocol</h1>
 <h4 class="author">Andrea Seisler, Yiming Qian, &amp; Rick Gilmore</h4>
-<h4 class="date">2019-11-12 13:34:15</h4>
+<h4 class="date">2020-01-28 08:41:16</h4>
 
 </div>
 
 
 <!-- ## Calibrate Monitor -->
-<div id="prepare-computers" class="section level1">
-<h1>Prepare Computers</h1>
+<div id="prepare-computers" class="section level3">
+<h3>Prepare Computers</h3>
 <ul>
 <li>In 503B Switch on power of large surge protector on bottom left shelf.</li>
 </ul>
 </div>
-<div id="prepare-photometer" class="section level1">
-<h1>Prepare Photometer</h1>
+<div id="prepare-photometer" class="section level3">
+<h3>Prepare Photometer</h3>
 <ul>
 <li>Take the photometer out of the box.</li>
 <li>Set it up by plugging in the power and the light meter.</li>
 <li>Turn on the photometer</li>
 <li>Ensure the following settings:</li>
-<li>Zero the photometer by placing the cap on the light meter and pressing the ‘zero’ button</li>
+</ul>
+<div id="input-the-new-factor" class="section level4">
+<h4>Input the New Factor</h4>
+<ul>
+<li>Select Factor = 1</li>
+<li>Chang from Data to Factor</li>
+<li>Ensure Auto is NOT (set 100%)</li>
+<li>Input the new factor on the Optical Calibration Certificate</li>
 </ul>
 </div>
-<div id="start-calibrating-luminance" class="section level1">
-<h1>Start Calibrating Luminance</h1>
+</div>
+<div id="zero-photometer" class="section level3">
+<h3>Zero Photometer</h3>
+<ul>
+<li>Place the cap on the light meter</li>
+<li>Press the ‘zero’ button</li>
+</ul>
+</div>
+<div id="start-calibrating-luminance" class="section level3">
+<h3>Start Calibrating Luminance</h3>
 <ul>
 <li>Turn on the computer</li>
 <li>In 503B switch on power of large surge protector on bottom left shelf.</li>
@@ -400,6 +415,75 @@ summary {
 <li><p>Select <strong>Start</strong><br />
 <!-- #![Luminance Calibration - Enter Value](images/new_image.jpg) --></p></li>
 </ul>
+</div>
+<div id="calibration-results-for-mitsibushi-monitor-01-28-2020" class="section level3">
+<h3>Calibration Results for Mitsibushi Monitor 01-28-2020</h3>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>0</th>
+<th>36</th>
+<th>72</th>
+<th>109</th>
+<th>145</th>
+<th>182</th>
+<th>218</th>
+<th>255</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lum</td>
+<td>0.604</td>
+<td>2.58</td>
+<td>6.86</td>
+<td>14.5</td>
+<td>25.8</td>
+<td>41.8</td>
+<td>62.2</td>
+<td>86.4</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>R</td>
+<td>0.604</td>
+<td>0.852</td>
+<td>1.58</td>
+<td>2.92</td>
+<td>4.99</td>
+<td>7.98</td>
+<td>11.8</td>
+<td>16.9</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>0.604</td>
+<td>2.20</td>
+<td>5.64</td>
+<td>11.2</td>
+<td>19.3</td>
+<td>30.7</td>
+<td>44.7</td>
+<td>62.4</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>0.604</td>
+<td>0.738</td>
+<td>1.11</td>
+<td>1.82</td>
+<td>2.89</td>
+<td>4.47</td>
+<td>6.48</td>
+<td>9.04</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <!-- ## Calibrate Projector -->
 <!-- ### Run Matlab Script -->
 <!-- - At a minimum a black (0,0,0) and white (255,255,255) image must be displayed on the projector screen  -->
