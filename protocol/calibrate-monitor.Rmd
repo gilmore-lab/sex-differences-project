@@ -9,9 +9,9 @@ output: html_document
 
 ### Prepare Computer
 
-- *Log into Data Collection Computer*
+- Log into Data Collection Computer in room 503B
   - Turn on the power of the data collection computer
-  - Turn on the CRT monitor in 503B
+  - Turn on the CRT monitor
   - Log-in (use your indiviual PSU login)
 
 ### Prepare Photometer
@@ -26,14 +26,14 @@ output: html_document
 
 
 ### Input the New Factor 
-**Only when photometer sent for Calibration ~every 3 years)
+**Only when photometer sent for Calibration ~every 3 years
 
-- Select Factor = 1
-- Change from Data to Factor
-- Ensure Auto is NOT (set 100%)
+- Select **FACTOR** = 1
+- Change from **DATA** to **FACTOR**
+- Ensure **AUTO RANGE** is lit up, NOT **SET 100%**)
 - Input the new factor on the Optical Calibration Certificate
-  - Use the MSD and LSD buttons to enter the Value
-  - Select the correct EXP
+  - Use the **MSD** and **LSD** buttons to enter the Value
+  - Select the correct **EXP**
 
 ![](images/IL1700-Factor.jpg) 
 
@@ -41,7 +41,11 @@ output: html_document
 ### Zero Photometer
 
 - Place the cap on the light meter
-- Press the 'zero' button
+- Press the **ZERO** button
+- Change to **DATA** Display
+  - The reading should be 0.00
+- Press the **ZERO** button
+- Wait for the **DC** button to light up again.
 
 
 
@@ -65,7 +69,10 @@ output: html_document
 
 ![](images/pp-gamma-calibration-settings.png)  
 
-- Press **OK** and record the values for each luminance value on paper.
+- Press **OK**
+  - Follow instructions on the screen
+  - record the values for each luminance value on paper
+  - Note, the first value is the **0** value for lum, R, G, and B so there will be 7 values for lum, R, G, and B after that.
 - At the end of the stimuli, a Luminance Values Box will appear.     
  
 ![](images/pp-record-lum-values.png)   
