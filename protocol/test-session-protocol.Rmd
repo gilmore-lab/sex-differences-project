@@ -150,6 +150,16 @@ Then say,
 ```{r, child="snellen-screening-protocol.Rmd"}
 ```
 
+### Stereo acuity and color vision tests
+
+>"*Please come sit over here at this table.*"
+
+Escort participant to table.
+
+```{r, child="color-stereo-screening-protocol.Rmd"}
+```
+
+- write down the performance of these three visual tests in qualtrics.
 
 ### Questionnaires
 
@@ -214,15 +224,6 @@ The order of the computer experiments will be randomized across participants bas
 **Run FIRST if ODD number for Participant ID**
 
 ```{r, child="abramov-etal-task.Rmd"}
-```
-
-### Stereo acuity and color vision tests
-
->"*Thank you.We are going to complete two more short vision tests. Please come sit over here at this table.*"
-
-Escort participant to table.
-
-```{r, child="color-stereo-screening-protocol.Rmd"}
 ```
 
 ## After session ends

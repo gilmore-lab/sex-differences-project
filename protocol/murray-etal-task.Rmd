@@ -21,8 +21,6 @@ output: html_document
 
 >"Put your fingers  of your prefered hand on the left and right arrow keys. **You'll press the LEFT arrow if you see motion to the left and the RIGHT arrow if you see motion to the right.** If you aren't sure, make your best guess."
 
->"Press the SPACE BAR to proceed to the next trial."
-
 >For the left-handed: "You could press this ENTER key on the right side to proceed instead of SPACE BAR. "
 
 >"On the computer screen, you will see a black dot at first. When the black dot appears,  press the SPACE BAR to start the trial. Then you will see the patch. Make responses of LEFT or RIGHT when the white dot appears.
