@@ -25,7 +25,8 @@ output: html_document
 - Ensure the following settings:
 
 
-### Input the New Factor (Only when photometer sent for Calibration ~every 3 years)
+### Input the New Factor 
+**Only when photometer sent for Calibration ~every 3 years)
 
 - Select Factor = 1
 - Change from Data to Factor
@@ -54,13 +55,29 @@ output: html_document
 
 ![](images/pp2.png)
 
-- Click **XXXX**  
+- Enter the Monitor Info  
 
-    <!-- #![Luminance Calibration](images/new_image.jpg) -->
+![](images/pp-monitor-info.png)
 
-- Enter the Monitor Screen Width in centimeters
-- Select **Start**  
-    <!-- #![Luminance Calibration - Enter Value](images/new_image.jpg) -->
+- Click ![Gamma Calibration](images/gamma-calibration.PNG)    
+
+- Enter Gamma Calibration Settings  
+
+![](images/pp-gamma-calibration-settings.png)  
+
+- Press **OK** and record the values for each luminance value on paper.
+- At the end of the stimuli, a Luminance Values Box will appear.     
+ 
+![](images/pp-record-lum-values.png)   
+
+- Enter the Luminance Values determined from the Photometer and recorded on paper.
+
+![](images/actual-recorded-lum-01-28-2020.png)  
+
+
+- Select **OK**  
+
+- Enter the Current Date for the filename.
     
 
 ### Calibration Results for Mitsibushi Monitor 01-28-2020
@@ -72,15 +89,19 @@ output: html_document
 |G|0.604|2.20|5.64|11.2|19.3|30.7|44.7|62.4|
 |B|0.604|0.738|1.11|1.82|2.89|4.47|6.48|9.04|
 
-Black (0,0,0)[-1,-1,-1] cd/m^2^  
-Grey [0,0,0] cd/m^2^
-White (255,255,255)[1,1,1] cd/m^2^  
-
 #### Gamma Function of Calibration 01-28-2020
 
 ![](images/GammaFunctionCalibration01-28-2020.png) 
 
+#### Black/White/Grey
 
+- A separate script was run to get Black, White and Grey values for the phototmeter to compare to other studies.  
+
+|Color|RGB value|PsychoPy value|Luminance(cd/m^2^)|
+|---|---|---|---|
+|Black|0,0,0|[-1,-1,-1]||
+|Grey|?,?,?|[0,0,0]||
+|White|255,255,255|[1,1,1]||  
 
 
 <!-- ## Calibrate Projector -->
