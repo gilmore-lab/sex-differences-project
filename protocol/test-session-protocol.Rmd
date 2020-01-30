@@ -150,10 +150,19 @@ Then say,
 ```{r, child="snellen-screening-protocol.Rmd"}
 ```
 
+### Stereo acuity and color vision tests
+
+>"*Thank you.We are going to complete two more short vision tests. Please come sit over here at this desk.*"
+
+Escort participant to desk.
+
+```{r, child="color-stereo-screening-protocol.Rmd"}
+```
+
 
 ### Questionnaires
 
->"*Thank you. Now we'd like to move on to the questionnaires. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. Let me know when you finish it.*"
+>"*Thank you. Now we'd like to move on to the questionnaires. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. Let me know when you finish it.*"
 
 - Have the participant sit back down at the computer.
 - Let the participants finish the questionnaire.
@@ -198,31 +207,22 @@ Say:
 
 The order of the computer experiments will be randomized across participants based on the participant ID entered into Qualtrics.
 
-- run the *temporal duration threshold task* first (Murray et al.) if the ID number is *EVEN*.
-- run the *contrast sensitivity task* first (Abramov et al.) if the ID number is *ODD*.
+- run the *temporal duration threshold task* FIRST (Murray et al.) if the ID number is *EVEN*.
+- run the *contrast sensitivity task* FIRST (Abramov et al.) if the ID number is *ODD*.
 *Record the task run first on the experiment run log.*
 
 #### Temporal duration threshold task (Murray et al.)
 
-**Run FIRST if EVEN number for Participant ID**
+**Run FIRST if Participant ID = EVEN number**
 
 ```{r, child="murray-etal-task.Rmd"}
 ```
 
 #### Contrast sensitivity task (Abramov et al.)
 
-**Run FIRST if ODD number for Participant ID**
+**Run FIRST if Participant ID = ODD number**
 
 ```{r, child="abramov-etal-task.Rmd"}
-```
-
-### Stereo acuity and color vision tests
-
->"*Thank you.We are going to complete two more short vision tests. Please come sit over here at this table.*"
-
-Escort participant to table.
-
-```{r, child="color-stereo-screening-protocol.Rmd"}
 ```
 
 ## After session ends

@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-27 13:17:53"
+date: "2020-01-30 09:32:45"
 output:
   pdf_document:
     toc: yes
@@ -174,135 +174,11 @@ Then say,
 - Report the result into Qualtrics
 
 
-
-### Questionnaires
-
->"*Thank you. Now we'd like to move on to the questionnaires. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. Let me know when you finish it.*"
-
-- Have the participant sit back down at the computer.
-- Let the participants finish the questionnaire.
-- Answer the questions if the participants have any, when they work on the questionnaires. 
-- But be in careful in the hobby page, spatial and verbal page, because the time is recorded. The page will vanish when the time has passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.
-
-After answering the question, say:   
->"*Be aware: there is a time limit for this page. *"
-
-- If the participant has questions in the instruction page of the hobby test, spatial and verbal test, answer carefully and make sure the participants understand. 
--	After the participants finish the questionnaire, ask them if they need a little break. If the participant wants to keep going, lead them to the test room
-
-Say:
-
->"*You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?*"
-
-
-### Set-up for computer-based tasks
-
-- Guide participant to the testing room.
-- Have them sit in the chair.
-- Adjust the monitor and participant position.
-    - The monitor should be located **60cm** from the bridge of the nose on the participant.
-    - *place the rear legs of the chair exactly in front of black strips*
-    - The chair height should be set so the participant is looking in the middle of the screen.
-- Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
-- *check with participants that they do not bring the cell phone to the dark room*
-
-
-Say:
-
-
->"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is the same distance from the computer screen. Please sit up straight and have your back touching the chair. Do not move your chair.*"
-
-
->"*Please do your best and focus on the center of the screen during these tasks.*"
-
-
-### Run computer-based tasks
-
-#### Select run order
-
-The order of the computer experiments will be randomized across participants based on the participant ID entered into Qualtrics.
-
-- run the *temporal duration threshold task* first (Murray et al.) if the ID number is *EVEN*.
-- run the *contrast sensitivity task* first (Abramov et al.) if the ID number is *ODD*.
-*Record the task run first on the experiment run log.*
-
-#### Temporal duration threshold task (Murray et al.)
-
-**Run FIRST if EVEN number for Participant ID**
-
-
-
-- Open PsychoPy by clicking on the icon located on the desktop.
-![PsychoPy_Logo](images/PsychoPy-1.PNG)  
-- When PsychoPy opens, open the file for this experiment.
-    - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
-- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
-    - **Be careful not to type in the programming window.**
-- Experimenters need to fill in the participant ID and gender.
-    - A pop-up window will appear.
-    - Enter participant ID. Make sure it is the same ID that you entered into Qualtrics.
-    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
-- Speak to the participant
-
->“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion."
-
->"Which hand do you prefer to press the arrow keys?"
-
->"Put your fingers  of your prefered hand on the left and right arrow keys. **You'll press the LEFT arrow if you see motion to the left and the RIGHT arrow if you see motion to the right.** If you aren't sure, make your best guess."
-
->"Press the SPACE BAR to proceed to the next trial."
-
->For the left-handed: "You could press this ENTER key on the right side to proceed instead of SPACE BAR. "
-
->"On the computer screen, you will see a black dot at first. When the black dot appears,  press the SPACE BAR to start the trial. Then you will see the patch. Make responses of LEFT or RIGHT when the white dot appears.
-
->"Remember, accuracy is more important than speed. Please take your time."
-
->"Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
-
-- close the door for participants
-
-#### Contrast sensitivity task (Abramov et al.)
-
-**Run FIRST if ODD number for Participant ID**
-
-
-
-- Open PsychoPy by clicking on the icon located on the desktop.
-![PsychoPy_Logo](images/PsychoPy-1.PNG)  
-- When PsychoPy opens, open the file for this experiment.
-    - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
-- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
-    - **Be careful not to type in the programming window.**
-- Experimenters need to fill in the participant ID and gender.
-    - A pop-up window will appear.
-    - Enter participant ID. Make sure it is the same ID as that in qualtrics.
-    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
-- Speak to the participant
-
->“You will see a small patch of black and white stripes which are horizontal or vertical.Be careful. You need to detect the DIRECTION OF THE STRIPES not the moving direction. (Show the example pictures put in the left side of desk). You can **press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical.** But if you aren't sure, just guess. "
-
->“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
-
->"Which hand do you prefer to press the arrow keys?"
-
->"Put your fingers of your prefered hand on the left and down keys. You'll press the LEFT key if you see HORIZONTAL stripes and the DOWN key if you see VERTICAL stripes. If you aren't sure, make your best guess."
-
->"Press the SPACE BAR to proceed to the next trial."
-
->For the left-handed: "You could press this ENTER key on the right side to proceed instead of space bar."
-
->"Remember, accuracy is more important than speed. Please take your time."
-
->"Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
-
-- close the door for participants
-
 ### Stereo acuity and color vision tests
 
->"*Thank you.We are going to complete two more short vision tests. Please come sit over here at this table.*"
+>"*Thank you.We are going to complete two more short vision tests. Please come sit over here at this desk.*"
 
-Escort participant to table.
+Escort participant to desk.
 
 
 
@@ -362,6 +238,130 @@ Continue until participant gives up trying, or making two successive mistakes.
 
 - Log the answer to each item on the [score sheet](vision-screening-score-sheet.html).
 - Record the level of stereopsis into Qualtrics at the last one chosen correctly. 
+
+
+### Questionnaires
+
+>"*Thank you. Now we'd like to move on to the questionnaires. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. Let me know when you finish it.*"
+
+- Have the participant sit back down at the computer.
+- Let the participants finish the questionnaire.
+- Answer the questions if the participants have any, when they work on the questionnaires. 
+- But be in careful in the hobby page, spatial and verbal page, because the time is recorded. The page will vanish when the time has passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.
+
+After answering the question, say:   
+>"*Be aware: there is a time limit for this page. *"
+
+- If the participant has questions in the instruction page of the hobby test, spatial and verbal test, answer carefully and make sure the participants understand. 
+-	After the participants finish the questionnaire, ask them if they need a little break. If the participant wants to keep going, lead them to the test room
+
+Say:
+
+>"*You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?*"
+
+
+### Set-up for computer-based tasks
+
+- Guide participant to the testing room.
+- Have them sit in the chair.
+- Adjust the monitor and participant position.
+    - The monitor should be located **60cm** from the bridge of the nose on the participant.
+    - *place the rear legs of the chair exactly in front of black strips*
+    - The chair height should be set so the participant is looking in the middle of the screen.
+- Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
+- *check with participants that they do not bring the cell phone to the dark room*
+
+
+Say:
+
+
+>"*Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is the same distance from the computer screen. Please sit up straight and have your back touching the chair. Do not move your chair.*"
+
+
+>"*Please do your best and focus on the center of the screen during these tasks.*"
+
+
+### Run computer-based tasks
+
+#### Select run order
+
+The order of the computer experiments will be randomized across participants based on the participant ID entered into Qualtrics.
+
+- run the *temporal duration threshold task* FIRST (Murray et al.) if the ID number is *EVEN*.
+- run the *contrast sensitivity task* FIRST (Abramov et al.) if the ID number is *ODD*.
+*Record the task run first on the experiment run log.*
+
+#### Temporal duration threshold task (Murray et al.)
+
+**Run FIRST if Participant ID = EVEN number**
+
+
+
+- Open PsychoPy by clicking on the icon located on the desktop.
+![PsychoPy_Logo](images/PsychoPy-1.PNG)  
+- When PsychoPy opens, open the file for this experiment.
+    - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
+- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
+    - **Be careful not to type in the programming window.**
+- Experimenters need to fill in the participant ID and gender.
+    - A pop-up window will appear.
+    - Enter participant ID. Make sure it is the same ID that you entered into Qualtrics.
+    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
+- Speak to the participant
+
+>“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion."
+
+>"Which hand do you prefer to press the arrow keys?"
+
+>"Put your fingers  of your prefered hand on the left and right arrow keys. **You'll press the LEFT arrow if you see motion to the left and the RIGHT arrow if you see motion to the right.** If you aren't sure, make your best guess."
+
+>"Press the SPACE BAR to proceed to the next trial."
+
+>For the left-handed: "You could press this ENTER key on the right side to proceed instead of SPACE BAR. "
+
+>"On the computer screen, you will see a black dot at first. When the black dot appears,  press the SPACE BAR to start the trial. Then you will see the patch. Make responses of LEFT or RIGHT when the white dot appears.
+
+>"Remember, accuracy is more important than speed. Please take your time."
+
+>"Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part."
+
+- close the door for participants
+
+#### Contrast sensitivity task (Abramov et al.)
+
+**Run FIRST if Participant ID = ODD number**
+
+
+
+- Open PsychoPy by clicking on the icon located on the desktop.
+![PsychoPy_Logo](images/PsychoPy-1.PNG)  
+- When PsychoPy opens, open the file for this experiment.
+    - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
+- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
+    - **Be careful not to type in the programming window.**
+- Experimenters need to fill in the participant ID and gender.
+    - A pop-up window will appear.
+    - Enter participant ID. Make sure it is the same ID as that in qualtrics.
+    - Enter gender (enter "f" or "m", no upper case) in the pop window, and press the `Ok` button to enter the data.
+- Speak to the participant
+
+>“You will see a small patch of black and white stripes which are horizontal or vertical.Be careful. You need to detect the DIRECTION OF THE STRIPES not the moving direction. (Show the example pictures put in the left side of desk). You can **press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical.** But if you aren't sure, just guess. "
+
+>“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes."
+
+>"Which hand do you prefer to press the arrow keys?"
+
+>"Put your fingers of your prefered hand on the left and down keys. You'll press the LEFT key if you see HORIZONTAL stripes and the DOWN key if you see VERTICAL stripes. If you aren't sure, make your best guess."
+
+>"Press the SPACE BAR to proceed to the next trial."
+
+>For the left-handed: "You could press this ENTER key on the right side to proceed instead of space bar."
+
+>"Remember, accuracy is more important than speed. Please take your time."
+
+>"Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part."
+
+- close the door for participants
 
 ## After session ends
 

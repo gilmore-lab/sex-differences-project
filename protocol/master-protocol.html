@@ -267,7 +267,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Individual differences in visual perception in adults</h1>
 <h4 class="author">Rick Gilmore, Yiming Qian, &amp; Andrea Seisler</h4>
-<h4 class="date">2020-01-24 10:30:20</h4>
+<h4 class="date">2020-01-30 09:32:53</h4>
 
 </div>
 
@@ -294,10 +294,15 @@ div.tocify {
 <div id="calibrate-monitor" class="section level2">
 <h2>Calibrate Monitor</h2>
 <!-- ## Calibrate Monitor -->
-<div id="prepare-computers" class="section level3">
-<h3>Prepare Computers</h3>
+<div id="prepare-computer" class="section level3">
+<h3>Prepare Computer</h3>
 <ul>
-<li>In 503B Switch on power of large surge protector on bottom left shelf.</li>
+<li>Log into Data Collection Computer in room 503B
+<ul>
+<li>Turn on the power of the data collection computer</li>
+<li>Turn on the CRT monitor</li>
+<li>Log-in (use your indiviual PSU login)</li>
+</ul></li>
 </ul>
 </div>
 <div id="prepare-photometer" class="section level3">
@@ -306,24 +311,185 @@ div.tocify {
 <li>Take the photometer out of the box.</li>
 <li>Set it up by plugging in the power and the light meter.</li>
 <li>Turn on the photometer</li>
+</ul>
+<p><img src="images/IL1700-off.jpg" /></p>
+<ul>
 <li>Ensure the following settings:</li>
-<li>Zero the photometer by placing the cap on the light meter and pressing the ‘zero’ button</li>
+</ul>
+</div>
+<div id="input-the-new-factor" class="section level3">
+<h3>Input the New Factor</h3>
+<p>**Only when photometer sent for Calibration ~every 3 years</p>
+<ul>
+<li>Select <strong>FACTOR</strong> = 1</li>
+<li>Change from <strong>DATA</strong> to <strong>FACTOR</strong></li>
+<li>Ensure <strong>AUTO RANGE</strong> is lit up, NOT <strong>SET 100%</strong>)</li>
+<li>Input the new factor on the Optical Calibration Certificate
+<ul>
+<li>Use the <strong>MSD</strong> and <strong>LSD</strong> buttons to enter the Value</li>
+<li>Select the correct <strong>EXP</strong></li>
+</ul></li>
+</ul>
+<p><img src="images/IL1700-Factor.jpg" /></p>
+</div>
+<div id="zero-photometer" class="section level3">
+<h3>Zero Photometer</h3>
+<ul>
+<li>Place the cap on the light meter</li>
+<li>Press the <strong>ZERO</strong> button</li>
+<li>Change to <strong>DATA</strong> Display
+<ul>
+<li>The reading should be 0.00</li>
+</ul></li>
+<li>Press the <strong>ZERO</strong> button</li>
+<li>Wait for the <strong>DC</strong> button to light up again.</li>
 </ul>
 </div>
 <div id="start-calibrating-luminance" class="section level3">
 <h3>Start Calibrating Luminance</h3>
 <ul>
-<li>Turn on the computer</li>
-<li>In 503B switch on power of large surge protector on bottom left shelf.</li>
-<li><p>Log-in (Gilmore Lab)</p></li>
 <li>Start Psychopy - Click icon on Task Bar</li>
-<li><p>Open Monitor Settings - Go to Tools &gt; Monitor Center</p></li>
-<li><p>Click <strong>XXXX</strong></p>
-<p><!-- #![Luminance Calibration](images/new_image.jpg) --></p></li>
-<li>Enter the Monitor Screen Width in centimeters</li>
-<li><p>Select <strong>Start</strong><br />
-<!-- #![Luminance Calibration - Enter Value](images/new_image.jpg) --></p></li>
 </ul>
+<p><img src="images/PsychoPy-1.PNG" /></p>
+<ul>
+<li>Open Monitor Settings - Go to Tools &gt; Monitor Center</li>
+</ul>
+<p><img src="images/pp2.png" /></p>
+<ul>
+<li>Enter the Monitor Info</li>
+</ul>
+<p><img src="images/pp-monitor-info.png" /></p>
+<ul>
+<li><p>Click <img src="images/gamma-calibration.PNG" alt="Gamma Calibration" /></p></li>
+<li><p>Enter Gamma Calibration Settings</p></li>
+</ul>
+<p><img src="images/pp-gamma-calibration-settings.png" /></p>
+<ul>
+<li>Press <strong>OK</strong>
+<ul>
+<li>Follow instructions on the screen</li>
+<li>record the values for each luminance value on paper</li>
+<li>Note, the first value is the <strong>0</strong> value for lum, R, G, and B so there will be 7 values for lum, R, G, and B after that.</li>
+</ul></li>
+<li>At the end of the stimuli, a Luminance Values Box will appear.</li>
+</ul>
+<p><img src="images/pp-record-lum-values.png" /></p>
+<ul>
+<li>Enter the Luminance Values determined from the Photometer and recorded on paper.</li>
+</ul>
+<p><img src="images/actual-recorded-lum-01-28-2020.png" /></p>
+<ul>
+<li><p>Select <strong>OK</strong></p></li>
+<li><p>Enter the Current Date for the filename.</p></li>
+</ul>
+</div>
+<div id="calibration-results-for-mitsibushi-monitor-01-28-2020" class="section level3">
+<h3>Calibration Results for Mitsibushi Monitor 01-28-2020</h3>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>0</th>
+<th>36</th>
+<th>72</th>
+<th>109</th>
+<th>145</th>
+<th>182</th>
+<th>218</th>
+<th>255</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lum</td>
+<td>0.604</td>
+<td>2.58</td>
+<td>6.86</td>
+<td>14.5</td>
+<td>25.8</td>
+<td>41.8</td>
+<td>62.2</td>
+<td>86.4</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>R</td>
+<td>0.604</td>
+<td>0.852</td>
+<td>1.58</td>
+<td>2.92</td>
+<td>4.99</td>
+<td>7.98</td>
+<td>11.8</td>
+<td>16.9</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>0.604</td>
+<td>2.20</td>
+<td>5.64</td>
+<td>11.2</td>
+<td>19.3</td>
+<td>30.7</td>
+<td>44.7</td>
+<td>62.4</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>0.604</td>
+<td>0.738</td>
+<td>1.11</td>
+<td>1.82</td>
+<td>2.89</td>
+<td>4.47</td>
+<td>6.48</td>
+<td>9.04</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="gamma-function-of-calibration-01-28-2020" class="section level4">
+<h4>Gamma Function of Calibration 01-28-2020</h4>
+<p><img src="images/GammaFunctionCalibration01-28-2020.png" /></p>
+</div>
+<div id="blackwhitegrey" class="section level4">
+<h4>Black/White/Grey</h4>
+<ul>
+<li>A separate script was run to get Black, White and Grey values for the phototmeter to compare to other studies.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Color</th>
+<th>RGB value</th>
+<th>PsychoPy value</th>
+<th>Luminance(cd/m<sup>2</sup>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Black</td>
+<td>0,0,0</td>
+<td>[-1,-1,-1]</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Grey</td>
+<td>?,?,?</td>
+<td>[0,0,0]</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>White</td>
+<td>255,255,255</td>
+<td>[1,1,1]</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <!-- ## Calibrate Projector -->
 <!-- ### Run Matlab Script -->
 <!-- - At a minimum a black (0,0,0) and white (255,255,255) image must be displayed on the projector screen  -->
@@ -333,6 +499,7 @@ div.tocify {
 <!-- ### Log values -->
 <!-- - Log the values in the file Box Sync/gilmore-lab/protocols-procedures/projector-calibration.xls -->
 <p>We may check the monitor calibration during data collection at a frequency we will decide later.</p>
+</div>
 </div>
 </div>
 <div id="survey-preparation" class="section level2">
@@ -691,10 +858,24 @@ div.tocify {
 <li>Turn on the CRT monitor in 503B</li>
 <li>Log-in (use your indiviual PSU login)</li>
 </ul></li>
+<li>Check Speaker/Headphone Volume
+<ul>
+<li>On the right side of the task bar, make sure that the volume is ON <img src="images/volume_on.png" alt="Volume_ON" />
+<ul>
+<li>If the volume is OFF <img src="images/audio_off.jpeg" alt="Volume_OFF" /> click to turn ON</li>
+<li>Ensure volume level is set at 68%</li>
+</ul></li>
+</ul></li>
 <li><em>Start Psychopy</em>
 <ul>
 <li>Click <strong>PsychoPy</strong> icon on Task Bar <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
 </li>
+<li>Open Studies:
+<ul>
+<li>File &gt; Open Recent OR<br />
+</li>
+<li>File &gt; Open &gt; Windows(C:) &gt; Experiment &gt; PsycoPy-Stimuli</li>
+</ul></li>
 </ul></li>
 <li><em>Double-check monitor settings within Windows</em>
 <ul>
@@ -715,8 +896,9 @@ div.tocify {
 </ul></li>
 <li><em>Double-check Brightness/Contrast of monitor</em>
 <ul>
-<li>Contrast:</li>
-<li><p>Brightness:</p></li>
+<li>Contrast: 86%<br />
+</li>
+<li><p>Brightness: 92%</p></li>
 <li>Press any button on the monitor (except Signal A/B/OSD OFF and the Power button)</li>
 <li>Navigate to the leftmost option in the settings menu (looks like a half moon)</li>
 <li>Press the down button on the monitor</li>
@@ -843,167 +1025,12 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="questionnaires" class="section level3">
-<h3>Questionnaires</h3>
-<blockquote>
-<p>“<em>Thank you. Now we’d like to move on to the questionnaires. Please sit down. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. Let me know when you finish it.</em>”</p>
-</blockquote>
-<ul>
-<li>Have the participant sit back down at the computer.</li>
-<li>Let the participants finish the questionnaire.</li>
-<li>Answer the questions if the participants have any, when they work on the questionnaires.</li>
-<li>But be in careful in the hobby page, spatial and verbal page, because the time is recorded. The page will vanish when the time has passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.</li>
-</ul>
-<p>After answering the question, say:<br />
-&gt;“<em>Beware: there is a time limit for this page. </em>”</p>
-<ul>
-<li>If the participant has questions in the instruction page of the hobby test, spatial and verbal test, answer carefully and make sure the participants understand.</li>
-<li>After the participants finish the questionnaire, ask them if they need a little break. If the participant wants to keep going, lead them to the test room</li>
-</ul>
-<p>Say:</p>
-<blockquote>
-<p>“<em>You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?</em>”</p>
-</blockquote>
-</div>
-<div id="set-up-for-computer-based-tasks-1" class="section level3">
-<h3>Set-up for computer-based tasks</h3>
-<ul>
-<li>Guide participant to the testing room.</li>
-<li>Have them sit in the chair.</li>
-<li>Adjust the monitor and participant position.
-<ul>
-<li>The monitor should be located <strong>60cm</strong> from the bridge of the nose on the participant.</li>
-<li><em>place the rear legs of the chair exactly in front of black strips</em></li>
-<li>The chair height should be set so the participant is looking in the middle of the screen.</li>
-</ul></li>
-<li>Guide the participant to use the arrow keys for responses and the space bar to advance the screen.</li>
-<li><em>check with participants that they do not bring the cell phone to the dark room</em></li>
-</ul>
-<p>Say:</p>
-<blockquote>
-<p>“<em>Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is the same distance from the computer screen. Please sit up straight and have your back touching the chair. Do not move your chair.</em>”</p>
-</blockquote>
-<blockquote>
-<p>“<em>Please do your best and focus on the center of the screen during these tasks.</em>”</p>
-</blockquote>
-</div>
-<div id="run-computer-based-tasks" class="section level3">
-<h3>Run computer-based tasks</h3>
-<div id="select-run-order" class="section level4">
-<h4>Select run order</h4>
-<p>The order of the computer experiments will be randomized across participants based on the participant ID entered into Qualtrics.</p>
-<ul>
-<li>run the <em>temporal duration threshold task</em> first (Murray et al.) if the ID number is <em>EVEN</em>.</li>
-<li>run the <em>contrast sensitivity task</em> first (Abramov et al.) if the ID number is <em>ODD</em>. <em>Record the task run first on the experiment run log.</em></li>
-</ul>
-</div>
-<div id="temporal-duration-threshold-task-murray-et-al." class="section level4">
-<h4>Temporal duration threshold task (Murray et al.)</h4>
-<p><strong>Run FIRST if EVEN number for Participant ID</strong></p>
-<ul>
-<li>Open PsychoPy by clicking on the icon located on the desktop. <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
-</li>
-<li>When PsychoPy opens, open the file for this experiment.
-<ul>
-<li>From the <code>File</code> menu, select the <code>Open Recent...</code> command and select the <code>motion-temporal-threshold.py</code> file.</li>
-</ul></li>
-<li>When the file opens, run the experiment by pressing press the green (running person) button. <img src="images/PPrunningMan.png" alt="PsychoPy_Run" />
-<ul>
-<li><strong>Be careful not to type in the programming window.</strong></li>
-</ul></li>
-<li>Experimenters need to fill in the participant ID and gender.
-<ul>
-<li>A pop-up window will appear.</li>
-<li>Enter participant ID. Make sure it is the same ID that you entered into Qualtrics.</li>
-<li>Enter gender (enter “f” or “m”, no upper case) in the pop window, and press the <code>Ok</code> button to enter the data.</li>
-</ul></li>
-<li>Speak to the participant</li>
-</ul>
-<blockquote>
-<p>“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion.”</p>
-</blockquote>
-<blockquote>
-<p>“Which hand do you prefer to press the arrow keys?”</p>
-</blockquote>
-<blockquote>
-<p>“Put your fingers of your prefered hand on the left and right arrow keys. <strong>You’ll press the LEFT arrow if you see motion to the left and the RIGHT arrow if you see motion to the right.</strong> If you aren’t sure, make your best guess.”</p>
-</blockquote>
-<blockquote>
-<p>“Press the SPACE BAR to proceed to the next trial.”</p>
-</blockquote>
-<blockquote>
-<p>For the left-handed: “You could press this ENTER key on the right side to proceed instead of SPACE BAR.”</p>
-</blockquote>
-<blockquote>
-<p>&quot;On the computer screen, you will see a black dot at first. When the black dot appears, press the SPACE BAR to start the trial. Then you will see the patch. Make responses of LEFT or RIGHT when the white dot appears.</p>
-</blockquote>
-<blockquote>
-<p>“Remember, accuracy is more important than speed. Please take your time.”</p>
-</blockquote>
-<blockquote>
-<p>“Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part.”</p>
-</blockquote>
-<ul>
-<li>close the door for participants</li>
-</ul>
-</div>
-<div id="contrast-sensitivity-task-abramov-et-al." class="section level4">
-<h4>Contrast sensitivity task (Abramov et al.)</h4>
-<p><strong>Run FIRST if ODD number for Participant ID</strong></p>
-<ul>
-<li>Open PsychoPy by clicking on the icon located on the desktop. <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
-</li>
-<li>When PsychoPy opens, open the file for this experiment.
-<ul>
-<li>From the <code>File</code> menu, select the <code>Open Recent...</code> command and select the <code>motion-temporal-threshold.py</code> file.</li>
-</ul></li>
-<li>When the file opens, run the experiment by pressing press the green (running person) button. <img src="images/PPrunningMan.png" alt="PsychoPy_Run" />
-<ul>
-<li><strong>Be careful not to type in the programming window.</strong></li>
-</ul></li>
-<li>Experimenters need to fill in the participant ID and gender.
-<ul>
-<li>A pop-up window will appear.</li>
-<li>Enter participant ID. Make sure it is the same ID as that in qualtrics.</li>
-<li>Enter gender (enter “f” or “m”, no upper case) in the pop window, and press the <code>Ok</code> button to enter the data.</li>
-</ul></li>
-<li>Speak to the participant</li>
-</ul>
-<blockquote>
-<p>“You will see a small patch of black and white stripes which are horizontal or vertical.Be careful. You need to detect the DIRECTION OF THE STRIPES not the moving direction. (Show the example pictures put in the left side of desk). You can <strong>press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical.</strong> But if you aren’t sure, just guess.”</p>
-</blockquote>
-<blockquote>
-<p>“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes.”</p>
-</blockquote>
-<blockquote>
-<p>“Which hand do you prefer to press the arrow keys?”</p>
-</blockquote>
-<blockquote>
-<p>“Put your fingers of your prefered hand on the left and down keys. You’ll press the LEFT key if you see HORIZONTAL stripes and the DOWN key if you see VERTICAL stripes. If you aren’t sure, make your best guess.”</p>
-</blockquote>
-<blockquote>
-<p>“Press the SPACE BAR to proceed to the next trial.”</p>
-</blockquote>
-<blockquote>
-<p>For the left-handed: “You could press this ENTER key on the right side to proceed instead of space bar.”</p>
-</blockquote>
-<blockquote>
-<p>“Remember, accuracy is more important than speed. Please take your time.”</p>
-</blockquote>
-<blockquote>
-<p>“Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part.”</p>
-</blockquote>
-<ul>
-<li>close the door for participants</li>
-</ul>
-</div>
-</div>
 <div id="stereo-acuity-and-color-vision-tests" class="section level3">
 <h3>Stereo acuity and color vision tests</h3>
 <blockquote>
-<p>“<em>Thank you.We are going to complete two more short vision tests. Please come sit over here at this table.</em>”</p>
+<p>“<em>Thank you.We are going to complete two more short vision tests. Please come sit over here at this desk.</em>”</p>
 </blockquote>
-<p>Escort participant to table.</p>
+<p>Escort participant to desk.</p>
 <!-- # Vision Screening Instructions -->
 <div id="color-test" class="section level4">
 <h4>Color Test</h4>
@@ -1071,6 +1098,161 @@ div.tocify {
 <li>Record the level of stereopsis into Qualtrics at the last one chosen correctly.</li>
 </ul>
 </div>
+</div>
+</div>
+<div id="questionnaires" class="section level3">
+<h3>Questionnaires</h3>
+<blockquote>
+<p>“<em>Thank you. Now we’d like to move on to the questionnaires. You can follow the instructions and finish the survey. Feel free to ask me if you have any questions. Let me know when you finish it.</em>”</p>
+</blockquote>
+<ul>
+<li>Have the participant sit back down at the computer.</li>
+<li>Let the participants finish the questionnaire.</li>
+<li>Answer the questions if the participants have any, when they work on the questionnaires.</li>
+<li>But be in careful in the hobby page, spatial and verbal page, because the time is recorded. The page will vanish when the time has passed. So, depending on the nature of the questions, answer them fast and emphasize the time is recorded in this page.</li>
+</ul>
+<p>After answering the question, say:<br />
+&gt;“<em>Be aware: there is a time limit for this page. </em>”</p>
+<ul>
+<li>If the participant has questions in the instruction page of the hobby test, spatial and verbal test, answer carefully and make sure the participants understand.</li>
+<li>After the participants finish the questionnaire, ask them if they need a little break. If the participant wants to keep going, lead them to the test room</li>
+</ul>
+<p>Say:</p>
+<blockquote>
+<p>“<em>You have finished this part. Next you have two computer tasks. Do you want to continue or have a little break?</em>”</p>
+</blockquote>
+</div>
+<div id="set-up-for-computer-based-tasks-1" class="section level3">
+<h3>Set-up for computer-based tasks</h3>
+<ul>
+<li>Guide participant to the testing room.</li>
+<li>Have them sit in the chair.</li>
+<li>Adjust the monitor and participant position.
+<ul>
+<li>The monitor should be located <strong>60cm</strong> from the bridge of the nose on the participant.</li>
+<li><em>place the rear legs of the chair exactly in front of black strips</em></li>
+<li>The chair height should be set so the participant is looking in the middle of the screen.</li>
+</ul></li>
+<li>Guide the participant to use the arrow keys for responses and the space bar to advance the screen.</li>
+<li><em>check with participants that they do not bring the cell phone to the dark room</em></li>
+</ul>
+<p>Say:</p>
+<blockquote>
+<p>“<em>Please come to this room for the behavioral tests. Sit in the chair. Could I move the chair a little bit? I want to make sure every particpant is the same distance from the computer screen. Please sit up straight and have your back touching the chair. Do not move your chair.</em>”</p>
+</blockquote>
+<blockquote>
+<p>“<em>Please do your best and focus on the center of the screen during these tasks.</em>”</p>
+</blockquote>
+</div>
+<div id="run-computer-based-tasks" class="section level3">
+<h3>Run computer-based tasks</h3>
+<div id="select-run-order" class="section level4">
+<h4>Select run order</h4>
+<p>The order of the computer experiments will be randomized across participants based on the participant ID entered into Qualtrics.</p>
+<ul>
+<li>run the <em>temporal duration threshold task</em> FIRST (Murray et al.) if the ID number is <em>EVEN</em>.</li>
+<li>run the <em>contrast sensitivity task</em> FIRST (Abramov et al.) if the ID number is <em>ODD</em>. <em>Record the task run first on the experiment run log.</em></li>
+</ul>
+</div>
+<div id="temporal-duration-threshold-task-murray-et-al." class="section level4">
+<h4>Temporal duration threshold task (Murray et al.)</h4>
+<p><strong>Run FIRST if Participant ID = EVEN number</strong></p>
+<ul>
+<li>Open PsychoPy by clicking on the icon located on the desktop. <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
+</li>
+<li>When PsychoPy opens, open the file for this experiment.
+<ul>
+<li>From the <code>File</code> menu, select the <code>Open Recent...</code> command and select the <code>motion-temporal-threshold.py</code> file.</li>
+</ul></li>
+<li>When the file opens, run the experiment by pressing press the green (running person) button. <img src="images/PPrunningMan.png" alt="PsychoPy_Run" />
+<ul>
+<li><strong>Be careful not to type in the programming window.</strong></li>
+</ul></li>
+<li>Experimenters need to fill in the participant ID and gender.
+<ul>
+<li>A pop-up window will appear.</li>
+<li>Enter participant ID. Make sure it is the same ID that you entered into Qualtrics.</li>
+<li>Enter gender (enter “f” or “m”, no upper case) in the pop window, and press the <code>Ok</code> button to enter the data.</li>
+</ul></li>
+<li>Speak to the participant</li>
+</ul>
+<blockquote>
+<p>“In this task, you need to detect the moving direction of a small patch of stripes. The time the patch appears on the display will get shorter and shorter. Our goal is to find out the shortest duration you need to detect the direction of motion.”</p>
+</blockquote>
+<blockquote>
+<p>“Which hand do you prefer to press the arrow keys?”</p>
+</blockquote>
+<blockquote>
+<p>“Put your fingers of your prefered hand on the left and right arrow keys. <strong>You’ll press the LEFT arrow if you see motion to the left and the RIGHT arrow if you see motion to the right.</strong> If you aren’t sure, make your best guess.”</p>
+</blockquote>
+<blockquote>
+<p>“Press the SPACE BAR to proceed to the next trial.”</p>
+</blockquote>
+<blockquote>
+<p>For the left-handed: “You could press this ENTER key on the right side to proceed instead of SPACE BAR.”</p>
+</blockquote>
+<blockquote>
+<p>&quot;On the computer screen, you will see a black dot at first. When the black dot appears, press the SPACE BAR to start the trial. Then you will see the patch. Make responses of LEFT or RIGHT when the white dot appears.</p>
+</blockquote>
+<blockquote>
+<p>“Remember, accuracy is more important than speed. Please take your time.”</p>
+</blockquote>
+<blockquote>
+<p>“Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finished this part.”</p>
+</blockquote>
+<ul>
+<li>close the door for participants</li>
+</ul>
+</div>
+<div id="contrast-sensitivity-task-abramov-et-al." class="section level4">
+<h4>Contrast sensitivity task (Abramov et al.)</h4>
+<p><strong>Run FIRST if Participant ID = ODD number</strong></p>
+<ul>
+<li>Open PsychoPy by clicking on the icon located on the desktop. <img src="images/PsychoPy-1.PNG" alt="PsychoPy_Logo" /><br />
+</li>
+<li>When PsychoPy opens, open the file for this experiment.
+<ul>
+<li>From the <code>File</code> menu, select the <code>Open Recent...</code> command and select the <code>motion-temporal-threshold.py</code> file.</li>
+</ul></li>
+<li>When the file opens, run the experiment by pressing press the green (running person) button. <img src="images/PPrunningMan.png" alt="PsychoPy_Run" />
+<ul>
+<li><strong>Be careful not to type in the programming window.</strong></li>
+</ul></li>
+<li>Experimenters need to fill in the participant ID and gender.
+<ul>
+<li>A pop-up window will appear.</li>
+<li>Enter participant ID. Make sure it is the same ID as that in qualtrics.</li>
+<li>Enter gender (enter “f” or “m”, no upper case) in the pop window, and press the <code>Ok</code> button to enter the data.</li>
+</ul></li>
+<li>Speak to the participant</li>
+</ul>
+<blockquote>
+<p>“You will see a small patch of black and white stripes which are horizontal or vertical.Be careful. You need to detect the DIRECTION OF THE STRIPES not the moving direction. (Show the example pictures put in the left side of desk). You can <strong>press the LEFT key if you see the stripes are horizontal, DOWN key if you see the stripes are vertical.</strong> But if you aren’t sure, just guess.”</p>
+</blockquote>
+<blockquote>
+<p>“The luminance of the stripes will get smaller and smaller. Our goal is to find out the smallest luminance that you need to detect the direction of stripes.”</p>
+</blockquote>
+<blockquote>
+<p>“Which hand do you prefer to press the arrow keys?”</p>
+</blockquote>
+<blockquote>
+<p>“Put your fingers of your prefered hand on the left and down keys. You’ll press the LEFT key if you see HORIZONTAL stripes and the DOWN key if you see VERTICAL stripes. If you aren’t sure, make your best guess.”</p>
+</blockquote>
+<blockquote>
+<p>“Press the SPACE BAR to proceed to the next trial.”</p>
+</blockquote>
+<blockquote>
+<p>For the left-handed: “You could press this ENTER key on the right side to proceed instead of space bar.”</p>
+</blockquote>
+<blockquote>
+<p>“Remember, accuracy is more important than speed. Please take your time.”</p>
+</blockquote>
+<blockquote>
+<p>“Do you have any questions right now? I will leave you in the room. Follow the instructions on the screen. Call me when you finish this part.”</p>
+</blockquote>
+<ul>
+<li>close the door for participants</li>
+</ul>
 </div>
 </div>
 </div>
