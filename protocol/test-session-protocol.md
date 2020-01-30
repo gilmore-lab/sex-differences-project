@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-30 09:32:45"
+date: "2020-01-30 09:35:21"
 output:
   pdf_document:
     toc: yes
@@ -176,6 +176,7 @@ Then say,
 
 ### Stereo acuity and color vision tests
 
+
 >"*Thank you.We are going to complete two more short vision tests. Please come sit over here at this desk.*"
 
 Escort participant to desk.
@@ -238,6 +239,8 @@ Continue until participant gives up trying, or making two successive mistakes.
 
 - Log the answer to each item on the [score sheet](vision-screening-score-sheet.html).
 - Record the level of stereopsis into Qualtrics at the last one chosen correctly. 
+
+- write down the performance of these three visual tests in qualtrics.
 
 
 ### Questionnaires
@@ -315,8 +318,6 @@ The order of the computer experiments will be randomized across participants bas
 
 >"Put your fingers  of your prefered hand on the left and right arrow keys. **You'll press the LEFT arrow if you see motion to the left and the RIGHT arrow if you see motion to the right.** If you aren't sure, make your best guess."
 
->"Press the SPACE BAR to proceed to the next trial."
-
 >For the left-handed: "You could press this ENTER key on the right side to proceed instead of SPACE BAR. "
 
 >"On the computer screen, you will see a black dot at first. When the black dot appears,  press the SPACE BAR to start the trial. Then you will see the patch. Make responses of LEFT or RIGHT when the white dot appears.
@@ -352,8 +353,6 @@ The order of the computer experiments will be randomized across participants bas
 >"Which hand do you prefer to press the arrow keys?"
 
 >"Put your fingers of your prefered hand on the left and down keys. You'll press the LEFT key if you see HORIZONTAL stripes and the DOWN key if you see VERTICAL stripes. If you aren't sure, make your best guess."
-
->"Press the SPACE BAR to proceed to the next trial."
 
 >For the left-handed: "You could press this ENTER key on the right side to proceed instead of space bar."
 

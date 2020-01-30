@@ -152,12 +152,15 @@ Then say,
 
 ### Stereo acuity and color vision tests
 
+
 >"*Thank you.We are going to complete two more short vision tests. Please come sit over here at this desk.*"
 
 Escort participant to desk.
 
 ```{r, child="color-stereo-screening-protocol.Rmd"}
 ```
+
+- write down the performance of these three visual tests in qualtrics.
 
 
 ### Questionnaires

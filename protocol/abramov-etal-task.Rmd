@@ -23,8 +23,6 @@ output: html_document
 
 >"Put your fingers of your prefered hand on the left and down keys. You'll press the LEFT key if you see HORIZONTAL stripes and the DOWN key if you see VERTICAL stripes. If you aren't sure, make your best guess."
 
->"Press the SPACE BAR to proceed to the next trial."
-
 >For the left-handed: "You could press this ENTER key on the right side to proceed instead of space bar."
 
 >"Remember, accuracy is more important than speed. Please take your time."

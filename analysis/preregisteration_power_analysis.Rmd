@@ -22,7 +22,12 @@ library(pwr)
 pwr.t2n.test(n1 =50, n2= 250, d = NULL, sig.level = 0.05/4
           , power = 0.8,
  alternative = c( "less"))
+
 ```
+```{r sample-size_calculation}
+pwr.t.test(n = NULL, d = 0.25, sig.level = 0.05/4 , power = 0.8, type = "two.sample")
+ ```
+ 
 ```{r power_analysis_correlation_male}
 # Power Calculations For Correlation Test
 #  power of test or determine parameters to obtain target power (same as power.anova.test).
