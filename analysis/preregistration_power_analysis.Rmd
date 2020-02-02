@@ -1,7 +1,7 @@
 ---
 title: "Power and Sample Size Analysis"
 subtitle: "Sex differences project"
-author: "Yiming Qian"
+author: "Yiming Qian & Rick Gilmore"
 date: "`r Sys.time()`"
 output: html_document
 ---
@@ -34,7 +34,9 @@ pwr.t2n.test(n1 =50, n2= 250, d = NULL, sig.level = 0.05/4
 
 ### Plot of power and effect sizes given a range of possible male/female ratios
 
-```{r, echo=FALSE, message=FALSE}
+Assuming two-sample t-test, one tailed, and $p=0.0125$.
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
 library(tidyverse)
 
 power_to_df <- function(x, n_total) {
