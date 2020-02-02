@@ -1,0 +1,87 @@
+---
+title: "Power and Sample Size Analysis"
+subtitle: "Sex differences project"
+author: "Yiming Qian"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose
+
+This script is used to calulate the power, Type 1 and Type 2 error in the sex differences in visual perception project.
+
+### Type 1 error in one-tailed two sample t test with unequal sample size
+
+Because there are 4 variables, if we choose an initial $\alpha=0.05$, the Bonferonni correction for multiple comparisons would be $0.05/4=0.0125$. So, we choose $p=0.01$ as our criterion.
+
+### Power analysis
+
+We use the `pwr` package for this analysis.
+
+```{r power_analysis}
+# Power Calculations For Two Samples (Different Sizes) T-Tests Of Means
+library(pwr)
+# assume 50 males and 250 females are collected. Males are predicted to have lower threshold than females. So we use one-tailed t test
+pwr.t2n.test(n1 =50, n2= 250, d = NULL, sig.level = 0.05/4
+          , power = 0.8,
+ alternative = c( "less"))
+
+```
+
+### Plot of power and effect sizes given a range of possible male/female ratios
+
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+
+power_to_df <- function(x, n_total) {
+  df <- data.frame(n_total = as.factor(n_total), n1 = x$n1, n2 = x$n2, d = x$d, sig.level = x$sig.level, power = x$power, alternative = x$alternative)
+  df
+}
+
+power_from_p_male <- function(p_male, n_total) {
+  n_male <- p_male*n_total
+  n_female <- n_total - n_male
+  pwr::pwr.t2n.test(n_male, n_female, sig.level = 0.0125, 
+                    power = .8, alternative = "greater")
+}
+
+pow_calc <- function(p_male, n_total) {
+  power_to_df(power_from_p_male(p_male, n_total), n_total)
+}
+
+purrr::map2_dfr(rep(1/(2:8), 6), rep(c(150, 200, 250, 300, 350, 400), 7), pow_calc) %>%
+    dplyr::rename(., n_males = n1) %>%
+    ggplot2::ggplot(.) + 
+    ggplot2::aes(n_males, d, color = n_total) + 
+    ggplot2::geom_point() +
+    ggplot2::geom_smooth(se = FALSE) +
+    ggplot2::ggtitle("Effect size detectable at .8 power for varied n_males")
+```
+
+### Sample size calculation
+
+```{r sample-size_calculation}
+pwr.t.test(n = NULL, d = 0.25, sig.level = 0.05/4 , power = 0.8, type = "two.sample")
+```
+ 
+### Power for correlation analysis for male participants 
+ 
+```{r power_analysis_correlation_male}
+# Power Calculations For Correlation Test
+#  power of test or determine parameters to obtain target power (same as power.anova.test).
+# Assume 50 males, negative correlation with spatial ability and hobbies
+pwr.r.test(n = 50, r = NULL, sig.level = 0.05/4, power = 0.8,
+    alternative = c("less"))
+```
+
+### Power for correlation analysis for female participants
+
+```{r power_analysis_correlation_female}
+# Assume 250 females, negative correlation with spatial ability and hobbies
+pwr.r.test(n = 250, r = NULL, sig.level = 0.05/4, power = 0.8,
+    alternative = c("less"))
+```

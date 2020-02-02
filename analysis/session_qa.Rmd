@@ -6,7 +6,7 @@ output:
   html_document:
     code_folding: hide
 params:
-  data_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data"
+  data_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data"
   contrast_raw_path: "contrast_sensitivity_task_data"
   motion_raw_path: "motion_temporal_threshold_data"
   qualtrics_csv_dir: "qualtrics_survey_data/csv"
@@ -49,39 +49,6 @@ This script describes the process for doing quality assurance (QA) review on eac
 
 ## Post processing
 
-<!-- ### Copy files to `.csv`, `.psydat`, and `.log` directories -->
-
-<!-- ```{r list-files} -->
-<!-- # Now incorporated into copy_data_files() -->
-<!-- # contrast_sens_files <- list.files(params$contrast_raw_path, pattern = "\\.csv$", full.names = TRUE) -->
-<!-- # motion_thresh_files <- list.files(params$motion_raw_path, pattern = "\\.csv$", full.names = TRUE) -->
-<!-- ``` -->
-
-<!-- ```{r create-copy_data_files-function } -->
-<!-- copy_data_files <- -->
-<!--   function(df_path = params$contrast_raw_path, -->
-<!--            df_type = "csv") { -->
-<!--     these_files <- -->
-<!--       list.files( -->
-<!--         path = df_path, -->
-<!--         pattern = paste0("\\.", df_type, "$"), -->
-<!--         full.names = TRUE -->
-<!--       ) -->
-<!--     file.copy(from = these_files, to = paste0(df_path, "/", df_type, "/.")) -->
-<!--   } -->
-<!-- ``` -->
-
-<!-- ```{r copy-contrast-sens-files} -->
-<!-- copy_data_files(params$contrast_raw_path, df_type = "csv") -->
-<!-- copy_data_files(params$contrast_raw_path, df_type = "log") -->
-<!-- copy_data_files(params$contrast_raw_path, df_type = "psydat") -->
-<!-- ``` -->
-
-<!-- ```{r copy-motion-thresh-files} -->
-<!-- copy_data_files(params$motion_raw_path, df_type = "csv") -->
-<!-- copy_data_files(params$motion_raw_path, df_type = "psydat") -->
-<!-- ``` -->
-
 ### Create lists of `.csv` files
 
 #### Contrast
@@ -101,64 +68,6 @@ motion_csvs %>% knitr::kable(.)
 ```
 
 There are `r length(motion_csvs)` files for the Murray motion temporal threshold task.
-
-### Qualtrics
-
-```{r get-qualtrics}
-survey_1_name <- "Sex difference survey REV 2019-11-11"
-survey_2_name <- "Sex difference survey REV 2019-11-18"
-
-surveys <- qualtRics::all_surveys()
-
-survey_1 <- surveys %>%
-  filter(., name == survey_1_name)
-survey_2 <- surveys %>%
-  filter(., name == survey_2_name)
-
-sex_diff_resp_1 <- qualtRics::fetch_survey(surveyID = survey_1$id,
-                                     verbose = TRUE,
-                                     force_request = TRUE)
-sex_diff_resp_2 <- qualtRics::fetch_survey(surveyID = survey_2$id,
-                                     verbose = TRUE,
-                                     force_request = TRUE)
-
-sex_diff_quest <- qualtRics::survey_questions(surveyID = survey_1$id)
-
-sex_diff_meta_1 <- qualtRics::metadata(surveyID = survey_1$id)
-sex_diff_meta_2 <- qualtRics::metadata(surveyID = survey_2$id)
-
-sex_diff_resp <- rbind(sex_diff_resp_1, sex_diff_resp_2)
-```
-
-```{r qualtrics-demo-data}
-sex_diff_demo <- sex_diff_resp %>%
-  tidyr::gather(., key="quest", value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, Q89_5) %>%
-  dplyr::filter(., !is.na(ethnicity)) %>%
-  dplyr::select(., -quest) %>%
-  dplyr::rename(., p_id = `Participant ID`) %>%
-  dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>%
-  dplyr::rename(., vis_acuity = `Q81`) %>%
-  dplyr::rename(., gender = `Q1`) %>%
-  dplyr::rename(., age_yrs = `Q4`) %>%
-  dplyr::rename(., school_yr = `Q2`) %>%
-  dplyr::rename(., major = `Q3`) %>%
-  dplyr::rename(., preferred_hand = `Q88`) %>%
-  dplyr::rename(., stereo_vision = `Q92`) %>%
-  dplyr::select(., p_id, gender, age_yrs, school_yr, major,
-                preferred_hand, vis_acuity, stereo_vision)
-
-xtabs(~ gender + age_yrs, data = sex_diff_demo) %>%
-  knitr::kable(.)
-```
-
-There are `r dim(sex_diff_demo)[1]` Qualtrics datasets.
-
-```{r}
-sex_diff_demo %>%
-  dplyr::select(., p_id, gender) %>%
-  dplyr::arrange(., p_id) %>%
-  knitr::kable(.)
-```
 
 ## File by file QA
 
@@ -251,8 +160,6 @@ contrast_sub_ids <-
 
 motion_sub_ids <-
   extract_sub_ids(paste0(params$data_path, "/", params$motion_raw_path))
-
-qualtrics_sub_ids <- sex_diff_demo$p_id
 ```
 
 Trim IDs to `YYYYMMDDHHMMSS` or 14 characters.
@@ -260,7 +167,6 @@ Trim IDs to `YYYYMMDDHHMMSS` or 14 characters.
 ```{r}
 contrast_sub_ids <- stringr::str_sub(contrast_sub_ids, 1, 14)
 motion_sub_ids <- stringr::str_sub(motion_sub_ids, 1, 14)
-qualtrics_sub_ids <- stringr::str_sub(qualtrics_sub_ids, 1, 14)
 ```
 
 Create helper function to detect duplicates.
@@ -294,19 +200,3 @@ These motion files have no matching contrast file:
 `r motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]`
 
 Are there duplicate motion files? `r detect_duplicate_ids(motion_sub_ids)`
-
-### Qualtrics sub IDs
-
-```{r}
-sort(qualtrics_sub_ids)
-```
-
-These Qualtrics subs have no matching contrast file:
-
-`r qualtrics_sub_ids[!(qualtrics_sub_ids %in% contrast_sub_ids)]`
-
-These Qualtrics subs have no matching motion file:
-
-`r qualtrics_sub_ids[!(qualtrics_sub_ids %in% motion_sub_ids)]`
-
-Are there duplicate Qualtrics entries? `r detect_duplicate_ids(qualtrics_sub_ids)`
