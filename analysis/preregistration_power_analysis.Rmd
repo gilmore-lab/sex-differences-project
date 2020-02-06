@@ -22,13 +22,18 @@ Because there are 4 variables, if we choose an initial $\alpha=0.05$, the Bonfer
 
 We use the `pwr` package for this analysis.
 
+### Sample size calculation
+
+```{r sample-size_calculation}
+pwr.t.test(n = 150, d = NULL, sig.level = 0.05/4 , power = 0.8, type = "two.sample")
+```
+
 ```{r power_analysis}
 # Power Calculations For Two Samples (Different Sizes) T-Tests Of Means
 library(pwr)
 # assume 50 males and 250 females are collected. Males are predicted to have lower threshold than females. So we use one-tailed t test
-pwr.t2n.test(n1 =50, n2= 250, d = NULL, sig.level = 0.05/4
-          , power = 0.8,
- alternative = c( "less"))
+pwr.t2n.test(n1 =150, n2= 150, d = NULL, sig.level = 0.05/4
+          , power = 0.8, alternative = c( "less"))
 
 ```
 
@@ -64,26 +69,14 @@ purrr::map2_dfr(rep(1/(2:8), 6), rep(c(150, 200, 250, 300, 350, 400), 7), pow_ca
     ggplot2::ggtitle("Effect size detectable at .8 power for varied n_males")
 ```
 
-### Sample size calculation
 
-```{r sample-size_calculation}
-pwr.t.test(n = NULL, d = 0.25, sig.level = 0.05/4 , power = 0.8, type = "two.sample")
-```
  
-### Power for correlation analysis for male participants 
+### Power for correlation analysis for participants in one gender
  
-```{r power_analysis_correlation_male}
+```{r power_analysis_correlation}
 # Power Calculations For Correlation Test
 #  power of test or determine parameters to obtain target power (same as power.anova.test).
-# Assume 50 males, negative correlation with spatial ability and hobbies
-pwr.r.test(n = 50, r = NULL, sig.level = 0.05/4, power = 0.8,
+pwr.r.test(n = 147, r = NULL, sig.level = 0.05/5, power = 0.8,
     alternative = c("less"))
 ```
 
-### Power for correlation analysis for female participants
-
-```{r power_analysis_correlation_female}
-# Assume 250 females, negative correlation with spatial ability and hobbies
-pwr.r.test(n = 250, r = NULL, sig.level = 0.05/4, power = 0.8,
-    alternative = c("less"))
-```
