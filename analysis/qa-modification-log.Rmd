@@ -6,10 +6,16 @@ output:
   html_document:
     code_folding: hide
 params:
-  data_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data"
+  data_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data"
   contrast_raw_path: "contrast_sensitivity_task_data"
   motion_raw_path: "motion_temporal_threshold_data"
   qualtrics_csv_dir: "qualtrics_survey_data/csv"
+  
+Yiming set her own path:
+params$data_path= "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data"
+params$contrast_raw_path= "contrast_sensitivity_task_data"
+params$motion_raw_path= "motion_temporal_threshold_data"
+params$qualtrics_csv_dir= "qualtrics_survey_data/csv"
 ---
 
 ```{r setup, include=FALSE}

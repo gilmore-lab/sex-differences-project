@@ -6,11 +6,13 @@ output:
   html_document:
     self_contained: yes
     code_folding: hide
+
 params:
-  this_contr_csv_fn: "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/2019111309492663_contrast_sensitivity_task.csv"
-  this_motion_dur_csv_fn: "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/motion_temporal_threshold_data/2019111309492663_motion_temporal_threshold.csv"
+  this_contr_csv_fn: "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data/2019111309492663_contrast_sensitivity_task.csv"
+  this_motion_dur_csv_fn: "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/motion_temporal_threshold_data/2019111309492663_motion_temporal_threshold.csv"
   this_sub_id: "2019111309492663"
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

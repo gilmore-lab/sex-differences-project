@@ -10,7 +10,6 @@ params:
   contrast_raw_path: "contrast_sensitivity_task_data"
   motion_raw_path: "motion_temporal_threshold_data"
   qualtrics_csv_dir: "qualtrics_survey_data/csv"
-  
 ---
 
 ```{r setup, include=FALSE}
@@ -27,9 +26,9 @@ This script describes the process for doing quality assurance (QA) review on eac
 ## QA criteria
 
 1. There are two datafiles for each participant:
-  - One for the Abramov et al contrast sensitivity task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/`
-  - One for the Murray et al temporal threshold task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/motion_sensitivity_task_data/`
-2. There is survey data for each participant in `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_data/`
+  - One for the Abramov et al contrast sensitivity task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data/`
+  - One for the Murray et al temporal threshold task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/motion_sensitivity_task_data/`
+2. There is survey data for each participant in `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/qualtrics_data/`
 3. There are four runs for each of two computer-based tasks, each run consisting of $n=30$ trials.
 4. The computer-based tasks have recorded the participant gender.
 6. The data files have recorded the participant ID and the participant ID matches the initial portion of the file name.

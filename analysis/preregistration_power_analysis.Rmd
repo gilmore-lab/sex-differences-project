@@ -34,9 +34,8 @@ pwr.t.test(n = 150, d = NULL, sig.level = 0.05/4, power=0.8 ,type="two.sample",a
 # Power Calculations For Two Samples (Different Sizes) T-Tests Of Means
 library(pwr)
 # assume 50 males and 250 females are collected. Males are predicted to have lower threshold than females. So we use one-tailed t test
-pwr.t2n.test(n1 =50, n2= 250, d = NULL, sig.level = 0.05/4
-          , power = 0.8,
- alternative = c( "less"))
+pwr.t2n.test(n1 =45, n2= 255, d = NULL, sig.level = 0.05/4
+          , power = 0.8, alternative = c( "less"))
 
 ```
 
@@ -72,29 +71,22 @@ purrr::map2_dfr(rep(1/(2:8), 6), rep(c(150, 200, 250, 300, 350, 400), 7), pow_ca
     ggplot2::ggtitle("Effect size detectable at .8 power for varied n_males")
 ```
 
-### Sample size calculation
 
 ```{r sample-size_calculation}
 pwr.t.test(n = NULL, d = 0.25, sig.level = 0.05/4 , power = 0.8, type = "two.sample", alternative = "greater")
 ```
  
-### Power for correlation analysis for male participants 
+### Power for correlation analysis for participants in one gender
  
-```{r power_analysis_correlation_male}
+```{r power_analysis_correlation}
 # Power Calculations For Correlation Test
 #  power of test or determine parameters to obtain target power (same as power.anova.test).
-# Assume 50 males, negative correlation with spatial ability and hobbies
-pwr.r.test(n = 50, r = NULL, sig.level = 0.05/4, power = 0.8,
+pwr.r.test(n = 147, r = NULL, sig.level = 0.05/5, power = 0.8,
+    alternative = c("less"))
+pwr.r.test(n=93, r = NULL, sig.level = 0.05, power = 0.8,
     alternative = c("less"))
 ```
 
-### Power for correlation analysis for female participants
-
-```{r power_analysis_correlation_female}
-# Assume 150 females, negative correlation with spatial ability and hobbies
-pwr.r.test(n = 150, r = NULL, sig.level = 0.05/4, power = 0.8,
-    alternative = c("less"))
-```
 
 ### Plot of power and effect sizes given a range of sample size (male/female)
 
@@ -125,4 +117,33 @@ purrr::map2_dfr(c(50, 100, 150, 200, 250), pow_calc) %>%
     ggplot2::geom_point() +
     ggplot2::geom_smooth(se = FALSE) +
     ggplot2::ggtitle("Effect size detectable at .8 power for varied sample size in correlation test")
+```
+
+```{r}
+library(tidyverse)
+power_to_df <- function(x, n_total) {
+  df <- data.frame(n_total = n_total,r = x$r, sig.level = as.factor(x$sig.level), power = x$power, alternative = x$alternative)
+  df
+}
+
+power_from_sig<- function(n_total, sig.level) {
+  pwr::pwr.r.test(n_total,r=NULL, sig.level, power = .8, alternative = "greater")
+}
+
+pow_calc <- function( n_total, sig.level) {
+  power_to_df(power_from_sig( n_total, sig.level), n_total)
+}
+
+# pow_calc <- function(p_male, n_total) {
+#  power_to_df(power_from_p_male(p_male, n_total), n_total)
+#}
+
+purrr::map2_dfr(rep(c(100,150, 200, 250, 300, 350), 5), rep(c(0.01,0.02,0.03, 0.04, 0.05), 6), pow_calc) %>%
+  #  dplyr::rename(., n=n_total) %>%
+    ggplot2::ggplot(.) + 
+    ggplot2::aes(n_total, r, color = sig.level) + 
+    ggplot2::geom_point() +
+    ggplot2::geom_smooth(method="loess") +
+    ggplot2::ggtitle("Effect size detectable at .8 power in an one-tailed correlation test")
+
 ```
