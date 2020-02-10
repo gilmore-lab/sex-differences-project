@@ -22,6 +22,14 @@ Because there are 4 variables, if we choose an initial $\alpha=0.05$, the Bonfer
 
 We use the `pwr` package for this analysis.
 
+```{r power_analysis-equal}
+# Power Calculations For Two Samples (Same Sizes) T-Tests Of Means
+library(pwr)
+# assume 50 males and 250 females are collected. Males are predicted to have lower threshold than females. So we use one-tailed t test
+pwr.t.test(n = 150, d = NULL, sig.level = 0.05/4, power=0.8 ,type="two.sample",alternative="greater")
+
+```
+
 ```{r power_analysis}
 # Power Calculations For Two Samples (Different Sizes) T-Tests Of Means
 library(pwr)
@@ -67,7 +75,7 @@ purrr::map2_dfr(rep(1/(2:8), 6), rep(c(150, 200, 250, 300, 350, 400), 7), pow_ca
 ### Sample size calculation
 
 ```{r sample-size_calculation}
-pwr.t.test(n = NULL, d = 0.25, sig.level = 0.05/4 , power = 0.8, type = "two.sample")
+pwr.t.test(n = NULL, d = 0.25, sig.level = 0.05/4 , power = 0.8, type = "two.sample", alternative = "greater")
 ```
  
 ### Power for correlation analysis for male participants 
@@ -83,7 +91,38 @@ pwr.r.test(n = 50, r = NULL, sig.level = 0.05/4, power = 0.8,
 ### Power for correlation analysis for female participants
 
 ```{r power_analysis_correlation_female}
-# Assume 250 females, negative correlation with spatial ability and hobbies
-pwr.r.test(n = 250, r = NULL, sig.level = 0.05/4, power = 0.8,
+# Assume 150 females, negative correlation with spatial ability and hobbies
+pwr.r.test(n = 150, r = NULL, sig.level = 0.05/4, power = 0.8,
     alternative = c("less"))
+```
+
+### Plot of power and effect sizes given a range of sample size (male/female)
+
+Assuming corelation test, one tailed, and $p=0.0125$.
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
+library(tidyverse)
+
+power_to_df <- function(x, n_total) {
+  df <- data.frame(n_total = as.factor(n_total), r = x$r, sig.level = x$sig.level, power = x$power, alternative = x$alternative)
+  df
+}
+
+power_from_n<- function( n_total) {
+  pwr::pwr.r.test(n_total, sig.level = 0.05/4, power = 0.8,
+    alternative = c("greater"))
+}
+
+pow_calc <- function( n_total) {
+  power_to_df(power_from_n( n_total), n_total)
+}
+
+
+purrr::map2_dfr(c(50, 100, 150, 200, 250), pow_calc) %>%
+      dplyr::rename(., n = n_total) %>%
+    ggplot2::ggplot(.) + 
+    ggplot2::aes(n_total, d) + 
+    ggplot2::geom_point() +
+    ggplot2::geom_smooth(se = FALSE) +
+    ggplot2::ggtitle("Effect size detectable at .8 power for varied sample size in correlation test")
 ```
