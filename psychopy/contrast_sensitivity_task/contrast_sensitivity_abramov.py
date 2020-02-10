@@ -94,6 +94,10 @@ clock = core.Clock()
 countDown = core.CountdownTimer()
 
 # create window and stimuli
+monitor_name = 'testMonitor'
+window_pix_h = 800
+window_pix_v = 600
+frameDur = 1/60
 win = visual.Window([params.window_pix_h, params.window_pix_v], allowGUI=False, monitor=params.monitor_name, units='deg')
 fixation = visual.GratingStim(win, color='black', tex=None, mask='circle', size=0.2)
 pr_grating = visual.GratingStim(
@@ -176,8 +180,8 @@ for this_max_contrast, this_condition in staircase:
     start_time = clock.getTime()
     while keep_going:
         t = clock.getTime()
-        #pr_grating.phase = round(numpy.mod(clock.getTime(), cyc_secs)/cyc_secs)/2 # need value of 0 or 0.5 to switch phase
-        pr_grating.contrast = numpy.sin(2 * numpy.pi * t * this_tf) # from counterphase.py demo
+        pr_grating.phase = round(numpy.mod(clock.getTime(), cyc_secs)/cyc_secs)/2 # need value of 0 or 0.5 to switch phase
+        #pr_grating.contrast = numpy.sin(2 * numpy.pi * t * this_tf) # from counterphase.py demo
         
         # Contrast ramp in, hold, down
         secs_passed = clock.getTime()-start_time
