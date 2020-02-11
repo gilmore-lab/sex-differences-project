@@ -57,3 +57,5 @@ This occurred because of manual file name changes to the contrast task. On 2019-
 - Qualtrics participant `20191118083939*` has no matching contrast or motion file. This occurs because this participants' files were renamed to `2019111808390374` after the session. 
     - Solution 1: We may have to take the 12 character ID across all files: `YYYYMMDDHHMM` when we merge data.
     - Solution 2: Rename the motion and contrast task data files to comply with the Qualtrics name.
+    
+
