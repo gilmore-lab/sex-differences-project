@@ -8,6 +8,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(pwr)
+library(tidyverse)
 ```
 
 ## Purpose
@@ -24,7 +27,7 @@ We use the `pwr` package for this analysis.
 
 ```{r power_analysis-equal}
 # Power Calculations For Two Samples (Same Sizes) T-Tests Of Means
-library(pwr)
+
 # assume 50 males and 250 females are collected. Males are predicted to have lower threshold than females. So we use one-tailed t test
 pwr.t.test(n = 150, d = NULL, sig.level = 0.05/4, power=0.8 ,type="two.sample",alternative="greater")
 
@@ -90,29 +93,28 @@ pwr.r.test(n = 147, r = NULL, sig.level = 0.05/5, power = 0.8,
 
 Assuming corelation test, one tailed, and $p=0.0125$.
 
-```{r, echo=FALSE, message=FALSE, warning = FALSE}
-library(tidyverse)
+```{r, echo=FALSE, message=FALSE, warning = FALSE, eval=FALSE}
+
 
 power_to_df <- function(x, n_total) {
   df <- data.frame(n_total = as.factor(n_total), r = x$r, sig.level = x$sig.level, power = x$power, alternative = x$alternative)
   df
 }
 
-power_from_n<- function( n_total) {
+power_from_n<- function(n_total) {
   pwr::pwr.r.test(n_total, sig.level = 0.05/4, power = 0.8,
     alternative = c("greater"))
 }
 
-pow_calc <- function( n_total) {
+pow_calc <- function(n_total) {
   power_to_df(power_from_n( n_total), n_total)
 }
 
-
-purrr::map2_dfr(c(50, 100, 150, 200, 250), pow_calc) %>%
-      dplyr::rename(., n = n_total) %>%
+purrr::map_dfr(c(50, 100, 150, 200, 250), pow_calc) %>%
+  dplyr::mutate(., n_total = as.numeric(n_total)) %>%
     ggplot2::ggplot(.) + 
-    ggplot2::aes(n_total, d) + 
+    ggplot2::aes(n_total, r) + 
     ggplot2::geom_point() +
     ggplot2::geom_smooth(se = FALSE) +
-    ggplot2::ggtitle("Effect size detectable at .8 power for varied sample size in correlation test")
+    ggplot2::ggtitle("Effect size (r) detectable at .8 power for varied sample sizes in correlation test")
 ```

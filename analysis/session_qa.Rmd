@@ -1,72 +1,104 @@
 ---
-title: "Post-processing Quality Assurance"
+title: "Post-processing Quality Assurance (QA)"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
 output: 
   html_document:
     code_folding: hide
 params:
-  data_path: "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data"
-  contrast_raw_path: "contrast_sensitivity_task_data"
-  motion_raw_path: "motion_temporal_threshold_data"
+  box_path: "~/Box Sync"
+  data_path: "/Project_Sex_difference_on_Motion_Perception/data"
+  contrast_raw_path: "/raw_data/contrast_sensitivity_task_data"
+  motion_raw_path: "/raw_data/motion_temporal_threshold_data"
+  passed_qa_path: "/passed_qa"
+  failed_qa_path: "/failed_qa"
   qualtrics_csv_dir: "qualtrics_survey_data/csv"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, error = FALSE,
                       message = FALSE)
+
+# Manage package dependencies
+if (!require(pacman)) {
+  install.packages("pacman")
+}
+
 library(tidyverse)
 library(qualtRics)
 ```
 
-## Purpose
+# Purpose
 
 This script describes the process for doing quality assurance (QA) review on each session.
 
-## QA criteria
+To render, enter `rmarkdown::render("analysis/session_qa.Rmd", params = list(box_path = "<YOUR_BOX_PATH>"))`, substituting the path to your Box folder on your local machine.
+On Mac OS the default is "~/Box Sync".
 
-1. There are two datafiles for each participant:
-  - One for the Abramov et al contrast sensitivity task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data/`
-  - One for the Murray et al temporal threshold task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/motion_sensitivity_task_data/`
-2. There is survey data for each participant in `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/qualtrics_data/`
+# Background
+
+1. There are two data files for each participant:
+  - One for the Abramov et al contrast sensitivity task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/`
+  - One for the Murray et al temporal threshold task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/motion_sensitivity_task_data/`
+2. There is survey data for each participant in `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_data/`
 3. There are four runs for each of two computer-based tasks, each run consisting of $n=30$ trials.
-4. The computer-based tasks have recorded the participant gender.
-6. The data files have recorded the participant ID and the participant ID matches the initial portion of the file name.
+4. The computer-based tasks record the participant gender.
+6. The data files record the participant ID and the participant ID matches the initial portion of the file name.
 7. The data files include the most essential variables for analysis.
 
 ## QA steps
 
 1. For each of the computer tasks
-  - List the `*.csv` contrast files
-2. Do lists align?
-  - If not, do what?
-5. Determine if QA has already been run.
-  - How?
-    - Determine if `*.html` file exists for this subject
-6. If QA not-run, run QA.
-  - Create `*.html` file from `*.Rmd` template.
+  - List the `*.csv` files
+  - Look inside the files and determine the following:
+      - Does the participant ID match the ID in the file name?
+      - Is the participant ID in the file?
+      - Does the file have enough trials ($n=30$ for 4 runs)?
+      - Does the file have the key variables needed for analysis?
+      - Does the file include a variable for gender?
+  <!-- - If the answer to all of these questions is yes, then -->
+  <!--     - Copy the file(s) to a `pass_qa` folder. -->
+  <!-- - If the answer is no, then -->
+  <!--     - Copy the file(s) to a `fails_qa` folder. -->
+2. A separate R Markdown document should address the file(s) that fail QA. If the failures can be addressed, the document should do so and then copy the corrected data file to the `pass_qa` folder.
 
-## Post processing
+# Implementation
 
-### Create lists of `.csv` files
+## Create lists of `.csv` files
 
-#### Contrast
+### Contrast
 
 ```{r contrast-csvs}
-contrast_csvs <- list.files(paste0(params$data_path, "/", params$contrast_raw_path), pattern = "\\.csv$")
-contrast_csvs %>% knitr::kable(.)
+contr_data_path <- paste0(params$box_path, 
+                          params$data_path, 
+                          params$contrast_raw_path)
+if (dir.exists(contr_data_path)) {
+  contrast_csvs <- list.files(contr_data_path, pattern = "\\.csv$")
+  contrast_csvs %>% 
+    knitr::kable(.)
+} else {
+  message(paste0("No data files exist in ", contr_data_path))
+}
 ```
 
-There are `r length(contrast_csvs)` files for the Abramov contrast sensitivity task.
+There are `r length(contrast_csvs)` .csv files for the Abramov contrast sensitivity task.
 
-#### Motion
+### Motion
 
 ```{r motion-csvs}
-motion_csvs <- list.files(paste0(params$data_path, "/", params$motion_raw_path), pattern = "\\.csv$")
-motion_csvs %>% knitr::kable(.)
+motion_data_path <- paste0(params$box_path, 
+                           params$data_path, 
+                           params$motion_raw_path)
+if (dir.exists(motion_data_path)) {
+  motion_csvs <- list.files(motion_data_path, pattern = "\\.csv$")
+  motion_csvs %>% knitr::kable(.)  
+} else {
+  message(paste0("No data files exist in ", motion_data_path))
+}
+
 ```
 
-There are `r length(motion_csvs)` files for the Murray motion temporal threshold task.
+There are `r length(motion_csvs)` .csv files for the Murray motion temporal threshold task.
 
 ## File by file QA
 
@@ -104,11 +136,12 @@ sub_id_matches_fn <- function(data_fn, task='contr') {
 
 essential_vars_in_file <- function(data_df, task = 'contr') {
   if (task == 'contr') {
-    essential_vars <- c("correctAns", "loop_trial.intensity", "loop_trial.thisN",
-                                            "Participant", "Gender", "resp.rt")
+    essential_vars <- c("correctAns", "loop_trial.intensity", 
+                        "loop_trial.thisN", "Participant", "Gender", "resp.rt")
   } else {
-    essential_vars <- c("run_n", "correct", "trial_n", "stim_secs", "correct", "rt",
-                        "observer", "FWHM", "actual_frame")
+    essential_vars <- c("run_n", "correct", 
+                        "trial_n", "stim_secs", "correct", 
+                        "rt", "observer", "FWHM", "actual_frame")
   }
   (sum(essential_vars %in% names(data_df)) == length(essential_vars))
 }
@@ -129,7 +162,8 @@ make_qa_df <- function(data_fn, task = 'contr') {
 ### Contrast
 
 ```{r contr-fns}
-contr_fns <- contrast_csvs <- list.files(paste0(params$data_path, "/", params$contrast_raw_path), pattern = "\\.csv$", full.names = TRUE)
+contr_fns <- list.files(contr_data_path, 
+                        pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(contr_fns, make_qa_df, task = "contr")
 contrast_file_qa <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
 contrast_file_qa %>% knitr::kable(.)
@@ -138,64 +172,87 @@ contrast_file_qa %>% knitr::kable(.)
 ### Motion
 
 ```{r}
-motion_fns <- list.files(paste0(params$data_path, "/", params$motion_raw_path), pattern = "\\.csv$", full.names = TRUE)
+motion_fns <- list.files(motion_data_path, 
+                         pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(motion_fns, make_qa_df, task = "motion")
 motion_file_qa <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
 motion_file_qa %>% knitr::kable(.)
 ```
 
-## Compare across tasks
+## Examine files that pass or fail QA
 
-```{r extract-sub-ids}
-# Compare the two lists and determine the number of files uploaded to Box for each task.
-extract_sub_ids <-
-  function(df_path = paste0(paste0(params$data_path, "/", params$contrast_raw_path))) {
-    fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
-    stringr::str_sub(fn_only, 1, 16)
+### Files that pass QA
+
+```{r}
+motion_file_qa <- motion_file_qa %>%
+  dplyr::mutate(., pass_qa = id_matches_fn & 
+                  id_in_file & enough_trials & 
+                  has_key_vars & gender_var)
+
+contrast_file_qa <- contrast_file_qa %>%
+  dplyr::mutate(., pass_qa = id_matches_fn & 
+                  id_in_file & enough_trials & 
+                  has_key_vars & gender_var)
+```
+
+There are `r sum(contrast_file_qa$pass_qa)` contrast task files that pass file-level QA.
+
+There are `r sum(motion_file_qa$pass_qa)` motion task files that pass file-level QA.
+
+### Files that fail QA
+
+There are `r sum(!contrast_file_qa$pass_qa)` contrast task files that fail file-level QA.
+
+```{r}
+contrast_file_qa %>%
+  dplyr::filter(., !pass_qa) %>%
+  knitr::kable(.)
+```
+
+There are `r sum(!motion_file_qa$pass_qa)` motion task files that fail file-level QA.
+
+```{r}
+motion_file_qa %>%
+  dplyr::filter(., !pass_qa) %>%
+  knitr::kable(.)
+```
+
+## Copy files
+
+Copy files to directories.
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# generate full file path to target directory
+passed_qa_full_path <- paste0(params$box_path, params$data_path, params$passed_qa_path)
+passed_qa_full_path
+
+# Add full file paths to data frames
+motion_file_qa <- motion_file_qa %>%
+  dplyr::mutate(., full_path = paste0(motion_data_path, "/", fn)) %>%
+  dplyr::mutate(., qa_full_path = paste0(params$box_path, params$data_path,
+                                         params$passed_qa_path, "/", fn)) %>%
+  dplyr::mutate(., failed_qa_full_path = paste0(params$box_path, params$data_path,
+                                         params$failed_qa_path, "/", fn))
+
+
+contrast_file_qa <- contrast_file_qa %>%
+  dplyr::mutate(., full_path = paste0(contr_data_path, "/", fn)) %>%
+  dplyr::mutate(., qa_full_path = paste0(params$box_path, params$data_path,
+                                         params$passed_qa_path, "/", fn)) %>%
+  dplyr::mutate(., failed_qa_full_path = paste0(params$box_path, params$data_path,
+                                         params$failed_qa_path, "/", fn))
+
+# Helper function to handle copying
+copy_files_to_qa_target <- function(df_i, df) {
+  if (df$pass_qa[df_i]) {
+    file.copy(from = df$full_path[df_i], df$qa_full_path[df_i], overwrite = TRUE)
+  } else {
+    file.copy(from = df$full_path[df_i], df$failed_qa_full_path[df_i], overwrite = TRUE)
   }
-
-contrast_sub_ids <-
-  extract_sub_ids(paste0(params$data_path, "/", params$contrast_raw_path))
-
-motion_sub_ids <-
-  extract_sub_ids(paste0(params$data_path, "/", params$motion_raw_path))
-```
-
-Trim IDs to `YYYYMMDDHHMMSS` or 14 characters.
-
-```{r}
-contrast_sub_ids <- stringr::str_sub(contrast_sub_ids, 1, 14)
-motion_sub_ids <- stringr::str_sub(motion_sub_ids, 1, 14)
-```
-
-Create helper function to detect duplicates.
-
-```{r}
-detect_duplicate_ids <- function(ids) {
-  as.logical((sum(length(unique(ids)) != length(ids))))
 }
+
+# Now copy
+purrr::map(1:dim(motion_file_qa)[1], copy_files_to_qa_target, motion_file_qa)
+purrr::map(1:dim(contrast_file_qa)[1], copy_files_to_qa_target, contrast_file_qa)
 ```
 
-### Constrast sub IDs
-
-```{r}
-sort(contrast_sub_ids)
-```
-
-These contrast file(s) have no matching motion file:
-
-`r contrast_sub_ids[!(contrast_sub_ids %in% motion_sub_ids)]`
-
-Are there duplicate contrast files? `r detect_duplicate_ids(contrast_sub_ids)`
-
-### Motion sub IDs
-
-```{r}
-sort(motion_sub_ids)
-```
-
-These motion files have no matching contrast file:
-
-`r motion_sub_ids[!(motion_sub_ids %in% contrast_sub_ids)]`
-
-Are there duplicate motion files? `r detect_duplicate_ids(motion_sub_ids)`
