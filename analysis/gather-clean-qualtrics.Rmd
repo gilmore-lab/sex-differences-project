@@ -12,48 +12,78 @@ library(tidyverse)
 library(qualtRics)
 ```
 
-## Purpose
+# Purpose
 
 This document describes the process of gathering and cleaning the Qualtrics survey data for the sex differences project.
 
-# `qualtRics` package approach
+# Gather data from Qualtrics
 
 I used `qualtRics::qualtrics_api_credentials()` to install the credentials per the instructions here: <https://github.com/ropensci/qualtRics>
 
 ```{r}
-active_survey_name <- "Sex difference survey REV 2019-11-11"
-#active_survey_name <- "Sex difference survey REV 2019-11-18"
+old_active_survey_name <- "Sex difference survey REV 2019-11-11"
+active_survey_name <- "Sex difference survey REV 2019-11-18"
+
 surveys <- qualtRics::all_surveys()
 
 active_survey <- surveys %>%
   filter(., name == active_survey_name)
+
+old_active_survey <- surveys %>%
+  filter(., name == old_active_survey_name)
 
 sex_diff_resp <- qualtRics::fetch_survey(surveyID = active_survey$id,
                                      verbose = TRUE,
                                      force_request = TRUE)
 sex_diff_quest <- qualtRics::survey_questions(surveyID = active_survey$id)
 sex_diff_meta <- qualtRics::metadata(surveyID = active_survey$id)
+
+# Get data from prior to 2019-11-18
+old_sex_diff_resp <- qualtRics::fetch_survey(surveyID = old_active_survey$id,
+                                     verbose = TRUE,
+                                     force_request = TRUE)
+old_sex_diff_quest <- qualtRics::survey_questions(surveyID = old_active_survey$id)
+old_sex_diff_meta <- qualtRics::metadata(surveyID = old_active_survey$id)
 ```
 
-There are `r sex_diff_meta$responsecounts$auditable` surveys.
+There are `r sex_diff_meta$responsecounts$auditable` surveys from the current active survey, and `r old_sex_diff_meta$responsecounts$auditable` from the older inactive survey.
+
+## Active survey
 
 ```{r}
+# In "Sex difference survey REV 2019-11-18", Q97 contains the participant ID
 sex_diff_resp %>%
-  dplyr::select(., `Participant ID`, `Q1`) %>%
-  dplyr::rename(gender = `Q1`) %>%
+  dplyr::select(., StartDate, `Q97`, `Q1`) %>%
+  dplyr::rename(., p_id = `Q97`, 
+                gender = `Q1`) %>%
   knitr::kable(.)
 ```
 
-## Data cleaning
+## Older survey
+
+```{r}
+# In "Sex difference survey REV 2019-11-18", Q97 contains the participant ID
+old_sex_diff_resp %>%
+  dplyr::select(., StartDate, `Participant ID`, `Q1`) %>%
+  dplyr::rename(., p_id = `Participant ID`, 
+                gender = `Q1`) %>%
+  knitr::kable(.)
+```
+
+# Data cleaning
+
+## Active survey
 
 Several of the nominal variables are spread into separate columns, e.g., `Q89` gets split into multiple ethnicity categories.
 
 ```{r}
 sex_diff_demo <- sex_diff_resp %>%
-  tidyr::gather(., key="quest", value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, Q89_5) %>%
+  dplyr::rename(., p_id = `Q97`) %>%
+  tidyr::gather(., key="quest", 
+                value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, 
+                Q89_5, Q89_6, Q89_7) %>%
   dplyr::filter(., !is.na(ethnicity)) %>%
   dplyr::select(., -quest) %>%
-  dplyr::rename(., p_id = `Participant ID`) %>%
   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>%
   dplyr::rename(., vis_acuity = `Q81`) %>%
   dplyr::rename(., gender = `Q1`) %>%
@@ -62,85 +92,57 @@ sex_diff_demo <- sex_diff_resp %>%
   dplyr::rename(., major = `Q3`) %>%
   dplyr::rename(., preferred_hand = `Q88`) %>%
   dplyr::rename(., stereo_vision = `Q92`) %>%
-  dplyr::select(., p_id, gender, age_yrs, school_yr, major,
-                preferred_hand, vis_acuity, stereo_vision)
+  dplyr::rename(., test_date = StartDate) %>%
+  dplyr::select(., test_date, p_id, gender, age_yrs, school_yr, major,
+                preferred_hand, vis_acuity, stereo_vision) %>%
+  dplyr::arrange(., test_date)
 ```
-
-
 
 ```{r}
 xtabs(~ gender + age_yrs, data = sex_diff_demo) %>%
   knitr::kable(.)
 ```
 
-# Alternative approach
-
-## Manually download the data file
-
-The data file must be exported from Qualtrics.
-Only Rick can do this.
-
-## Open the data file
-
-The `*.zip` data file(s) can be found at
-
-`~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data/zip`
-
-The following code unzips any target `.zip` files and copies it to 
-
-`~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data/csv`
+## Older survey
 
 ```{r}
-qualtrics_dir <- "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data"
-qualtrics_zip_dir <- paste0(qualtrics_dir, "/", "zip")
-qualtrics_zip_fns <- list.files(qualtrics_zip_dir, pattern = "\\.zip$", full.names = TRUE)
-lapply(qualtrics_zip_fns, unzip, exdir = paste0(qualtrics_dir, "/csv"))
+old_sex_diff_demo <- old_sex_diff_resp %>%
+  dplyr::rename(., p_id = `Participant ID`) %>%
+  tidyr::gather(., key="quest", 
+                value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, 
+                Q89_5, Q89_6, Q89_7) %>%
+  dplyr::filter(., !is.na(ethnicity)) %>%
+  dplyr::select(., -quest) %>%
+  dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>%
+  dplyr::rename(., vis_acuity = `Q81`) %>%
+  dplyr::rename(., gender = `Q1`) %>%
+  dplyr::rename(., age_yrs = `Q4`) %>%
+  dplyr::rename(., school_yr = `Q2`) %>%
+  dplyr::rename(., major = `Q3`) %>%
+  dplyr::rename(., preferred_hand = `Q88`) %>%
+  dplyr::rename(., stereo_vision = `Q92`) %>%
+  dplyr::rename(., test_date = StartDate) %>%
+  dplyr::select(., test_date, p_id, gender, age_yrs, school_yr, major,
+                preferred_hand, vis_acuity, stereo_vision) %>%
+  dplyr::arrange(., test_date)
 ```
 
 ```{r}
-qualtrics_csv_dir <- paste0(qualtrics_dir, "/", "csv")
-# Just pick 1st 1st one for now
-
-qualtrics_fns <- list.files(qualtrics_csv_dir, pattern = "\\.csv$", full.names = TRUE)
-this_fn <- qualtrics_fns[1]
-qualtrics_df <- readr::read_csv(this_fn)
-
-
-# Trim first two rows
-n_rows <- dim(qualtrics_df)[1]
-qualtrics_trim <- qualtrics_df[3:n_rows,]
-```
-
-## Extract specific data types
-
-### Demographics
-
-```{r}
-demog_df <- qualtrics_trim %>%
-  dplyr::filter(., !is.na(`Participant ID`)) %>%
-  dplyr::rename(p_id = `Participant ID`) %>%
-  dplyr::rename(vis_acuity = `Q81`) %>%
-  dplyr::rename(gender = `Q1`) %>%
-  dplyr::rename(age_yrs = `Q4`) %>%
-  dplyr::rename(school_yr = `Q2`) %>%
-  dplyr::rename(major = `Q3`) %>%
-  dplyr::rename(ethnicity = `Q89`) %>%
-  dplyr::rename(preferred_hand = `Q88`) %>%
-  dplyr::rename(stereo_vision = `Q92`) %>%
-  dplyr::rename(color_p6 = `Q93_1`) %>%
-  dplyr::rename(color_p7 = `Q93_2`) %>%
-  dplyr::rename(color_p8 = `Q93_3`) %>%
-  dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr,
-                major, ethnicity, preferred_hand, stereo_vision,
-                color_p6, color_p7, color_p8)
-
-# Some cleaning
-
-demog_df <- demog_df %>%
-  dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]"))
-
-demog_df %>%
-  dplyr::select(., p_id, gender, vis_acuity) %>%
+xtabs(~ gender + age_yrs, data = old_sex_diff_demo) %>%
   knitr::kable(.)
+```
+
+# Data merging
+
+The merged dataset can be used to address duplicate entries.
+
+```{r}
+merged_demo <- rbind(sex_diff_demo, old_sex_diff_demo)
+merged_demo <- merged_demo %>%
+  dplyr::arrange(., test_date)
+
+merged_demo %>%
+  knitr::kable(.) %>%
+  kableExtra::kable_styling(.)
 ```
 
