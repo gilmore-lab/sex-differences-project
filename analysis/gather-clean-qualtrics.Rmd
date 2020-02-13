@@ -1,5 +1,6 @@
 ---
-title: "Gather & Clean Qualtrics"
+title: "Gather & Clean Qualtrics Surveys"
+subtitle: "Sex Differences Project"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
 output: 
