@@ -445,7 +445,7 @@ summary {
 <h1 class="title toc-ignore">Gather &amp; Clean Qualtrics Surveys</h1>
 <h3 class="subtitle">Sex Differences Project</h3>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2020-02-13 09:49:13</h4>
+<h4 class="date">2020-02-13 10:47:22</h4>
 
 </div>
 
@@ -453,10 +453,22 @@ summary {
 <div id="purpose" class="section level1">
 <h1>Purpose</h1>
 <p>This document describes the process of gathering and cleaning the Qualtrics survey data for the sex differences project.</p>
+<p>To render, enter <code>rmarkdown::render(&quot;analysis/gather-clean-qualtrics.Rmd&quot;, params = list(box_path = &quot;&lt;YOUR_BOX_PATH&gt;&quot;))</code>, substituting the path to your Box folder on your local machine. On Mac OS the default is “~/Box Sync”.</p>
+</div>
+<div id="background" class="section level1">
+<h1>Background</h1>
+<div id="connecting-to-qualtrics-via-the-api" class="section level2">
+<h2>Connecting to Qualtrics via the API</h2>
+<p>I used <code>qualtRics::qualtrics_api_credentials()</code> to install the credentials per the instructions here: <a href="https://github.com/ropensci/qualtRics" class="uri">https://github.com/ropensci/qualtRics</a>. Note that this writes credentials data to the user’s R Environment (<code>.Renviron</code>) variable. This file should <strong>not</strong> be synched to GitHub for security reasons. The default <code>.gitignore</code> for the repository includes an entry that excludes <code>.Renviron</code> from git version control.</p>
+</div>
+<div id="qualtrics-surveys" class="section level2">
+<h2>Qualtrics survey(s)</h2>
+<p>Our survey data comes from two different “published” surveys: - “Sex difference survey REV 2019-11-11” - “Sex difference survey REV 2019-11-18”</p>
+<p>This script imports both.</p>
+</div>
 </div>
 <div id="gather-data-from-qualtrics" class="section level1">
 <h1>Gather data from Qualtrics</h1>
-<p>I used <code>qualtRics::qualtrics_api_credentials()</code> to install the credentials per the instructions here: <a href="https://github.com/ropensci/qualtRics" class="uri">https://github.com/ropensci/qualtRics</a></p>
 <pre class="r"><code>old_active_survey_name &lt;- &quot;Sex difference survey REV 2019-11-11&quot;
 active_survey_name &lt;- &quot;Sex difference survey REV 2019-11-18&quot;
 
@@ -1157,8 +1169,9 @@ old_sex_diff_resp %&gt;%
   dplyr::rename(., preferred_hand = `Q88`) %&gt;%
   dplyr::rename(., stereo_vision = `Q92`) %&gt;%
   dplyr::rename(., test_date = StartDate) %&gt;%
+  dplyr::rename(., expt_notes = `Q99`) %&gt;%
   dplyr::select(., test_date, p_id, gender, age_yrs, school_yr, major,
-                preferred_hand, vis_acuity, stereo_vision) %&gt;%
+                preferred_hand, vis_acuity, stereo_vision, expt_notes) %&gt;%
   dplyr::arrange(., test_date)</code></pre>
 <pre class="r"><code>xtabs(~ gender + age_yrs, data = sex_diff_demo) %&gt;%
   knitr::kable(., 'html') %&gt;%
@@ -1238,9 +1251,10 @@ Male
   dplyr::rename(., preferred_hand = `Q88`) %&gt;%
   dplyr::rename(., stereo_vision = `Q92`) %&gt;%
   dplyr::rename(., test_date = StartDate) %&gt;%
+  dplyr::mutate(., expt_notes = NA) %&gt;%
   dplyr::select(., test_date, p_id, gender, age_yrs,
                 school_yr, major,
-                preferred_hand, vis_acuity, stereo_vision) %&gt;%
+                preferred_hand, vis_acuity, stereo_vision, expt_notes) %&gt;%
   dplyr::arrange(., test_date)</code></pre>
 <pre class="r"><code>xtabs(~ gender + age_yrs, data = old_sex_diff_demo) %&gt;%
   knitr::kable(., 'html') %&gt;%
@@ -1334,6 +1348,9 @@ vis_acuity
 <th style="text-align:right;">
 stereo_vision
 </th>
+<th style="text-align:left;">
+expt_notes
+</th>
 </tr>
 </thead>
 <tbody>
@@ -1365,6 +1382,9 @@ Either hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1394,6 +1414,9 @@ Right hand
 <td style="text-align:right;">
 140
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1423,6 +1446,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1451,6 +1477,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1481,6 +1510,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1509,6 +1541,9 @@ Left hand
 </td>
 <td style="text-align:right;">
 60
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1539,6 +1574,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1567,6 +1605,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1597,6 +1638,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1625,6 +1669,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1655,6 +1702,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1683,6 +1733,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1713,6 +1766,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1742,6 +1798,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1769,6 +1828,9 @@ Either hand
 10/10
 </td>
 <td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
 NA
 </td>
 </tr>
@@ -1800,6 +1862,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1828,6 +1893,9 @@ Left hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1858,6 +1926,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1886,6 +1957,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1916,6 +1990,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1944,6 +2021,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -1974,6 +2054,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2002,6 +2085,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2032,6 +2118,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2060,6 +2149,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2090,6 +2182,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2118,6 +2213,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2148,6 +2246,9 @@ Right hand
 <td style="text-align:right;">
 80
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2176,6 +2277,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2206,6 +2310,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2234,6 +2341,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2264,6 +2374,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2292,6 +2405,9 @@ Either hand
 </td>
 <td style="text-align:right;">
 100
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2322,6 +2438,9 @@ Either hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2351,6 +2470,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2380,6 +2502,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2408,6 +2533,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2438,6 +2566,9 @@ Right hand
 <td style="text-align:right;">
 50
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2467,6 +2598,9 @@ Right hand
 <td style="text-align:right;">
 800
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2494,6 +2628,9 @@ Right hand
 10/10
 </td>
 <td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
 NA
 </td>
 </tr>
@@ -2525,6 +2662,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2553,6 +2693,9 @@ Either hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2583,6 +2726,9 @@ Either hand
 <td style="text-align:right;">
 50
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2611,6 +2757,9 @@ Left hand
 </td>
 <td style="text-align:right;">
 100
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2641,6 +2790,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2669,6 +2821,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 60
+</td>
+<td style="text-align:left;">
+ran temp thresh first and contrast sensitivity second :(
 </td>
 </tr>
 <tr>
@@ -2699,6 +2854,9 @@ Right hand
 <td style="text-align:right;">
 60
 </td>
+<td style="text-align:left;">
+since I did the last participant wrong (337), I flipped the order of this participant to balance out. So contrast sensitivity is first and temp thresh is second.\contacts
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2727,6 +2885,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+replace the chair position in the second computer task, do not a pair of glasses
 </td>
 </tr>
 <tr>
@@ -2757,6 +2918,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+Had to reposition chair for second test.
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2785,6 +2949,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 50
+</td>
+<td style="text-align:left;">
+forget to submit this page after the experiment is done.
 </td>
 </tr>
 <tr>
@@ -2815,6 +2982,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2843,6 +3013,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 200
+</td>
+<td style="text-align:left;">
+the participants in stereoaccuity test should be 400 can’t see 3-5 , but he got 8 correct. moreover, he get 6,7 and 9 wrongthere is a possibility that he just guessed correctly on 8
 </td>
 </tr>
 <tr>
@@ -2873,6 +3046,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2901,6 +3077,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2931,6 +3110,9 @@ Either hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2959,6 +3141,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -2989,6 +3174,9 @@ Either hand
 <td style="text-align:right;">
 800
 </td>
+<td style="text-align:left;">
+participant id on questionnaire did not match with actual participant. The correct ID number is #348.
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3017,6 +3205,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 60
+</td>
+<td style="text-align:left;">
+glitch will make participants headache
 </td>
 </tr>
 <tr>
@@ -3047,6 +3238,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3075,6 +3269,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+no
 </td>
 </tr>
 <tr>
@@ -3105,6 +3302,9 @@ Left hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+She got the stereo vision test #8 wrong, but got correct answer on the others.
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3133,6 +3333,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+2 participants at one time slot
 </td>
 </tr>
 <tr>
@@ -3163,6 +3366,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+remark the 60cm to the computer screen. In stereo vision, she got wrong answer in #3, but got right in the others.
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3191,6 +3397,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+no complications.
 </td>
 </tr>
 <tr>
@@ -3221,6 +3430,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+n/a
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3249,6 +3461,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 60
+</td>
+<td style="text-align:left;">
+Participant could not see butterfly image in stereo vision test.
 </td>
 </tr>
 <tr>
@@ -3279,6 +3494,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+Had to reposition Tape and Chair for second computer task.
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3308,6 +3526,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+the black stripes behind the chair went away again
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3336,6 +3557,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+the black stripes behind the chair went away again
 </td>
 </tr>
 <tr>
@@ -3366,6 +3590,9 @@ Either hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+the black stripes on the ground keep moving around
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3394,6 +3621,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -3424,6 +3654,9 @@ Either hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3452,6 +3685,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+I forgot to ask her to leave her phone in her bag, but I don’t think she took it with her into the study.
 </td>
 </tr>
 <tr>
@@ -3482,6 +3718,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+None.
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3510,6 +3749,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -3540,6 +3782,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3569,6 +3814,9 @@ Either hand
 <td style="text-align:right;">
 50
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3597,6 +3845,9 @@ Either hand
 </td>
 <td style="text-align:right;">
 50
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -3627,6 +3878,9 @@ Left hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+left-handed, had to reposition chair during 2nd trial
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3655,6 +3909,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+no
 </td>
 </tr>
 <tr>
@@ -3685,6 +3942,9 @@ Left hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+computer is frozen and not responding
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3713,6 +3973,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+Temporal Duration Threshold Task (Murray) would not run. PsychoPy showed a syntax error message when study was attempted to run. It appears there was an accidental change in the code and therefore prevented the study from being run. Contrast Sensitivity Task ran fine.
 </td>
 </tr>
 <tr>
@@ -3743,6 +4006,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+N/A
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3772,6 +4038,9 @@ Right hand
 <td style="text-align:right;">
 40
 </td>
+<td style="text-align:left;">
+had to adjust chair position in start of the second computer task.
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3800,6 +4069,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+had to adjust chair position in start of the second computer task.
 </td>
 </tr>
 <tr>
@@ -3829,6 +4101,9 @@ Right hand
 </td>
 <td style="text-align:right;">
 40
+</td>
+<td style="text-align:left;">
+participant moved chair multiple times, had to readjust and remind her to not move chair.
 </td>
 </tr>
 </tbody>
@@ -3894,7 +4169,7 @@ poss_exclude &lt;- function(data_df) {
                 poss_exclude = poss_exclude(merged_demo))
 
 merged_demo %&gt;%
-  select(., test_date, p_id, poss_exclude,
+  select(., test_date, expt_notes, p_id, poss_exclude,
          observer_id_in_file,
          gender_in_file,
          gender_male_or_female,
@@ -3908,6 +4183,9 @@ merged_demo %&gt;%
 <tr>
 <th style="text-align:left;">
 test_date
+</th>
+<th style="text-align:left;">
+expt_notes
 </th>
 <th style="text-align:left;">
 p_id
@@ -3941,6 +4219,9 @@ preferred_hand_valid
 2019-11-13 09:49:26
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 2019111309492632
 </td>
 <td style="text-align:left;">
@@ -3968,6 +4249,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-13 11:10:24
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 2019111311102438
@@ -3999,6 +4283,9 @@ TRUE
 2019-11-13 13:38:03
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 2019111313380337
 </td>
 <td style="text-align:left;">
@@ -4026,6 +4313,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-13 13:38:03
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 2019111313380337
@@ -4057,6 +4347,9 @@ TRUE
 2019-11-13 14:56:02
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 2019111314560233
 </td>
 <td style="text-align:left;">
@@ -4084,6 +4377,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-13 16:12:18
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 2019111316121898
@@ -4115,6 +4411,9 @@ TRUE
 2019-11-18 08:39:39
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 2019111808393927
 </td>
 <td style="text-align:left;">
@@ -4142,6 +4441,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-18 11:26:49
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 2019111811264976
@@ -4173,6 +4475,9 @@ TRUE
 2019-11-18 12:45:17
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 2019111812451738
 </td>
 <td style="text-align:left;">
@@ -4200,6 +4505,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-18 13:58:08
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 2019111813580893
@@ -4231,6 +4539,9 @@ TRUE
 2019-11-18 14:48:28
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 2019111814482896
 </td>
 <td style="text-align:left;">
@@ -4258,6 +4569,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-20 13:40:19
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 2019112013401983
@@ -4289,6 +4603,9 @@ TRUE
 2019-11-20 14:53:23
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 2019112014532351
 </td>
 <td style="text-align:left;">
@@ -4316,6 +4633,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-20 16:11:07
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 2019112016110713
@@ -4350,6 +4670,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4374,6 +4697,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-21 10:26:03
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4408,6 +4734,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4432,6 +4761,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-21 12:56:39
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4466,6 +4798,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4490,6 +4825,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-22 10:52:35
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4524,6 +4862,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4548,6 +4889,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-11-22 16:04:38
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4582,6 +4926,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4606,6 +4953,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-12-04 09:52:35
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4640,6 +4990,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4664,6 +5017,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-12-04 15:54:55
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4698,6 +5054,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4722,6 +5081,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-12-05 12:23:55
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4756,6 +5118,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4780,6 +5145,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-12-12 13:47:50
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4814,6 +5182,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4838,6 +5209,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-12-12 15:56:19
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4872,6 +5246,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4896,6 +5273,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-12-13 13:15:41
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -4930,6 +5310,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4959,6 +5342,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -4983,6 +5369,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2019-12-13 15:01:20
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -5017,6 +5406,9 @@ TRUE
 NA
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 FALSE
 </td>
 <td style="text-align:left;">
@@ -5041,6 +5433,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-21 11:39:43
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 test
@@ -5072,6 +5467,9 @@ TRUE
 2020-01-22 13:12:08
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 000
 </td>
 <td style="text-align:left;">
@@ -5099,6 +5497,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-23 13:43:33
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 000
@@ -5130,6 +5531,9 @@ TRUE
 2020-01-24 10:30:14
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 test
 </td>
 <td style="text-align:left;">
@@ -5157,6 +5561,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-27 11:11:18
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 0000
@@ -5188,6 +5595,9 @@ TRUE
 2020-01-27 11:47:21
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 00000
 </td>
 <td style="text-align:left;">
@@ -5215,6 +5625,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-28 12:47:46
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 336
@@ -5246,6 +5659,9 @@ TRUE
 2020-01-29 11:58:59
 </td>
 <td style="text-align:left;">
+ran temp thresh first and contrast sensitivity second :(
+</td>
+<td style="text-align:left;">
 337
 </td>
 <td style="text-align:left;">
@@ -5273,6 +5689,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-29 12:50:27
+</td>
+<td style="text-align:left;">
+since I did the last participant wrong (337), I flipped the order of this participant to balance out. So contrast sensitivity is first and temp thresh is second.\contacts
 </td>
 <td style="text-align:left;">
 338
@@ -5304,6 +5723,9 @@ TRUE
 2020-01-29 13:50:59
 </td>
 <td style="text-align:left;">
+replace the chair position in the second computer task, do not a pair of glasses
+</td>
+<td style="text-align:left;">
 339
 </td>
 <td style="text-align:left;">
@@ -5331,6 +5753,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-30 10:39:11
+</td>
+<td style="text-align:left;">
+Had to reposition chair for second test.
 </td>
 <td style="text-align:left;">
 340
@@ -5362,6 +5787,9 @@ TRUE
 2020-01-30 11:36:03
 </td>
 <td style="text-align:left;">
+forget to submit this page after the experiment is done.
+</td>
+<td style="text-align:left;">
 341
 </td>
 <td style="text-align:left;">
@@ -5389,6 +5817,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-30 12:42:22
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 342
@@ -5420,6 +5851,9 @@ TRUE
 2020-01-30 13:39:37
 </td>
 <td style="text-align:left;">
+the participants in stereoaccuity test should be 400 can’t see 3-5 , but he got 8 correct. moreover, he get 6,7 and 9 wrongthere is a possibility that he just guessed correctly on 8
+</td>
+<td style="text-align:left;">
 343
 </td>
 <td style="text-align:left;">
@@ -5447,6 +5881,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-01-31 08:39:50
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 344
@@ -5478,6 +5915,9 @@ TRUE
 2020-01-31 09:40:58
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 345
 </td>
 <td style="text-align:left;">
@@ -5505,6 +5945,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-03 10:04:17
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 346
@@ -5536,6 +5979,9 @@ TRUE
 2020-02-03 10:51:26
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 347
 </td>
 <td style="text-align:left;">
@@ -5563,6 +6009,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-04 09:33:00
+</td>
+<td style="text-align:left;">
+participant id on questionnaire did not match with actual participant. The correct ID number is #348.
 </td>
 <td style="text-align:left;">
 977316075
@@ -5594,6 +6043,9 @@ TRUE
 2020-02-04 11:54:00
 </td>
 <td style="text-align:left;">
+glitch will make participants headache
+</td>
+<td style="text-align:left;">
 349
 </td>
 <td style="text-align:left;">
@@ -5621,6 +6073,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-04 12:53:58
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 350
@@ -5652,6 +6107,9 @@ TRUE
 2020-02-04 13:37:41
 </td>
 <td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
 351
 </td>
 <td style="text-align:left;">
@@ -5679,6 +6137,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-05 11:17:52
+</td>
+<td style="text-align:left;">
+She got the stereo vision test #8 wrong, but got correct answer on the others.
 </td>
 <td style="text-align:left;">
 352
@@ -5710,6 +6171,9 @@ TRUE
 2020-02-05 12:08:15
 </td>
 <td style="text-align:left;">
+2 participants at one time slot
+</td>
+<td style="text-align:left;">
 353
 </td>
 <td style="text-align:left;">
@@ -5737,6 +6201,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-05 12:12:15
+</td>
+<td style="text-align:left;">
+remark the 60cm to the computer screen. In stereo vision, she got wrong answer in #3, but got right in the others.
 </td>
 <td style="text-align:left;">
 354
@@ -5768,6 +6235,9 @@ TRUE
 2020-02-05 13:00:25
 </td>
 <td style="text-align:left;">
+no complications.
+</td>
+<td style="text-align:left;">
 355
 </td>
 <td style="text-align:left;">
@@ -5795,6 +6265,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-05 13:52:26
+</td>
+<td style="text-align:left;">
+n/a
 </td>
 <td style="text-align:left;">
 356
@@ -5826,6 +6299,9 @@ TRUE
 2020-02-05 14:34:36
 </td>
 <td style="text-align:left;">
+Participant could not see butterfly image in stereo vision test.
+</td>
+<td style="text-align:left;">
 357
 </td>
 <td style="text-align:left;">
@@ -5853,6 +6329,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-06 10:49:03
+</td>
+<td style="text-align:left;">
+Had to reposition Tape and Chair for second computer task.
 </td>
 <td style="text-align:left;">
 358
@@ -5884,6 +6363,9 @@ TRUE
 2020-02-06 12:04:11
 </td>
 <td style="text-align:left;">
+the black stripes behind the chair went away again
+</td>
+<td style="text-align:left;">
 359
 </td>
 <td style="text-align:left;">
@@ -5911,6 +6393,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-06 12:04:11
+</td>
+<td style="text-align:left;">
+the black stripes behind the chair went away again
 </td>
 <td style="text-align:left;">
 359
@@ -5942,6 +6427,9 @@ TRUE
 2020-02-06 12:51:21
 </td>
 <td style="text-align:left;">
+the black stripes on the ground keep moving around
+</td>
+<td style="text-align:left;">
 360
 </td>
 <td style="text-align:left;">
@@ -5969,6 +6457,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-06 13:44:25
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 361
@@ -6000,6 +6491,9 @@ TRUE
 2020-02-07 08:51:50
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 362
 </td>
 <td style="text-align:left;">
@@ -6027,6 +6521,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-07 09:47:23
+</td>
+<td style="text-align:left;">
+I forgot to ask her to leave her phone in her bag, but I don’t think she took it with her into the study.
 </td>
 <td style="text-align:left;">
 363
@@ -6058,6 +6555,9 @@ TRUE
 2020-02-10 08:56:51
 </td>
 <td style="text-align:left;">
+None.
+</td>
+<td style="text-align:left;">
 364
 </td>
 <td style="text-align:left;">
@@ -6085,6 +6585,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-10 09:55:15
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 365
@@ -6116,6 +6619,9 @@ TRUE
 2020-02-10 10:22:26
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 366
 </td>
 <td style="text-align:left;">
@@ -6145,6 +6651,9 @@ TRUE
 2020-02-11 09:43:46
 </td>
 <td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 367
 </td>
 <td style="text-align:left;">
@@ -6172,6 +6681,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-11 09:43:46
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 367
@@ -6203,6 +6715,9 @@ TRUE
 2020-02-11 10:45:19
 </td>
 <td style="text-align:left;">
+left-handed, had to reposition chair during 2nd trial
+</td>
+<td style="text-align:left;">
 368
 </td>
 <td style="text-align:left;">
@@ -6230,6 +6745,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-11 12:20:54
+</td>
+<td style="text-align:left;">
+no
 </td>
 <td style="text-align:left;">
 369
@@ -6261,6 +6779,9 @@ TRUE
 2020-02-11 12:58:40
 </td>
 <td style="text-align:left;">
+computer is frozen and not responding
+</td>
+<td style="text-align:left;">
 370
 </td>
 <td style="text-align:left;">
@@ -6288,6 +6809,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-11 14:08:17
+</td>
+<td style="text-align:left;">
+Temporal Duration Threshold Task (Murray) would not run. PsychoPy showed a syntax error message when study was attempted to run. It appears there was an accidental change in the code and therefore prevented the study from being run. Contrast Sensitivity Task ran fine.
 </td>
 <td style="text-align:left;">
 371
@@ -6319,6 +6843,9 @@ TRUE
 2020-02-12 13:09:13
 </td>
 <td style="text-align:left;">
+N/A
+</td>
+<td style="text-align:left;">
 372
 </td>
 <td style="text-align:left;">
@@ -6348,6 +6875,9 @@ TRUE
 2020-02-12 14:00:54
 </td>
 <td style="text-align:left;">
+had to adjust chair position in start of the second computer task.
+</td>
+<td style="text-align:left;">
 373
 </td>
 <td style="text-align:left;">
@@ -6377,6 +6907,9 @@ TRUE
 2020-02-12 14:00:54
 </td>
 <td style="text-align:left;">
+had to adjust chair position in start of the second computer task.
+</td>
+<td style="text-align:left;">
 373
 </td>
 <td style="text-align:left;">
@@ -6404,6 +6937,9 @@ TRUE
 <tr>
 <td style="text-align:left;">
 2020-02-12 14:43:09
+</td>
+<td style="text-align:left;">
+participant moved chair multiple times, had to readjust and remind her to not move chair.
 </td>
 <td style="text-align:left;">
 374

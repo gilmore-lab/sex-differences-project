@@ -27,9 +27,27 @@ library(qualtRics)
 
 This document describes the process of gathering and cleaning the Qualtrics survey data for the sex differences project.
 
-# Gather data from Qualtrics
+To render, enter `rmarkdown::render("analysis/gather-clean-qualtrics.Rmd", params = list(box_path = "<YOUR_BOX_PATH>"))`, substituting the path to your Box folder on your local machine.
+On Mac OS the default is "~/Box Sync".
 
-I used `qualtRics::qualtrics_api_credentials()` to install the credentials per the instructions here: <https://github.com/ropensci/qualtRics>
+# Background
+
+## Connecting to Qualtrics via the API
+
+I used `qualtRics::qualtrics_api_credentials()` to install the credentials per the instructions here: <https://github.com/ropensci/qualtRics>.
+Note that this writes credentials data to the user's R Environment (`.Renviron`) variable.
+This file should **not** be synched to GitHub for security reasons.
+The default `.gitignore` for the repository includes an entry that excludes `.Renviron` from git version control.
+
+## Qualtrics survey(s)
+
+Our survey data comes from two different "published" surveys:
+  - "Sex difference survey REV 2019-11-11"
+  - "Sex difference survey REV 2019-11-18"
+  
+This script imports both.
+
+# Gather data from Qualtrics
 
 ```{r import-from-qualtrics}
 old_active_survey_name <- "Sex difference survey REV 2019-11-11"
@@ -161,8 +179,9 @@ sex_diff_demo <- sex_diff_resp %>%
   dplyr::rename(., preferred_hand = `Q88`) %>%
   dplyr::rename(., stereo_vision = `Q92`) %>%
   dplyr::rename(., test_date = StartDate) %>%
+  dplyr::rename(., expt_notes = `Q99`) %>%
   dplyr::select(., test_date, p_id, gender, age_yrs, school_yr, major,
-                preferred_hand, vis_acuity, stereo_vision) %>%
+                preferred_hand, vis_acuity, stereo_vision, expt_notes) %>%
   dplyr::arrange(., test_date)
 ```
 
@@ -191,9 +210,10 @@ old_sex_diff_demo <- old_sex_diff_resp %>%
   dplyr::rename(., preferred_hand = `Q88`) %>%
   dplyr::rename(., stereo_vision = `Q92`) %>%
   dplyr::rename(., test_date = StartDate) %>%
+  dplyr::mutate(., expt_notes = NA) %>%
   dplyr::select(., test_date, p_id, gender, age_yrs,
                 school_yr, major,
-                preferred_hand, vis_acuity, stereo_vision) %>%
+                preferred_hand, vis_acuity, stereo_vision, expt_notes) %>%
   dplyr::arrange(., test_date)
 ```
 
@@ -284,7 +304,7 @@ merged_demo <- merged_demo %>%
                 poss_exclude = poss_exclude(merged_demo))
 
 merged_demo %>%
-  select(., test_date, p_id, poss_exclude,
+  select(., test_date, expt_notes, p_id, poss_exclude,
          observer_id_in_file,
          gender_in_file,
          gender_male_or_female,
