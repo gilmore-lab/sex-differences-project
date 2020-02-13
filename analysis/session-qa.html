@@ -435,14 +435,14 @@ summary {
 
 <h1 class="title toc-ignore">Post-processing Quality Assurance (QA)</h1>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2020-02-13 09:43:38</h4>
+<h4 class="date">2020-02-13 10:46:07</h4>
 
 </div>
 
 
 <div id="purpose" class="section level1">
 <h1>Purpose</h1>
-<p>This script describes the process for doing quality assurance (QA) review on each session.</p>
+<p>This script describes the process for doing quality assurance (QA) review on each session, focusing on the computer based tasks.</p>
 <p>To render, enter <code>rmarkdown::render(&quot;analysis/session_qa.Rmd&quot;, params = list(box_path = &quot;&lt;YOUR_BOX_PATH&gt;&quot;))</code>, substituting the path to your Box folder on your local machine. On Mac OS the default is “~/Box Sync”.</p>
 </div>
 <div id="background" class="section level1">
@@ -451,30 +451,49 @@ summary {
 <li>There are two data files for each participant:</li>
 </ol>
 <ul>
-<li>One for the Abramov et al contrast sensitivity task <code>~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/</code></li>
-<li>One for the Murray et al temporal threshold task <code>~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/motion_sensitivity_task_data/</code></li>
+<li>One for the Abramov et al contrast sensitivity task:
+<ul>
+<li>~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data</li>
+</ul></li>
+<li>One for the Murray et al temporal threshold task
+<ul>
+<li>~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/motion_temporal_threshold_data</li>
+</ul></li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>There is survey data for each participant in <code>~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_data/</code></li>
-<li>There are four runs for each of two computer-based tasks, each run consisting of <span class="math inline">\(n=30\)</span> trials.</li>
+<li>Each data file contains information about the four runs, each run consisting of <span class="math inline">\(n=30\)</span> trials.</li>
 <li>The computer-based tasks record the participant gender.</li>
-<li>The data files record the participant ID and the participant ID matches the initial portion of the file name.</li>
+<li>The data files record the participant ID and the participant ID <em>should</em> match the initial portion of the file name.</li>
 <li>The data files include the most essential variables for analysis.</li>
 </ol>
 <div id="qa-steps" class="section level2">
 <h2>QA steps</h2>
 <ol style="list-style-type: decimal">
-<li>For each of the computer tasks</li>
+<li>For each of the computer task</li>
 </ol>
 <ul>
-<li>List the <code>*.csv</code> files</li>
+<li>List the <code>*.csv</code> files in the data directory</li>
 <li>Look inside the files and determine the following:
 <ul>
 <li>Does the participant ID match the ID in the file name?</li>
 <li>Is the participant ID in the file?</li>
 <li>Does the file have enough trials (<span class="math inline">\(n=30\)</span> for 4 runs)?</li>
 <li>Does the file have the key variables needed for analysis?</li>
-<li>Does the file include a variable for gender? <!-- - If the answer to all of these questions is yes, then --> <!--     - Copy the file(s) to a `pass_qa` folder. --> <!-- - If the answer is no, then --> <!--     - Copy the file(s) to a `fails_qa` folder. --></li>
+<li>Does the file include a variable for gender?</li>
+</ul></li>
+<li>If the answer to all of these questions is yes, then
+<ul>
+<li>Copy the file(s) to a <code>pass_qa</code> folder:
+<ul>
+<li>~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa</li>
+</ul></li>
+</ul></li>
+<li>If the answer is no, then
+<ul>
+<li>Copy the file(s) to a <code>fails_qa</code> folder:
+<ul>
+<li>~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/failed_qa</li>
+</ul></li>
 </ul></li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
@@ -2208,11 +2227,19 @@ contrast_file_qa &lt;- contrast_file_qa %&gt;%
   dplyr::mutate(., pass_qa = id_matches_fn &amp; 
                   id_in_file &amp; enough_trials &amp; 
                   has_key_vars &amp; gender_var)</code></pre>
+<div id="contrast-task" class="section level4">
+<h4>Contrast task</h4>
 <p>There are 65 contrast task files that pass file-level QA.</p>
+</div>
+<div id="motion-task" class="section level4">
+<h4>Motion task</h4>
 <p>There are 66 motion task files that pass file-level QA.</p>
+</div>
 </div>
 <div id="files-that-fail-qa" class="section level3">
 <h3>Files that fail QA</h3>
+<div id="contrast-task-1" class="section level4">
+<h4>Contrast task</h4>
 <p>There are 7 contrast task files that fail file-level QA.</p>
 <pre class="r"><code>contrast_file_qa %&gt;%
   dplyr::filter(., !pass_qa) %&gt;%
@@ -2295,6 +2322,9 @@ contrast_file_qa &lt;- contrast_file_qa %&gt;%
 </tr>
 </tbody>
 </table>
+</div>
+<div id="motion-task-1" class="section level4">
+<h4>Motion task</h4>
 <p>There are 4 motion task files that fail file-level QA.</p>
 <pre class="r"><code>motion_file_qa %&gt;%
   dplyr::filter(., !pass_qa) %&gt;%
@@ -2352,9 +2382,10 @@ contrast_file_qa &lt;- contrast_file_qa %&gt;%
 </table>
 </div>
 </div>
+</div>
 <div id="copy-files" class="section level2">
 <h2>Copy files</h2>
-<p>Copy files to directories.</p>
+<p>Copy files to directories based on whether the files pass or fail QA review.</p>
 </div>
 </div>
 

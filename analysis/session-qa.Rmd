@@ -29,7 +29,7 @@ library(qualtRics)
 
 # Purpose
 
-This script describes the process for doing quality assurance (QA) review on each session.
+This script describes the process for doing quality assurance (QA) review on each session, focusing on the computer based tasks.
 
 To render, enter `rmarkdown::render("analysis/session_qa.Rmd", params = list(box_path = "<YOUR_BOX_PATH>"))`, substituting the path to your Box folder on your local machine.
 On Mac OS the default is "~/Box Sync".
@@ -37,29 +37,33 @@ On Mac OS the default is "~/Box Sync".
 # Background
 
 1. There are two data files for each participant:
-  - One for the Abramov et al contrast sensitivity task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/`
-  - One for the Murray et al temporal threshold task `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/motion_sensitivity_task_data/`
-2. There is survey data for each participant in `~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_data/`
-3. There are four runs for each of two computer-based tasks, each run consisting of $n=30$ trials.
-4. The computer-based tasks record the participant gender.
-6. The data files record the participant ID and the participant ID matches the initial portion of the file name.
-7. The data files include the most essential variables for analysis.
+  - One for the Abramov et al contrast sensitivity task:
+      - `r paste0(params$box_path, params$data_path, params$contrast_raw_path)`
+  - One for the Murray et al temporal threshold task 
+      - `r paste0(params$box_path, params$data_path, params$motion_raw_path)`
+2. Each data file contains information about the four runs, each run consisting of $n=30$ trials.
+3. The computer-based tasks record the participant gender.
+4. The data files record the participant ID and the participant ID *should* match the initial portion of the file name.
+5. The data files include the most essential variables for analysis.
 
 ## QA steps
 
-1. For each of the computer tasks
-  - List the `*.csv` files
+1. For each of the computer task
+  - List the `*.csv` files in the data directory
   - Look inside the files and determine the following:
       - Does the participant ID match the ID in the file name?
       - Is the participant ID in the file?
       - Does the file have enough trials ($n=30$ for 4 runs)?
       - Does the file have the key variables needed for analysis?
       - Does the file include a variable for gender?
-  <!-- - If the answer to all of these questions is yes, then -->
-  <!--     - Copy the file(s) to a `pass_qa` folder. -->
-  <!-- - If the answer is no, then -->
-  <!--     - Copy the file(s) to a `fails_qa` folder. -->
-2. A separate R Markdown document should address the file(s) that fail QA. If the failures can be addressed, the document should do so and then copy the corrected data file to the `pass_qa` folder.
+  - If the answer to all of these questions is yes, then
+      - Copy the file(s) to a `pass_qa` folder:
+          - `r paste0(params$box_path, params$data_path, params$passed_qa_path)`
+  - If the answer is no, then
+      - Copy the file(s) to a `fails_qa` folder:
+          - `r paste0(params$box_path, params$data_path, params$failed_qa_path)`
+2. A separate R Markdown document should address the file(s) that fail QA. 
+If the failures can be addressed, the document should do so and then copy the corrected data file to the `pass_qa` folder.
 
 # Implementation
 
@@ -194,11 +198,17 @@ contrast_file_qa <- contrast_file_qa %>%
                   has_key_vars & gender_var)
 ```
 
+#### Contrast task
+
 There are `r sum(contrast_file_qa$pass_qa)` contrast task files that pass file-level QA.
+
+#### Motion task
 
 There are `r sum(motion_file_qa$pass_qa)` motion task files that pass file-level QA.
 
 ### Files that fail QA
+
+#### Contrast task
 
 There are `r sum(!contrast_file_qa$pass_qa)` contrast task files that fail file-level QA.
 
@@ -207,6 +217,8 @@ contrast_file_qa %>%
   dplyr::filter(., !pass_qa) %>%
   knitr::kable(.)
 ```
+
+#### Motion task
 
 There are `r sum(!motion_file_qa$pass_qa)` motion task files that fail file-level QA.
 
@@ -218,7 +230,7 @@ motion_file_qa %>%
 
 ## Copy files
 
-Copy files to directories.
+Copy files to directories based on whether the files pass or fail QA review.
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 # generate full file path to target directory
