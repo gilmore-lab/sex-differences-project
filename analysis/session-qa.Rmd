@@ -12,7 +12,6 @@ params:
   motion_raw_path: "/raw_data/motion_temporal_threshold_data"
   passed_qa_path: "/passed_qa"
   failed_qa_path: "/failed_qa"
-  qualtrics_csv_dir: "qualtrics_survey_data/csv"
 ---
 
 ```{r setup, include=FALSE}
