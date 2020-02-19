@@ -1,0 +1,110 @@
+---
+title: "Motion Duration Task Summary"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: html_document
+params:
+  box_path: "~/Box Sync"
+  data_path: "Project_Sex_difference_on_Motion_Perception/data"
+  passed_qa_path: "passed_qa"
+  show_n_files: 18
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE)
+
+source("R/batch_qa.R")
+
+library(tidyverse) # for pipe
+```
+
+# Import
+
+```{r list-files}
+fp <- file.path(params$box_path, params$data_path, params$passed_qa_path)
+
+if (dir.exists(fp)) {
+  fl <- list.files(fp, pattern = "\\.csv$", full.names = TRUE)
+  fm <- fl[stringr::str_detect(fl, "motion")]
+} else {
+  stop(paste0("No data files in '", fp, "'."))
+}
+```
+
+There are `r dim(fm)` motion duration threshold files to visualize.
+
+```{r import-as-df}
+import_clean_motion_data <- function(fn) {
+  df <- readr::read_csv(fn)
+  df <- dplyr::mutate(df, p_id = extract_sub_id_from_fn(fn),
+                      run = run_n + 1)
+  df <- dplyr::mutate(df, corr = correct, dur_s = FWHM)
+  df <- dplyr::select(df,
+                      p_id,
+                      run,
+                      trial_n,
+                      dur_s,
+                      corr,
+                      rt)
+  df <- dplyr::mutate(df, run = ordered(run))
+  
+  df
+}
+```
+
+```{r bulk-import}
+m_df <- purrr::map_dfr(fm, import_clean_motion_data)
+```
+
+# Plot
+
+```{r duration-by-trial-run}
+p_ids <- unique(m_df$p_id)
+these_subs <- m_df[m_df$p_id %in% p_ids[1:params$show_n_files],]
+ggplot2::ggplot(data = these_subs) +
+  ggplot2::aes(x = trial_n, y = dur_s, color = run) +
+  ggplot2::geom_smooth() +
+  ggplot2::geom_point() +
+  ggplot2::facet_wrap(~ p_id, ncol = 3) +
+  ggplot2::ggtitle("Duration across trials and runs")
+```
+
+```{r p-corr-by-run}
+these_subs <- these_subs %>%
+  dplyr::group_by(., run) %>%
+  dplyr::arrange(., dur_s) %>%
+  dplyr::mutate(., cum_sum = cumsum(corr),
+                cum_p = cum_sum/n())
+
+these_subs %>% 
+  ggplot2::ggplot(.) +
+  ggplot2::aes(x = dur_s, y = cum_p, color = run) +
+  ggplot2::geom_point() +
+  ggplot2::geom_smooth(se = FALSE) +
+  ggplot2::facet_wrap(~ p_id, ncol = 3) +
+  ggplot2::ggtitle("p(corr) by duration across runs")
+```
+
+# RT
+
+```{r rt-by-trial-run}
+these_subs %>%
+  ggplot2::ggplot(.) +
+  ggplot2::aes(x = trial_n, y = rt, color = run) +
+  ggplot2::geom_point() +
+  ggplot2::geom_smooth() +
+  ggplot2::facet_wrap(~ p_id, ncol = 3) +
+  ggplot2::ggtitle("RT across trials and runs")
+```
+
+```{r rt-by-duration-run}
+these_subs %>%
+  ggplot2::ggplot(.) +
+  ggplot2::aes(x = dur_s, y = rt, color = run) +
+  ggplot2::geom_point() +
+  ggplot2::geom_smooth() +
+  ggplot2::facet_wrap(~ p_id, ncol = 3) +
+  ggplot2::ggtitle("RT by duration across runs")
+```
