@@ -234,7 +234,7 @@ run_session_qa_report <- function() {
   rmarkdown::render("analysis/session_qa.Rmd", 
                     output_format = "html_document", output_dir = "analysis/qa",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
-                    params = list(data_path = "~/Box \Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data",
+                    params = list(data_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data",
                                   contrast_raw_path = "contrast_sensitivity_task_data",
                                   motion_raw_path = "motion_temporal_threshold_data",
                                   qualtrics_csv_dir = "qualtrics_survey_data/csv"))
