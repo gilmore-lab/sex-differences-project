@@ -189,7 +189,8 @@ Say:
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
     - The monitor should be located **60cm** from the bridge of the nose on the participant.
-    - *place the rear legs of the chair exactly in front of black strips*
+    - *place the rear legs of the chair to approximately align with the black tape on the wall*
+    - Measure the 60cm and adjust the chair accordingly
     - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
 - *check with participants that they do not bring the cell phone to the dark room*
