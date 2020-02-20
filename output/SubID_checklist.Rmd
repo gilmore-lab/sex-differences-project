@@ -9,6 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+QA failure: no matching session across tasks
+Objective: the old participant ID (n=34) is long and easy to have type error. So, we decide to have a new set of participant ID, stating from 335. Also, inorder to merge the data later (two visual task files and one qualtric file), we need to make sure the participant ID is the same. However, typing error occurred. So, in this document, we give a new ID to replace the old one. The odd and even number is consistent from old to new, because it contains the information of the sequence of two visual experiment.
+
 ## match the old Participant ID with the new one
 101 20191113094926-63
 102 20191113111024-20
@@ -44,3 +47,5 @@ knitr::opts_chunk$set(echo = TRUE)
 122 20191213131541-34
 124 20191213140017-24
 137 20191213150120-99
+
+Solution: write a script to replace the old ID with the new one. Then double check IDs are well matched in three files for each participants.
