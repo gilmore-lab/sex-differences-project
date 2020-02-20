@@ -1,11 +1,11 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-30 09:35:21"
+date: "2020-02-20 12:37:53"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: 3
+  # pdf_document:
+  #   toc: yes
+  #   toc_depth: 3
   html_document:
     code_folding: hide
     keep_md: yes
@@ -301,12 +301,19 @@ The order of the computer experiments will be randomized across participants bas
 
 
 
-- Open PsychoPy by clicking on the icon located on the desktop.
+Preferred Method of Running Study  
+
+- Click on the `motion-temporal-threshold.py-Shortcut` on your Desktop
+
+*Alternate method of Running Study*
+
+*- Open PsychoPy by clicking on the icon located on the desktop.
 ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
-    - **Be careful not to type in the programming window.**
+    - **Be careful not to type in the programming window.***
+    
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
     - Enter participant ID. Make sure it is the same ID that you entered into Qualtrics.
@@ -335,12 +342,18 @@ The order of the computer experiments will be randomized across participants bas
 
 
 
-- Open PsychoPy by clicking on the icon located on the desktop.
-![PsychoPy_Logo](images/PsychoPy-1.PNG)  
-- When PsychoPy opens, open the file for this experiment.
+Preferred Method of Running Study  
+
+- Click on the `motion-temporal-threshold.py-Shortcut` on your Desktop
+
+*Alternate method of Running Study*  
+
+*- Open PsychoPy by clicking on the icon located on the desktop. ![PsychoPy_Logo](images/PsychoPy-1.PNG)    
+- When PsychoPy opens, open the file for this experiment.  
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
-- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
-    - **Be careful not to type in the programming window.**
+- When the file opens, run the experiment by pressing press the green (running person) button.   ![PsychoPy_Run](images/PPrunningMan.png)    
+    - **Be careful not to type in the programming window.***     
+    
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
     - Enter participant ID. Make sure it is the same ID as that in qualtrics.
@@ -398,7 +411,8 @@ You also have done two computer tests, which examine your performance in motion 
 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
 
+
 For the last participant of the day:
 - Andrea or Yiming will copy the data to Box:  
   - temporal duration threshold task data gets copied to '⁨Box⁩ ▸ ⁨Project_Sex_difference_on_Motion_Perception⁩ ▸ ⁨data⁩ ▸ ⁨raw_data⁩ ▸ ⁨motion_temporal_threshold_data'⁩
-  - contrast sensitivity task data gets copied to Box⁩ ▸ ⁨Project_Sex_difference_on_Motion_Perception⁩ ▸ ⁨data⁩ ▸ ⁨raw_data⁩ ▸ ⁨contrast_sensitivity_task_data⁩'
+  - contrast sensitivity task data gets copied to Box⁩ ▸ ⁨Project_Sex_difference_on_Motion_Perception⁩ ▸ ⁨data⁩ ▸ ⁨raw_data⁩ ▸ ⁨contrast_sensitivity_task_dat

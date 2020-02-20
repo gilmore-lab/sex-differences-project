@@ -3,9 +3,9 @@ title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
 date: "`r Sys.time()`"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: 3
+  # pdf_document:
+  #   toc: yes
+  #   toc_depth: 3
   html_document:
     code_folding: hide
     keep_md: yes
