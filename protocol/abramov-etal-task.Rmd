@@ -3,12 +3,18 @@ title: "Abramov-et-al-task"
 output: html_document
 ---
 
-- Open PsychoPy by clicking on the icon located on the desktop.
-![PsychoPy_Logo](images/PsychoPy-1.PNG)  
-- When PsychoPy opens, open the file for this experiment.
+Preferred Method of Running Study  
+
+- Click on the `motion-temporal-threshold.py-Shortcut` on your Desktop
+
+*Alternate method of Running Study*  
+
+*- Open PsychoPy by clicking on the icon located on the desktop. ![PsychoPy_Logo](images/PsychoPy-1.PNG)    
+- When PsychoPy opens, open the file for this experiment.  
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
-- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
-    - **Be careful not to type in the programming window.**
+- When the file opens, run the experiment by pressing press the green (running person) button.   ![PsychoPy_Run](images/PPrunningMan.png)    
+    - **Be careful not to type in the programming window.***     
+    
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
     - Enter participant ID. Make sure it is the same ID as that in qualtrics.

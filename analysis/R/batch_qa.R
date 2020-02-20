@@ -232,7 +232,8 @@ make_qa_df <- function(data_fn, task = 'contr') {
 run_session_qa_report <- function() {
   
   rmarkdown::render("analysis/session_qa.Rmd", 
-                    output_format = "html_document", output_dir = "analysis/qa",
+                    output_format = "html_document", 
+                    output_dir = "analysis/qa",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
                     params = list(data_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data",
                                   contrast_raw_path = "contrast_sensitivity_task_data",
@@ -256,4 +257,16 @@ generate_qa_vis_rpts <- function() {
   visualize_all_motion_dur_data()
   
   copy_qa_rpts_to_box()
+}
+
+extract_sub_id_from_fn <- function(fn) {
+  stringr::str_extract(fn, "[0-9-]+")
+}
+
+extract_motion_file_from_fn <- function(fn) {
+  fn[stringr::str_detect(fn, "motion")]
+}
+
+extract_contrast_file_from_fn <- function(fn) {
+  fn[stringr::str_detect(fn, "contrast")]
 }

@@ -398,4 +398,6 @@ You also have done two computer tests, which examine your performance in motion 
 - Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
 
 For the last participant of the day:
-- Copy the data of this participant to the hard drive
+- Andrea or Yiming will copy the data to Box:  
+  - temporal duration threshold task data gets copied to '⁨Box⁩ ▸ ⁨Project_Sex_difference_on_Motion_Perception⁩ ▸ ⁨data⁩ ▸ ⁨raw_data⁩ ▸ ⁨motion_temporal_threshold_data'⁩
+  - contrast sensitivity task data gets copied to Box⁩ ▸ ⁨Project_Sex_difference_on_Motion_Perception⁩ ▸ ⁨data⁩ ▸ ⁨raw_data⁩ ▸ ⁨contrast_sensitivity_task_data⁩'
