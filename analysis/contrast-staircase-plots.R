@@ -527,3 +527,115 @@
 #'
 #' <img src=" figs/366-contrast-staircase.png "height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/367-contrast-staircase.png 
+#'
+#' <img src=" figs/367-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/368-contrast-staircase.png 
+#'
+#' <img src=" figs/368-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/369-contrast-staircase.png 
+#'
+#' <img src=" figs/369-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/370-contrast-staircase.png 
+#'
+#' <img src=" figs/370-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/371-contrast-staircase.png 
+#'
+#' <img src=" figs/371-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/372-contrast-staircase.png 
+#'
+#' <img src=" figs/372-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/373-contrast-staircase.png 
+#'
+#' <img src=" figs/373-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/374-contrast-staircase.png 
+#'
+#' <img src=" figs/374-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/375-contrast-staircase.png 
+#'
+#' <img src=" figs/375-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/376-contrast-staircase.png 
+#'
+#' <img src=" figs/376-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/377-contrast-staircase.png 
+#'
+#' <img src=" figs/377-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/378-contrast-staircase.png 
+#'
+#' <img src=" figs/378-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/379-contrast-staircase.png 
+#'
+#' <img src=" figs/379-contrast-staircase.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/380-contrast-staircase.png 
+#'
+#' <img src=" figs/380-contrast-staircase.png "height="500px"/>
+#' </div>

@@ -161,18 +161,50 @@ make_all_decks <- function() {
 
 #------------------------------------------------------------
 # Functions to regenerate from scratch all plot files
+make_passed_qa_path <- function(box_path = "~/Box Sync",
+                                data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/passed_qa")
+}
 
-plot_save_motion_all_subs <- function(fd) {
+make_figs_path <- function(box_path = "~/Box Sync",
+                           data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/figs")
+}
+
+generate_motion_fl <- function(data_dir) {
+  list.files(data_dir, pattern = "motion", full.names = TRUE)
+}
+
+generate_contr_fl <- function(data_dir) {
+  list.files(data_dir, pattern = "contrast", full.names = TRUE)
+}
+
+plot_save_motion_all_subs <- function(fd = make_passed_qa_path()) {
   fl <- generate_motion_fl(fd)
   purrr::map(fl, plot_save_motion_task)
 }
 
-plot_save_contr_all_subs <- function(fd) {
+plot_save_contr_all_subs <- function(fd = make_passed_qa_path()) {
   fl <- generate_contr_fl(fd)
   purrr::map(fl, plot_save_contr_task)
 }
 
-regenerate_all_plots_all_subs <- function(fd) {
+regenerate_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
   plot_save_motion_all_subs()
   plot_save_contr_all_subs()
+}
+
+copy_figs_to_box <- function(path_2_data = make_figs_path()) {
+  
+  assertthat::is.string(path_2_data)
+  assertthat::is.dir(path_2_data)
+  
+  fig_files <- list.files("analysis/figs", pattern = "\\.png$", full.names = TRUE)
+  n_copied <- file.copy(from = fig_files, to = paste0(path_2_data, "/."), overwrite = TRUE)
+  message("Copied ", sum(n_copied), " files to Box.")
+}
+
+generate_save_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
+  regenerate_all_plots_all_subs(fd)
+  copy_figs_to_box()
 }
