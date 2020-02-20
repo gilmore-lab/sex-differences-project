@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-02-20 12:37:53"
+date: "2020-02-20 12:45:54"
 output:
   # pdf_document:
   #   toc: yes
@@ -409,10 +409,11 @@ You also have done two computer tests, which examine your performance in motion 
     - the participant was Present or a No Show  
     - the number used for that participant if Present  
 
-- Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
+- Clean keyboard, mouse and table.
 
 
-For the last participant of the day:
-- Andrea or Yiming will copy the data to Box:  
-  - temporal duration threshold task data gets copied to '⁨Box⁩ ▸ ⁨Project_Sex_difference_on_Motion_Perception⁩ ▸ ⁨data⁩ ▸ ⁨raw_data⁩ ▸ ⁨motion_temporal_threshold_data'⁩
-  - contrast sensitivity task data gets copied to Box⁩ ▸ ⁨Project_Sex_difference_on_Motion_Perception⁩ ▸ ⁨data⁩ ▸ ⁨raw_data⁩ ▸ ⁨contrast_sensitivity_task_dat
+### Data Export
+
+- Andrea or Yiming will copy the data to Box:    
+  - temporal duration threshold task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> motion_temporal_threshold_data'
+  - contrast sensitivity task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> contrast_sensitivity_task_data'
