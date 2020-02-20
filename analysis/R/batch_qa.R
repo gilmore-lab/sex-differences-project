@@ -231,14 +231,33 @@ make_qa_df <- function(data_fn, task = 'contr') {
 
 run_session_qa_report <- function() {
   
-  rmarkdown::render("analysis/session_qa.Rmd", 
+  rmarkdown::render("analysis/session-qa.Rmd", 
                     output_format = "html_document", 
                     output_dir = "analysis/qa",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
-                    params = list(data_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data",
-                                  contrast_raw_path = "contrast_sensitivity_task_data",
-                                  motion_raw_path = "motion_temporal_threshold_data",
-                                  qualtrics_csv_dir = "qualtrics_survey_data/csv"))
+                    params = list(box_path = "~/Box Sync", 
+                                  data_path = "/Project_Sex_difference_on_Motion_Perception/data",
+                                  contrast_raw_path = "/raw_data/contrast_sensitivity_task_data",
+                                  motion_raw_path = "/raw_data/motion_temporal_threshold_data",
+                                  passed_qa_path = "/passed_qa", failed_qa_path = "/failed_qa")
+  )
+  
+}
+
+run_qualtrics_qa_report <- function() {
+  
+  rmarkdown::render("analysis/gather-clean-qualtrics.Rmd", 
+                    output_format = "html_document", 
+                    output_dir = "analysis/qa",
+                    output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qualtrics-qa-report.html"),
+                    params = list(box_path = "~/Box Sync",
+                                  data_path = "/Project_Sex_difference_on_Motion_Perception/data",
+                                  qualtrics_raw_path = "/raw_data/qualtrics_survey_data/csv",
+                                  old_survey_fn = "survey_REV_2019-11-11.csv",
+                                  new_survey_fn = "survey_REV_2019-11-18.csv",
+                                  update_raw = TRUE,
+                                  reimport_raw = TRUE)
+  )
   
 }
 
@@ -270,3 +289,5 @@ extract_motion_file_from_fn <- function(fn) {
 extract_contrast_file_from_fn <- function(fn) {
   fn[stringr::str_detect(fn, "contrast")]
 }
+
+

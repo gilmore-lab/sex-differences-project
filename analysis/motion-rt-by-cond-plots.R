@@ -355,6 +355,14 @@
 #'----
 #'
 #' <div class="centered">
+#' figs/343-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/343-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
 #' figs/344-motion-rt-by-dur.png 
 #'
 #' <img src=" figs/344-motion-rt-by-dur.png "height="500px"/>
@@ -534,4 +542,100 @@
 #' figs/366-motion-rt-by-dur.png 
 #'
 #' <img src=" figs/366-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/367-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/367-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/368-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/368-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/369-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/369-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/370-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/370-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/372-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/372-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/373-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/373-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/374-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/374-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/375-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/375-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/376-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/376-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/377-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/377-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/378-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/378-motion-rt-by-dur.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/379-motion-rt-by-dur.png 
+#'
+#' <img src=" figs/379-motion-rt-by-dur.png "height="500px"/>
 #' </div>
