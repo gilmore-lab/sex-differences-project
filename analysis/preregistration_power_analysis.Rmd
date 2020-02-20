@@ -84,7 +84,9 @@ pwr.t.test(n = NULL, d = 0.25, sig.level = 0.05/4 , power = 0.8, type = "two.sam
 ```{r power_analysis_correlation}
 # Power Calculations For Correlation Test
 #  power of test or determine parameters to obtain target power (same as power.anova.test).
-pwr.r.test(n = 147, r = NULL, sig.level = 0.05/5, power = 0.8,
+pwr.r.test(n = 150, r = NULL, sig.level = 0.05/5, power = 0.8,
+    alternative = c("less"))
+pwr.r.test(n=57, r = NULL, sig.level = 0.05/5, power = 0.8,
     alternative = c("less"))
 ```
 
@@ -110,11 +112,11 @@ pow_calc <- function(n_total) {
   power_to_df(power_from_n( n_total), n_total)
 }
 
-purrr::map_dfr(c(50, 100, 150, 200, 250), pow_calc) %>%
+purrr::map_dfr(50:250, pow_calc) %>%
   dplyr::mutate(., n_total = as.numeric(n_total)) %>%
     ggplot2::ggplot(.) + 
     ggplot2::aes(n_total, r) + 
-    ggplot2::geom_point() +
-    ggplot2::geom_smooth(se = FALSE) +
-    ggplot2::ggtitle("Effect size (r) detectable at .8 power for varied sample sizes in correlation test")
+    # ggplot2::geom_point() +
+    ggplot2::geom_smooth() +
+    ggplot2::ggtitle("Effect size (r) detectable at .8 power for varied sample sizes in one-tailed correlation test")
 ```
