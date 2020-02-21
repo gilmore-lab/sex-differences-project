@@ -81,14 +81,14 @@ The process of scheduling participants involves the following steps:
 
 | Day of Week | Time    | Researcher(s)                | Lead   |     
 |-------------|---------|------------------------------|--------|
-| Mon         | 09:00a  | Emily, Luka                  | Andrea, Yiming |
-|             | 10:00a  | Emily, Luka                  | Andrea, Yiming |
-|             | 11:00a  | Emily, Luka                  | Yiming |
+| Mon         | 09:00a  | Emily                        | Andrea, Yiming |
+|             | 10:00a  | Emily                        | Andrea, Yiming |
+|             | 11:00a  | Emily, Sandy                 | Yiming |
 |             | 12:00p  | Sandy                        |  |
-|             | 01:00p  | Emily                        | Yiming |
-|             | 02:00p  | Amar                         | Yiming |
-|             | 03:00p  | Amar                         | Yiming |
-|             | 04:00p  | Amar                         | Yiming |
+|             | 01:00p  | Emily*                        | Yiming |
+|             | 02:00p  |                         | Yiming |
+|             | 03:00p  |                         | Yiming |
+|             | 04:00p  |                         | Yiming |
 |             | 05:00p  | Rachel*                      |  |
 | Tue         | 09:00a  |                              | Yiming, Andrea|
 |             | 10:00a  | Michelle                     | Yiming, Andrea |
@@ -102,16 +102,16 @@ The process of scheduling participants involves the following steps:
 |             | 06:00p  | Michelle*                    |  |
 | Wed         | 10:00a  |                              | Andrea |
 |             | 11:00a  |                              | Andrea |
-|             | 12:00p  | Sandy                        | Andrea |
+|             | 12:00p  | Sandy, Chelsea (assist)                        | Andrea |
 |             | 01:00p  | Sandy                        | Andrea |
 |             | 02:00p  | Amar                         | Yiming |
-|             | 03:00p  | Amar                         | Yiming |
+|             | 03:00p  | Amar, Chelsea (assist)                         | Yiming |
 |             | 04:00p  |                              | Yiming |
 |             | 05:00p  | Rachel*                      |  |
 | Thu         | 09:00a  |                              | Yiming |
 |             | 10:00a  |                              | Yiming |
 |             | 11:00a  | Amar                         | Yiming |
-|             | 12:00p  | Amar, Luka, Michelle,Rachel  | Yiming |
+|             | 12:00p  | Luka, Michelle,Rachel  | Yiming |
 |             | 01:00p  | Luka, Michelle,Rachel        | Yiming |
 |             | 02:00p  | Luka, Michelle               |  |
 |             | 03:00   |                              |  |
