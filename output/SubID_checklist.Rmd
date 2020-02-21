@@ -13,45 +13,11 @@ QA failure: no matching session across tasks
 Objective: the old participant ID (n=34) is long and easy to have type error. So, we decide to have a new set of participant ID, stating from 335. Also, inorder to merge the data later (two visual task files and one qualtric file), we need to make sure the participant ID is the same. However, typing error occurred. So, in this document, we give a new ID to replace the old one. The odd and even number is consistent from old to new, because it contains the information of the sequence of two visual experiment.
 
 ## match the old Participant ID with the new one
-<<<<<<< HEAD:analysis/SubID_checklist.Rmd
+
 
 | New ID | Qualtrics ID | Temporal Duration ID | Temporal Duration File Name | Contrast Sensitivity ID | Contrast Sensitivity File Name |
 |---|---|---|---|---|---|
-|101| 20191113094926-63 ||||
-|102| 20191113111024-20 ||||
-|103| 20191113133803-57 ||||
-|105| 20191113145602-77 ||||
-|107| 20191113161218-77 ||||
-|104| 20191118083903-74 ||||
-|109| 20191118112649-55 ||||
-|111| 20191118124517-39 ||||
-|113| 20191118135808-99 ||||
-|106| 20191118144828-14 ||||
-|115| 20191120134019-63 ||||
-|108| 20191120145323-76 ||||
-|117| 20191120161107-41 ||||
-|119| 20191121102603-25 ||||
-|110| 20191121114153-16 ||||
-|121| 20191121125639-83 ||||
-|123| 20191122095832-95 ||||
-|125| 20191122105235-39 ||||
-|127| 20191122134921-45 ||||
-|| 20191122160438 ||||
-|112| 20191122170024-12 ||||
-|114| 20191204095235-78 ||||
-|129| 20191204135854-57 ||||
-|| 201912041554552 ||||
-|116| 20191205092445-70 ||||
-|131| 20191205122355-93 ||||
-|118| 20191212170133-32 ||||
-|133| 20191212124341-99 ||||
-|120| 20191212145036-90 ||||
-|| 20191212114750 ||||
-|135| 20191212155619-95 ||||
-|122| 20191213131541-34 ||||
-|124| 20191213140017-24 ||||
-|137| 20191213150120-99 ||||
-=======
+
 101 20191113094926-63
 102 20191113111024-20
 103 20191113133803-57
@@ -88,4 +54,3 @@ Objective: the old participant ID (n=34) is long and easy to have type error. So
 137 20191213150120-99
 
 Solution: write a script to replace the old ID with the new one. Then double check IDs are well matched in three files for each participants.
->>>>>>> d7883651e3fbd518a2bae39ac92c0ad7322d0aed:output/SubID_checklist.Rmd
