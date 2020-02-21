@@ -1,74 +1,92 @@
-# Functions to aid in the visualization of the sex differences project vision tasks
+# R Markdown reports -----------------------------------------------------------------------------------
 
-read_sex_diff_file <- function(fn) {
-  if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
-  readr::read_csv(fn)
-}
-
-extract_sub_id_from_fn <- function(fn) {
-  if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
-  stringr::str_extract(fn, "[0-9-]+")
-}
-
-extract_task_type_from_fn <- function(fn) {
-  if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
-  motion_task <- stringr::str_detect(fn, "motion")
-  contr_task <- stringr::str_detect(fn, "contrast")
-  if (motion_task) {
-    "motion"
-  } else if (contr_task) {
-    "contrast"
-  } else {
-    "unknown-task"
-  }
-}
-
-clean_motion_df <- function(df) {
-  require(tidyverse)
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-
-  df_clean <- df %>%
-    mutate(., run = run_n + 1) %>%
-    rename(., corr = correct,
-           dur_s = FWHM)
+list_full_fns_in_path <- function(df_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
   
-  df_clean <- df_clean %>%
-    dplyr::select(.,
-                  run,
-                  trial_n,
-                  dur_s,
-                  corr,
-                  rt) %>%
-    dplyr::mutate(., run = ordered(run))
-  df_clean
+  assertthat::is.string(df_path)
+  assertthat::is.dir(df_path)
+  
+  fns <- list.files(paste0(df_path), pattern = "\\.csv$", full.names = TRUE)
+  fns
 }
 
-clean_contrast_df <- function(df) {
-  require(tidyverse)
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
+extract_ids_from_fns <- function(df_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
   
-  df_clean <- df %>%
-    mutate(., correctAns = stringr::str_extract(correctAns, "left|down|right|up")) %>%
-    mutate(., corr = if_else(resp == correctAns, 1, 0)) %>%
-    rename(., contr = loop_trial.intensity,
-           trial_n = loop_trial.thisN,
-           rt = resp.rt) %>%
-    mutate(., trial_n = trial_n + 1)
+  assertthat::is.string(df_path)
+  assertthat::is.dir(df_path)
   
-  df_clean <- df_clean %>%
-    dplyr::select(., Participant, Gender,
-                  trial_n,
-                  contr,
-                  correctAns,
-                  resp,
-                  corr,
-                  rt) %>%
-    dplyr::filter(., trial_n >= 0) %>%
-    dplyr::mutate(., run = rep(1:4, each=30)) %>%
-    dplyr::mutate(., run = ordered(run))
-  
-  df_clean
+  fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
+  stringr::str_sub(fn_only, 1, 14)
 }
+
+# Visualize contrast sensitivity data for individual sub
+visualize_contr_sens_data <- function(this_fn_full) {
+  this_id <- extract_sub_id_from_fn(this_fn_full)
+  
+  rmarkdown::render("analysis/gather-clean-contrast-sensitivity.Rmd", 
+                    output_format = "html_document", output_dir = "analysis/qa",
+                    output_file = paste0(this_id, "-contr-sens.html"),
+                    params = list(this_csv_fn = this_fn_full))
+}
+
+# Visualize motion task data for individual sub
+visualize_motion_dur_data <- function(this_fn_full) {
+  this_id <- extract_sub_id_from_fn(this_fn_full)
+  
+  rmarkdown::render("analysis/gather-clean-motion-dur.Rmd", 
+                    output_format = "html_document", output_dir = "analysis/qa",
+                    output_file = paste0(this_id, "-motion-dur.html"),
+                    params = list(this_csv_fn = this_fn_full))
+}
+
+# Generate reports for all contrast sensitivity subs
+visualize_all_contr_sens_data <- function(contr_fns) {
+  purrr::map(contr_fns, visualize_contr_sens_data)
+}
+
+# Generate reports for all motion contrast task subs
+visualize_all_motion_dur_data <- function(motion_fns) {
+  purrr::map(motion_fns, visualize_motion_dur_data)
+}
+
+# Summary QA on individual computer task data files, also copies 
+run_session_qa_report <- function() {
+  rmarkdown::render("analysis/session-qa.Rmd", 
+                    output_format = "html_document", 
+                    output_dir = "analysis/qa",
+                    output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
+                    params = list(box_path = "~/Box Sync", 
+                                  data_path = "/Project_Sex_difference_on_Motion_Perception/data",
+                                  contrast_raw_path = "/raw_data/contrast_sensitivity_task_data",
+                                  motion_raw_path = "/raw_data/motion_temporal_threshold_data",
+                                  passed_qa_path = "/passed_qa", failed_qa_path = "/failed_qa")
+  )
+}
+
+# Summary report on Qualtrics
+run_qualtrics_qa_report <- function() {
+  rmarkdown::render("analysis/gather-clean-qualtrics.Rmd", 
+                    output_format = "html_document", 
+                    output_dir = "analysis/qa",
+                    output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qualtrics-qa-report.html"),
+                    params = list(box_path = "~/Box Sync",
+                                  data_path = "/Project_Sex_difference_on_Motion_Perception/data",
+                                  qualtrics_raw_path = "/raw_data/qualtrics_survey_data/csv",
+                                  old_survey_fn = "survey_REV_2019-11-11.csv",
+                                  new_survey_fn = "survey_REV_2019-11-18.csv",
+                                  update_raw = TRUE,
+                                  reimport_raw = TRUE)
+  )
+}
+
+copy_qa_rpts_to_box <- function(box_path = "~/Box Sync", 
+                                data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  
+  qa_files <- list.files("analysis/qa", pattern = "\\.html$", full.names = TRUE)
+  n_copied <- file.copy(from = qa_files, to = paste0(box_path, data_path, "/qa_rpts/."), overwrite = TRUE)
+  message("Copied ", sum(n_copied), " files to Box.")
+}
+
+# Plotting data, making figs ---------------------------------------------------------------------------------
 
 generate_motion_fl <- function(data_dir) {
   list.files(data_dir, pattern = "motion", full.names = TRUE)
@@ -255,7 +273,37 @@ plot_save_contr_all_subs <- function(fd = passed_qa_dir) {
   purrr::map(fl, plot_save_contr_task)
 }
 
-# Functiions to create ioslides_presentations that summarize the computer task data
+make_passed_qa_path <- function(box_path = "~/Box Sync",
+                                data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/passed_qa")
+}
+
+make_figs_path <- function(box_path = "~/Box Sync",
+                           data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/figs")
+}
+
+copy_figs_to_box <- function(path_2_data = make_figs_path()) {
+  
+  assertthat::is.string(path_2_data)
+  assertthat::is.dir(path_2_data)
+  
+  fig_files <- list.files("analysis/figs", pattern = "\\.png$", full.names = TRUE)
+  n_copied <- file.copy(from = fig_files, to = paste0(path_2_data, "/."), overwrite = TRUE)
+  message("Copied ", sum(n_copied), " files to Box.")
+}
+
+regenerate_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
+  plot_save_motion_all_subs()
+  plot_save_contr_all_subs()
+}
+
+generate_save_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
+  regenerate_all_plots_all_subs(fd)
+  copy_figs_to_box()
+}
+
+# ioslides_presentations-----------------------------------------------------------------------------------
 
 write_slide_header <- function(deck_fn = "slides.R",
                                deck_title = "Sex Diffs Plots",
@@ -277,35 +325,6 @@ write_slide_header <- function(deck_fn = "slides.R",
   cat("#'     smaller: true\n", file = deck_fn, append = TRUE)
   cat("#' ---\n", file = deck_fn, append = TRUE)
 }
-
-# plot_dur_by_trial_run <- function(df) {
-#   ggplot2::ggplot(df) +
-#     ggplot2::aes(x = trial_n, y = dur_s, color = run) +
-#     ggplot2::geom_smooth() +
-#     ggplot2::geom_point() +
-#     ggplot2::facet_wrap(~ p_id, ncol = 3) +
-#     ggplot2::ggtitle("Duration across trials and runs") 
-# }
-# 
-# source_local_funcs <- function(deck_fn = "slides.R", source_fn) {
-#   cat("#' \x60\x60\x60{r}\n", file = deck_fn, append = TRUE)
-#   cat("#'", "source('analysis/R/slide_helpers.R')\n", file = deck_fn, append = TRUE)
-#   cat("#' \x60\x60\x60\n", file = deck_fn, append = TRUE)
-#   cat("#'\n", file = deck_fn, append = TRUE)
-# }
-# 
-# make_a_slide <- function(df, deck_fn = "slides.R",
-#                          plot_func = plot_dur_by_trial_run) {
-#   # Slide header
-#   cat("#'\n", file = deck_fn, append = TRUE)
-#   cat("#' ## Participant ", unique(df$p_id), "\n", file = deck_fn, append = TRUE)
-#   
-#   # Generate plot
-#   cat("#' \x60\x60\x60{r}\n", file = deck_fn, append = TRUE)
-#   cat("#' plot_dur_by_trial_run(df)\n", file = deck_fn, append = TRUE)
-#   cat("#' \x60\x60\x60\n", file = deck_fn, append = TRUE)
-#   cat("#'\n", file = deck_fn, append = TRUE)
-# }
 
 extract_sub_id_from_fn <- function(fn) {
   if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
@@ -342,6 +361,11 @@ make_slide_of_plot <- function(plot_fn, deck_fn) {
   
   cat("#'", '</div>\n', file = deck_fn, append = TRUE)
   # cat("#'\n", file = deck_fn, append = TRUE)
+}
+
+make_decks_path <- function(box_path = "~/Box Sync",
+                           data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/slide_decks")
 }
 
 make_plots_for_sub <- function(s_id, fl, deck_fn) {
@@ -416,70 +440,39 @@ make_all_decks <- function() {
             plot_type = "rt-by-contr")
 }
 
-#------------------------------------------------------------
-# Functions to regenerate from scratch all plot files
-make_passed_qa_path <- function(box_path = "~/Box Sync",
-                                data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
-  paste0(box_path, data_path, "/passed_qa")
-}
-
-make_figs_path <- function(box_path = "~/Box Sync",
-                           data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
-  paste0(box_path, data_path, "/figs")
-}
-
-plot_save_motion_all_subs <- function(fd = make_passed_qa_path()) {
-  fl <- generate_motion_fl(fd)
-  purrr::map(fl, plot_save_motion_task)
-}
-
-plot_save_contr_all_subs <- function(fd = make_passed_qa_path()) {
-  fl <- generate_contr_fl(fd)
-  purrr::map(fl, plot_save_contr_task)
-}
-
-regenerate_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
-  plot_save_motion_all_subs()
-  plot_save_contr_all_subs()
-}
-
-generate_motion_fl <- function(data_dir) {
-  list.files(data_dir, pattern = "motion", full.names = TRUE)
-}
-
-generate_contr_fl <- function(data_dir) {
-  list.files(data_dir, pattern = "contrast", full.names = TRUE)
-}
-
-copy_figs_to_box <- function(path_2_data = make_figs_path()) {
+copy_decks_to_box <- function(path_2_decks = make_decks_path()) {
   
-  assertthat::is.string(path_2_data)
-  assertthat::is.dir(path_2_data)
+  assertthat::is.string(path_2_decks)
+  assertthat::is.dir(path_2_decks)
   
-  fig_files <- list.files("analysis/figs", pattern = "\\.png$", full.names = TRUE)
-  n_copied <- file.copy(from = fig_files, to = paste0(path_2_data, "/."), overwrite = TRUE)
+  deck_files <- list.files(path = "analysis", pattern = "-plots.html", full.names = TRUE)
+  n_copied <- file.copy(from = deck_files, to = paste0(path_2_decks, "/."), overwrite = TRUE)
   message("Copied ", sum(n_copied), " files to Box.")
 }
 
-# 1. Batch QA on both computer tasks
-# 2. QA on Qualtrics
-# 3. Regenerate figs
-# 4. Regenerate HTML slides
+# Full QA/plotting scheme ------------------------------------------------------------------------
 
-#----------------------------------------------
-# Test functions
-passed_qa_dir <- "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa"
-
-test_motion_plot <- function(fd) {
-  message("Testing motion duration task plotting functions.")
-  fl <- generate_motion_fl(fd)
+update_all_qa_plots_decks <- function() {
+  # QA reports
+  run_session_qa_report()
+  run_qualtrics_qa_report()
   
-  plot_save_motion_task(fl[1])
-}
-
-test_contr_plot <- function(fd) {
-  message("Testing contrast threshold task plotting functions.")
-  fl <- generate_contr_fl(fd)
+  # R Markdown visualizations for each participant and task that passed QA
+  files_pass_qa_dir <- make_passed_qa_path()
+  motion_files <- generate_motion_fl(files_pass_qa_dir)
+  contr_files <- generate_contr_fl(files_pass_qa_dir)
+    
+  visualize_all_motion_dur_data(motion_files)
+  visualize_all_contr_sens_data(contr_files)
   
-  plot_save_contr_task(fl[1])
+  # Copy reports to Box
+  copy_qa_rpts_to_box()
+  
+  # Make plots of data that pass QA
+  regenerate_all_plots_all_subs()
+  copy_figs_to_box()
+  
+  # Make ioslides_presentation decks for inspection
+  make_all_decks()
+  copy_decks_to_box()
 }

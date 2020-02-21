@@ -1,0 +1,36 @@
+---
+title: "MissingReport"
+author: "Yiming Qian"
+date: "2/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Objective: Locate the possible reasons for missing data and provide solution
+
+## Missing dataset
+There is no 20191118083939_motion_temporal_threshold.csv, due to experimenter error.
+
+## less than enough trials in the computer tasks
+343_motion_temporal_threshold.csv
+Solution: 
+It introduced another problem to caluclate the threshold in the computer tasks: How to caluclate the threshold if one or two runs runs bad and do not reach the 80% accuracy? Do we discord this trials or still include them? For the participants that there are bad runs, it is definitely better to get the final thresholdby getting the median instead of mean across 4 runs. Because we want to be consistent to all the participants, we choose median, even for the partipants who have 4 good runs.
+This participant (343) finish two good runs and several trials in the third run. Do we still include his/her threshold? DIscuss this, we can still get the threshold from the median of two runs.
+
+## missing value in qualtrics
+In qualtrics, the missing data is coded as "" in the output.
+- Demographic: no action
+- Visual screening: the experimenter fill in this part, which should not have missing value.
+- Verbal ability/spatial ability: No action. But if the final score is 0, double check to decide whether we should code the final score as 0 or NA.
+    - lack of time because there is time limit. No action
+    - no able to answer. No action. 
+    - no willing to answer. It is very hard to differentiate whether this is the reason for missing data. No action. 
+- hobbies: sex-typed interests are scored by the sum of male-typed and female-typed items, So, if resting part or several items are missing, no action. But if the final score is 0, double check to decide whether we should code the final score as 0 or NA.
+    - no willing to answer. 
+    - do not understand the word. 
+    
+
+
