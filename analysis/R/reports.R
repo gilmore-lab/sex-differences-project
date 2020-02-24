@@ -1,5 +1,24 @@
-# R Markdown reports
+# Functions to generate R Markdown reports --------------------
 
+# Functions to work with files --------------------------------
+
+# Generate list of data files for motion duration task
+generate_motion_fl <- function(data_dir) {
+  list.files(data_dir, pattern = "motion", full.names = TRUE)
+}
+
+# Generate list of files for contrast task
+generate_contr_fl <- function(data_dir) {
+  list.files(data_dir, pattern = "contrast", full.names = TRUE)
+}
+
+# Extract Sub ID from file name
+extract_sub_id_from_fn <- function(fn) {
+  if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
+  stringr::str_extract(fn, "[0-9-]+")
+}
+
+# List CSV data files in data file path
 list_full_fns_in_path <- function(df_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
   
   assertthat::is.string(df_path)
@@ -9,6 +28,7 @@ list_full_fns_in_path <- function(df_path = "~/Box\ Sync/Project_Sex_difference_
   fns
 }
 
+# Extract participant IDs from data file names
 extract_ids_from_fns <- function(df_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
   
   assertthat::is.string(df_path)
@@ -17,6 +37,8 @@ extract_ids_from_fns <- function(df_path = "~/Box\ Sync/Project_Sex_difference_o
   fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
   stringr::str_sub(fn_only, 1, 14)
 }
+
+# Render R Markdown reports ------------------------------------
 
 # Visualize contrast sensitivity data for individual sub
 visualize_contr_sens_data <- function(this_fn_full, regenerate = FALSE) {
@@ -92,10 +114,23 @@ run_qualtrics_qa_report <- function() {
   )
 }
 
+# Copy generated QA reports to Box
 copy_qa_rpts_to_box <- function(box_path = "~/Box Sync", 
                                 data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   
   qa_files <- list.files("analysis/qa", pattern = "\\.html$", full.names = TRUE)
   n_copied <- file.copy(from = qa_files, to = paste0(box_path, data_path, "/qa_rpts/."), overwrite = TRUE)
   message("Copied ", sum(n_copied), " files to Box.")
+}
+
+
+generate_computer_task_qa_rpts <- function(box_path = "~/Box Sync", 
+                                           data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  # R Markdown visualizations for each participant and task that passed QA
+  files_pass_qa_dir <- paste0(box_path, data_path, "/passed_qa")
+  motion_files <- generate_motion_fl(files_pass_qa_dir)
+  contr_files <- generate_contr_fl(files_pass_qa_dir)
+  
+  visualize_all_motion_dur_data(motion_files)
+  visualize_all_contr_sens_data(contr_files)
 }

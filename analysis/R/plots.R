@@ -1,117 +1,17 @@
-# Plotting data, making figs ---------------------------------------------------------------------------------
+# Plots -------------------------------------------------------------
+# 
+# These functions help with making plots to visualize project data
 
+# File helpers ------------------------------------------------------
+
+# Generate a list of files from the motion duration threshold task
 generate_motion_fl <- function(data_dir) {
   list.files(data_dir, pattern = "motion", full.names = TRUE)
 }
 
+# Generate a list of files for the contrast threshold task
 generate_contr_fl <- function(data_dir) {
   list.files(data_dir, pattern = "contrast", full.names = TRUE)
-}
-
-plot_motion_staircase <- function(df) {
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  
-  ggplot(data = df) +
-    aes(x = trial_n, y = dur_s, color = run) +
-    geom_smooth() +
-    geom_point() +
-    ggtitle("Duration across trials and runs") +
-    theme(legend.position = "bottom")
-}
-
-plot_contr_staircase <- function(df) {
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  
-  ggplot(data = df) +
-    aes(x = trial_n, y = contr, color = run) +
-    geom_smooth() +
-    geom_point() +
-    ggtitle("Contrast across trials and runs") +
-    theme(legend.position = "bottom")
-}
-
-plot_motion_cum_perf <- function(df) {
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  require(dplyr)
-  
-  df <- df %>%
-    dplyr::group_by(., run) %>%
-    dplyr::arrange(., dur_s) %>%
-    dplyr::mutate(., cum_sum = cumsum(corr),
-                  cum_p = cum_sum/n())
-  
-  ggplot(df) +
-    aes(x = dur_s, y = cum_p, color = run) +
-    geom_point() +
-    geom_smooth(se = FALSE)  +
-    ggtitle("p(corr) by duration across runs") +
-    theme(legend.position = "bottom")
-}
-
-plot_contr_cum_perf <- function(df) {
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  require(dplyr)
-  
-  df <- df %>%
-    dplyr::group_by(., run) %>%
-    dplyr::arrange(., contr) %>%
-    dplyr::mutate(., cum_sum = cumsum(corr),
-                  cum_p = cum_sum/n())
-  
-  ggplot(df) +
-    aes(x = contr, y = cum_p, color = run) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    ggtitle("p(corr) by contrast across runs") +
-    theme(legend.position = "bottom")
-}
-
-plot_motion_rt_across_trials <- function(df){
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  ggplot(df) +
-    aes(x = trial_n, y = rt, color = run) +
-    geom_point() +
-    geom_smooth() +
-    ggtitle("RT across trials and runs") +
-    theme(legend.position = "bottom")
-}
-
-plot_motion_rt_by_dur <- function(df) {
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  ggplot(df) +
-    aes(x = dur_s, y = rt, color = run) +
-    geom_point() +
-    geom_smooth() +
-    ggtitle("RT by duration across runs") +
-    theme(legend.position = "bottom")
-}
-
-plot_contr_rt_across_trials <- function(df) {
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  ggplot(df) +
-    aes(x = trial_n, y = rt, color = run) +
-    geom_point() +
-    geom_smooth() +
-    ggtitle("RT across trials and runs") +
-    theme(legend.position = "bottom")
-}
-
-plot_contr_rt_by_contr <- function(df) {
-  if (!is.data.frame(df)) stop("Not a valid data frame.")
-  require(ggplot2)
-  ggplot(df) +
-    aes(x = contr, y = rt, color = run) +
-    geom_point() +
-    geom_smooth() +
-    ggtitle("RT by contrast across runs") +
-    theme(legend.position = "bottom")
 }
 
 extract_task_type_from_fn <- function(fn) {
@@ -137,7 +37,8 @@ generate_plot_fn <- function(data_fn, plot_type = "none") {
 
 save_plot <- function(p, fn, file_type = "png") {
   message("Saving to '", paste0(fn, ".", file_type), "'.")
-  ggsave(paste0(fn, ".", file_type), plot = p, device = file_type, path = ".")
+  ggsave(paste0(fn, ".", file_type), plot = p, 
+         device = file_type, path = ".")
 }
 
 read_sex_diff_file <- function(fn) {
@@ -145,6 +46,140 @@ read_sex_diff_file <- function(fn) {
   readr::read_csv(fn)
 }
 
+make_passed_qa_path <- function(box_path = "~/Box Sync",
+                                data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/passed_qa")
+}
+
+make_figs_path <- function(box_path = "~/Box Sync",
+                           data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/figs")
+}
+
+extract_sub_id_from_fn <- function(fn) {
+  if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
+  stringr::str_extract(fn, "[0-9-]+")
+}
+
+# Plot functions -------------------------------------------------------------
+
+# Generate a plot of the motion duration data by trial and contrast level
+plot_motion_staircase <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  
+  ggplot(data = df) +
+    aes(x = trial_n, y = dur_s, color = run) +
+    geom_smooth() +
+    geom_point() +
+    ggtitle("Duration across trials and runs") +
+    theme(legend.position = "bottom")
+}
+
+# Generate a plot of the contrast data by trial and contrast level
+plot_contr_staircase <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  
+  ggplot(data = df) +
+    aes(x = trial_n, y = contr, color = run) +
+    geom_smooth() +
+    geom_point() +
+    ggtitle("Contrast across trials and runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot cumulative performance across motion duration levels
+plot_motion_cum_perf <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  require(dplyr)
+  
+  df <- df %>%
+    dplyr::group_by(., run) %>%
+    dplyr::arrange(., dur_s) %>%
+    dplyr::mutate(., cum_sum = cumsum(corr),
+                  cum_p = cum_sum/n())
+  
+  ggplot(df) +
+    aes(x = dur_s, y = cum_p, color = run) +
+    geom_point() +
+    geom_smooth(se = FALSE)  +
+    ggtitle("p(corr) by duration across runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot cumulative performance across contrast levels
+plot_contr_cum_perf <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  require(dplyr)
+  
+  df <- df %>%
+    dplyr::group_by(., run) %>%
+    dplyr::arrange(., contr) %>%
+    dplyr::mutate(., cum_sum = cumsum(corr),
+                  cum_p = cum_sum/n())
+  
+  ggplot(df) +
+    aes(x = contr, y = cum_p, color = run) +
+    geom_point() +
+    geom_smooth(se = FALSE) +
+    ggtitle("p(corr) by contrast across runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time across trials for the motion task 
+plot_motion_rt_across_trials <- function(df){
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = trial_n, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT across trials and runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time by motion duration (difficulty)
+plot_motion_rt_by_dur <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = dur_s, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT by duration across runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time across trials
+plot_contr_rt_across_trials <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = trial_n, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT across trials and runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time by contrast (difficulty)
+plot_contr_rt_by_contr <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = contr, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT by contrast across runs") +
+    theme(legend.position = "bottom")
+}
+
+# Data cleaning functions ------------------------------------------------------
+
+# Clean motion task data frame
 clean_motion_df <- function(df) {
   require(tidyverse)
   if (!is.data.frame(df)) stop("Not a valid data frame.")
@@ -165,6 +200,7 @@ clean_motion_df <- function(df) {
   df_clean
 }
 
+# Clean contrast task data frame
 clean_contrast_df <- function(df) {
   require(tidyverse)
   if (!is.data.frame(df)) stop("Not a valid data frame.")
@@ -192,7 +228,10 @@ clean_contrast_df <- function(df) {
   df_clean
 }
 
-plot_save_motion_task <- function(fn) {
+# Functions to make multiple plots ----------------------------------------------------
+
+# Import individual motion data files, clean, create, and save plots
+plot_save_motion_task <- function(fn, regenerate = FALSE) {
   if (!file.exists(fn)) stop("File '", fn, "' not found.")
   
   df <- read_sex_diff_file(fn)
@@ -200,40 +239,31 @@ plot_save_motion_task <- function(fn) {
   
   df_clean <- clean_motion_df(df)
   
-  # p1 <- plot_motion_staircase(df_clean)
-  # p2 <- plot_motion_cum_perf(df_clean)
-  # p3 <- plot_motion_rt_across_trials(df_clean)
-  # p4 <- plot_motion_rt_by_dur(df_clean)
-  
   p1_nm <- generate_plot_fn(data_fn = fn, plot_type = "staircase")
   p2_nm <- generate_plot_fn(data_fn = fn, plot_type = "cum-perf")
   p3_nm <- generate_plot_fn(data_fn = fn, plot_type = "rt-trials")
   p4_nm <- generate_plot_fn(data_fn = fn, plot_type = "rt-by-dur")
-  
-  # save_plot(p1, p1_nm)
-  # save_plot(p2, p2_nm)
-  # save_plot(p3, p3_nm)
-  # save_plot(p4, p4_nm)
-  
-  if (!file.exists(paste0(p1_nm, ".png"))) {
+
+  if ((!file.exists(paste0(p1_nm, ".png"))) || (regenerate == TRUE)) {
     p1 <- plot_motion_staircase(df_clean)
     save_plot(p1, p1_nm)
   }
-  if (!file.exists(paste0(p2_nm, ".png"))) {
+  if ((!file.exists(paste0(p2_nm, ".png"))) || (regenerate == TRUE)) {
     p2 <- plot_motion_cum_perf(df_clean)
     save_plot(p2, p2_nm)
   }  
-  if (!file.exists(paste0(p3_nm, ".png"))) {
+  if ((!file.exists(paste0(p3_nm, ".png"))) || (regenerate == TRUE)) {
     p3 <- plot_motion_rt_across_trials(df_clean)
     save_plot(p3, p3_nm)
   }
-  if (!file.exists(paste0(p4_nm, ".png"))) {
-    p4 <- plot_contr_rt_by_contr(df_clean)
+  if ((!file.exists(paste0(p4_nm, ".png"))) || (regenerate == TRUE)) {
+    p4 <- plot_motion_rt_by_dur(df_clean)
     save_plot(p4, p4_nm)
   }
 }
 
-plot_save_contr_task <- function(fn) {
+# Import individual contrast data files, clean, create, and save plots
+plot_save_contr_task <- function(fn, regenerate = FALSE) {
   if (!file.exists(fn)) stop("File '", fn, "' not found.")
   
   df <- read_sex_diff_file(fn)
@@ -248,44 +278,37 @@ plot_save_contr_task <- function(fn) {
   
   full_path_2_figs <- paste0("analysis/figs/")
   
-  if (!file.exists(paste0(p1_nm, ".png"))) {
+  if ((!file.exists(paste0(p1_nm, ".png"))) || (regenerate == TRUE)) {
     p1 <- plot_contr_staircase(df_clean)
     save_plot(p1, p1_nm)
   }
-  if (!file.exists(paste0(p2_nm, ".png"))) {
+  if ((!file.exists(paste0(p2_nm, ".png"))) || (regenerate == TRUE)) {
     p2 <- plot_contr_cum_perf(df_clean)
     save_plot(p2, p2_nm)
   }  
-  if (!file.exists(paste0(p3_nm, ".png"))) {
+  if ((!file.exists(paste0(p3_nm, ".png"))) || (regenerate == TRUE)) {
     p3 <- plot_contr_rt_across_trials(df_clean)
     save_plot(p3, p3_nm)
   }
-  if (!file.exists(paste0(p4_nm, ".png"))) {
+  if ((!file.exists(paste0(p4_nm, ".png"))) || (regenerate == TRUE)) {
     p4 <- plot_contr_rt_by_contr(df_clean)
     save_plot(p4, p4_nm)
   }
 }
 
-plot_save_motion_all_subs <- function(fd = make_passed_qa_path()) {
+# Create and save plots for lists of participants in motion task
+plot_save_motion_all_subs <- function(fd = make_passed_qa_path(), regenerate = FALSE) {
   fl <- generate_motion_fl(fd)
-  purrr::map(fl, plot_save_motion_task)
+  purrr::map(fl, plot_save_motion_task, regenerate)
 }
 
-plot_save_contr_all_subs <- function(fd = make_passed_qa_path()) {
+# Create and save plots for lists of participants in contrast task
+plot_save_contr_all_subs <- function(fd = make_passed_qa_path(), regenerate = FALSE) {
   fl <- generate_contr_fl(fd)
-  purrr::map(fl, plot_save_contr_task)
+  purrr::map(fl, plot_save_contr_task, regenerate)
 }
 
-make_passed_qa_path <- function(box_path = "~/Box Sync",
-                                data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
-  paste0(box_path, data_path, "/passed_qa")
-}
-
-make_figs_path <- function(box_path = "~/Box Sync",
-                           data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
-  paste0(box_path, data_path, "/figs")
-}
-
+# Copy figs to Box
 copy_figs_to_box <- function(path_2_data = make_figs_path()) {
   
   assertthat::is.string(path_2_data)
@@ -296,12 +319,28 @@ copy_figs_to_box <- function(path_2_data = make_figs_path()) {
   message("Copied ", sum(n_copied), " files to Box.")
 }
 
-regenerate_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
-  plot_save_motion_all_subs()
-  plot_save_contr_all_subs()
+# Make plots for all subs for both tasks
+generate_all_plots_all_subs <- function(fd = make_passed_qa_path(), 
+                                          regenerate = FALSE) {
+  plot_save_motion_all_subs(regenerate = regenerate)
+  plot_save_contr_all_subs(regenerate = regenerate)
 }
 
+# Make NEW, regenerated plots for all subs for both tasks
+regenerate_all_plots_all_subs <- function(fd = make_passed_qa_path(), 
+                                        regenerate = TRUE) {
+  plot_save_motion_all_subs(regenerate = regenerate)
+  plot_save_contr_all_subs(regenerate = regenerate)
+}
+
+# Make, save, and copy to Box plots for both tasks
 generate_save_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
+  generate_all_plots_all_subs(fd)
+  copy_figs_to_box()
+}
+
+# Make, save, and copy to Box plots for both tasks
+regenerate_save_all_plots_all_subs <- function(fd = make_passed_qa_path()) {
   regenerate_all_plots_all_subs(fd)
   copy_figs_to_box()
 }

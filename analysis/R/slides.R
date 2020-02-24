@@ -1,5 +1,6 @@
 # ioslides_presentations-----------------------------------------------------------------------------------
 
+# Functions to help with files ----------------------------------
 extract_sub_id_from_fn <- function(fn) {
   if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
   stringr::str_extract(fn, "[0-9-]+")
@@ -14,6 +15,14 @@ select_plots_for_sub_id <- function(s_id, fl) {
   fl[this_sub_id]
 }
 
+make_box_decks_path <- function(box_path = "~/Box Sync",
+                                data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
+  paste0(box_path, data_path, "/slide_decks")
+}
+
+# Functions to generate ioslides -------------------------------
+
+# Write YAML header info to slide deck file
 write_slide_header <- function(deck_fn = "slides.R",
                                deck_title = "Sex Diffs Plots",
                                author = "Rick Gilmore",
@@ -37,6 +46,7 @@ write_slide_header <- function(deck_fn = "slides.R",
   message("Wrote slide deck header info to '", deck_fn, "'.")
 }
 
+# Write info for a specific plot to slide deck file
 make_slide_of_plot <- function(plot_fn, deck_fn, plot_path_fr_deck = "figs/") {
   
   cat("#'\n", file = deck_fn, append = TRUE)
@@ -58,26 +68,25 @@ make_slide_of_plot <- function(plot_fn, deck_fn, plot_path_fr_deck = "figs/") {
   # cat("#'\n", file = deck_fn, append = TRUE)
 }
 
-make_box_decks_path <- function(box_path = "~/Box Sync",
-                            data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
-  paste0(box_path, data_path, "/slide_decks")
-}
-
+# Write data for plots for a specific participant (not used)
 make_plots_for_sub <- function(s_id, fl, deck_fn) {
   these_plots <- select_plots_for_sub_id(s_id, fl)
   purrr::map(these_plots, make_slide_of_plot, deck_fn)
 }
 
+# Given list of plot files for a given task, write to a slide deck
 make_plots_for_task <- function(fns, deck_fn) {
   purrr::map(fns, make_slide_of_plot, deck_fn)
 }
 
+# Choose plot files for a given task and return list of those files
 choose_plot_task_type <- function(fl, task_type = "motion",
                                   plot_type = "staircase") {
   these_files <- (stringr::str_detect(fl, task_type)) & (stringr::str_detect(fl, plot_type))
   fl[these_files]              
 }
 
+# Make a slide deck file for a given task and plot type
 make_deck <- function(deck_fn,
                       deck_title,
                       task_type,
@@ -130,12 +139,13 @@ make_all_decks <- function(path_2_decks = "analysis") {
             task_type = "motion",
             plot_type = "rt-by-dur")
   
-  make_deck(deck_fn = paste0(path_2_decks, "/motion-rt-by-cond-plots.R"),
+  make_deck(deck_fn = paste0(path_2_decks, "/contrast-rt-by-cond-plots.R"),
             deck_title = "Contrast: RT by condition",
-            task_type = "motion",
+            task_type = "contrast",
             plot_type = "rt-by-contr")
 }
 
+# Copy all slide decks (and the associated figs/ directory) to Box
 copy_decks_to_box <- function(path_2_box_decks = make_box_decks_path(),
                               path_2_decks = "analysis") {
   
@@ -153,4 +163,9 @@ copy_decks_to_box <- function(path_2_box_decks = make_box_decks_path(),
                         overwrite = TRUE,
                         recursive = TRUE)
   message("Copied *.png files to Box.")
+}
+
+make_decks_copy_to_box <- function() {
+  make_all_decks()
+  copy_decks_to_box()
 }
