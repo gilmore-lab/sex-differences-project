@@ -6,6 +6,7 @@
 #'   ioslides_presentation:
 #'     widescreen: true
 #'     smaller: true
+#'     self_contained: true
 #' ---
 #'
 #'----

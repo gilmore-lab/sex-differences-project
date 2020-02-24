@@ -6,6 +6,7 @@
 #'   ioslides_presentation:
 #'     widescreen: true
 #'     smaller: true
+#'     self_contained: true
 #' ---
 #'
 #'----
@@ -638,4 +639,124 @@
 #' figs/380-contrast-rt-trials.png 
 #'
 #' <img src=" figs/380-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/381-contrast-rt-trials.png 
+#'
+#' <img src=" figs/381-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/382-contrast-rt-trials.png 
+#'
+#' <img src=" figs/382-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/383-contrast-rt-trials.png 
+#'
+#' <img src=" figs/383-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/384-contrast-rt-trials.png 
+#'
+#' <img src=" figs/384-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/385-contrast-rt-trials.png 
+#'
+#' <img src=" figs/385-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/386-contrast-rt-trials.png 
+#'
+#' <img src=" figs/386-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/387-contrast-rt-trials.png 
+#'
+#' <img src=" figs/387-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/388-contrast-rt-trials.png 
+#'
+#' <img src=" figs/388-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/389-contrast-rt-trials.png 
+#'
+#' <img src=" figs/389-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/390-contrast-rt-trials.png 
+#'
+#' <img src=" figs/390-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/391-contrast-rt-trials.png 
+#'
+#' <img src=" figs/391-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/392-contrast-rt-trials.png 
+#'
+#' <img src=" figs/392-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/393-contrast-rt-trials.png 
+#'
+#' <img src=" figs/393-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/394-contrast-rt-trials.png 
+#'
+#' <img src=" figs/394-contrast-rt-trials.png "height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/395-contrast-rt-trials.png 
+#'
+#' <img src=" figs/395-contrast-rt-trials.png "height="500px"/>
 #' </div>
