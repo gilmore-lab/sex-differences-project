@@ -32,7 +32,6 @@ write_slide_header <- function(deck_fn = "slides.R",
   cat("#'   ioslides_presentation:\n", file = deck_fn, append = TRUE)
   cat("#'     widescreen: true\n", file = deck_fn, append = TRUE)
   cat("#'     smaller: true\n", file = deck_fn, append = TRUE)
-  cat("#'     self_contained: true\n", file = deck_fn, append=TRUE)
   cat("#' ---\n", file = deck_fn, append = TRUE)
   
   message("Wrote slide deck header info to '", deck_fn, "'.")
@@ -53,7 +52,7 @@ make_slide_of_plot <- function(plot_fn, deck_fn, plot_path_fr_deck = "figs/") {
   cat("#' ", file = deck_fn, append = TRUE)
   cat('<img src=', file = deck_fn, append = TRUE)
   cat('"', paste0(plot_path_fr_deck, plot_fn), '"', file = deck_fn, append = TRUE)
-  cat('height="500px"/>\n', file = deck_fn, append = TRUE)
+  cat(' height="500px"/>\n', file = deck_fn, append = TRUE)
   
   cat("#'", '</div>\n', file = deck_fn, append = TRUE)
   # cat("#'\n", file = deck_fn, append = TRUE)
@@ -131,7 +130,7 @@ make_all_decks <- function(path_2_decks = "analysis") {
             task_type = "motion",
             plot_type = "rt-by-dur")
   
-  make_deck(deck_fn = "analysis/slide_decks/contrast-rt-by-cond-plots.R",
+  make_deck(deck_fn = paste0(path_2_decks, "/motion-rt-by-cond-plots.R"),
             deck_title = "Contrast: RT by condition",
             task_type = "motion",
             plot_type = "rt-by-contr")
@@ -145,7 +144,13 @@ copy_decks_to_box <- function(path_2_box_decks = make_box_decks_path(),
   assertthat::is.string(path_2_decks)
   assertthat::is.dir(path_2_decks)
   
-  deck_files <- list.files(path = "analysis/slide_decks", pattern = "-plots.html", full.names = TRUE)
+  deck_files <- list.files(path = "analysis", pattern = "-plots.html", full.names = TRUE)
   n_copied <- file.copy(from = deck_files, to = paste0(path_2_box_decks, "/."), overwrite = TRUE)
-  message("Copied ", sum(n_copied), " files to Box.")
+  message("Copied ", sum(n_copied), " *.html files to Box.")
+  
+  file.copy(from = "analysis/figs", 
+                        to = paste0(path_2_box_decks, "/."), 
+                        overwrite = TRUE,
+                        recursive = TRUE)
+  message("Copied *.png files to Box.")
 }
