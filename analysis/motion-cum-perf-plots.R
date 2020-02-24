@@ -639,3 +639,115 @@
 #'
 #' <img src=" figs/379-motion-cum-perf.png " height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/381-motion-cum-perf.png 
+#'
+#' <img src=" figs/381-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/382-motion-cum-perf.png 
+#'
+#' <img src=" figs/382-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/383-motion-cum-perf.png 
+#'
+#' <img src=" figs/383-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/384-motion-cum-perf.png 
+#'
+#' <img src=" figs/384-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/385-motion-cum-perf.png 
+#'
+#' <img src=" figs/385-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/386-motion-cum-perf.png 
+#'
+#' <img src=" figs/386-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/387-motion-cum-perf.png 
+#'
+#' <img src=" figs/387-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/388-motion-cum-perf.png 
+#'
+#' <img src=" figs/388-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/389-motion-cum-perf.png 
+#'
+#' <img src=" figs/389-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/390-motion-cum-perf.png 
+#'
+#' <img src=" figs/390-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/391-motion-cum-perf.png 
+#'
+#' <img src=" figs/391-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/392-motion-cum-perf.png 
+#'
+#' <img src=" figs/392-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/393-motion-cum-perf.png 
+#'
+#' <img src=" figs/393-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/394-motion-cum-perf.png 
+#'
+#' <img src=" figs/394-motion-cum-perf.png " height="500px"/>
+#' </div>
