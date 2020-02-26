@@ -759,3 +759,59 @@
 #'
 #' <img src=" figs/395-contrast-cum-perf.png " height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/396-contrast-cum-perf.png 
+#'
+#' <img src=" figs/396-contrast-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/397-contrast-cum-perf.png 
+#'
+#' <img src=" figs/397-contrast-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/398-contrast-cum-perf.png 
+#'
+#' <img src=" figs/398-contrast-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/399-contrast-cum-perf.png 
+#'
+#' <img src=" figs/399-contrast-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/400-contrast-cum-perf.png 
+#'
+#' <img src=" figs/400-contrast-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/401-contrast-cum-perf.png 
+#'
+#' <img src=" figs/401-contrast-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/402-contrast-cum-perf.png 
+#'
+#' <img src=" figs/402-contrast-cum-perf.png " height="500px"/>
+#' </div>

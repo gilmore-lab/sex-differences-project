@@ -751,3 +751,59 @@
 #'
 #' <img src=" figs/394-motion-staircase.png " height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/396-motion-staircase.png 
+#'
+#' <img src=" figs/396-motion-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/397-motion-staircase.png 
+#'
+#' <img src=" figs/397-motion-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/398-motion-staircase.png 
+#'
+#' <img src=" figs/398-motion-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/399-motion-staircase.png 
+#'
+#' <img src=" figs/399-motion-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/400-motion-staircase.png 
+#'
+#' <img src=" figs/400-motion-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/401-motion-staircase.png 
+#'
+#' <img src=" figs/401-motion-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/402-motion-staircase.png 
+#'
+#' <img src=" figs/402-motion-staircase.png " height="500px"/>
+#' </div>
