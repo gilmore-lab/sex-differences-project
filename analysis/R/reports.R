@@ -134,3 +134,10 @@ generate_computer_task_qa_rpts <- function(box_path = "~/Box Sync",
   visualize_all_motion_dur_data(motion_files)
   visualize_all_contr_sens_data(contr_files)
 }
+
+update_qa_reports <- function() {
+  run_qualtrics_qa_report()
+  run_session_qa_report()
+  generate_computer_task_qa_rpts()
+  copy_qa_rpts_to_box()
+}
