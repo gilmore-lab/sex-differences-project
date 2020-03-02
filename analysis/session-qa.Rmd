@@ -169,7 +169,10 @@ contr_fns <- list.files(contr_data_path,
                         pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(contr_fns, make_qa_df, task = "contr")
 contrast_file_qa <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
-contrast_file_qa %>% knitr::kable(.)
+contrast_file_qa %>% 
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
 ### Motion
@@ -179,7 +182,10 @@ motion_fns <- list.files(motion_data_path,
                          pattern = "\\.csv$", full.names = TRUE)
 dfl <- lapply(motion_fns, make_qa_df, task = "motion")
 motion_file_qa <- Reduce(function(x,y) merge(x,y, all=TRUE), dfl)
-motion_file_qa %>% knitr::kable(.)
+motion_file_qa %>% 
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
 ## Examine files that pass or fail QA
@@ -215,7 +221,10 @@ There are `r sum(!contrast_file_qa$pass_qa)` contrast task files that fail file-
 ```{r}
 contrast_file_qa %>%
   dplyr::filter(., !pass_qa) %>%
-  knitr::kable(.)
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
+
 ```
 
 #### Motion task
@@ -225,7 +234,9 @@ There are `r sum(!motion_file_qa$pass_qa)` motion task files that fail file-leve
 ```{r}
 motion_file_qa %>%
   dplyr::filter(., !pass_qa) %>%
-  knitr::kable(.)
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
 ## Copy files

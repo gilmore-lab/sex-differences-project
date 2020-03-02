@@ -85,7 +85,9 @@ sex_diff_resp %>%
   dplyr::select(., StartDate, `Q97`, `Q1`) %>%
   dplyr::rename(., p_id = `Q97`, 
                 gender = `Q1`) %>%
-  knitr::kable(.)
+  knitr::kable(.) %>%
+  kableExtra::kable_styling("hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
 ## Older survey
@@ -94,9 +96,11 @@ sex_diff_resp %>%
 # In "Sex difference survey REV 2019-11-18", Q97 contains the participant ID
 old_sex_diff_resp %>%
   dplyr::select(., StartDate, `Participant ID`, `Q1`) %>%
-  dplyr::rename(., p_id = `Participant ID`, 
+  dplyr::rename(., p_id = `Participant ID`,
                 gender = `Q1`) %>%
-  knitr::kable(.)
+  knitr::kable(.) %>%
+  kableExtra::kable_styling("hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
 ## Export
@@ -188,7 +192,8 @@ sex_diff_demo <- sex_diff_resp %>%
 ```{r summarize-demo-newer-survey}
 xtabs(~ gender + age_yrs, data = sex_diff_demo) %>%
   knitr::kable(., 'html') %>%
-  kableExtra::kable_styling()
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
 ## Older survey
@@ -220,7 +225,20 @@ old_sex_diff_demo <- old_sex_diff_resp %>%
 ```{r summarize-demo-older-survey}
 xtabs(~ gender + age_yrs, data = old_sex_diff_demo) %>%
   knitr::kable(., 'html') %>%
-  kableExtra::kable_styling()
+  kableExtra::kable_styling(., "hover", "striped") 
+```
+
+## Combined
+
+```{r, echo=FALSE}
+combined_demo <- rbind(old_sex_diff_demo, sex_diff_demo)
+combined_demo_gender_only <- combined_demo %>%
+  dplyr::group_by(., gender) %>%
+  dplyr::select(., gender)
+
+xtabs(~ gender, data = combined_demo_gender_only) %>%
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") 
 ```
 
 # Data merging
@@ -234,7 +252,8 @@ merged_demo <- merged_demo %>%
 
 merged_demo %>%
   knitr::kable(., 'html') %>%
-  kableExtra::kable_styling()
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
 # Quality Assurance (QA) checks
@@ -311,6 +330,7 @@ merged_demo %>%
          age_yrs_valid,
          school_yr_valid,
          preferred_hand_valid) %>%
-  knitr::kable(.) %>%
-  kableExtra::kable_styling(.)
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```

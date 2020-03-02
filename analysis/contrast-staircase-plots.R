@@ -815,3 +815,91 @@
 #'
 #' <img src=" figs/402-contrast-staircase.png " height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/403-contrast-staircase.png 
+#'
+#' <img src=" figs/403-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/404-contrast-staircase.png 
+#'
+#' <img src=" figs/404-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/405-contrast-staircase.png 
+#'
+#' <img src=" figs/405-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/406-contrast-staircase.png 
+#'
+#' <img src=" figs/406-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/407-contrast-staircase.png 
+#'
+#' <img src=" figs/407-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/408-contrast-staircase.png 
+#'
+#' <img src=" figs/408-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/409-contrast-staircase.png 
+#'
+#' <img src=" figs/409-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/410-contrast-staircase.png 
+#'
+#' <img src=" figs/410-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/411-contrast-staircase.png 
+#'
+#' <img src=" figs/411-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/412-contrast-staircase.png 
+#'
+#' <img src=" figs/412-contrast-staircase.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/413-contrast-staircase.png 
+#'
+#' <img src=" figs/413-contrast-staircase.png " height="500px"/>
+#' </div>

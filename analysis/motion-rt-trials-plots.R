@@ -807,3 +807,91 @@
 #'
 #' <img src=" figs/402-motion-rt-trials.png " height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/403-motion-rt-trials.png 
+#'
+#' <img src=" figs/403-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/404-motion-rt-trials.png 
+#'
+#' <img src=" figs/404-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/405-motion-rt-trials.png 
+#'
+#' <img src=" figs/405-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/406-motion-rt-trials.png 
+#'
+#' <img src=" figs/406-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/407-motion-rt-trials.png 
+#'
+#' <img src=" figs/407-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/408-motion-rt-trials.png 
+#'
+#' <img src=" figs/408-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/409-motion-rt-trials.png 
+#'
+#' <img src=" figs/409-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/410-motion-rt-trials.png 
+#'
+#' <img src=" figs/410-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/411-motion-rt-trials.png 
+#'
+#' <img src=" figs/411-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/412-motion-rt-trials.png 
+#'
+#' <img src=" figs/412-motion-rt-trials.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/413-motion-rt-trials.png 
+#'
+#' <img src=" figs/413-motion-rt-trials.png " height="500px"/>
+#' </div>

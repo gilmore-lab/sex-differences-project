@@ -815,3 +815,91 @@
 #'
 #' <img src=" figs/402-contrast-rt-by-contr.png " height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/403-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/403-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/404-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/404-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/405-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/405-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/406-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/406-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/407-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/407-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/408-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/408-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/409-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/409-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/410-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/410-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/411-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/411-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/412-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/412-contrast-rt-by-contr.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/413-contrast-rt-by-contr.png 
+#'
+#' <img src=" figs/413-contrast-rt-by-contr.png " height="500px"/>
+#' </div>

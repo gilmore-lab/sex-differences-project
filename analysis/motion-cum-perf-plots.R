@@ -807,3 +807,91 @@
 #'
 #' <img src=" figs/402-motion-cum-perf.png " height="500px"/>
 #' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/403-motion-cum-perf.png 
+#'
+#' <img src=" figs/403-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/404-motion-cum-perf.png 
+#'
+#' <img src=" figs/404-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/405-motion-cum-perf.png 
+#'
+#' <img src=" figs/405-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/406-motion-cum-perf.png 
+#'
+#' <img src=" figs/406-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/407-motion-cum-perf.png 
+#'
+#' <img src=" figs/407-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/408-motion-cum-perf.png 
+#'
+#' <img src=" figs/408-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/409-motion-cum-perf.png 
+#'
+#' <img src=" figs/409-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/410-motion-cum-perf.png 
+#'
+#' <img src=" figs/410-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/411-motion-cum-perf.png 
+#'
+#' <img src=" figs/411-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/412-motion-cum-perf.png 
+#'
+#' <img src=" figs/412-motion-cum-perf.png " height="500px"/>
+#' </div>
+#'
+#'----
+#'
+#' <div class="centered">
+#' figs/413-motion-cum-perf.png 
+#'
+#' <img src=" figs/413-motion-cum-perf.png " height="500px"/>
+#' </div>
