@@ -1,8 +1,12 @@
 # Import data
 
 # Generate a list of files for the contrast threshold task
-generate_contr_fl <- function(data_dir) {
-  list.files(data_dir, pattern = "contrast", full.names = TRUE)
+generate_contr_fl <- function(data_dir, task_filter = "motion") {
+  list.files(data_dir, pattern = task_filter, full.names = TRUE)
+}
+
+generate_fl <- function(data_dir, task_filter = "motion") {
+  list.files(data_dir, pattern = task_filter, full.names = TRUE)
 }
 
 clean_data <- function(df) {
@@ -102,4 +106,15 @@ clean_contrast_df <- function(df) {
     dplyr::mutate(., run = ordered(run))
   
   df_clean
+}
+
+read_clean_motion <- function(fn) {
+  if (!file.exists(fn)) {
+    stop("File '", fn, "' not found.")
+  }
+  df <- read_sex_diff_file(fn)
+  if (!is.data.frame(df)) {
+    stop("Data frame not read.")
+  }
+  clean_motion_df(df)
 }
