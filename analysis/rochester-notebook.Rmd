@@ -129,6 +129,10 @@ cor(s2_runs)
 
 These measures seem to capture the differences we see in the plots, so the next step is to write functions that extract the statistics and gather them across the dataset.
 
+# Analysis of variation across datasets
+
+## Motion task
+
 Let's create a function to compute variability measures for the motion task.
 
 ```{r}
@@ -197,7 +201,7 @@ The main point is that there is variability in these measure of variability!
 
 We now need to do the same for the contrast task data, and then compare the two tasks.
 
-# Contrast task
+## Contrast task
 
 Let's do the same thing for the contrast data.
 
@@ -258,7 +262,7 @@ compute_within_p_var_contr <- function(df) {
 }
 
 compute_contr_var_measures <- function(fn) {
-  message(fn)
+  #message(fn)
   df <- readr::read_csv(fn)
   df <- clean_contrast_df(df)
   var_c_df <- compute_within_p_var_contr(df)
@@ -275,5 +279,15 @@ contrast_var_df <- purrr::map_dfr(contrast_fl,
 contrast_var_df %>%
   dplyr::select(., -sub_id, -task) %>%
   GGally::ggpairs(.)
+```
+
+## Combining the tasks
+
+```{r}
+sex_diffs_var_all <- rbind(motion_var_df, contrast_var_df)
+
+sex_diffs_var_all %>%
+  dplyr::select(., -sub_id) %>%
+  GGally::ggpairs(., aes(color = task))
 ```
 
