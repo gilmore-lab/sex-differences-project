@@ -1,5 +1,5 @@
 library(shiny)
-source("helpers.R")
+source("shiny-apps/staircase-viz/helpers.R")
 data_dir <- "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa"
 
 # Define UI for application that draws a histogram
