@@ -35,6 +35,10 @@ extract_task_type_from_fn <- function(fn) {
   }
 }
 
+extract_sub_id_from_fn <- function(fn) {
+  stringr::str_extract(fn, "[0-9]{3,12}")
+}
+
 plot_motion_staircase <- function(df) {
   if (!is.data.frame(df)) stop("Not a valid data frame.")
   require(ggplot2)
@@ -43,7 +47,7 @@ plot_motion_staircase <- function(df) {
     aes(x = trial_n, y = dur_s, color = run) +
     geom_smooth() +
     geom_point() +
-    ggtitle("Duration across trials and runs") +
+    #ggtitle("Duration across trials and runs") +
     theme(legend.position = "bottom")
 }
 
@@ -55,7 +59,94 @@ plot_contr_staircase <- function(df) {
     aes(x = trial_n, y = contr, color = run) +
     geom_smooth() +
     geom_point() +
-    ggtitle("Contrast across trials and runs") +
+    #ggtitle("Contrast across trials and runs") +
+    theme(legend.position = "bottom")
+}
+
+plot_motion_cum_perf <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  require(dplyr)
+  
+  df <- df %>%
+    dplyr::group_by(., run) %>%
+    dplyr::arrange(., dur_s) %>%
+    dplyr::mutate(., cum_sum = cumsum(corr),
+                  cum_p = cum_sum/n())
+  
+  ggplot(df) +
+    aes(x = dur_s, y = cum_p, color = run) +
+    geom_point() +
+    geom_smooth(se = FALSE)  +
+    #ggtitle("p(corr) by duration across runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot cumulative performance across contrast levels
+plot_contr_cum_perf <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  require(dplyr)
+  
+  df <- df %>%
+    dplyr::group_by(., run) %>%
+    dplyr::arrange(., contr) %>%
+    dplyr::mutate(., cum_sum = cumsum(corr),
+                  cum_p = cum_sum/n())
+  
+  ggplot(df) +
+    aes(x = contr, y = cum_p, color = run) +
+    geom_point() +
+    geom_smooth(se = FALSE) +
+    #ggtitle("p(corr) by contrast across runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time across trials for the motion task 
+plot_motion_rt_across_trials <- function(df){
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = trial_n, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT across trials and runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time by motion duration (difficulty)
+plot_motion_rt_by_dur <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = dur_s, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT by duration across runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time across trials
+plot_contr_rt_across_trials <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = trial_n, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT across trials and runs") +
+    theme(legend.position = "bottom")
+}
+
+# Plot reaction time by contrast (difficulty)
+plot_contr_rt_by_contr <- function(df) {
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  require(ggplot2)
+  ggplot(df) +
+    aes(x = contr, y = rt, color = run) +
+    geom_point() +
+    geom_smooth() +
+    ggtitle("RT by contrast across runs") +
     theme(legend.position = "bottom")
 }
 
@@ -118,3 +209,16 @@ read_clean_motion <- function(fn) {
   }
   clean_motion_df(df)
 }
+
+read_clean_contrast <- function(fn) {
+  if (!file.exists(fn)) {
+    stop("File '", fn, "' not found.")
+  }
+  df <- read_sex_diff_file(fn)
+  if (!is.data.frame(df)) {
+    stop("Data frame not read.")
+  }
+  clean_contrast_df(df)
+}
+
+

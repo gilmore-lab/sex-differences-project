@@ -1,15 +1,26 @@
 ---
 title: "Data explorations for Rochester symposium"
-output: html_notebook
+output: 
+  html_document:
+    toc: true
+    toc_levels: 2
+    toc_float: true
+    code_folding: hide
 date: "`r Sys.time()`"
 ---
 
-```{r}
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, 
+                      warning = FALSE)
+
 library(tidyverse)
 library(ggplot2)
+library(GGally)
 ```
 
 # Purpose
+
+This document describes explorations by Rick Gilmore and Yiming Qian about measures of variability in task performance in the motion duration threshold task.
 
 # Load & clean data
 
@@ -120,6 +131,8 @@ These measures seem to capture the differences we see in the plots, so the next 
 
 # Next steps
 
+Let's create a function to compute variability measures for the motion task.
+
 ```{r}
 compute_within_p_var <- function(df) {
   tr30 <- dplyr::filter(df, trial_n == 30)
@@ -133,21 +146,50 @@ compute_within_p_var <- function(df) {
   
   these_runs <- cbind(r1, r2, r3, r4)
   cor_vals <- cor(these_runs)
-  mean_cor <- mean(cor_vals[1,2], 
+  mean_cor <- mean(sort(c(cor_vals[1,2], 
                    cor_vals[1,3], 
                    cor_vals[1,4],
                    cor_vals[2,3], 
                    cor_vals[2,4], 
-                   cor_vals[3,4])
-  med_cor <- median(cor_vals[1,2], 
+                   cor_vals[3,4])))
+  med_cor <- median(sort(c(cor_vals[1,2], 
                     cor_vals[1,3], 
                     cor_vals[1,4],
                     cor_vals[2,3], 
                     cor_vals[2,4], 
-                    cor_vals[3,4])
-  data.frame(tr_30_sd = tr30_sd, tr30_rng = tr30_rng,
-             mean_cor = mean_cor, med_cor = med_cor)
-  cor_vals
+                    cor_vals[3,4])))
+  data.frame(tr30_sd = tr30_sd, tr30_rng = tr30_rng,
+             mn_run_cor = mean_cor, md_run_cor = med_cor)
 }
 ```
 
+Now, let's compute across all of the relevant datasets.
+
+```{r}
+compute_motion_var_measures <- function(fn) {
+  df <- readr::read_csv(fn)
+  df <- clean_motion_df(df)
+  var_m_df <- compute_within_p_var(df)
+  var_m_df$sub_id <- stringr::str_extract(fn, "[0-9]+")
+  var_m_df
+}
+```
+
+
+```{r}
+motion_fl <- list.files("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "motion", full.names = TRUE)
+
+motion_var_df <- purrr::map_dfr(motion_fl, compute_motion_var_measures)
+```
+
+```{r}
+motion_var_df %>%
+  dplyr::select(., -sub_id) %>%
+  GGally::ggpairs(.)
+```
+
+The measures (standard deviation of the trial 30 duration -- *tr30_sd*, range of the trial 30 durations -- *tr30_rng*, mean of the cross-correlation between pairs of runs -- *mn_run_cor*, and the median of the cross-correlation between pairs of runs -- *md_run_cor*) show similar patterns, as they should.
+The measures are not really independent of one another.
+The main point is that there is variability in these measure of variability!
+
+We now need to do the same for the contrast task data, and then compare the two tasks.
