@@ -1,0 +1,293 @@
+---
+title: "Data explorations for Rochester symposium"
+output: 
+  html_document:
+    toc: true
+    toc_levels: 2
+    toc_float: true
+    code_folding: hide
+date: "`r Sys.time()`"
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, 
+                      warning = FALSE)
+
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+```
+
+# Purpose
+
+This document describes explorations by Rick Gilmore and Yiming Qian about measures of variability in task performance in the motion duration threshold task.
+
+# Load & clean data
+
+## Motion data
+
+Let's pick one participant who is highly variable: 20191118083974.
+
+```{r}
+s1 <- readr::read_csv("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa/20191118083974_motion_temporal_threshold.csv")
+```
+
+And a second who is very consistent: 2019112209583295
+
+```{r}
+s2 <- readr::read_csv("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa/2019112209583295_motion_temporal_threshold.csv")
+```
+
+### Clean the data
+
+```{r}
+clean_motion_df <- function(df) {
+  require(tidyverse)
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  
+  df_clean <- df %>%
+    dplyr::mutate(., run = run_n + 1) %>%
+    dplyr::rename(., corr = correct,
+                  dur_s = FWHM)
+  
+  df_clean <- df_clean %>%
+    dplyr::select(.,
+                  run,
+                  trial_n,
+                  dur_s,
+                  corr,
+                  rt) %>%
+    dplyr::mutate(., run = ordered(run))
+  df_clean
+}
+```
+
+```{r}
+s1 <- clean_motion_df(s1)
+s2 <- clean_motion_df(s2)
+```
+
+# Visualize
+
+```{r}
+s1 %>% ggplot(.) +
+  aes(x = trial_n, y = dur_s, color = run) +
+  geom_point() +
+  geom_smooth()
+```
+
+```{r}
+s2 %>% ggplot(.) +
+  aes(x = trial_n, y = dur_s, color = run) +
+  geom_point() +
+  geom_smooth()
+```
+
+# Quantify variability
+
+## Duration at trial = 30
+
+```{r}
+s1_tr30 <- dplyr::filter(s1, trial_n == 30)
+(s1_tr30_sd <- sd(s1_tr30$dur_s))
+(s1_tr30_rng <- max(s1_tr30$dur_s) - min(s1_tr30$dur_s))
+```
+
+```{r}
+s2_tr30 <- dplyr::filter(s2, trial_n == 30)
+(s2_tr30_sd <- sd(s2_tr30$dur_s))
+(s2_tr30_rng <- max(s2_tr30$dur_s) - min(s2_tr30$dur_s))
+```
+
+## Cross-correlation across runs
+
+```{r}
+s1_1 <- s1$dur_s[s1$run == 1]
+s1_2 <- s1$dur_s[s1$run == 2]
+s1_3 <- s1$dur_s[s1$run == 3]
+s1_4 <- s1$dur_s[s1$run == 4]
+(s1_runs <- cbind(s1_1, s1_2, s1_3, s1_4))
+```
+
+```{r}
+cor(s1_runs)
+```
+
+```{r}
+s2_1 <- s2$dur_s[s2$run == 1]
+s2_2 <- s2$dur_s[s2$run == 2]
+s2_3 <- s2$dur_s[s2$run == 3]
+s2_4 <- s2$dur_s[s2$run == 4]
+(s2_runs <- cbind(s2_1, s2_2, s2_3, s2_4))
+```
+
+```{r}
+cor(s2_runs)
+```
+
+# Discussion
+
+These measures seem to capture the differences we see in the plots, so the next step is to write functions that extract the statistics and gather them across the dataset.
+
+# Analysis of variation across datasets
+
+## Motion task
+
+Let's create a function to compute variability measures for the motion task.
+
+```{r}
+compute_within_p_var <- function(df) {
+  tr30 <- dplyr::filter(df, trial_n == 30)
+  tr30_sd <- sd(tr30$dur_s)
+  tr30_rng <- max(tr30$dur_s) - min(tr30$dur_s)
+  
+  r1 <- df$dur_s[df$run == 1]
+  r2 <- df$dur_s[df$run == 2]
+  r3 <- df$dur_s[df$run == 3]
+  r4 <- df$dur_s[df$run == 4]
+  
+  these_runs <- cbind(r1, r2, r3, r4)
+  cor_vals <- cor(these_runs)
+  mean_cor <- mean(sort(c(cor_vals[1,2], 
+                   cor_vals[1,3], 
+                   cor_vals[1,4],
+                   cor_vals[2,3], 
+                   cor_vals[2,4], 
+                   cor_vals[3,4])))
+  med_cor <- median(sort(c(cor_vals[1,2], 
+                    cor_vals[1,3], 
+                    cor_vals[1,4],
+                    cor_vals[2,3], 
+                    cor_vals[2,4], 
+                    cor_vals[3,4])))
+  
+  tr30_coef_var <- tr30_sd/mean(tr30$dur_s)
+  
+  data.frame(task = "motion", tr30_sd = tr30_sd, 
+             tr30_rng = tr30_rng, tr30_coef_var = tr30_coef_var,
+             mn_run_cor = mean_cor, md_run_cor = med_cor)
+}
+```
+
+Now, let's compute across all of the relevant datasets.
+
+```{r}
+compute_motion_var_measures <- function(fn) {
+  df <- readr::read_csv(fn)
+  df <- clean_motion_df(df)
+  var_m_df <- compute_within_p_var(df)
+  var_m_df$sub_id <- stringr::str_extract(fn, "[0-9]{3,12}")
+  var_m_df
+}
+```
+
+
+```{r}
+motion_fl <- list.files("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "motion", full.names = TRUE)
+
+motion_var_df <- purrr::map_dfr(motion_fl,
+                                compute_motion_var_measures)
+```
+
+```{r}
+motion_var_df %>%
+  dplyr::select(., -sub_id, -task) %>%
+  GGally::ggpairs(.)
+```
+
+The measures (standard deviation of the trial 30 duration -- *tr30_sd*, range of the trial 30 durations -- *tr30_rng*, mean of the cross-correlation between pairs of runs -- *mn_run_cor*, and the median of the cross-correlation between pairs of runs -- *md_run_cor*) show similar patterns, as they should.
+The measures are not really independent of one another.
+The main point is that there is variability in these measure of variability!
+
+We now need to do the same for the contrast task data, and then compare the two tasks.
+
+## Contrast task
+
+Let's do the same thing for the contrast data.
+
+```{r}
+clean_contrast_df <- function(df) {
+  require(tidyverse)
+  if (!is.data.frame(df)) stop("Not a valid data frame.")
+  
+  df_clean <- df %>%
+    mutate(., correctAns = stringr::str_extract(correctAns, "left|down|right|up")) %>%
+    mutate(., corr = if_else(resp == correctAns, 1, 0)) %>%
+    rename(., contr = loop_trial.intensity,
+           trial_n = loop_trial.thisN,
+           rt = resp.rt) %>%
+    mutate(., trial_n = trial_n + 1)
+  
+  df_clean <- df_clean %>%
+    dplyr::select(., trial_n,
+                  contr,
+                  corr,
+                  rt) %>%
+    dplyr::filter(., trial_n >= 0) %>%
+    dplyr::mutate(., run = rep(1:4, each=30)) %>%
+    dplyr::mutate(., run = ordered(run))
+  
+  df_clean
+}
+
+compute_within_p_var_contr <- function(df) {
+  tr30 <- dplyr::filter(df, trial_n == 30)
+  tr30_sd <- sd(tr30$contr)
+  tr30_rng <- max(tr30$contr) - min(tr30$contr)
+  
+  r1 <- df$contr[df$run == 1]
+  r2 <- df$contr[df$run == 2]
+  r3 <- df$contr[df$run == 3]
+  r4 <- df$contr[df$run == 4]
+  
+  these_runs <- cbind(r1, r2, r3, r4)
+  cor_vals <- cor(these_runs)
+  mean_cor <- mean(sort(c(cor_vals[1,2], 
+                   cor_vals[1,3], 
+                   cor_vals[1,4],
+                   cor_vals[2,3], 
+                   cor_vals[2,4], 
+                   cor_vals[3,4])))
+  med_cor <- median(sort(c(cor_vals[1,2], 
+                    cor_vals[1,3], 
+                    cor_vals[1,4],
+                    cor_vals[2,3], 
+                    cor_vals[2,4], 
+                    cor_vals[3,4])))
+  
+  tr30_coef_var <- tr30_sd/mean(tr30$contr)
+  data.frame(task = "contr", tr30_sd = tr30_sd, 
+             tr30_rng = tr30_rng, tr30_coef_var = tr30_coef_var,
+             mn_run_cor = mean_cor, md_run_cor = med_cor)
+}
+
+compute_contr_var_measures <- function(fn) {
+  #message(fn)
+  df <- readr::read_csv(fn)
+  df <- clean_contrast_df(df)
+  var_c_df <- compute_within_p_var_contr(df)
+  var_c_df$sub_id <- stringr::str_extract(fn, "[0-9]{3,12}")
+  var_c_df
+}
+
+contrast_fl <- list.files("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "contrast", full.names = TRUE)
+```
+
+```{r}
+contrast_var_df <- purrr::map_dfr(contrast_fl,
+                                  compute_contr_var_measures)
+contrast_var_df %>%
+  dplyr::select(., -sub_id, -task) %>%
+  GGally::ggpairs(.)
+```
+
+## Combining the tasks
+
+```{r}
+sex_diffs_var_all <- rbind(motion_var_df, contrast_var_df)
+
+sex_diffs_var_all %>%
+  dplyr::select(., -sub_id) %>%
+  GGally::ggpairs(., aes(color = task))
+```
+

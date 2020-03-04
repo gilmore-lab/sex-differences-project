@@ -1,7 +1,7 @@
 ---
 title: "Recode-SubID"
-author: "Yiming Qian"
-date: "1/30/2020"
+author: "Yiming Qian & Andrea Seisler"
+date: "`r Sys.time()`"
 output: html_document
 ---
 
@@ -13,6 +13,11 @@ QA failure: no matching session across tasks
 Objective: the old participant ID (n=34) is long and easy to have type error. So, we decide to have a new set of participant ID, stating from 335. Also, inorder to merge the data later (two visual task files and one qualtric file), we need to make sure the participant ID is the same. However, typing error occurred. So, in this document, we give a new ID to replace the old one. The odd and even number is consistent from old to new, because it contains the information of the sequence of two visual experiment.
 
 ## match the old Participant ID with the new one
+
+
+| New ID | Qualtrics ID | Temporal Duration ID | Temporal Duration File Name | Contrast Sensitivity ID | Contrast Sensitivity File Name |
+|---|---|---|---|---|---|
+
 101 20191113094926-63
 102 20191113111024-20
 103 20191113133803-57

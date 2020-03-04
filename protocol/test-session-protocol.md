@@ -1,7 +1,7 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-02-20 12:45:54"
+date: "2020-02-26 10:33:56"
 output:
   # pdf_document:
   #   toc: yes
@@ -414,6 +414,8 @@ You also have done two computer tests, which examine your performance in motion 
 
 ### Data Export
 
-- Andrea or Yiming will copy the data to Box:    
+- Andrea or Yiming will copy the data to Box: 
+  - Frequency at the end of each day or the morning before data collection starts
+      - When this is complete a note should be written into the `study-sex-differences` discord channel and include the date the data were copied.
   - temporal duration threshold task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> motion_temporal_threshold_data'
   - contrast sensitivity task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> contrast_sensitivity_task_data'
