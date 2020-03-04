@@ -104,7 +104,7 @@ power_to_df <- function(x, n_total) {
 }
 
 power_from_n<- function(n_total) {
-  pwr::pwr.r.test(n_total, sig.level = 0.05/4, power = 0.8,
+  pwr::pwr.r.test(n_total, sig.level = 0.05, power = 0.8,
     alternative = c("greater"))
 }
 
@@ -118,5 +118,15 @@ purrr::map_dfr(50:250, pow_calc) %>%
     ggplot2::aes(n_total, r) + 
     # ggplot2::geom_point() +
     ggplot2::geom_smooth() +
-    ggplot2::ggtitle("Effect size (r) detectable at .8 power for varied sample sizes in one-tailed correlation test")
+    ggplot2::ggtitle("Effect size (r) detectable at .8 power with Type I error at .05")
+```
+
+```{r CI}
+# calculate the Ci from Cohen's d in R
+library(compute.es)
+d=0.76
+n.1=25
+n.2=28
+t = d*sqrt((n.1*n.2)/(n.1+n.2))
+tes(t, n.1, n.2)  # ncp is the t value 
 ```
