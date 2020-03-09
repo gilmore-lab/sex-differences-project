@@ -29,13 +29,13 @@ This document describes explorations by Rick Gilmore and Yiming Qian about measu
 Let's pick one participant who is highly variable: 20191118083974.
 
 ```{r}
-s1 <- readr::read_csv("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa/20191118083974_motion_temporal_threshold.csv")
+s1 <- readr::read_csv("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa/20191118083974_motion_temporal_threshold.csv")
 ```
 
 And a second who is very consistent: 2019112209583295
 
 ```{r}
-s2 <- readr::read_csv("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa/2019112209583295_motion_temporal_threshold.csv")
+s2 <- readr::read_csv("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa/2019112209583295_motion_temporal_threshold.csv")
 ```
 
 ### Clean the data
@@ -89,12 +89,14 @@ s2 %>% ggplot(.) +
 
 ```{r}
 s1_tr30 <- dplyr::filter(s1, trial_n == 30)
+(s1_tr30_mean <- mean(s1_tr30$dur_s))
 (s1_tr30_sd <- sd(s1_tr30$dur_s))
 (s1_tr30_rng <- max(s1_tr30$dur_s) - min(s1_tr30$dur_s))
 ```
 
 ```{r}
 s2_tr30 <- dplyr::filter(s2, trial_n == 30)
+(s2_tr30_mean <- mean(s2_tr30$dur_s))
 (s2_tr30_sd <- sd(s2_tr30$dur_s))
 (s2_tr30_rng <- max(s2_tr30$dur_s) - min(s2_tr30$dur_s))
 ```
@@ -138,6 +140,7 @@ Let's create a function to compute variability measures for the motion task.
 ```{r}
 compute_within_p_var <- function(df) {
   tr30 <- dplyr::filter(df, trial_n == 30)
+  tr30_mean<-mean(tr30$dur_s)
   tr30_sd <- sd(tr30$dur_s)
   tr30_rng <- max(tr30$dur_s) - min(tr30$dur_s)
   
@@ -163,9 +166,9 @@ compute_within_p_var <- function(df) {
   
   tr30_coef_var <- tr30_sd/mean(tr30$dur_s)
   
-  data.frame(task = "motion", tr30_sd = tr30_sd, 
-             tr30_rng = tr30_rng, tr30_coef_var = tr30_coef_var,
-             mn_run_cor = mean_cor, md_run_cor = med_cor)
+  data.frame(task = "motion", tr30_mean_m = tr30_mean,tr30_sd_m = tr30_sd, 
+             tr30_rng_m = tr30_rng, tr30_coef_var_m = tr30_coef_var,
+             mn_run_cor_m = mean_cor, md_run_cor_m = med_cor)
 }
 ```
 
@@ -183,7 +186,7 @@ compute_motion_var_measures <- function(fn) {
 
 
 ```{r}
-motion_fl <- list.files("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "motion", full.names = TRUE)
+motion_fl <- list.files("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "motion", full.names = TRUE)
 
 motion_var_df <- purrr::map_dfr(motion_fl,
                                 compute_motion_var_measures)
@@ -232,6 +235,7 @@ clean_contrast_df <- function(df) {
 
 compute_within_p_var_contr <- function(df) {
   tr30 <- dplyr::filter(df, trial_n == 30)
+  tr30_mean<-mean(tr30$contr)
   tr30_sd <- sd(tr30$contr)
   tr30_rng <- max(tr30$contr) - min(tr30$contr)
   
@@ -256,9 +260,9 @@ compute_within_p_var_contr <- function(df) {
                     cor_vals[3,4])))
   
   tr30_coef_var <- tr30_sd/mean(tr30$contr)
-  data.frame(task = "contr", tr30_sd = tr30_sd, 
-             tr30_rng = tr30_rng, tr30_coef_var = tr30_coef_var,
-             mn_run_cor = mean_cor, md_run_cor = med_cor)
+  data.frame(task = "contr", tr30_mean_c = tr30_mean, tr30_sd_c = tr30_sd, 
+             tr30_rng_c = tr30_rng, tr30_coef_var_c = tr30_coef_var,
+             mn_run_cor_c = mean_cor, md_run_cor_c = med_cor)
 }
 
 compute_contr_var_measures <- function(fn) {
@@ -270,7 +274,7 @@ compute_contr_var_measures <- function(fn) {
   var_c_df
 }
 
-contrast_fl <- list.files("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "contrast", full.names = TRUE)
+contrast_fl <- list.files("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "contrast", full.names = TRUE)
 ```
 
 ```{r}
@@ -291,3 +295,15 @@ sex_diffs_var_all %>%
   GGally::ggpairs(., aes(color = task))
 ```
 
+# correlation between two tasks
+```{r}
+sex_diffs_var_both <- full_join(motion_var_df, contrast_var_df, by = "sub_id")
+
+cor(sex_diffs_var_both$tr30_mean_m,sex_diffs_var_both$tr30_mean_c)
+cor(sex_diffs_var_both$tr30_sd_m,sex_diffs_var_both$tr30_sd_c)
+cor(sex_diffs_var_both$tr30_sd_m,sex_diffs_var_both$tr30_sd_c)
+cor(sex_diffs_var_both$tr30_rng_m, sex_diffs_var_both$tr30_rng_c) 
+cor(sex_diffs_var_both$tr30_coef_var_m, sex_diffs_var_both$tr30_coef_var_c)
+cor(sex_diffs_var_both$mn_run_cor_m, sex_diffs_var_both$mn_run_cor_c)
+cor(sex_diffs_var_both$md_run_cor_m, sex_diffs_var_both$md_run_cor_c)
+```
