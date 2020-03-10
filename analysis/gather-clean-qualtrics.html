@@ -445,7 +445,7 @@ summary {
 <h1 class="title toc-ignore">Gather &amp; Clean Qualtrics Surveys</h1>
 <h3 class="subtitle">Sex Differences Project</h3>
 <h4 class="author">Rick Gilmore</h4>
-<h4 class="date">2020-02-20 12:23:39</h4>
+<h4 class="date">2020-03-10 07:06:15</h4>
 
 </div>
 
@@ -475,10 +475,10 @@ active_survey_name &lt;- &quot;Sex difference survey REV 2019-11-18&quot;
 surveys &lt;- qualtRics::all_surveys()
 
 active_survey &lt;- surveys %&gt;%
-  filter(., name == active_survey_name)
+  dplyr::filter(., name == active_survey_name)
 
 old_active_survey &lt;- surveys %&gt;%
-  filter(., name == old_active_survey_name)
+  dplyr::filter(., name == old_active_survey_name)
 
 sex_diff_resp &lt;- qualtRics::fetch_survey(surveyID = active_survey$id,
                                      verbose = TRUE,
@@ -487,31 +487,33 @@ sex_diff_resp &lt;- qualtRics::fetch_survey(surveyID = active_survey$id,
   |                                                                            
   |                                                                      |   0%
   |                                                                            
+  |=====================================================                 |  75%
+  |                                                                            
   |======================================================================| 100%</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   .default = col_character(),
 ##   StartDate = col_datetime(format = &quot;&quot;),
 ##   EndDate = col_datetime(format = &quot;&quot;),
+##   Progress = col_double(),
+##   `Duration (in seconds)` = col_double(),
+##   Finished = col_logical(),
+##   RecordedDate = col_datetime(format = &quot;&quot;),
 ##   RecipientLastName = col_logical(),
 ##   RecipientFirstName = col_logical(),
 ##   RecipientEmail = col_logical(),
-##   ExternalDataReference = col_logical(),
-##   Finished = col_double(),
-##   Status = col_double(),
-##   Q79 = col_double(),
-##   Q87 = col_double(),
-##   Q6 = col_double(),
+##   ExternalReference = col_logical(),
+##   LocationLatitude = col_double(),
+##   LocationLongitude = col_double(),
 ##   Q89_5 = col_logical(),
 ##   Q89_6 = col_logical(),
-##   Q8 = col_double(),
-##   Q9_1 = col_double(),
-##   Q9_2 = col_double(),
-##   Q9_3 = col_double(),
-##   Q9_4 = col_double(),
-##   Q28_1 = col_double(),
-##   Q28_2 = col_double()
-##   # ... with 25 more columns
+##   `Q9_First Click` = col_double(),
+##   `Q9_Last Click` = col_double(),
+##   `Q9_Page Submit` = col_double(),
+##   `Q9_Click Count` = col_double(),
+##   `Q28_First Click` = col_double(),
+##   `Q28_Last Click` = col_double()
+##   # ... with 103 more columns
 ## )</code></pre>
 <pre><code>## See spec(...) for full column specifications.</code></pre>
 <pre class="r"><code>sex_diff_quest &lt;- qualtRics::survey_questions(surveyID = active_survey$id)
@@ -531,30 +533,30 @@ old_sex_diff_resp &lt;- qualtRics::fetch_survey(surveyID = old_active_survey$id,
 ##   .default = col_character(),
 ##   StartDate = col_datetime(format = &quot;&quot;),
 ##   EndDate = col_datetime(format = &quot;&quot;),
+##   Progress = col_double(),
+##   `Duration (in seconds)` = col_double(),
+##   Finished = col_logical(),
+##   RecordedDate = col_datetime(format = &quot;&quot;),
 ##   RecipientLastName = col_logical(),
 ##   RecipientFirstName = col_logical(),
 ##   RecipientEmail = col_logical(),
-##   ExternalDataReference = col_logical(),
-##   Finished = col_double(),
-##   Status = col_double(),
-##   Q96 = col_double(),
-##   Q79 = col_double(),
-##   Q87 = col_double(),
-##   Q97 = col_logical(),
-##   Q6 = col_double(),
+##   ExternalReference = col_logical(),
+##   LocationLatitude = col_double(),
+##   LocationLongitude = col_double(),
+##   Q97 = col_double(),
 ##   Q89_5 = col_logical(),
 ##   Q89_7 = col_logical(),
-##   Q8 = col_double(),
-##   Q9_1 = col_double(),
-##   Q9_2 = col_double(),
-##   Q9_3 = col_double(),
-##   Q9_4 = col_double()
-##   # ... with 27 more columns
+##   `Q9_First Click` = col_double(),
+##   `Q9_Last Click` = col_double(),
+##   `Q9_Page Submit` = col_double(),
+##   `Q9_Click Count` = col_double(),
+##   `Q28_First Click` = col_double()
+##   # ... with 105 more columns
 ## )
 ## See spec(...) for full column specifications.</code></pre>
 <pre class="r"><code>old_sex_diff_quest &lt;- qualtRics::survey_questions(surveyID = old_active_survey$id)
 old_sex_diff_meta &lt;- qualtRics::metadata(surveyID = old_active_survey$id)</code></pre>
-<p>There are 91 surveys from the current active survey, and 15 from the older inactive survey.</p>
+<p>There are 133 surveys from the current active survey, and 15 from the older inactive survey.</p>
 <div id="active-survey" class="section level2">
 <h2>Active survey</h2>
 <pre class="r"><code># In &quot;Sex difference survey REV 2019-11-18&quot;, Q97 contains the participant ID
@@ -562,568 +564,1686 @@ sex_diff_resp %&gt;%
   dplyr::select(., StartDate, `Q97`, `Q1`) %&gt;%
   dplyr::rename(., p_id = `Q97`, 
                 gender = `Q1`) %&gt;%
-  knitr::kable(.)</code></pre>
-<table>
+  knitr::kable(., 'html') %&gt;%
+  kableExtra::kable_styling(&quot;hover&quot;, &quot;striped&quot;) %&gt;%
+  kableExtra::scroll_box(., height = &quot;300px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">StartDate</th>
-<th align="left">p_id</th>
-<th align="left">gender</th>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+StartDate
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+p_id
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+gender
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">2019-11-19 17:56:29</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-11-21 10:26:03</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-11-21 11:41:53</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-11-21 12:56:39</td>
-<td align="left">NA</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-11-22 09:58:32</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-11-22 10:52:35</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-11-22 13:49:21</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-11-22 16:04:38</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-11-22 17:00:24</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-11-20 14:35:16</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-11-20 16:15:57</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-</tr>
-<tr class="even">
-<td align="left">2019-11-20 16:50:06</td>
-<td align="left">NA</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-12-04 09:52:35</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-12-04 13:58:54</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-12-04 15:54:55</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-12-05 09:24:45</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-12-05 12:23:55</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-12-12 12:43:41</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-12-12 13:47:50</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-12-12 14:50:36</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-12-12 15:56:19</td>
-<td align="left">NA</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2019-12-12 17:01:33</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-12-13 13:15:41</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-12-13 14:00:17</td>
-<td align="left">NA</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2019-12-13 15:01:20</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2019-12-13 16:32:20</td>
-<td align="left">NA</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-21 11:39:43</td>
-<td align="left">test</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-22 13:12:08</td>
-<td align="left">000</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-24 10:30:14</td>
-<td align="left">test</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-27 11:11:18</td>
-<td align="left">0000</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-27 11:47:21</td>
-<td align="left">00000</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-21 12:24:41</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-23 13:43:33</td>
-<td align="left">000</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-28 12:47:46</td>
-<td align="left">336</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-29 11:58:59</td>
-<td align="left">337</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-22 12:57:54</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-29 12:50:27</td>
-<td align="left">338</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-22 13:53:45</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-29 13:50:59</td>
-<td align="left">339</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-30 10:39:11</td>
-<td align="left">340</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-30 12:42:22</td>
-<td align="left">342</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-30 13:39:37</td>
-<td align="left">343</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-31 08:39:50</td>
-<td align="left">344</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-01-31 09:40:58</td>
-<td align="left">345</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-01-30 11:36:03</td>
-<td align="left">341</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-03 10:04:17</td>
-<td align="left">346</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-03 10:51:26</td>
-<td align="left">347</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-04 09:33:00</td>
-<td align="left">977316075</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-04 11:54:00</td>
-<td align="left">349</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-04 12:53:58</td>
-<td align="left">350</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-04 13:37:41</td>
-<td align="left">351</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-05 11:17:52</td>
-<td align="left">352</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-05 12:12:15</td>
-<td align="left">354</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-05 12:08:15</td>
-<td align="left">353</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-05 13:00:25</td>
-<td align="left">355</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-05 13:52:26</td>
-<td align="left">356</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-05 14:34:36</td>
-<td align="left">357</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-06 10:49:03</td>
-<td align="left">358</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-06 12:04:11</td>
-<td align="left">359</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-06 12:51:21</td>
-<td align="left">360</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-06 13:44:25</td>
-<td align="left">361</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-07 08:51:50</td>
-<td align="left">362</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-07 09:47:23</td>
-<td align="left">363</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-10 08:56:51</td>
-<td align="left">364</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-10 09:55:15</td>
-<td align="left">365</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-10 10:22:26</td>
-<td align="left">366</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-11 09:43:46</td>
-<td align="left">367</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-11 10:45:19</td>
-<td align="left">368</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-11 12:20:54</td>
-<td align="left">369</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-11 12:58:40</td>
-<td align="left">370</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-11 14:08:17</td>
-<td align="left">371</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-12 13:09:13</td>
-<td align="left">372</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-12 14:00:54</td>
-<td align="left">373</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-12 14:43:09</td>
-<td align="left">374</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-13 10:35:21</td>
-<td align="left">375</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-13 12:06:36</td>
-<td align="left">376</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-11 13:56:37</td>
-<td align="left">000</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-13 13:07:32</td>
-<td align="left">377</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-13 13:48:51</td>
-<td align="left">378</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-14 08:50:37</td>
-<td align="left">379</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-14 09:32:13</td>
-<td align="left">380</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-17 09:04:01</td>
-<td align="left">381</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-17 10:06:07</td>
-<td align="left">382</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-17 14:02:01</td>
-<td align="left">000</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-18 09:45:36</td>
-<td align="left">383</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-18 10:48:05</td>
-<td align="left">384</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-18 12:46:23</td>
-<td align="left">386</td>
-<td align="left">Female</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-18 14:06:00</td>
-<td align="left">387</td>
-<td align="left">Male</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-19 14:02:46</td>
-<td align="left">388</td>
-<td align="left">Male</td>
-</tr>
-<tr class="even">
-<td align="left">2020-02-19 15:03:26</td>
-<td align="left">389</td>
-<td align="left">Female</td>
-</tr>
-<tr class="odd">
-<td align="left">2020-02-20 11:04:55</td>
-<td align="left">390</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-19 22:56:29
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-21 15:26:03
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-21 16:41:53
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-21 17:56:39
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-22 14:58:32
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-22 15:52:35
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-22 18:49:21
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-22 21:04:38
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-22 22:00:24
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-20 19:35:16
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-20 21:15:57
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-11-20 21:50:06
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-04 14:52:35
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-04 18:58:54
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-04 20:54:55
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-05 14:24:45
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-05 17:23:55
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-12 17:43:41
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-12 18:47:50
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-12 19:50:36
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-12 20:56:19
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-12 22:01:33
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-13 18:15:41
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-13 19:00:17
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-13 20:01:20
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019-12-13 21:32:20
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-21 16:39:43
+</td>
+<td style="text-align:left;">
+test
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-22 18:12:08
+</td>
+<td style="text-align:left;">
+000
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-24 15:30:14
+</td>
+<td style="text-align:left;">
+test
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-27 16:11:18
+</td>
+<td style="text-align:left;">
+0000
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-27 16:47:21
+</td>
+<td style="text-align:left;">
+00000
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-21 17:24:41
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-23 18:43:33
+</td>
+<td style="text-align:left;">
+335
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-28 17:47:46
+</td>
+<td style="text-align:left;">
+336
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-29 16:58:59
+</td>
+<td style="text-align:left;">
+337
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-22 17:57:54
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-29 17:50:27
+</td>
+<td style="text-align:left;">
+338
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-22 18:53:45
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-29 18:50:59
+</td>
+<td style="text-align:left;">
+339
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-30 15:39:11
+</td>
+<td style="text-align:left;">
+340
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-30 17:42:22
+</td>
+<td style="text-align:left;">
+342
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-30 18:39:37
+</td>
+<td style="text-align:left;">
+343
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-31 13:39:50
+</td>
+<td style="text-align:left;">
+344
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-31 14:40:58
+</td>
+<td style="text-align:left;">
+345
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-01-30 16:36:03
+</td>
+<td style="text-align:left;">
+341
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-03 15:04:17
+</td>
+<td style="text-align:left;">
+346
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-03 15:51:26
+</td>
+<td style="text-align:left;">
+347
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-04 14:33:00
+</td>
+<td style="text-align:left;">
+348
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-04 16:54:00
+</td>
+<td style="text-align:left;">
+349
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-04 17:53:58
+</td>
+<td style="text-align:left;">
+350
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-04 18:37:41
+</td>
+<td style="text-align:left;">
+351
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-05 16:17:52
+</td>
+<td style="text-align:left;">
+352
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-05 17:12:15
+</td>
+<td style="text-align:left;">
+354
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-05 17:08:15
+</td>
+<td style="text-align:left;">
+353
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-05 18:00:25
+</td>
+<td style="text-align:left;">
+355
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-05 18:52:26
+</td>
+<td style="text-align:left;">
+356
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-05 19:34:36
+</td>
+<td style="text-align:left;">
+357
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-06 15:49:03
+</td>
+<td style="text-align:left;">
+358
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-06 17:04:11
+</td>
+<td style="text-align:left;">
+359
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-06 17:51:21
+</td>
+<td style="text-align:left;">
+360
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-06 18:44:25
+</td>
+<td style="text-align:left;">
+361
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-07 13:51:50
+</td>
+<td style="text-align:left;">
+362
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-07 14:47:23
+</td>
+<td style="text-align:left;">
+363
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-10 13:56:51
+</td>
+<td style="text-align:left;">
+364
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-10 14:55:15
+</td>
+<td style="text-align:left;">
+365
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-10 15:22:26
+</td>
+<td style="text-align:left;">
+366
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-11 14:43:46
+</td>
+<td style="text-align:left;">
+367
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-11 15:45:19
+</td>
+<td style="text-align:left;">
+368
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-11 17:20:54
+</td>
+<td style="text-align:left;">
+369
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-11 17:58:40
+</td>
+<td style="text-align:left;">
+370
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-11 19:08:17
+</td>
+<td style="text-align:left;">
+371
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-12 18:09:13
+</td>
+<td style="text-align:left;">
+372
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-12 19:00:54
+</td>
+<td style="text-align:left;">
+373
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-12 19:43:09
+</td>
+<td style="text-align:left;">
+374
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-13 15:35:21
+</td>
+<td style="text-align:left;">
+375
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-13 17:06:36
+</td>
+<td style="text-align:left;">
+376
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-11 18:56:37
+</td>
+<td style="text-align:left;">
+000
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-13 18:07:32
+</td>
+<td style="text-align:left;">
+377
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-13 18:48:51
+</td>
+<td style="text-align:left;">
+378
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-14 13:50:37
+</td>
+<td style="text-align:left;">
+379
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-14 14:32:13
+</td>
+<td style="text-align:left;">
+380
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-17 14:04:01
+</td>
+<td style="text-align:left;">
+381
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-17 15:06:07
+</td>
+<td style="text-align:left;">
+382
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-17 19:02:01
+</td>
+<td style="text-align:left;">
+000
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-18 14:45:36
+</td>
+<td style="text-align:left;">
+383
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-18 15:48:05
+</td>
+<td style="text-align:left;">
+384
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-18 17:46:23
+</td>
+<td style="text-align:left;">
+386
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-18 19:06:00
+</td>
+<td style="text-align:left;">
+387
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-19 19:02:46
+</td>
+<td style="text-align:left;">
+388
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-19 20:03:26
+</td>
+<td style="text-align:left;">
+389
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 16:04:55
+</td>
+<td style="text-align:left;">
+390
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 17:10:51
+</td>
+<td style="text-align:left;">
+391
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 18:00:56
+</td>
+<td style="text-align:left;">
+392
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 18:34:06
+</td>
+<td style="text-align:left;">
+393
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-21 14:00:11
+</td>
+<td style="text-align:left;">
+394
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-21 15:01:43
+</td>
+<td style="text-align:left;">
+395
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-24 15:08:22
+</td>
+<td style="text-align:left;">
+396
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-24 16:10:20
+</td>
+<td style="text-align:left;">
+397
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 14:56:14
+</td>
+<td style="text-align:left;">
+398
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 16:58:15
+</td>
+<td style="text-align:left;">
+399
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 17:35:51
+</td>
+<td style="text-align:left;">
+400
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 18:49:19
+</td>
+<td style="text-align:left;">
+401
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 21:50:14
+</td>
+<td style="text-align:left;">
+402
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 17:08:48
+</td>
+<td style="text-align:left;">
+403
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 18:14:09
+</td>
+<td style="text-align:left;">
+404
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 19:10:40
+</td>
+<td style="text-align:left;">
+405
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 19:52:51
+</td>
+<td style="text-align:left;">
+406
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 21:45:57
+</td>
+<td style="text-align:left;">
+407
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 15:58:16
+</td>
+<td style="text-align:left;">
+408
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:10:19
+</td>
+<td style="text-align:left;">
+409
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:48:08
+</td>
+<td style="text-align:left;">
+410
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 19:01:48
+</td>
+<td style="text-align:left;">
+411
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-28 14:00:01
+</td>
+<td style="text-align:left;">
+412
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-28 17:13:38
+</td>
+<td style="text-align:left;">
+413
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-02 14:56:58
+</td>
+<td style="text-align:left;">
+414
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 15:05:51
+</td>
+<td style="text-align:left;">
+415
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 15:44:26
+</td>
+<td style="text-align:left;">
+416
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 17:03:59
+</td>
+<td style="text-align:left;">
+417
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 18:01:25
+</td>
+<td style="text-align:left;">
+418
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 19:10:41
+</td>
+<td style="text-align:left;">
+419
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 18:38:41
+</td>
+<td style="text-align:left;">
+420
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 17:04:10
+</td>
+<td style="text-align:left;">
+421
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 17:50:08
+</td>
+<td style="text-align:left;">
+422
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 19:02:52
+</td>
+<td style="text-align:left;">
+423
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 18:29:06
+</td>
+<td style="text-align:left;">
+424
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 21:58:40
+</td>
+<td style="text-align:left;">
+425
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 15:43:16
+</td>
+<td style="text-align:left;">
+426
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 17:05:59
+</td>
+<td style="text-align:left;">
+427
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 18:06:31
+</td>
+<td style="text-align:left;">
+428
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 18:53:37
+</td>
+<td style="text-align:left;">
+429
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-06 13:58:39
+</td>
+<td style="text-align:left;">
+430
+</td>
+<td style="text-align:left;">
+Male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-06 14:44:39
+</td>
+<td style="text-align:left;">
+431
+</td>
+<td style="text-align:left;">
+Female
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-02 18:49:06
+</td>
+<td style="text-align:left;">
+0000
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="older-survey" class="section level2">
 <h2>Older survey</h2>
 <pre class="r"><code># In &quot;Sex difference survey REV 2019-11-18&quot;, Q97 contains the participant ID
 old_sex_diff_resp %&gt;%
   dplyr::select(., StartDate, `Participant ID`, `Q1`) %&gt;%
-  dplyr::rename(., p_id = `Participant ID`, 
+  dplyr::rename(., p_id = `Participant ID`,
                 gender = `Q1`) %&gt;%
-  knitr::kable(.)</code></pre>
-<table>
+  knitr::kable(.) %&gt;%
+  kableExtra::kable_styling(&quot;hover&quot;, &quot;striped&quot;) %&gt;%
+  kableExtra::scroll_box(., height = &quot;300px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">StartDate</th>
-<th align="left">p_id</th>
-<th align="left">gender</th>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+StartDate
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+p_id
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+gender
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">2019-11-12 11:56:52</td>
-<td align="left">2019-11-1211:56:5218</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-12 16:56:52
+</td>
+<td style="text-align:left;">
+2019-11-1211:56:5218
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="even">
-<td align="left">2019-11-13 09:49:26</td>
-<td align="left">2019-11-1309:49:2632</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-13 14:49:26
+</td>
+<td style="text-align:left;">
+2019-11-1309:49:2632
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2019-11-13 11:10:24</td>
-<td align="left">2019-11-1311:10:2438</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-13 16:10:24
+</td>
+<td style="text-align:left;">
+2019-11-1311:10:2438
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="even">
-<td align="left">2019-11-13 13:38:03</td>
-<td align="left">2019-11-1313:38:0337</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-13 18:38:03
+</td>
+<td style="text-align:left;">
+2019-11-1313:38:0337
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2019-11-13 14:56:02</td>
-<td align="left">2019-11-1314:56:0233</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-13 19:56:02
+</td>
+<td style="text-align:left;">
+2019-11-1314:56:0233
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="even">
-<td align="left">2019-11-13 16:12:18</td>
-<td align="left">2019-11-1316:12:1898</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-13 21:12:18
+</td>
+<td style="text-align:left;">
+2019-11-1316:12:1898
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2019-11-18 08:39:39</td>
-<td align="left">2019-11-1808:39:3927</td>
-<td align="left">Male</td>
+<tr>
+<td style="text-align:left;">
+2019-11-18 13:39:39
+</td>
+<td style="text-align:left;">
+2019-11-1808:39:3927
+</td>
+<td style="text-align:left;">
+Male
+</td>
 </tr>
-<tr class="even">
-<td align="left">2019-11-18 11:26:49</td>
-<td align="left">2019-11-1811:26:4976</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-18 16:26:49
+</td>
+<td style="text-align:left;">
+2019-11-1811:26:4976
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2019-11-18 12:45:17</td>
-<td align="left">2019-11-1812:45:1738</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-18 17:45:17
+</td>
+<td style="text-align:left;">
+2019-11-1812:45:1738
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="even">
-<td align="left">2019-11-18 13:58:08</td>
-<td align="left">2019-11-1813:58:0893</td>
-<td align="left">Male</td>
+<tr>
+<td style="text-align:left;">
+2019-11-18 18:58:08
+</td>
+<td style="text-align:left;">
+2019-11-1813:58:0893
+</td>
+<td style="text-align:left;">
+Male
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2019-11-18 14:48:28</td>
-<td align="left">2019-11-1814:48:2896</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-18 19:48:28
+</td>
+<td style="text-align:left;">
+2019-11-1814:48:2896
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="even">
-<td align="left">2019-11-20 13:40:19</td>
-<td align="left">2019-11-2013:40:1983</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-20 18:40:19
+</td>
+<td style="text-align:left;">
+2019-11-2013:40:1983
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2019-11-20 14:53:23</td>
-<td align="left">2019-11-2014:53:2351</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-20 19:53:23
+</td>
+<td style="text-align:left;">
+2019-11-2014:53:2351
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="even">
-<td align="left">2019-11-20 16:11:07</td>
-<td align="left">2019-11-2016:11:0713</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2019-11-20 21:11:07
+</td>
+<td style="text-align:left;">
+2019-11-2016:11:0713
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-02-18 12:03:54</td>
-<td align="left">2020-2-1812:03:542</td>
-<td align="left">Female</td>
+<tr>
+<td style="text-align:left;">
+2020-02-18 17:03:54
+</td>
+<td style="text-align:left;">
+2020-2-1812:03:542
+</td>
+<td style="text-align:left;">
+Female
+</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="export" class="section level2">
 <h2>Export</h2>
@@ -1187,25 +2307,25 @@ old_sex_diff_resp %&gt;%
 ##   .default = col_character(),
 ##   StartDate = col_datetime(format = &quot;&quot;),
 ##   EndDate = col_datetime(format = &quot;&quot;),
+##   Progress = col_double(),
+##   `Duration (in seconds)` = col_double(),
+##   Finished = col_logical(),
+##   RecordedDate = col_datetime(format = &quot;&quot;),
 ##   RecipientLastName = col_logical(),
 ##   RecipientFirstName = col_logical(),
 ##   RecipientEmail = col_logical(),
-##   ExternalDataReference = col_logical(),
-##   Finished = col_double(),
-##   Status = col_double(),
-##   Q79 = col_double(),
-##   Q87 = col_double(),
-##   Q6 = col_double(),
+##   ExternalReference = col_logical(),
+##   LocationLatitude = col_double(),
+##   LocationLongitude = col_double(),
 ##   Q89_5 = col_logical(),
 ##   Q89_6 = col_logical(),
-##   Q8 = col_double(),
-##   Q9_1 = col_double(),
-##   Q9_2 = col_double(),
-##   Q9_3 = col_double(),
-##   Q9_4 = col_double(),
-##   Q28_1 = col_double(),
-##   Q28_2 = col_double()
-##   # ... with 25 more columns
+##   `Q9_First Click` = col_double(),
+##   `Q9_Last Click` = col_double(),
+##   `Q9_Page Submit` = col_double(),
+##   `Q9_Click Count` = col_double(),
+##   `Q28_First Click` = col_double(),
+##   `Q28_Last Click` = col_double()
+##   # ... with 103 more columns
 ## )</code></pre>
 <pre><code>## See spec(...) for full column specifications.</code></pre>
 <pre><code>## Parsed with column specification:
@@ -1213,25 +2333,25 @@ old_sex_diff_resp %&gt;%
 ##   .default = col_character(),
 ##   StartDate = col_datetime(format = &quot;&quot;),
 ##   EndDate = col_datetime(format = &quot;&quot;),
+##   Progress = col_double(),
+##   `Duration (in seconds)` = col_double(),
+##   Finished = col_logical(),
+##   RecordedDate = col_datetime(format = &quot;&quot;),
 ##   RecipientLastName = col_logical(),
 ##   RecipientFirstName = col_logical(),
 ##   RecipientEmail = col_logical(),
-##   ExternalDataReference = col_logical(),
-##   Finished = col_double(),
-##   Status = col_double(),
-##   Q96 = col_double(),
-##   Q79 = col_double(),
-##   Q87 = col_double(),
-##   Q97 = col_logical(),
-##   Q6 = col_double(),
+##   ExternalReference = col_logical(),
+##   LocationLatitude = col_double(),
+##   LocationLongitude = col_double(),
+##   Q97 = col_double(),
 ##   Q89_5 = col_logical(),
 ##   Q89_7 = col_logical(),
-##   Q8 = col_double(),
-##   Q9_1 = col_double(),
-##   Q9_2 = col_double(),
-##   Q9_3 = col_double(),
-##   Q9_4 = col_double()
-##   # ... with 27 more columns
+##   `Q9_First Click` = col_double(),
+##   `Q9_Last Click` = col_double(),
+##   `Q9_Page Submit` = col_double(),
+##   `Q9_Click Count` = col_double(),
+##   `Q28_First Click` = col_double()
+##   # ... with 105 more columns
 ## )</code></pre>
 <pre><code>## See spec(...) for full column specifications.</code></pre>
 </div>
@@ -1260,22 +2380,24 @@ old_sex_diff_resp %&gt;%
   dplyr::arrange(., test_date)</code></pre>
 <pre class="r"><code>xtabs(~ gender + age_yrs, data = sex_diff_demo) %&gt;%
   knitr::kable(., 'html') %&gt;%
-  kableExtra::kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+  kableExtra::kable_styling(., &quot;hover&quot;, &quot;striped&quot;) %&gt;%
+  kableExtra::scroll_box(., height = &quot;300px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 18-19
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 20-21
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 22-23
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 older than 23
 </th>
 </tr>
@@ -1286,10 +2408,10 @@ older than 23
 Female
 </td>
 <td style="text-align:right;">
-49
+73
 </td>
 <td style="text-align:right;">
-12
+21
 </td>
 <td style="text-align:right;">
 2
@@ -1303,10 +2425,10 @@ Female
 Male
 </td>
 <td style="text-align:right;">
-15
+21
 </td>
 <td style="text-align:right;">
-8
+11
 </td>
 <td style="text-align:right;">
 2
@@ -1317,6 +2439,7 @@ Male
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="older-survey-1" class="section level2">
 <h2>Older survey</h2>
@@ -1343,8 +2466,8 @@ Male
   dplyr::arrange(., test_date)</code></pre>
 <pre class="r"><code>xtabs(~ gender + age_yrs, data = old_sex_diff_demo) %&gt;%
   knitr::kable(., 'html') %&gt;%
-  kableExtra::kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+  kableExtra::kable_styling(., &quot;hover&quot;, &quot;striped&quot;) </code></pre>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1392,6 +2515,39 @@ Male
 </tbody>
 </table>
 </div>
+<div id="combined" class="section level2">
+<h2>Combined</h2>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+gender
+</th>
+<th style="text-align:right;">
+Freq
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+110
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:right;">
+37
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="data-merging" class="section level1">
 <h1>Data merging</h1>
@@ -1402,38 +2558,40 @@ merged_demo &lt;- merged_demo %&gt;%
 
 merged_demo %&gt;%
   knitr::kable(., 'html') %&gt;%
-  kableExtra::kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+  kableExtra::kable_styling(., &quot;hover&quot;, &quot;striped&quot;) %&gt;%
+  kableExtra::scroll_box(., height = &quot;300px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 test_date
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 p_id
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 gender
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 age_yrs
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 school_yr
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 major
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 preferred_hand
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 vis_acuity
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 stereo_vision
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 expt_notes
 </th>
 </tr>
@@ -1441,7 +2599,7 @@ expt_notes
 <tbody>
 <tr>
 <td style="text-align:left;">
-2019-11-13 09:49:26
+2019-11-13 14:49:26
 </td>
 <td style="text-align:left;">
 2019111309492632
@@ -1473,7 +2631,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 11:10:24
+2019-11-13 16:10:24
 </td>
 <td style="text-align:left;">
 2019111311102438
@@ -1505,7 +2663,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 13:38:03
+2019-11-13 18:38:03
 </td>
 <td style="text-align:left;">
 2019111313380337
@@ -1537,7 +2695,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 13:38:03
+2019-11-13 18:38:03
 </td>
 <td style="text-align:left;">
 2019111313380337
@@ -1569,7 +2727,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 14:56:02
+2019-11-13 19:56:02
 </td>
 <td style="text-align:left;">
 2019111314560233
@@ -1601,7 +2759,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 16:12:18
+2019-11-13 21:12:18
 </td>
 <td style="text-align:left;">
 2019111316121898
@@ -1633,7 +2791,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 08:39:39
+2019-11-18 13:39:39
 </td>
 <td style="text-align:left;">
 2019111808393927
@@ -1665,7 +2823,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 11:26:49
+2019-11-18 16:26:49
 </td>
 <td style="text-align:left;">
 2019111811264976
@@ -1697,7 +2855,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 12:45:17
+2019-11-18 17:45:17
 </td>
 <td style="text-align:left;">
 2019111812451738
@@ -1729,7 +2887,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 13:58:08
+2019-11-18 18:58:08
 </td>
 <td style="text-align:left;">
 2019111813580893
@@ -1761,7 +2919,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 14:48:28
+2019-11-18 19:48:28
 </td>
 <td style="text-align:left;">
 2019111814482896
@@ -1793,7 +2951,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 13:40:19
+2019-11-20 18:40:19
 </td>
 <td style="text-align:left;">
 2019112013401983
@@ -1825,7 +2983,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 14:53:23
+2019-11-20 19:53:23
 </td>
 <td style="text-align:left;">
 2019112014532351
@@ -1857,7 +3015,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 16:11:07
+2019-11-20 21:11:07
 </td>
 <td style="text-align:left;">
 2019112016110713
@@ -1889,7 +3047,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 16:50:06
+2019-11-20 21:50:06
 </td>
 <td style="text-align:left;">
 NA
@@ -1921,7 +3079,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-21 10:26:03
+2019-11-21 15:26:03
 </td>
 <td style="text-align:left;">
 NA
@@ -1953,7 +3111,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-21 11:41:53
+2019-11-21 16:41:53
 </td>
 <td style="text-align:left;">
 NA
@@ -1985,7 +3143,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-21 12:56:39
+2019-11-21 17:56:39
 </td>
 <td style="text-align:left;">
 NA
@@ -2017,7 +3175,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 09:58:32
+2019-11-22 14:58:32
 </td>
 <td style="text-align:left;">
 NA
@@ -2049,7 +3207,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 10:52:35
+2019-11-22 15:52:35
 </td>
 <td style="text-align:left;">
 NA
@@ -2081,7 +3239,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 13:49:21
+2019-11-22 18:49:21
 </td>
 <td style="text-align:left;">
 NA
@@ -2113,7 +3271,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 16:04:38
+2019-11-22 21:04:38
 </td>
 <td style="text-align:left;">
 NA
@@ -2145,7 +3303,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 17:00:24
+2019-11-22 22:00:24
 </td>
 <td style="text-align:left;">
 NA
@@ -2177,7 +3335,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-04 09:52:35
+2019-12-04 14:52:35
 </td>
 <td style="text-align:left;">
 NA
@@ -2209,7 +3367,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-04 13:58:54
+2019-12-04 18:58:54
 </td>
 <td style="text-align:left;">
 NA
@@ -2241,7 +3399,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-04 15:54:55
+2019-12-04 20:54:55
 </td>
 <td style="text-align:left;">
 NA
@@ -2273,7 +3431,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-05 09:24:45
+2019-12-05 14:24:45
 </td>
 <td style="text-align:left;">
 NA
@@ -2305,7 +3463,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-05 12:23:55
+2019-12-05 17:23:55
 </td>
 <td style="text-align:left;">
 NA
@@ -2337,7 +3495,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 12:43:41
+2019-12-12 17:43:41
 </td>
 <td style="text-align:left;">
 NA
@@ -2369,7 +3527,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 13:47:50
+2019-12-12 18:47:50
 </td>
 <td style="text-align:left;">
 NA
@@ -2390,7 +3548,7 @@ Athletic Training
 Right hand
 </td>
 <td style="text-align:left;">
-10/25
+10/8
 </td>
 <td style="text-align:right;">
 40
@@ -2401,7 +3559,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 14:50:36
+2019-12-12 19:50:36
 </td>
 <td style="text-align:left;">
 NA
@@ -2433,7 +3591,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 15:56:19
+2019-12-12 20:56:19
 </td>
 <td style="text-align:left;">
 NA
@@ -2465,7 +3623,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 17:01:33
+2019-12-12 22:01:33
 </td>
 <td style="text-align:left;">
 NA
@@ -2497,7 +3655,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 13:15:41
+2019-12-13 18:15:41
 </td>
 <td style="text-align:left;">
 NA
@@ -2529,7 +3687,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 14:00:17
+2019-12-13 19:00:17
 </td>
 <td style="text-align:left;">
 NA
@@ -2561,7 +3719,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 15:01:20
+2019-12-13 20:01:20
 </td>
 <td style="text-align:left;">
 NA
@@ -2593,7 +3751,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 15:01:20
+2019-12-13 20:01:20
 </td>
 <td style="text-align:left;">
 NA
@@ -2625,7 +3783,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 16:32:20
+2019-12-13 21:32:20
 </td>
 <td style="text-align:left;">
 NA
@@ -2657,7 +3815,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-21 11:39:43
+2020-01-21 16:39:43
 </td>
 <td style="text-align:left;">
 test
@@ -2689,7 +3847,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-22 13:12:08
+2020-01-22 18:12:08
 </td>
 <td style="text-align:left;">
 000
@@ -2721,10 +3879,10 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-23 13:43:33
+2020-01-23 18:43:33
 </td>
 <td style="text-align:left;">
-000
+335
 </td>
 <td style="text-align:left;">
 Male
@@ -2742,7 +3900,7 @@ Mechanical engineering
 Right hand
 </td>
 <td style="text-align:left;">
-10/10
+10/8
 </td>
 <td style="text-align:right;">
 40
@@ -2753,7 +3911,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-24 10:30:14
+2020-01-24 15:30:14
 </td>
 <td style="text-align:left;">
 test
@@ -2785,7 +3943,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-27 11:11:18
+2020-01-27 16:11:18
 </td>
 <td style="text-align:left;">
 0000
@@ -2817,7 +3975,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-27 11:47:21
+2020-01-27 16:47:21
 </td>
 <td style="text-align:left;">
 00000
@@ -2849,7 +4007,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-28 12:47:46
+2020-01-28 17:47:46
 </td>
 <td style="text-align:left;">
 336
@@ -2881,7 +4039,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-29 11:58:59
+2020-01-29 16:58:59
 </td>
 <td style="text-align:left;">
 337
@@ -2913,7 +4071,7 @@ ran temp thresh first and contrast sensitivity second :(
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-29 12:50:27
+2020-01-29 17:50:27
 </td>
 <td style="text-align:left;">
 338
@@ -2940,12 +4098,13 @@ Right hand
 60
 </td>
 <td style="text-align:left;">
-since I did the last participant wrong (337), I flipped the order of this participant to balance out. So contrast sensitivity is first and temp thresh is second.\contacts
+<p>since I did the last participant wrong (337), I flipped the order of this participant to balance out. So contrast sensitivity is first and temp thresh is second.</p>
+contacts
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-29 13:50:59
+2020-01-29 18:50:59
 </td>
 <td style="text-align:left;">
 339
@@ -2977,7 +4136,7 @@ replace the chair position in the second computer task, do not a pair of glasses
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 10:39:11
+2020-01-30 15:39:11
 </td>
 <td style="text-align:left;">
 340
@@ -3009,7 +4168,7 @@ Had to reposition chair for second test.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 11:36:03
+2020-01-30 16:36:03
 </td>
 <td style="text-align:left;">
 341
@@ -3041,7 +4200,7 @@ forget to submit this page after the experiment is done.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 12:42:22
+2020-01-30 17:42:22
 </td>
 <td style="text-align:left;">
 342
@@ -3073,7 +4232,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 13:39:37
+2020-01-30 18:39:37
 </td>
 <td style="text-align:left;">
 343
@@ -3097,15 +4256,15 @@ Right hand
 10/10
 </td>
 <td style="text-align:right;">
-200
+400
 </td>
 <td style="text-align:left;">
-the participants in stereoaccuity test should be 400 can’t see 3-5 , but he got 8 correct. moreover, he get 6,7 and 9 wrongthere is a possibility that he just guessed correctly on 8
+the participants in stereoaccuity test should be 400 he can’t see 3-5 , but he got 8 correct. moreover, he get 6,7 and 9 wrong So there is a possibility that he just guessed correctly on 8
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-31 08:39:50
+2020-01-31 13:39:50
 </td>
 <td style="text-align:left;">
 344
@@ -3137,7 +4296,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-31 09:40:58
+2020-01-31 14:40:58
 </td>
 <td style="text-align:left;">
 345
@@ -3169,7 +4328,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-03 10:04:17
+2020-02-03 15:04:17
 </td>
 <td style="text-align:left;">
 346
@@ -3201,7 +4360,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-03 10:51:26
+2020-02-03 15:51:26
 </td>
 <td style="text-align:left;">
 347
@@ -3233,10 +4392,10 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 09:33:00
+2020-02-04 14:33:00
 </td>
 <td style="text-align:left;">
-977316075
+348
 </td>
 <td style="text-align:left;">
 Female
@@ -3265,7 +4424,7 @@ participant id on questionnaire did not match with actual participant. The corre
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 11:54:00
+2020-02-04 16:54:00
 </td>
 <td style="text-align:left;">
 349
@@ -3297,7 +4456,7 @@ glitch will make participants headache
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 12:53:58
+2020-02-04 17:53:58
 </td>
 <td style="text-align:left;">
 350
@@ -3329,7 +4488,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 13:37:41
+2020-02-04 18:37:41
 </td>
 <td style="text-align:left;">
 351
@@ -3361,7 +4520,7 @@ no
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 11:17:52
+2020-02-05 16:17:52
 </td>
 <td style="text-align:left;">
 352
@@ -3393,7 +4552,7 @@ She got the stereo vision test #8 wrong, but got correct answer on the others.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 12:08:15
+2020-02-05 17:08:15
 </td>
 <td style="text-align:left;">
 353
@@ -3425,7 +4584,7 @@ Right hand
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 12:12:15
+2020-02-05 17:12:15
 </td>
 <td style="text-align:left;">
 354
@@ -3457,7 +4616,7 @@ remark the 60cm to the computer screen. In stereo vision, she got wrong answer i
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 13:00:25
+2020-02-05 18:00:25
 </td>
 <td style="text-align:left;">
 355
@@ -3489,7 +4648,7 @@ no complications.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 13:52:26
+2020-02-05 18:52:26
 </td>
 <td style="text-align:left;">
 356
@@ -3521,7 +4680,7 @@ n/a
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 14:34:36
+2020-02-05 19:34:36
 </td>
 <td style="text-align:left;">
 357
@@ -3553,7 +4712,7 @@ Participant could not see butterfly image in stereo vision test.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 10:49:03
+2020-02-06 15:49:03
 </td>
 <td style="text-align:left;">
 358
@@ -3585,7 +4744,7 @@ Had to reposition Tape and Chair for second computer task.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 12:04:11
+2020-02-06 17:04:11
 </td>
 <td style="text-align:left;">
 359
@@ -3617,7 +4776,7 @@ the black stripes behind the chair went away again
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 12:04:11
+2020-02-06 17:04:11
 </td>
 <td style="text-align:left;">
 359
@@ -3649,7 +4808,7 @@ the black stripes behind the chair went away again
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 12:51:21
+2020-02-06 17:51:21
 </td>
 <td style="text-align:left;">
 360
@@ -3681,7 +4840,7 @@ the black stripes on the ground keep moving around
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 13:44:25
+2020-02-06 18:44:25
 </td>
 <td style="text-align:left;">
 361
@@ -3713,7 +4872,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-07 08:51:50
+2020-02-07 13:51:50
 </td>
 <td style="text-align:left;">
 362
@@ -3745,7 +4904,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-07 09:47:23
+2020-02-07 14:47:23
 </td>
 <td style="text-align:left;">
 363
@@ -3777,7 +4936,7 @@ I forgot to ask her to leave her phone in her bag, but I don’t think she took 
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-10 08:56:51
+2020-02-10 13:56:51
 </td>
 <td style="text-align:left;">
 364
@@ -3809,7 +4968,7 @@ None.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-10 09:55:15
+2020-02-10 14:55:15
 </td>
 <td style="text-align:left;">
 365
@@ -3841,7 +5000,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-10 10:22:26
+2020-02-10 15:22:26
 </td>
 <td style="text-align:left;">
 366
@@ -3873,7 +5032,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 09:43:46
+2020-02-11 14:43:46
 </td>
 <td style="text-align:left;">
 367
@@ -3905,7 +5064,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 09:43:46
+2020-02-11 14:43:46
 </td>
 <td style="text-align:left;">
 367
@@ -3937,7 +5096,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 10:45:19
+2020-02-11 15:45:19
 </td>
 <td style="text-align:left;">
 368
@@ -3969,7 +5128,7 @@ left-handed, had to reposition chair during 2nd trial
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 12:20:54
+2020-02-11 17:20:54
 </td>
 <td style="text-align:left;">
 369
@@ -4001,7 +5160,7 @@ no
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 12:58:40
+2020-02-11 17:58:40
 </td>
 <td style="text-align:left;">
 370
@@ -4033,7 +5192,7 @@ computer is frozen and not responding
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 13:56:37
+2020-02-11 18:56:37
 </td>
 <td style="text-align:left;">
 000
@@ -4065,7 +5224,7 @@ Left hand
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 14:08:17
+2020-02-11 19:08:17
 </td>
 <td style="text-align:left;">
 371
@@ -4097,7 +5256,7 @@ Temporal Duration Threshold Task (Murray) would not run. PsychoPy showed a synta
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 13:09:13
+2020-02-12 18:09:13
 </td>
 <td style="text-align:left;">
 372
@@ -4129,7 +5288,7 @@ N/A
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 14:00:54
+2020-02-12 19:00:54
 </td>
 <td style="text-align:left;">
 373
@@ -4161,7 +5320,7 @@ had to adjust chair position in start of the second computer task.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 14:00:54
+2020-02-12 19:00:54
 </td>
 <td style="text-align:left;">
 373
@@ -4193,7 +5352,7 @@ had to adjust chair position in start of the second computer task.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 14:43:09
+2020-02-12 19:43:09
 </td>
 <td style="text-align:left;">
 374
@@ -4225,7 +5384,7 @@ participant moved chair multiple times, had to readjust and remind her to not mo
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 10:35:21
+2020-02-13 15:35:21
 </td>
 <td style="text-align:left;">
 375
@@ -4257,7 +5416,7 @@ participant had phone in room with him. and he adjusted chair, so I had to re-ad
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 12:06:36
+2020-02-13 17:06:36
 </td>
 <td style="text-align:left;">
 376
@@ -4289,7 +5448,7 @@ for the stereo acuity test, this participant get the first 2 correct, and missed
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 12:06:36
+2020-02-13 17:06:36
 </td>
 <td style="text-align:left;">
 376
@@ -4321,7 +5480,7 @@ for the stereo acuity test, this participant get the first 2 correct, and missed
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 13:07:32
+2020-02-13 18:07:32
 </td>
 <td style="text-align:left;">
 377
@@ -4353,7 +5512,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 13:48:51
+2020-02-13 18:48:51
 </td>
 <td style="text-align:left;">
 378
@@ -4385,7 +5544,7 @@ she was in a rush and finished all tasks very fast, so she probably didn’t try
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-14 08:50:37
+2020-02-14 13:50:37
 </td>
 <td style="text-align:left;">
 379
@@ -4417,7 +5576,7 @@ Wears glasses, but didn’t wear them during computer task, but I think she only
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-14 09:32:13
+2020-02-14 14:32:13
 </td>
 <td style="text-align:left;">
 380
@@ -4449,7 +5608,7 @@ I accidentally didn’t put “f” in the participant info box for the motion t
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-17 09:04:01
+2020-02-17 14:04:01
 </td>
 <td style="text-align:left;">
 381
@@ -4481,7 +5640,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-17 10:06:07
+2020-02-17 15:06:07
 </td>
 <td style="text-align:left;">
 382
@@ -4513,7 +5672,7 @@ N/A.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 09:45:36
+2020-02-18 14:45:36
 </td>
 <td style="text-align:left;">
 383
@@ -4545,7 +5704,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 09:45:36
+2020-02-18 14:45:36
 </td>
 <td style="text-align:left;">
 383
@@ -4577,7 +5736,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 10:48:05
+2020-02-18 15:48:05
 </td>
 <td style="text-align:left;">
 384
@@ -4609,7 +5768,7 @@ participant listed on sheet cancelled, new male participant entered in slot.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 12:03:54
+2020-02-18 17:03:54
 </td>
 <td style="text-align:left;">
 20202181203542
@@ -4641,7 +5800,7 @@ NA
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 12:46:23
+2020-02-18 17:46:23
 </td>
 <td style="text-align:left;">
 386
@@ -4673,7 +5832,7 @@ Maybe we can add a option:middle eastern as a ethnicity (instead of Asians)
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 14:06:00
+2020-02-18 19:06:00
 </td>
 <td style="text-align:left;">
 387
@@ -4705,7 +5864,7 @@ Participant got first four answers correct on the stereoacuity test, answered #5
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-19 14:02:46
+2020-02-19 19:02:46
 </td>
 <td style="text-align:left;">
 388
@@ -4737,7 +5896,7 @@ Amar was lead RA and he knew the participant.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-19 15:03:26
+2020-02-19 20:03:26
 </td>
 <td style="text-align:left;">
 389
@@ -4769,7 +5928,7 @@ Forgot to adjust the chair position in the second experiment.
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-20 11:04:55
+2020-02-20 16:04:55
 </td>
 <td style="text-align:left;">
 390
@@ -4799,8 +5958,1353 @@ Left hand
 Mouse was not working properly or survey was not. participant initially had to double click, then RA made change to the mouse of computer. This was done after participant had begun questionnaire.
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 17:10:51
+</td>
+<td style="text-align:left;">
+391
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+kinesiology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 18:00:56
+</td>
+<td style="text-align:left;">
+392
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Criminology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 18:34:06
+</td>
+<td style="text-align:left;">
+393
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Junior
+</td>
+<td style="text-align:left;">
+psychology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-21 14:00:11
+</td>
+<td style="text-align:left;">
+394
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Biochemistry
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+Emily is sick and cannot make loud voice. So Yiming take the lead position.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-21 15:01:43
+</td>
+<td style="text-align:left;">
+395
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Microbiology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+The visual acuity is 40. But the participant cannot see the square in the forth page, see nothing in the 6th page, only see the green line in the 7th page, and only see the red curve in the 8th page. The participant guess all items in stereoacuity test and get all right except item 5, 8, 9. So I score him as 60 arc sec.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-24 15:08:22
+</td>
+<td style="text-align:left;">
+396
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Biochemistry/Molecular Biology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-24 16:10:20
+</td>
+<td style="text-align:left;">
+397
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+biology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+none.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 14:56:14
+</td>
+<td style="text-align:left;">
+398
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+petrolium engineer
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 16:58:15
+</td>
+<td style="text-align:left;">
+399
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Labor and Employment Relations
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 17:35:51
+</td>
+<td style="text-align:left;">
+400
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Senior
+</td>
+<td style="text-align:left;">
+IST &amp; SRA
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 18:49:19
+</td>
+<td style="text-align:left;">
+401
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+math/data science
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+none.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 21:50:14
+</td>
+<td style="text-align:left;">
+402
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Public Relations
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 17:08:48
+</td>
+<td style="text-align:left;">
+403
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Undecided, possibly English Education/Theatre Studies
+</td>
+<td style="text-align:left;">
+Either hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+N/A.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 18:14:09
+</td>
+<td style="text-align:left;">
+404
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+undecided but possibly advertising/pr
+</td>
+<td style="text-align:left;">
+Left hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+N/A.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 19:10:40
+</td>
+<td style="text-align:left;">
+405
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+psychology
+</td>
+<td style="text-align:left;">
+Left hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+left handed participant. had to reposition chair in second computer task.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 19:52:51
+</td>
+<td style="text-align:left;">
+406
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Supply Chain
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+Chelsea led this while Yiming and Amar observed her. Ran the stereo-acuity task after computer task for second screening.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 21:45:57
+</td>
+<td style="text-align:left;">
+407
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Senior
+</td>
+<td style="text-align:left;">
+History
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/12.5
+</td>
+<td style="text-align:right;">
+140
+</td>
+<td style="text-align:left;">
+Participant could not see bottom 2 lines of the eye test. Color test was good. For the stereoacuity test, participant could see the butterfly fine but gave the wrong answer for #4, #8, and #9. She had pretty thick glasses, so it is possible they were affecting her stereoacuity with the test glasses on.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 15:58:16
+</td>
+<td style="text-align:left;">
+408
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Pre-medicine
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:10:19
+</td>
+<td style="text-align:left;">
+409
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Labor and Human Resources
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:10:19
+</td>
+<td style="text-align:left;">
+409
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Labor and Human Resources
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:48:08
+</td>
+<td style="text-align:left;">
+410
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Junior
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 19:01:48
+</td>
+<td style="text-align:left;">
+411
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-28 14:00:01
+</td>
+<td style="text-align:left;">
+412
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Junior
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+80
+</td>
+<td style="text-align:left;">
+The participant was not able to perceive the 140 and 100 “targets” on the visual steroacuity test, but he was able to see the 80. I put 80 as the highest stereoacuity level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-28 17:13:38
+</td>
+<td style="text-align:left;">
+413
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+biochemistry &amp; molecular biology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-02 14:56:58
+</td>
+<td style="text-align:left;">
+414
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Broadcast Journalism
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:left;">
+The participant usually wears glasses during class but did not wear them during the experiment. She can only get correct answers for 140 for stereoacuity test and when we re-tested her at the end of the experiment, she got the monkey right (100) but could only see the dots sticking out at 400.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 15:05:51
+</td>
+<td style="text-align:left;">
+415
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+BBH
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 15:44:26
+</td>
+<td style="text-align:left;">
+416
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Ad
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+participant said she felt she did not have enough time to complete the block section of the questionnaire
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 17:03:59
+</td>
+<td style="text-align:left;">
+417
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+Biobehavioral Health
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+None.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 18:01:25
+</td>
+<td style="text-align:left;">
+418
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Mathematics
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 18:38:41
+</td>
+<td style="text-align:left;">
+420
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+psychology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 19:10:41
+</td>
+<td style="text-align:left;">
+419
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+undecided
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+None.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 17:04:10
+</td>
+<td style="text-align:left;">
+421
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Junior
+</td>
+<td style="text-align:left;">
+HPA
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 17:50:08
+</td>
+<td style="text-align:left;">
+422
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+advertising
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+Participant usually wears glasses during lectures (for far objects), however, she did not bring her glasses with her to the study.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 18:29:06
+</td>
+<td style="text-align:left;">
+424
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+Security and Risk Analysis
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+Chelsea ran the participant, Amar supervised.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 19:02:52
+</td>
+<td style="text-align:left;">
+423
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Communication Sciences and Disorders - Speech Pathology
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+participant arrived early, yiming started her on visual screening and questionnaire. Amar finished.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 21:58:40
+</td>
+<td style="text-align:left;">
+425
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Communications: Advertising/Public Relations
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+None.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 15:43:16
+</td>
+<td style="text-align:left;">
+426
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+Forensic Science
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+had to reposition chair in second trial, also no black tape to stand behind as 10 foot marker.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 17:05:59
+</td>
+<td style="text-align:left;">
+427
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+20-21
+</td>
+<td style="text-align:left;">
+Sophomore
+</td>
+<td style="text-align:left;">
+Biobehavioral Health
+</td>
+<td style="text-align:left;">
+Left hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 18:06:31
+</td>
+<td style="text-align:left;">
+428
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+bio major with neuroscience option
+</td>
+<td style="text-align:left;">
+Either hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 18:53:37
+</td>
+<td style="text-align:left;">
+429
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+immunology and disease
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-06 13:58:39
+</td>
+<td style="text-align:left;">
+430
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Linguistics &amp; Psychology double major
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-06 14:44:39
+</td>
+<td style="text-align:left;">
+431
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:left;">
+18-19
+</td>
+<td style="text-align:left;">
+Freshman
+</td>
+<td style="text-align:left;">
+Premedicine
+</td>
+<td style="text-align:left;">
+Right hand
+</td>
+<td style="text-align:left;">
+10/10
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:left;">
+She was unable to see the targets for the visual stereoauity task, but she could see the animals popping out. The participant wasn’t feeling well, so she might not have been entirely focused on the task.
+</td>
+</tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="quality-assurance-qa-checks" class="section level1">
 <h1>Quality Assurance (QA) checks</h1>
@@ -4869,39 +7373,41 @@ merged_demo %&gt;%
          age_yrs_valid,
          school_yr_valid,
          preferred_hand_valid) %&gt;%
-  knitr::kable(.) %&gt;%
-  kableExtra::kable_styling(.)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+  knitr::kable(., 'html') %&gt;%
+  kableExtra::kable_styling(., &quot;hover&quot;, &quot;striped&quot;) %&gt;%
+  kableExtra::scroll_box(., height = &quot;300px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 test_date
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 expt_notes
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 p_id
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 poss_exclude
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 observer_id_in_file
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 gender_in_file
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 gender_male_or_female
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 age_yrs_valid
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 school_yr_valid
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 preferred_hand_valid
 </th>
 </tr>
@@ -4909,7 +7415,7 @@ preferred_hand_valid
 <tbody>
 <tr>
 <td style="text-align:left;">
-2019-11-13 09:49:26
+2019-11-13 14:49:26
 </td>
 <td style="text-align:left;">
 NA
@@ -4941,7 +7447,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 11:10:24
+2019-11-13 16:10:24
 </td>
 <td style="text-align:left;">
 NA
@@ -4973,7 +7479,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 13:38:03
+2019-11-13 18:38:03
 </td>
 <td style="text-align:left;">
 NA
@@ -5005,7 +7511,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 13:38:03
+2019-11-13 18:38:03
 </td>
 <td style="text-align:left;">
 NA
@@ -5037,7 +7543,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 14:56:02
+2019-11-13 19:56:02
 </td>
 <td style="text-align:left;">
 NA
@@ -5069,7 +7575,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-13 16:12:18
+2019-11-13 21:12:18
 </td>
 <td style="text-align:left;">
 NA
@@ -5101,7 +7607,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 08:39:39
+2019-11-18 13:39:39
 </td>
 <td style="text-align:left;">
 NA
@@ -5133,7 +7639,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 11:26:49
+2019-11-18 16:26:49
 </td>
 <td style="text-align:left;">
 NA
@@ -5165,7 +7671,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 12:45:17
+2019-11-18 17:45:17
 </td>
 <td style="text-align:left;">
 NA
@@ -5197,7 +7703,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 13:58:08
+2019-11-18 18:58:08
 </td>
 <td style="text-align:left;">
 NA
@@ -5229,7 +7735,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-18 14:48:28
+2019-11-18 19:48:28
 </td>
 <td style="text-align:left;">
 NA
@@ -5261,7 +7767,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 13:40:19
+2019-11-20 18:40:19
 </td>
 <td style="text-align:left;">
 NA
@@ -5293,7 +7799,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 14:53:23
+2019-11-20 19:53:23
 </td>
 <td style="text-align:left;">
 NA
@@ -5325,7 +7831,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 16:11:07
+2019-11-20 21:11:07
 </td>
 <td style="text-align:left;">
 NA
@@ -5357,7 +7863,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-20 16:50:06
+2019-11-20 21:50:06
 </td>
 <td style="text-align:left;">
 NA
@@ -5389,7 +7895,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-21 10:26:03
+2019-11-21 15:26:03
 </td>
 <td style="text-align:left;">
 NA
@@ -5421,7 +7927,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-21 11:41:53
+2019-11-21 16:41:53
 </td>
 <td style="text-align:left;">
 NA
@@ -5453,7 +7959,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-21 12:56:39
+2019-11-21 17:56:39
 </td>
 <td style="text-align:left;">
 NA
@@ -5485,7 +7991,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 09:58:32
+2019-11-22 14:58:32
 </td>
 <td style="text-align:left;">
 NA
@@ -5517,7 +8023,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 10:52:35
+2019-11-22 15:52:35
 </td>
 <td style="text-align:left;">
 NA
@@ -5549,7 +8055,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 13:49:21
+2019-11-22 18:49:21
 </td>
 <td style="text-align:left;">
 NA
@@ -5581,7 +8087,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 16:04:38
+2019-11-22 21:04:38
 </td>
 <td style="text-align:left;">
 NA
@@ -5613,7 +8119,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-11-22 17:00:24
+2019-11-22 22:00:24
 </td>
 <td style="text-align:left;">
 NA
@@ -5645,7 +8151,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-04 09:52:35
+2019-12-04 14:52:35
 </td>
 <td style="text-align:left;">
 NA
@@ -5677,7 +8183,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-04 13:58:54
+2019-12-04 18:58:54
 </td>
 <td style="text-align:left;">
 NA
@@ -5709,7 +8215,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-04 15:54:55
+2019-12-04 20:54:55
 </td>
 <td style="text-align:left;">
 NA
@@ -5741,7 +8247,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-05 09:24:45
+2019-12-05 14:24:45
 </td>
 <td style="text-align:left;">
 NA
@@ -5773,7 +8279,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-05 12:23:55
+2019-12-05 17:23:55
 </td>
 <td style="text-align:left;">
 NA
@@ -5805,7 +8311,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 12:43:41
+2019-12-12 17:43:41
 </td>
 <td style="text-align:left;">
 NA
@@ -5837,7 +8343,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 13:47:50
+2019-12-12 18:47:50
 </td>
 <td style="text-align:left;">
 NA
@@ -5869,7 +8375,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 14:50:36
+2019-12-12 19:50:36
 </td>
 <td style="text-align:left;">
 NA
@@ -5901,7 +8407,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 15:56:19
+2019-12-12 20:56:19
 </td>
 <td style="text-align:left;">
 NA
@@ -5933,7 +8439,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-12 17:01:33
+2019-12-12 22:01:33
 </td>
 <td style="text-align:left;">
 NA
@@ -5965,7 +8471,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 13:15:41
+2019-12-13 18:15:41
 </td>
 <td style="text-align:left;">
 NA
@@ -5997,7 +8503,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 14:00:17
+2019-12-13 19:00:17
 </td>
 <td style="text-align:left;">
 NA
@@ -6029,7 +8535,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 15:01:20
+2019-12-13 20:01:20
 </td>
 <td style="text-align:left;">
 NA
@@ -6061,7 +8567,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 15:01:20
+2019-12-13 20:01:20
 </td>
 <td style="text-align:left;">
 NA
@@ -6093,7 +8599,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2019-12-13 16:32:20
+2019-12-13 21:32:20
 </td>
 <td style="text-align:left;">
 NA
@@ -6125,7 +8631,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-21 11:39:43
+2020-01-21 16:39:43
 </td>
 <td style="text-align:left;">
 NA
@@ -6157,7 +8663,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-22 13:12:08
+2020-01-22 18:12:08
 </td>
 <td style="text-align:left;">
 NA
@@ -6189,16 +8695,16 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-23 13:43:33
+2020-01-23 18:43:33
 </td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-000
+335
 </td>
 <td style="text-align:left;">
-TRUE
+FALSE
 </td>
 <td style="text-align:left;">
 TRUE
@@ -6221,7 +8727,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-24 10:30:14
+2020-01-24 15:30:14
 </td>
 <td style="text-align:left;">
 NA
@@ -6253,7 +8759,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-27 11:11:18
+2020-01-27 16:11:18
 </td>
 <td style="text-align:left;">
 NA
@@ -6285,7 +8791,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-27 11:47:21
+2020-01-27 16:47:21
 </td>
 <td style="text-align:left;">
 NA
@@ -6317,7 +8823,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-28 12:47:46
+2020-01-28 17:47:46
 </td>
 <td style="text-align:left;">
 NA
@@ -6349,7 +8855,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-29 11:58:59
+2020-01-29 16:58:59
 </td>
 <td style="text-align:left;">
 ran temp thresh first and contrast sensitivity second :(
@@ -6381,10 +8887,11 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-29 12:50:27
+2020-01-29 17:50:27
 </td>
 <td style="text-align:left;">
-since I did the last participant wrong (337), I flipped the order of this participant to balance out. So contrast sensitivity is first and temp thresh is second.\contacts
+<p>since I did the last participant wrong (337), I flipped the order of this participant to balance out. So contrast sensitivity is first and temp thresh is second.</p>
+contacts
 </td>
 <td style="text-align:left;">
 338
@@ -6413,7 +8920,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-29 13:50:59
+2020-01-29 18:50:59
 </td>
 <td style="text-align:left;">
 replace the chair position in the second computer task, do not a pair of glasses
@@ -6445,7 +8952,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 10:39:11
+2020-01-30 15:39:11
 </td>
 <td style="text-align:left;">
 Had to reposition chair for second test.
@@ -6477,7 +8984,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 11:36:03
+2020-01-30 16:36:03
 </td>
 <td style="text-align:left;">
 forget to submit this page after the experiment is done.
@@ -6509,7 +9016,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 12:42:22
+2020-01-30 17:42:22
 </td>
 <td style="text-align:left;">
 NA
@@ -6541,10 +9048,10 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-30 13:39:37
+2020-01-30 18:39:37
 </td>
 <td style="text-align:left;">
-the participants in stereoaccuity test should be 400 can’t see 3-5 , but he got 8 correct. moreover, he get 6,7 and 9 wrongthere is a possibility that he just guessed correctly on 8
+the participants in stereoaccuity test should be 400 he can’t see 3-5 , but he got 8 correct. moreover, he get 6,7 and 9 wrong So there is a possibility that he just guessed correctly on 8
 </td>
 <td style="text-align:left;">
 343
@@ -6573,7 +9080,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-31 08:39:50
+2020-01-31 13:39:50
 </td>
 <td style="text-align:left;">
 NA
@@ -6605,7 +9112,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-01-31 09:40:58
+2020-01-31 14:40:58
 </td>
 <td style="text-align:left;">
 NA
@@ -6637,7 +9144,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-03 10:04:17
+2020-02-03 15:04:17
 </td>
 <td style="text-align:left;">
 NA
@@ -6669,7 +9176,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-03 10:51:26
+2020-02-03 15:51:26
 </td>
 <td style="text-align:left;">
 NA
@@ -6701,13 +9208,13 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 09:33:00
+2020-02-04 14:33:00
 </td>
 <td style="text-align:left;">
 participant id on questionnaire did not match with actual participant. The correct ID number is #348.
 </td>
 <td style="text-align:left;">
-977316075
+348
 </td>
 <td style="text-align:left;">
 FALSE
@@ -6733,7 +9240,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 11:54:00
+2020-02-04 16:54:00
 </td>
 <td style="text-align:left;">
 glitch will make participants headache
@@ -6765,7 +9272,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 12:53:58
+2020-02-04 17:53:58
 </td>
 <td style="text-align:left;">
 NA
@@ -6797,7 +9304,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-04 13:37:41
+2020-02-04 18:37:41
 </td>
 <td style="text-align:left;">
 no
@@ -6829,7 +9336,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 11:17:52
+2020-02-05 16:17:52
 </td>
 <td style="text-align:left;">
 She got the stereo vision test #8 wrong, but got correct answer on the others.
@@ -6861,7 +9368,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 12:08:15
+2020-02-05 17:08:15
 </td>
 <td style="text-align:left;">
 2 participants at one time slot
@@ -6893,7 +9400,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 12:12:15
+2020-02-05 17:12:15
 </td>
 <td style="text-align:left;">
 remark the 60cm to the computer screen. In stereo vision, she got wrong answer in #3, but got right in the others.
@@ -6925,7 +9432,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 13:00:25
+2020-02-05 18:00:25
 </td>
 <td style="text-align:left;">
 no complications.
@@ -6957,7 +9464,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 13:52:26
+2020-02-05 18:52:26
 </td>
 <td style="text-align:left;">
 n/a
@@ -6989,7 +9496,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-05 14:34:36
+2020-02-05 19:34:36
 </td>
 <td style="text-align:left;">
 Participant could not see butterfly image in stereo vision test.
@@ -7021,7 +9528,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 10:49:03
+2020-02-06 15:49:03
 </td>
 <td style="text-align:left;">
 Had to reposition Tape and Chair for second computer task.
@@ -7053,7 +9560,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 12:04:11
+2020-02-06 17:04:11
 </td>
 <td style="text-align:left;">
 the black stripes behind the chair went away again
@@ -7085,7 +9592,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 12:04:11
+2020-02-06 17:04:11
 </td>
 <td style="text-align:left;">
 the black stripes behind the chair went away again
@@ -7117,7 +9624,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 12:51:21
+2020-02-06 17:51:21
 </td>
 <td style="text-align:left;">
 the black stripes on the ground keep moving around
@@ -7149,7 +9656,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-06 13:44:25
+2020-02-06 18:44:25
 </td>
 <td style="text-align:left;">
 NA
@@ -7181,7 +9688,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-07 08:51:50
+2020-02-07 13:51:50
 </td>
 <td style="text-align:left;">
 NA
@@ -7213,7 +9720,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-07 09:47:23
+2020-02-07 14:47:23
 </td>
 <td style="text-align:left;">
 I forgot to ask her to leave her phone in her bag, but I don’t think she took it with her into the study.
@@ -7245,7 +9752,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-10 08:56:51
+2020-02-10 13:56:51
 </td>
 <td style="text-align:left;">
 None.
@@ -7277,7 +9784,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-10 09:55:15
+2020-02-10 14:55:15
 </td>
 <td style="text-align:left;">
 NA
@@ -7309,7 +9816,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-10 10:22:26
+2020-02-10 15:22:26
 </td>
 <td style="text-align:left;">
 NA
@@ -7341,7 +9848,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 09:43:46
+2020-02-11 14:43:46
 </td>
 <td style="text-align:left;">
 NA
@@ -7373,7 +9880,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 09:43:46
+2020-02-11 14:43:46
 </td>
 <td style="text-align:left;">
 NA
@@ -7405,7 +9912,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 10:45:19
+2020-02-11 15:45:19
 </td>
 <td style="text-align:left;">
 left-handed, had to reposition chair during 2nd trial
@@ -7437,7 +9944,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 12:20:54
+2020-02-11 17:20:54
 </td>
 <td style="text-align:left;">
 no
@@ -7469,7 +9976,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 12:58:40
+2020-02-11 17:58:40
 </td>
 <td style="text-align:left;">
 computer is frozen and not responding
@@ -7501,7 +10008,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 13:56:37
+2020-02-11 18:56:37
 </td>
 <td style="text-align:left;">
 1
@@ -7533,7 +10040,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-11 14:08:17
+2020-02-11 19:08:17
 </td>
 <td style="text-align:left;">
 Temporal Duration Threshold Task (Murray) would not run. PsychoPy showed a syntax error message when study was attempted to run. It appears there was an accidental change in the code and therefore prevented the study from being run. Contrast Sensitivity Task ran fine.
@@ -7565,7 +10072,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 13:09:13
+2020-02-12 18:09:13
 </td>
 <td style="text-align:left;">
 N/A
@@ -7597,7 +10104,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 14:00:54
+2020-02-12 19:00:54
 </td>
 <td style="text-align:left;">
 had to adjust chair position in start of the second computer task.
@@ -7629,7 +10136,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 14:00:54
+2020-02-12 19:00:54
 </td>
 <td style="text-align:left;">
 had to adjust chair position in start of the second computer task.
@@ -7661,7 +10168,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-12 14:43:09
+2020-02-12 19:43:09
 </td>
 <td style="text-align:left;">
 participant moved chair multiple times, had to readjust and remind her to not move chair.
@@ -7693,7 +10200,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 10:35:21
+2020-02-13 15:35:21
 </td>
 <td style="text-align:left;">
 participant had phone in room with him. and he adjusted chair, so I had to re-adjust position
@@ -7725,7 +10232,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 12:06:36
+2020-02-13 17:06:36
 </td>
 <td style="text-align:left;">
 for the stereo acuity test, this participant get the first 2 correct, and missed the 3 one, but get the 4th correct, and can’t see the rest of them.
@@ -7757,7 +10264,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 12:06:36
+2020-02-13 17:06:36
 </td>
 <td style="text-align:left;">
 for the stereo acuity test, this participant get the first 2 correct, and missed the 3 one, but get the 4th correct, and can’t see the rest of them.
@@ -7789,7 +10296,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 13:07:32
+2020-02-13 18:07:32
 </td>
 <td style="text-align:left;">
 NA
@@ -7821,7 +10328,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-13 13:48:51
+2020-02-13 18:48:51
 </td>
 <td style="text-align:left;">
 she was in a rush and finished all tasks very fast, so she probably didn’t try or make an effort
@@ -7853,7 +10360,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-14 08:50:37
+2020-02-14 13:50:37
 </td>
 <td style="text-align:left;">
 Wears glasses, but didn’t wear them during computer task, but I think she only needs them for far distance.
@@ -7885,7 +10392,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-14 09:32:13
+2020-02-14 14:32:13
 </td>
 <td style="text-align:left;">
 I accidentally didn’t put “f” in the participant info box for the motion threshold study. The participant number is there, but not the box that indicate’s she’s female.
@@ -7917,7 +10424,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-17 09:04:01
+2020-02-17 14:04:01
 </td>
 <td style="text-align:left;">
 NA
@@ -7949,7 +10456,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-17 10:06:07
+2020-02-17 15:06:07
 </td>
 <td style="text-align:left;">
 N/A.
@@ -7981,7 +10488,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 09:45:36
+2020-02-18 14:45:36
 </td>
 <td style="text-align:left;">
 NA
@@ -8013,7 +10520,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 09:45:36
+2020-02-18 14:45:36
 </td>
 <td style="text-align:left;">
 NA
@@ -8045,7 +10552,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 10:48:05
+2020-02-18 15:48:05
 </td>
 <td style="text-align:left;">
 participant listed on sheet cancelled, new male participant entered in slot.
@@ -8077,7 +10584,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 12:03:54
+2020-02-18 17:03:54
 </td>
 <td style="text-align:left;">
 NA
@@ -8109,7 +10616,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 12:46:23
+2020-02-18 17:46:23
 </td>
 <td style="text-align:left;">
 Maybe we can add a option:middle eastern as a ethnicity (instead of Asians)
@@ -8141,7 +10648,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-18 14:06:00
+2020-02-18 19:06:00
 </td>
 <td style="text-align:left;">
 Participant got first four answers correct on the stereoacuity test, answered #5 wrong, #6 and 7 correct, and then #’s 8 and 9 wrong.
@@ -8173,7 +10680,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-19 14:02:46
+2020-02-19 19:02:46
 </td>
 <td style="text-align:left;">
 Amar was lead RA and he knew the participant.
@@ -8205,7 +10712,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-19 15:03:26
+2020-02-19 20:03:26
 </td>
 <td style="text-align:left;">
 Forgot to adjust the chair position in the second experiment.
@@ -8237,7 +10744,7 @@ TRUE
 </tr>
 <tr>
 <td style="text-align:left;">
-2020-02-20 11:04:55
+2020-02-20 16:04:55
 </td>
 <td style="text-align:left;">
 Mouse was not working properly or survey was not. participant initially had to double click, then RA made change to the mouse of computer. This was done after participant had begun questionnaire.
@@ -8267,8 +10774,1353 @@ TRUE
 TRUE
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 17:10:51
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+391
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 18:00:56
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+392
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-20 18:34:06
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+393
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-21 14:00:11
+</td>
+<td style="text-align:left;">
+Emily is sick and cannot make loud voice. So Yiming take the lead position.
+</td>
+<td style="text-align:left;">
+394
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-21 15:01:43
+</td>
+<td style="text-align:left;">
+The visual acuity is 40. But the participant cannot see the square in the forth page, see nothing in the 6th page, only see the green line in the 7th page, and only see the red curve in the 8th page. The participant guess all items in stereoacuity test and get all right except item 5, 8, 9. So I score him as 60 arc sec.
+</td>
+<td style="text-align:left;">
+395
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-24 15:08:22
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+396
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-24 16:10:20
+</td>
+<td style="text-align:left;">
+none.
+</td>
+<td style="text-align:left;">
+397
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 14:56:14
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+398
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 16:58:15
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+399
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 17:35:51
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+400
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 18:49:19
+</td>
+<td style="text-align:left;">
+none.
+</td>
+<td style="text-align:left;">
+401
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-25 21:50:14
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+402
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 17:08:48
+</td>
+<td style="text-align:left;">
+N/A.
+</td>
+<td style="text-align:left;">
+403
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 18:14:09
+</td>
+<td style="text-align:left;">
+N/A.
+</td>
+<td style="text-align:left;">
+404
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 19:10:40
+</td>
+<td style="text-align:left;">
+left handed participant. had to reposition chair in second computer task.
+</td>
+<td style="text-align:left;">
+405
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 19:52:51
+</td>
+<td style="text-align:left;">
+Chelsea led this while Yiming and Amar observed her. Ran the stereo-acuity task after computer task for second screening.
+</td>
+<td style="text-align:left;">
+406
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-26 21:45:57
+</td>
+<td style="text-align:left;">
+Participant could not see bottom 2 lines of the eye test. Color test was good. For the stereoacuity test, participant could see the butterfly fine but gave the wrong answer for #4, #8, and #9. She had pretty thick glasses, so it is possible they were affecting her stereoacuity with the test glasses on.
+</td>
+<td style="text-align:left;">
+407
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 15:58:16
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+408
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:10:19
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+409
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:10:19
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+409
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 17:48:08
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+410
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-27 19:01:48
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+411
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-28 14:00:01
+</td>
+<td style="text-align:left;">
+The participant was not able to perceive the 140 and 100 “targets” on the visual steroacuity test, but he was able to see the 80. I put 80 as the highest stereoacuity level.
+</td>
+<td style="text-align:left;">
+412
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-02-28 17:13:38
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+413
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-02 14:56:58
+</td>
+<td style="text-align:left;">
+The participant usually wears glasses during class but did not wear them during the experiment. She can only get correct answers for 140 for stereoacuity test and when we re-tested her at the end of the experiment, she got the monkey right (100) but could only see the dots sticking out at 400.
+</td>
+<td style="text-align:left;">
+414
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 15:05:51
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+<td style="text-align:left;">
+415
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 15:44:26
+</td>
+<td style="text-align:left;">
+participant said she felt she did not have enough time to complete the block section of the questionnaire
+</td>
+<td style="text-align:left;">
+416
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 17:03:59
+</td>
+<td style="text-align:left;">
+None.
+</td>
+<td style="text-align:left;">
+417
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 18:01:25
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+418
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 18:38:41
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+<td style="text-align:left;">
+420
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-03 19:10:41
+</td>
+<td style="text-align:left;">
+None.
+</td>
+<td style="text-align:left;">
+419
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 17:04:10
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+<td style="text-align:left;">
+421
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 17:50:08
+</td>
+<td style="text-align:left;">
+Participant usually wears glasses during lectures (for far objects), however, she did not bring her glasses with her to the study.
+</td>
+<td style="text-align:left;">
+422
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 18:29:06
+</td>
+<td style="text-align:left;">
+Chelsea ran the participant, Amar supervised.
+</td>
+<td style="text-align:left;">
+424
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 19:02:52
+</td>
+<td style="text-align:left;">
+participant arrived early, yiming started her on visual screening and questionnaire. Amar finished.
+</td>
+<td style="text-align:left;">
+423
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-04 21:58:40
+</td>
+<td style="text-align:left;">
+None.
+</td>
+<td style="text-align:left;">
+425
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 15:43:16
+</td>
+<td style="text-align:left;">
+had to reposition chair in second trial, also no black tape to stand behind as 10 foot marker.
+</td>
+<td style="text-align:left;">
+426
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 17:05:59
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+427
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 18:06:31
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+<td style="text-align:left;">
+428
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-05 18:53:37
+</td>
+<td style="text-align:left;">
+N/A
+</td>
+<td style="text-align:left;">
+429
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-06 13:58:39
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+430
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-03-06 14:44:39
+</td>
+<td style="text-align:left;">
+She was unable to see the targets for the visual stereoauity task, but she could see the animals popping out. The participant wasn’t feeling well, so she might not have been entirely focused on the task.
+</td>
+<td style="text-align:left;">
+431
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
 </tbody>
 </table>
+</div>
 </div>
 
 

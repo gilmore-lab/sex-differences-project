@@ -15,7 +15,7 @@ select_plots_for_sub_id <- function(s_id, fl) {
   fl[this_sub_id]
 }
 
-make_box_decks_path <- function(box_path = "~/Box Sync",
+make_box_decks_path <- function(box_path = "~/Box",
                                 data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   paste0(box_path, data_path, "/slide_decks")
 }

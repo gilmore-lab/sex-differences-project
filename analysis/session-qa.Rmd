@@ -6,7 +6,7 @@ output:
   html_document:
     code_folding: hide
 params:
-  box_path: "~/Box Sync"
+  box_path: "~/Box"
   data_path: "/Project_Sex_difference_on_Motion_Perception/data"
   contrast_raw_path: "/raw_data/contrast_sensitivity_task_data"
   motion_raw_path: "/raw_data/motion_temporal_threshold_data"

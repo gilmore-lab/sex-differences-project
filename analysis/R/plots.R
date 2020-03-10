@@ -46,12 +46,12 @@ read_sex_diff_file <- function(fn) {
   readr::read_csv(fn)
 }
 
-make_passed_qa_path <- function(box_path = "~/Box Sync",
+make_passed_qa_path <- function(box_path = "~/Box",
                                 data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   paste0(box_path, data_path, "/passed_qa")
 }
 
-make_figs_path <- function(box_path = "~/Box Sync",
+make_figs_path <- function(box_path = "~/Box",
                            data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   paste0(box_path, data_path, "/figs")
 }

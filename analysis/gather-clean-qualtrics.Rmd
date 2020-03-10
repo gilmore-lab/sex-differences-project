@@ -7,7 +7,7 @@ output:
   html_document:
     code_folding: hide
 params:
-  box_path: "~/Box Sync"
+  box_path: "~/Box"
   data_path: "/Project_Sex_difference_on_Motion_Perception/data"
   qualtrics_raw_path: "/raw_data/qualtrics_survey_data/csv"
   old_survey_fn: "survey_REV_2019-11-11.csv"
@@ -56,10 +56,10 @@ active_survey_name <- "Sex difference survey REV 2019-11-18"
 surveys <- qualtRics::all_surveys()
 
 active_survey <- surveys %>%
-  filter(., name == active_survey_name)
+  dplyr::filter(., name == active_survey_name)
 
 old_active_survey <- surveys %>%
-  filter(., name == old_active_survey_name)
+  dplyr::filter(., name == old_active_survey_name)
 
 sex_diff_resp <- qualtRics::fetch_survey(surveyID = active_survey$id,
                                      verbose = TRUE,
@@ -85,7 +85,7 @@ sex_diff_resp %>%
   dplyr::select(., StartDate, `Q97`, `Q1`) %>%
   dplyr::rename(., p_id = `Q97`, 
                 gender = `Q1`) %>%
-  knitr::kable(.) %>%
+  knitr::kable(., 'html') %>%
   kableExtra::kable_styling("hover", "striped") %>%
   kableExtra::scroll_box(., height = "300px")
 ```
