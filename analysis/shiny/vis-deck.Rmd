@@ -1,0 +1,31 @@
+---
+title: "Visualize Sex Diffs Data"
+author: "Rick O. Gilmore"
+date: "`r Sys.time()`"
+output:
+  ioslides_presentation:
+    incremental: no
+    self-contained: yes
+    transition: default
+    widescreen: yes
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      fig.align = "center",
+                      out.width = "900px",
+                      cache = FALSE)
+```
+
+---
+
+```{r, echo=FALSE}
+my.shiny.dir <- file.path(here::here(), "analysis", "shiny","shiny-apps", "staircase-viz")
+shiny::shinyAppDir(appDir = my.shiny.dir,
+  options=list(
+    width="100%", height=700
+  )
+)
+```
+

@@ -1,0 +1,51 @@
+---
+title: "MissingReport"
+author: "Yiming Qian"
+date: "`r Sys.time()`"
+output: 
+  html_document:
+    self_contained: yes
+    code_folding: hide
+
+params:
+  this_contr_csv_fn: "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data/2019111309492663_contrast_sensitivity_task.csv"
+  this_motion_dur_csv_fn: "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/motion_temporal_threshold_data/2019111309492663_motion_temporal_threshold.csv"
+  this_sub_id: "2019111309492663"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+```
+
+Objective: Locate the possible reasons for missing data and provide solution
+
+## Missing dataset
+There is no 20191118083939_motion_temporal_threshold.csv, due to experimenter error. (get from qa-session.Rmd)
+
+## less than enough trials in the computer tasks
+343_motion_temporal_threshold.csv (get from qa-session.Rmd)
+Solution: 
+It introduced another problem to caluclate the threshold in the computer tasks: How to caluclate the threshold if one or two runs runs bad and do not reach the 80% accuracy? Do we discord this trials or still include them? For the participants that there are bad runs, it is definitely better to get the final thresholdby getting the median instead of mean across 4 runs. Because we want to be consistent to all the participants, we choose median, even for the partipants who have 4 good runs.
+This participant (343) finish two good runs and several trials in the third run. Do we still include his/her threshold? DIscuss this, we can still get the threshold from the median of two runs.
+
+## missing value in qualtrics
+In qualtrics, the missing data is coded as "" in the output.
+- Demographic: no action
+- Visual screening: the experimenter fill in this part, which should not have missing value.
+- Verbal ability/spatial ability: No action. But if the final score is 0, double check to decide whether we should code the final score as 0 or NA.
+    - lack of time because there is time limit. No action
+    - no able to answer. No action. 
+    - no willing to answer. It is very hard to differentiate whether this is the reason for missing data. No action. 
+    - random choice: Hopefully, the unlikely response patterns will be detected from the outliner precedure (out of 2SD, more than 50% the same answer)
+- hobbies: sex-typed interests are scored by the sum of male-typed and female-typed items, So, if resting part or several items are missing, no action. But if the final score is 0, double check to decide whether we should code the final score as 0 or NA.
+    - no willing to answer. 
+    - do not understand the word. 
+    - random choice: Hopefully, the unlikely response patterns will be detected from the outliner precedure (out of 2SD, more than 50% the same answer). 
+    - click the same column: after thinking about it, it does not matter to the spatial and verbal ability test. But need to check in hobbies questionnaires.
+- 2 visual perception tasks: Besides quiting experiments before the completion and missing the whole experiments, there is no missing data because we use two-alternative forced choice (2AFC) based on the experimental design. The participant must respond with any of two response keys in order to continue. Then, the staircase algorithm is programmed to increase the intensity of the next trial if the answer is wrong, and decrease it if the answer is right.
+    
+
+

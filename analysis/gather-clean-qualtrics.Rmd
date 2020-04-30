@@ -1,8 +1,19 @@
 ---
-title: "Gather & Clean Qualtrics"
+title: "Gather & Clean Qualtrics Surveys"
+subtitle: "Sex Differences Project"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
+params:
+  box_path: "~/Box"
+  data_path: "/Project_Sex_difference_on_Motion_Perception/data"
+  qualtrics_raw_path: "/raw_data/qualtrics_survey_data/csv"
+  old_survey_fn: "survey_REV_2019-11-11.csv"
+  new_survey_fn: "survey_REV_2019-11-18.csv"
+  update_raw: true
+  reimport_raw: true
 ---
 
 ```{r setup, include=FALSE}
@@ -12,48 +23,157 @@ library(tidyverse)
 library(qualtRics)
 ```
 
-## Purpose
+# Purpose
 
 This document describes the process of gathering and cleaning the Qualtrics survey data for the sex differences project.
 
-# `qualtRics` package approach
+To render, enter `rmarkdown::render("analysis/gather-clean-qualtrics.Rmd", params = list(box_path = "<YOUR_BOX_PATH>"))`, substituting the path to your Box folder on your local machine.
+On Mac OS the default is "~/Box Sync".
 
-I used `qualtRics::qualtrics_api_credentials()` to install the credentials per the instructions here: <https://github.com/ropensci/qualtRics>
+# Background
 
-```{r}
-active_survey_name <- "Sex difference survey REV 2019-11-11"
-#active_survey_name <- "Sex difference survey REV 2019-11-18"
+## Connecting to Qualtrics via the API
+
+I used `qualtRics::qualtrics_api_credentials()` to install the credentials per the instructions here: <https://github.com/ropensci/qualtRics>.
+Note that this writes credentials data to the user's R Environment (`.Renviron`) variable.
+This file should **not** be synched to GitHub for security reasons.
+The default `.gitignore` for the repository includes an entry that excludes `.Renviron` from git version control.
+
+## Qualtrics survey(s)
+
+Our survey data comes from two different "published" surveys:
+  - "Sex difference survey REV 2019-11-11"
+  - "Sex difference survey REV 2019-11-18"
+  
+This script imports both.
+
+# Gather data from Qualtrics
+
+```{r import-from-qualtrics}
+old_active_survey_name <- "Sex difference survey REV 2019-11-11"
+active_survey_name <- "Sex difference survey REV 2019-11-18"
+
 surveys <- qualtRics::all_surveys()
 
 active_survey <- surveys %>%
-  filter(., name == active_survey_name)
+  dplyr::filter(., name == active_survey_name)
+
+old_active_survey <- surveys %>%
+  dplyr::filter(., name == old_active_survey_name)
 
 sex_diff_resp <- qualtRics::fetch_survey(surveyID = active_survey$id,
                                      verbose = TRUE,
                                      force_request = TRUE)
 sex_diff_quest <- qualtRics::survey_questions(surveyID = active_survey$id)
 sex_diff_meta <- qualtRics::metadata(surveyID = active_survey$id)
+
+# Get data from prior to 2019-11-18
+old_sex_diff_resp <- qualtRics::fetch_survey(surveyID = old_active_survey$id,
+                                             verbose = TRUE,
+                                     force_request = TRUE)
+old_sex_diff_quest <- qualtRics::survey_questions(surveyID = old_active_survey$id)
+old_sex_diff_meta <- qualtRics::metadata(surveyID = old_active_survey$id)
 ```
 
-There are `r sex_diff_meta$responsecounts$auditable` surveys.
+There are `r sex_diff_meta$responsecounts$auditable` surveys from the current active survey, and `r old_sex_diff_meta$responsecounts$auditable` from the older inactive survey.
+
+## Active survey
+
+```{r show-newer-survey}
+# In "Sex difference survey REV 2019-11-18", Q97 contains the participant ID
+sex_diff_resp %>%
+  dplyr::select(., StartDate, `Q97`, `Q1`) %>%
+  dplyr::rename(., p_id = `Q97`, 
+                gender = `Q1`) %>%
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling("hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
+```
+
+## Older survey
+
+```{r show-older-survey}
+# In "Sex difference survey REV 2019-11-18", Q97 contains the participant ID
+old_sex_diff_resp %>%
+  dplyr::select(., StartDate, `Participant ID`, `Q1`) %>%
+  dplyr::rename(., p_id = `Participant ID`,
+                gender = `Q1`) %>%
+  knitr::kable(.) %>%
+  kableExtra::kable_styling("hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
+```
+
+## Export
+
+```{r, export-to-raw}
+if (params$update_raw) {
+  # Create directory if needed
+  qualtrics_raw_dir <- paste0(params$box_path, params$data_path,
+                   params$qualtrics_raw_path)
+  if (!dir.exists(qualtrics_raw_dir)) {
+    message(paste0("Creating new directory ", qualtrics_raw_dir))
+    dir.create(qualtrics_raw_dir)
+  }
+  
+  # Old survey data
+  old_fn <- paste0(params$box_path, params$data_path,
+                   params$qualtrics_raw_path, "/", params$old_survey_fn)
+  if (file.exists(old_fn)) {
+    message("Raw survey file exists. Overwriting.")
+  } else {
+    message("Creating new raw survey file.")
+  }
+  readr::write_csv(old_sex_diff_resp, old_fn)
+  
+  # New survey data
+  new_fn <- paste0(params$box_path, params$data_path,
+                   params$qualtrics_raw_path, "/", params$new_survey_fn)
+  if (file.exists(new_fn)) {
+    message("Raw survey file exists. Overwriting.")
+  } else {
+    message("Creating new raw survey file.")
+  }
+  readr::write_csv(sex_diff_resp, new_fn)  
+} else {
+  message("Qualtrics raw data not exported.")
+}
+```
+
+# Data cleaning
+
+## Reimport raw
+
+If `params$reimport_raw == TRUE` (the default), we reimport the exported raw files to make sure that our pipeline is robust.
 
 ```{r}
-sex_diff_resp %>%
-  dplyr::select(., `Participant ID`, `Q1`) %>%
-  dplyr::rename(gender = `Q1`) %>%
-  knitr::kable(.)
+if (params$reimport_raw) {
+  message("Reimporting previously saved raw Qualtrics survey files.")
+  qualtrics_csvs <- list.files(path = qualtrics_raw_dir, 
+                               pattern = "\\.csv", full.names = TRUE)
+  
+  old_survey_index <- stringr::str_detect(qualtrics_csvs, params$old_survey_fn)
+  new_survey_index <- stringr::str_detect(qualtrics_csvs, params$new_survey_fn)
+  
+  old_survey_full_fn <- qualtrics_csvs[old_survey_index]
+  new_survey_full_fn <- qualtrics_csvs[new_survey_index]
+  
+  sex_diff_resp <- readr::read_csv(new_survey_full_fn)
+  old_sex_diff_resp <- readr::read_csv(old_survey_full_fn)  
+}
 ```
 
-## Data cleaning
+## Active survey
 
 Several of the nominal variables are spread into separate columns, e.g., `Q89` gets split into multiple ethnicity categories.
 
-```{r}
+```{r clean-newer-survey}
 sex_diff_demo <- sex_diff_resp %>%
-  tidyr::gather(., key="quest", value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, Q89_5) %>%
+  dplyr::rename(., p_id = `Q97`) %>%
+  tidyr::gather(., key="quest", 
+                value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, 
+                Q89_5, Q89_6, Q89_7) %>%
   dplyr::filter(., !is.na(ethnicity)) %>%
   dplyr::select(., -quest) %>%
-  dplyr::rename(., p_id = `Participant ID`) %>%
   dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>%
   dplyr::rename(., vis_acuity = `Q81`) %>%
   dplyr::rename(., gender = `Q1`) %>%
@@ -62,85 +182,155 @@ sex_diff_demo <- sex_diff_resp %>%
   dplyr::rename(., major = `Q3`) %>%
   dplyr::rename(., preferred_hand = `Q88`) %>%
   dplyr::rename(., stereo_vision = `Q92`) %>%
-  dplyr::select(., p_id, gender, age_yrs, school_yr, major,
-                preferred_hand, vis_acuity, stereo_vision)
+  dplyr::rename(., test_date = StartDate) %>%
+  dplyr::rename(., expt_notes = `Q99`) %>%
+  dplyr::select(., test_date, p_id, gender, age_yrs, school_yr, major,
+                preferred_hand, vis_acuity, stereo_vision, expt_notes) %>%
+  dplyr::arrange(., test_date)
 ```
 
-
-
-```{r}
+```{r summarize-demo-newer-survey}
 xtabs(~ gender + age_yrs, data = sex_diff_demo) %>%
-  knitr::kable(.)
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
-# Alternative approach
+## Older survey
 
-## Manually download the data file
+```{r clean-old-survey}
+old_sex_diff_demo <- old_sex_diff_resp %>%
+  dplyr::rename(., p_id = `Participant ID`) %>%
+  tidyr::gather(., key="quest", 
+                value="ethnicity", Q89_1, Q89_2, Q89_3, Q89_4, 
+                Q89_5, Q89_6, Q89_7) %>%
+  dplyr::filter(., !is.na(ethnicity)) %>%
+  dplyr::select(., -quest) %>%
+  dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]")) %>%
+  dplyr::rename(., vis_acuity = `Q81`) %>%
+  dplyr::rename(., gender = `Q1`) %>%
+  dplyr::rename(., age_yrs = `Q4`) %>%
+  dplyr::rename(., school_yr = `Q2`) %>%
+  dplyr::rename(., major = `Q3`) %>%
+  dplyr::rename(., preferred_hand = `Q88`) %>%
+  dplyr::rename(., stereo_vision = `Q92`) %>%
+  dplyr::rename(., test_date = StartDate) %>%
+  dplyr::mutate(., expt_notes = NA) %>%
+  dplyr::select(., test_date, p_id, gender, age_yrs,
+                school_yr, major,
+                preferred_hand, vis_acuity, stereo_vision, expt_notes) %>%
+  dplyr::arrange(., test_date)
+```
 
-The data file must be exported from Qualtrics.
-Only Rick can do this.
+```{r summarize-demo-older-survey}
+xtabs(~ gender + age_yrs, data = old_sex_diff_demo) %>%
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") 
+```
 
-## Open the data file
+## Combined
 
-The `*.zip` data file(s) can be found at
+```{r, echo=FALSE}
+combined_demo <- rbind(old_sex_diff_demo, sex_diff_demo)
+combined_demo_gender_only <- combined_demo %>%
+  dplyr::group_by(., gender) %>%
+  dplyr::select(., gender)
 
-`~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data/zip`
+xtabs(~ gender, data = combined_demo_gender_only) %>%
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") 
+```
 
-The following code unzips any target `.zip` files and copies it to 
+# Data merging
 
-`~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data/csv`
+The merged dataset can be used to address duplicate entries and to conduct quality assurance (QA) checks.
 
 ```{r}
-qualtrics_dir <- "~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/qualtrics_survey_data"
-qualtrics_zip_dir <- paste0(qualtrics_dir, "/", "zip")
-qualtrics_zip_fns <- list.files(qualtrics_zip_dir, pattern = "\\.zip$", full.names = TRUE)
-lapply(qualtrics_zip_fns, unzip, exdir = paste0(qualtrics_dir, "/csv"))
+merged_demo <- rbind(sex_diff_demo, old_sex_diff_demo)
+merged_demo <- merged_demo %>%
+  dplyr::arrange(., test_date)
+
+merged_demo %>%
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
 
-```{r}
-qualtrics_csv_dir <- paste0(qualtrics_dir, "/", "csv")
-# Just pick 1st 1st one for now
+# Quality Assurance (QA) checks
 
-qualtrics_fns <- list.files(qualtrics_csv_dir, pattern = "\\.csv$", full.names = TRUE)
-this_fn <- qualtrics_fns[1]
-qualtrics_df <- readr::read_csv(this_fn)
+First, we define the criteria each survey must meet to pass this level of QA.
+Each criterion is defined as a Boolean function.
 
+The `vis_acuity` and `stereo_vision` variables are optional.
 
-# Trim first two rows
-n_rows <- dim(qualtrics_df)[1]
-qualtrics_trim <- qualtrics_df[3:n_rows,]
+```{r qa-check-functions}
+observer_id_in_file <- function(data_df) {
+  !is.na(data_df$p_id)
+}
+
+gender_in_file <- function(data_df) {
+  !is.na(data_df$gender) 
+}
+
+gender_male_or_female <- function(data_df) {
+  data_df$gender %in% c("Female", "Male")
+}
+
+age_yrs_valid <- function(data_df) {
+  !is.na(data_df$age_yrs) & (data_df$age_yrs %in% c("18-19", "20-21",
+                                                        "22-23",
+                                                        "older than 23"))
+}
+
+school_yr_valid <- function(data_df) {
+  !is.na(data_df$school_yr) & (data_df$school_yr %in% c("Freshman", 
+                                                        "Sophomore",
+                                                        "Junior", 
+                                                        "Senior", 
+                                                        "5th year or later"))
+}
+
+preferred_hand_valid <- function(data_df) {
+  !is.na(data_df$preferred_hand) & (data_df$preferred_hand %in% c("Left hand", 
+                                                        "Right hand",
+                                                        "Either hand"))
+}
+
+poss_exclude <- function(data_df) {
+  out <- rep(FALSE, dim(data_df)[1])
+  
+  # questionable p_id
+  bad_p_id <- data_df$p_id %in% c("000", "test", 
+                                  "0000", "00000")
+  out[bad_p_id] <- TRUE
+  
+  # other exclusion reasons...
+  
+  # pilot participants
+  
+  out
+}
 ```
 
-## Extract specific data types
+```{r qa-table}
+merged_demo <- merged_demo %>%
+  dplyr::mutate(., observer_id_in_file = observer_id_in_file(merged_demo),
+                gender_in_file = gender_in_file(merged_demo),
+                gender_male_or_female = gender_male_or_female(merged_demo),
+                age_yrs_valid = age_yrs_valid(merged_demo),
+                school_yr_valid = school_yr_valid(merged_demo),
+                preferred_hand_valid = preferred_hand_valid(merged_demo),
+                poss_exclude = poss_exclude(merged_demo))
 
-### Demographics
-
-```{r}
-demog_df <- qualtrics_trim %>%
-  dplyr::filter(., !is.na(`Participant ID`)) %>%
-  dplyr::rename(p_id = `Participant ID`) %>%
-  dplyr::rename(vis_acuity = `Q81`) %>%
-  dplyr::rename(gender = `Q1`) %>%
-  dplyr::rename(age_yrs = `Q4`) %>%
-  dplyr::rename(school_yr = `Q2`) %>%
-  dplyr::rename(major = `Q3`) %>%
-  dplyr::rename(ethnicity = `Q89`) %>%
-  dplyr::rename(preferred_hand = `Q88`) %>%
-  dplyr::rename(stereo_vision = `Q92`) %>%
-  dplyr::rename(color_p6 = `Q93_1`) %>%
-  dplyr::rename(color_p7 = `Q93_2`) %>%
-  dplyr::rename(color_p8 = `Q93_3`) %>%
-  dplyr::select(p_id, gender, vis_acuity, age_yrs, school_yr,
-                major, ethnicity, preferred_hand, stereo_vision,
-                color_p6, color_p7, color_p8)
-
-# Some cleaning
-
-demog_df <- demog_df %>%
-  dplyr::mutate(., p_id = stringr::str_remove_all(p_id, "[:-]"))
-
-demog_df %>%
-  dplyr::select(., p_id, gender, vis_acuity) %>%
-  knitr::kable(.)
+merged_demo %>%
+  select(., test_date, expt_notes, p_id, poss_exclude,
+         observer_id_in_file,
+         gender_in_file,
+         gender_male_or_female,
+         age_yrs_valid,
+         school_yr_valid,
+         preferred_hand_valid) %>%
+  knitr::kable(., 'html') %>%
+  kableExtra::kable_styling(., "hover", "striped") %>%
+  kableExtra::scroll_box(., height = "300px")
 ```
-

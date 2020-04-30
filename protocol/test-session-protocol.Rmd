@@ -3,9 +3,9 @@ title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
 date: "`r Sys.time()`"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: 3
+  # pdf_document:
+  #   toc: yes
+  #   toc_depth: 3
   html_document:
     code_folding: hide
     keep_md: yes
@@ -189,7 +189,8 @@ Say:
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
     - The monitor should be located **60cm** from the bridge of the nose on the participant.
-    - *place the rear legs of the chair exactly in front of black strips*
+    - *place the rear legs of the chair to approximately align with the black tape on the wall*
+    - Measure the 60cm and adjust the chair accordingly
     - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
 - *check with participants that they do not bring the cell phone to the dark room*
@@ -256,7 +257,13 @@ The order of the computer experiments will be randomized across participants bas
     - the participant was Present or a No Show  
     - the number used for that participant if Present  
 
-- Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
+- Clean keyboard, mouse and table.
 
-For the last participant of the day:
-- Copy the data of this participant to the hard drive
+
+### Data Export
+
+- Andrea or Yiming will copy the data to Box: 
+  - Frequency at the end of each day or the morning before data collection starts
+      - When this is complete a note should be written into the `study-sex-differences` discord channel and include the date the data were copied.
+  - temporal duration threshold task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> motion_temporal_threshold_data'
+  - contrast sensitivity task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> contrast_sensitivity_task_data'

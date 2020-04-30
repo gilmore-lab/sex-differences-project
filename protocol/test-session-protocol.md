@@ -1,11 +1,11 @@
 ---
 title: "Testing session protocol"
 author: "Yiming Qian, Andrea Seisler, & Rick Gilmore"
-date: "2020-01-30 09:35:21"
+date: "2020-02-26 10:33:56"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: 3
+  # pdf_document:
+  #   toc: yes
+  #   toc_depth: 3
   html_document:
     code_folding: hide
     keep_md: yes
@@ -269,7 +269,8 @@ Say:
 - Have them sit in the chair.
 - Adjust the monitor and participant position.
     - The monitor should be located **60cm** from the bridge of the nose on the participant.
-    - *place the rear legs of the chair exactly in front of black strips*
+    - *place the rear legs of the chair to approximately align with the black tape on the wall*
+    - Measure the 60cm and adjust the chair accordingly
     - The chair height should be set so the participant is looking in the middle of the screen.
 - Guide the participant to use the arrow keys for responses and the space bar to advance the screen.
 - *check with participants that they do not bring the cell phone to the dark room*
@@ -300,12 +301,19 @@ The order of the computer experiments will be randomized across participants bas
 
 
 
-- Open PsychoPy by clicking on the icon located on the desktop.
+Preferred Method of Running Study  
+
+- Click on the `motion-temporal-threshold.py-Shortcut` on your Desktop
+
+*Alternate method of Running Study*
+
+*- Open PsychoPy by clicking on the icon located on the desktop.
 ![PsychoPy_Logo](images/PsychoPy-1.PNG)  
 - When PsychoPy opens, open the file for this experiment.
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
 - When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
-    - **Be careful not to type in the programming window.**
+    - **Be careful not to type in the programming window.***
+    
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
     - Enter participant ID. Make sure it is the same ID that you entered into Qualtrics.
@@ -334,12 +342,18 @@ The order of the computer experiments will be randomized across participants bas
 
 
 
-- Open PsychoPy by clicking on the icon located on the desktop.
-![PsychoPy_Logo](images/PsychoPy-1.PNG)  
-- When PsychoPy opens, open the file for this experiment.
+Preferred Method of Running Study  
+
+- Click on the `motion-temporal-threshold.py-Shortcut` on your Desktop
+
+*Alternate method of Running Study*  
+
+*- Open PsychoPy by clicking on the icon located on the desktop. ![PsychoPy_Logo](images/PsychoPy-1.PNG)    
+- When PsychoPy opens, open the file for this experiment.  
     - From the `File` menu, select the `Open Recent...` command and select the `motion-temporal-threshold.py` file.
-- When the file opens, run the experiment by pressing press the green (running person) button. ![PsychoPy_Run](images/PPrunningMan.png)  
-    - **Be careful not to type in the programming window.**
+- When the file opens, run the experiment by pressing press the green (running person) button.   ![PsychoPy_Run](images/PPrunningMan.png)    
+    - **Be careful not to type in the programming window.***     
+    
 - Experimenters need to fill in the participant ID and gender.
     - A pop-up window will appear.
     - Enter participant ID. Make sure it is the same ID as that in qualtrics.
@@ -395,7 +409,13 @@ You also have done two computer tests, which examine your performance in motion 
     - the participant was Present or a No Show  
     - the number used for that participant if Present  
 
-- Clean keyboard, mouse and table and begin [data export](sex-differences-data-export.md) (separate protocols).
+- Clean keyboard, mouse and table.
 
-For the last participant of the day:
-- Copy the data of this participant to the hard drive
+
+### Data Export
+
+- Andrea or Yiming will copy the data to Box: 
+  - Frequency at the end of each day or the morning before data collection starts
+      - When this is complete a note should be written into the `study-sex-differences` discord channel and include the date the data were copied.
+  - temporal duration threshold task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> motion_temporal_threshold_data'
+  - contrast sensitivity task data gets copied to: Box > Project_Sex_difference_on_Motion_Perception > data > raw_data> contrast_sensitivity_task_data'

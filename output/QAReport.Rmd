@@ -1,0 +1,30 @@
+---
+title: "QAreport"
+author: "Yiming Qian"
+date: "2/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Failed QA 
+## Missing dataset
+There is no 20191118083939_motion_temporal_threshold.csv, due to experimenter error.
+## less than enough trials in the computer tasks
+343_motion_temporal_threshold.csv
+
+see MissingReport.Rmd for solution.
+
+## ID anomalies
+20191118144828_motion_temporal_threshold.csv, 20191212170333_motion_temporal_threshold.csv has no matching files
+20191213163220_contrast_sensitivity_task.csv, 20191212170133_contrast_sensitivity_task.csv have no matching files
+see SubID_checklist.Rmd for solution
+
+##  no gender variable in the files
+201911309492663_contrast_sensitivity_task.csv
+Solution: the other two files may have gender variables. No need to change the file.
+
+## missing key variables in the files
+

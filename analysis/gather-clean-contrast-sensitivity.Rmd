@@ -8,11 +8,10 @@ output:
     code_folding: hide
 params:
   this_csv_fn:  "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/2019111309492663_contrast_sensitivity_task.csv"
-  this_sub_id: "2019111309492663"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 library(tidyverse)
 library(ggplot2)
@@ -47,18 +46,18 @@ s1_subset <- s1_clean %>%
                 corr,
                 resp.rt) %>%
   dplyr::filter(., trial_n >= 0) %>%
-  dplyr::mutate(run = rep(1:4, each=30))
+  dplyr::mutate(., run = rep(1:4, each=30)) %>%
+  dplyr::mutate(., run = ordered(run))
 ```
 
 ## Visualize
 
 ```{r contrast-sensitivity-by-trial}
 s1_subset %>% ggplot(.) +
-  aes(x = trial_n, y = contr) +
-  facet_grid(. ~ run) +
+  aes(x = trial_n, y = contr, color = run) +
   geom_smooth() +
   geom_point() +
-  ggtitle("Contrast sensitivity data")
+  ggtitle("Contrast across trials and runs")
 ```
 
 ### Cumulative performance across runs
@@ -71,31 +70,27 @@ s1_subset <- s1_subset %>%
                 cum_p = cum_sum/n())
 
 s1_subset %>% ggplot(.) +
-  aes(x = contr, y = cum_p) +
-  facet_grid(. ~ run) +
+  aes(x = contr, y = cum_p, color = run) +
   geom_point() +
   geom_smooth(se = FALSE) +
-  ggtitle("Contrast sensitivity data")
+  ggtitle("p(corr) by contrast across runs")
 ```
 
 ```{r contrast-sensitivity-rt}
 s1_subset %>%
   ggplot(.) +
-  aes(x = trial_n, y = resp.rt) +
-  facet_grid(. ~ run) + 
+  aes(x = trial_n, y = resp.rt, color = run) +
   geom_point() +
-  ggtitle("Contrast sensitivity data")
+  geom_smooth() +
+  ggtitle("RT across trials and runs")
 ```
-
-Speed/accuracy trade-off
 
 ```{r}
 s1_subset %>%
   ggplot(.) +
-  aes(x = contr, y = resp.rt) +
-  facet_grid(. ~ run) + 
+  aes(x = contr, y = resp.rt, color = run) +
   geom_point() +
   geom_smooth() +
-  ggtitle("Contrast sensitivity data")
+  ggtitle("RT by contrast across runs")
 ```
 
