@@ -9,6 +9,22 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## 2020-09-14
+
+- Attending Yiming, Rick
+- Topics
+  - Survey of MOCO psychophysics study child participants
+    - Have permission to contact from FiRST families
+    - Can modify existing sex differences protocol for this new population
+    - Questions:
+      - Can these children do the object rotation task? ROG thinks yes, but let's see what other prior literature there is on the Shepard-Metzler task. Also ask SB.
+      - ARS raised issue about the two different groups of coherence and how to evaluate. ROG says let's wait to see who we can recruit.
+  - Evaluate sex differences in prior MOCO (or even MOFO) EEG participants
+    - Let's ask for permission (via current sex diffs protocol) to contact
+    - In parallel, look at the EEG data to see whether sex matters.
+  - Analysis of existing sex diffs data (collected through March 2020)
+  
+
 ## 2019-10-03
 
 - Attending: Andrea, Yiming, Rick
