@@ -1,0 +1,324 @@
+---
+title: "Code_Clean&visualization"
+author: "Yiming Qian"
+date: "`r Sys.time()`"
+output: 
+  html_document:
+    self_contained: yes
+    code_folding: hide
+params:
+  contr_csv_fn: "contrast_output_Oct2020.csv"
+  motion_csv_fn: "motion_output_Oct2020.csv"
+  qualtrics_csv_fn: "qualtrics_output_10_14_2020.csv"
+  this_sub_id: "2019111309492663"
+  data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data"
+  output_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  contrast_raw_path: "contrast_sensitivity_task_data"
+  motion_raw_path: "motion_temporal_threshold_data"
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+# load the data and make each variable right
+cst<-readr::read_csv(file.path(params$output_path,params$contr_csv_fn)) 
+cst$Participant<-as.character(cst$Participant)
+cst$Gender[1:4]<-0
+cst$Gender<-factor(cst$Gender, levels=c(0,"m"), labels=c("Females","Males"))
+
+mdt<-readr::read_csv(file.path(params$output_path,params$motion_csv_fn)) 
+mdt$Participant<-as.character(mdt$Participant)
+mdt$Gender[313:316]<-0
+mdt$Gender<-factor(mdt$Gender, levels=c(0,"m"), labels=c("Females","Males"))
+
+qua_raw<-readr::read_csv(file.path(params$output_path,params$qualtrics_csv_fn)) 
+```
+rename the participant id
+```{r}
+# for qualtric survey
+qua_raw$participant[which(qua_raw$participant=="2019-11-1309:49:2632")]<-101
+qua_raw$participant[which(qua_raw$participant=="2019-11-1311:10:2438")]<-102
+qua_raw$participant[which(qua_raw$participant=="2019-11-1313:38:0337")]<-103
+qua_raw$participant[which(qua_raw$participant=="2019-11-1314:56:0233")]<-105
+qua_raw$participant[which(qua_raw$participant=="2019-11-1316:12:1898")]<-107
+
+qua_raw$participant[which(qua_raw$participant=="2019-11-1808:39:3927")]<-104
+qua_raw$participant[which(qua_raw$participant=="2019-11-1811:26:4976")]<-109
+qua_raw$participant[which(qua_raw$participant=="2019-11-1812:45:1738")]<-111
+qua_raw$participant[which(qua_raw$participant=="2019-11-1813:58:0893")]<-113
+qua_raw$participant[which(qua_raw$participant=="2019-11-1814:48:2896")]<-106
+
+qua_raw$participant[which(qua_raw$participant=="2019-11-2013:40:1983")]<-115
+qua_raw$participant[which(qua_raw$participant=="2019-11-2014:53:2351")]<-108
+qua_raw$participant[which(qua_raw$participant=="2019-11-2016:11:0713")]<-117
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 11:14")]<-119
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 12:17")]<-110
+
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 13:54")]<-121
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 10:45")]<-123
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 11:30")]<-125
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 14:35")]<-127
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 16:52")]<-320
+
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 17:40")]<-112
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 12:05")]<-114
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 14:36")]<-129
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 16:44")]<-324
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 9:59")]<-116
+
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 13:20")]<-131
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 13:23")]<-118
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 14:29")]<-133
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 15:44")]<-120
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 16:44")]<-330
+
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 17:45")]<-135
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 13:58")]<-122
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 14:47")]<-124
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 16:32")]<-137
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 17:04")]<-139
+
+# contrast sensitivity
+cst$Participant[which(cst$Participant=="2019111309492663")]<-101
+cst$Participant[which(cst$Participant=="2019111311102420")]<-102
+cst$Participant[which(cst$Participant=="2019111313380357")]<-103
+cst$Participant[which(cst$Participant=="201911131456077")]<-105
+cst$Participant[which(cst$Participant=="2019111316121877")]<-107
+
+cst$Participant[which(cst$Participant=="20191118083974")]<-104
+cst$Participant[which(cst$Participant=="2019111811264955")]<-109
+cst$Participant[which(cst$Participant=="2019111812451739")]<-111
+cst$Participant[which(cst$Participant=="2.01911e+15")]<-113
+# miss one participant here
+
+cst$Participant[which(cst$Participant=="2019112013401963")]<-115
+cst$Participant[which(cst$Participant=="2019112014532376")]<-108
+cst$Participant[which(cst$Participant=="2019112016110741")]<-117
+cst$Participant[which(cst$Participant=="2019112110260325")]<-119
+cst$Participant[which(cst$Participant=="2019112111415316")]<-110
+
+cst$Participant[which(cst$Participant=="2019112112563983")]<-121
+cst$Participant[which(cst$Participant=="2019112209583295")]<-123
+cst$Participant[which(cst$Participant=="2019112210523539")]<-125
+cst$Participant[which(cst$Participant=="2019112213492145")]<-127
+cst$Participant[which(cst$Participant=="201911221604385")]<-320 
+
+cst$Participant[which(cst$Participant=="2019112217002412")]<-112
+cst$Participant[which(cst$Participant=="2019120409523578")]<-114
+cst$Participant[which(cst$Participant=="2019120413585457")]<-129
+cst$Participant[which(cst$Participant=="201912041554552")]<-324
+cst$Participant[which(cst$Participant=="2019120509244570")]<-116
+
+cst$Participant[which(cst$Participant=="2019120512235593")]<-131
+cst$Participant[which(cst$Participant=="20191212114750")]<-118
+cst$Participant[which(cst$Participant=="2019121212434199")]<-133
+cst$Participant[which(cst$Participant=="2019121214503690")]<-120
+cst$Participant[which(cst$Participant=="2019121215561995")]<-330
+
+cst$Participant[which(cst$Participant=="2019121217013332")]<-135
+cst$Participant[which(cst$Participant=="2019121313154134")]<-122
+cst$Participant[which(cst$Participant=="2019121314001724")]<-124
+cst$Participant[which(cst$Participant=="2019121315012099")]<-137
+cst$Participant[which(cst$Participant=="2019121316322025")]<-139
+# 131 participants
+
+# motion duration
+mdt$Participant[which(mdt$Participant=="2019111309492663")]<-101
+mdt$Participant[which(mdt$Participant=="2019111311102420")]<-102
+mdt$Participant[which(mdt$Participant=="2019111313380357")]<-103
+mdt$Participant[which(mdt$Participant=="2019111314560277")]<-105 # differnt from cst
+mdt$Participant[which(mdt$Participant=="2019111316121877")]<-107
+
+mdt$Participant[which(mdt$Participant=="20191118083974")]<-104
+mdt$Participant[which(mdt$Participant=="2019111811264955")]<-109
+mdt$Participant[which(mdt$Participant=="2019111812451739")]<-111
+mdt$Participant[which(mdt$Participant=="2019111813580899")]<-113 # differnt from cst
+mdt$Participant[which(mdt$Participant=="2019111814482814")]<-106
+
+mdt$Participant[which(mdt$Participant=="2019112013401963")]<-115
+mdt$Participant[which(mdt$Participant=="2019112014532376")]<-108
+mdt$Participant[which(mdt$Participant=="2019112016110741")]<-117
+mdt$Participant[which(mdt$Participant=="2019112110260325")]<-119
+mdt$Participant[which(mdt$Participant=="2019112111415316")]<-110
+
+mdt$Participant[which(mdt$Participant=="2019112112563983")]<-121
+mdt$Participant[which(mdt$Participant=="2019112209583295")]<-123
+mdt$Participant[which(mdt$Participant=="2019112210523539")]<-125
+mdt$Participant[which(mdt$Participant=="2019112213492145")]<-127
+mdt$Participant[which(mdt$Participant=="201911221604385")]<-320 
+
+mdt$Participant[which(mdt$Participant=="2019112217002412")]<-112
+mdt$Participant[which(mdt$Participant=="2019120409523578")]<-114
+mdt$Participant[which(mdt$Participant=="2019120413585457")]<-129
+mdt$Participant[which(mdt$Participant=="201912041554552")]<-324
+mdt$Participant[which(mdt$Participant=="2019120509244570")]<-116
+
+mdt$Participant[which(mdt$Participant=="2019120512235593")]<-131
+mdt$Participant[which(mdt$Participant=="20191212114750")]<-118
+mdt$Participant[which(mdt$Participant=="2019121212434199")]<-133
+mdt$Participant[which(mdt$Participant=="2019121214503690")]<-120
+mdt$Participant[which(mdt$Participant=="2019121215561995")]<-330
+
+mdt$Participant[which(mdt$Participant=="201912121703332")]<-135   # differnt from cst
+mdt$Participant[which(mdt$Participant=="2019121313154134")]<-122
+mdt$Participant[which(mdt$Participant=="2019121314001724")]<-124
+mdt$Participant[which(mdt$Participant=="2019121315012099")]<-137
+mdt$Participant[which(mdt$Participant=="2019121316322025")]<-139 # missed
+# miss 371, 395 half
+
+# it should be 132 participants
+```
+
+Delete the test participants in qualtrics
+```{r}
+qua_raw$participant<-as.numeric(qua_raw$participant)
+
+qua<-qua_raw[,-c(1:6, 8:17)] %>%
+  filter(Finished==1) %>%
+  filter(participant!="test") %>%
+  filter(participant!=0) 
+
+length(unique(qua$participant))
+# miss one 385
+```
+
+> We will exclude final scores of spatial ability, hobbies, and verbal ability data which are zero.
+
+```{r}
+which(qua$advoc_num_cor==0)
+which(qua$MRT_cor==0)
+which(qua$hobfem==0)
+which(qua$hobmas==0)
+```
+> We will exclude the run of visual perception tasks with less than 50% accuracy (guess rate).
+
+The marginal error is 1.97*sqrt(p(1-p)/30)=0.18
+The 95 confidence intervals are 50% +/- 18% [32% 68%]
+We will exclude the runs with less than 68% accuracy.
+```{r}
+which(cst$percent_correct<0.68)
+which(mdt$percent_correct<0.68)
+mdt$Participant[which(mdt$percent_correct<0.68)]
+cst<-cst %>% filter(percent_correct>=0.68)
+mdt<-mdt %>% filter(percent_correct>=0.68)
+```
+
+
+Visualization
+```{r}
+# visualization
+hist(cst$threshold)
+boxplot(cst$threshold)
+str(cst)
+
+hist(mdt$threshold)
+boxplot(mdt$threshold)
+str(mdt)
+```
+
+```{r}
+# visualization-cst
+cst %>% ggplot(aes(x=threshold,group=run, color=run)) +
+  geom_density() + 
+  facet_grid(~Gender)
+
+cst %>% ggplot(aes(x=threshold,group=Gender, color=Gender)) +
+  geom_density() 
+
+psych::describe(cst)
+psych::describeBy(cst,group=cst$Gender)
+cst %>%
+  group_by(Gender) %>%
+  summarize(mean=mean(threshold),
+            sd=sd(threshold),
+            median=median(threshold),
+            count=n())
+```
+
+```{r}
+# visualization-mdt
+na.omit(mdt) %>% ggplot(aes(x=threshold,group=run, color=run)) +
+  geom_density() + 
+  facet_grid(~Gender)
+
+na.omit(mdt) %>% ggplot(aes(x=threshold,group=Gender, color=Gender)) +
+  geom_density() 
+
+psych::describe(cst)
+psych::describeBy(cst,group=cst$Gender)
+mdt %>%
+  group_by(Gender) %>%
+  summarize(mean=mean(threshold),
+            sd=sd(threshold),
+            median=median(threshold),
+            count=n())
+```
+
+
+Clean the threshold which clearly have something wrong by each cumulative figures
+```{r}
+# check the cumulative figures of contrast sensitivity for each participant (up tp 366)
+# 2019111811264955, 2019112210523539, 2019112217002412,20191205244570, 338, 339, 342, 344, 347, 351, 352, 358, 365, 366 has one run very different from the others
+# 350 has two runs very different from the others
+# 2019111812451739 has 4 wrong runs
+cst$threshold[which(cst$threshold>1)]
+
+# check the cumulative figures of contrast sensitivity for each participant (up tp 366)
+# 2019111811264955, 2019111814482814, 2019112217002412, 2019121313154134, 338, 349, 350 has one run very different from the others
+# 2019112213492145 has two runs very different from the others
+# 20191119083974, 2019121215561995, 354 has 1 wierd runs
+# 201912040923578 has 4 wrong runs
+mdt$threshold[which(mdt$threshold>0.30)]
+```
+
+get median
+```{r}
+cst_median<-cst %>%
+  group_by(Participant, Gender) %>%
+  summarise(cst_median=median(threshold))
+
+mdt_median<-mdt %>%
+  group_by(Participant, Gender) %>%
+  summarise(mdt_median=median(threshold))
+```
+
+merge dataframes
+```{r}
+qua$sex<-factor(qua$sex, levels=c(2,1), labels=c("Females","Males"))
+names(qua)[names(qua)=="sex"] <- "Gender"
+names(qua)[names(qua)=="participant"] <- "Participant"
+qua$Participant<-as.character(qua$Participant)
+df <- full_join(mdt_median,cst_median, by=c("Participant","Gender")) %>% # 131 and 130 rows->132
+  full_join(qua,k, by=c("Participant","Gender"))  # 131, 132 rows->132 rows?
+```
+
+check outliers
+```{r}
+# define a function to remove outliers
+FindOutliers <- function(data) {
+  sd = sd(data, na.rm=T)
+  mean = mean(data,na.rm=T)
+  # we identify extreme outliers
+  extreme.threshold.upper = (sd * 3) + mean
+  extreme.threshold.lower = -(sd * 3) + mean
+  result <- which(data > extreme.threshold.upper | data < extreme.threshold.lower)
+  print(result)
+}
+
+var<-c("Participant", "Gender","mdt_median","cst_median","advoc_total_score","MRT_cor","MRT_cor_both","hobfem","hobmas")
+df1<-df[,var]
+a<-lapply(df1,FindOutliers) 
+df1$mdt_median[a[[3]]] # 122 125
+boxplot(df1$mdt_median)
+# check Flag_MRT
+
+df1$cst_median[a[[4]]] # 4 14 96
+boxplot(df1$cst_median)
+
+write.csv(df1,file.path(params$output_path,"data_output_Oct2020.csv"), row.names = FALSE)
+```
+

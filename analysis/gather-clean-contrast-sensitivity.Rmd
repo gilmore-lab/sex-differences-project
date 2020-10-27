@@ -7,7 +7,7 @@ output:
     self_contained: yes
     code_folding: hide
 params:
-  this_csv_fn:  "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/contrast_sensitivity_task_data/2019111309492663_contrast_sensitivity_task.csv"
+  this_csv_fn:  "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data/2019111309492663_contrast_sensitivity_task.csv"
 ---
 
 ```{r setup, include=FALSE}

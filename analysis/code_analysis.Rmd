@@ -1,0 +1,108 @@
+---
+title: "Code_analysis"
+author: "Yiming Qian"
+date: "`r Sys.time()`"
+output: 
+  html_document:
+    self_contained: yes
+    code_folding: hide
+params:
+  data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  output_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  csv_fn:"data_output_Oct2020.csv"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load the data and make each variable right
+df1<-readr::read_csv(file.path(params$data_path,params$csv_fn)) 
+```
+
+Preleminary test to check the test assumptions
+1. Is the covariation linear? Yes, form the plot above, the relationship is linear. In the situation where the scatter plots show curved patterns, we are dealing with nonlinear association between the two variables.
+
+2. Are the data from each of the 2 variables (x, y) follow a normal distribution?
+Use Shapiro-Wilk normality test –> R function: shapiro.test()
+and look at the normality plot —> R function: ggpubr::ggqqplot()
+- Shapiro-Wilk test can be performed as follow:
+Null hypothesis: the data are normally distributed
+Alternative hypothesis: the data are not normally distributed
+
+```{r}
+# Shapiro-Wilk normality test 
+shapiro.test(df1$mdt_median) # => p <0.001
+shapiro.test(df1$cst_median) # => p <0.001
+shapiro.test(df1$advoc_total_score) # => p <0.001
+shapiro.test(df1$MRT_cor) # => p <0.001
+shapiro.test(df1$MRT_cor_both) # => p <0.001
+shapiro.test(df1$hobfem) # => p <0.001
+shapiro.test(df1$hobmas) # => p <0.001
+
+hist(df1$mdt_median)
+```
+
+t-test compare between genders
+```{r}
+t.test(mdt_median ~ Gender, data = df1, var.equal = TRUE,  alternative = "greater")
+t.test(cst_median ~ Gender, data = df1, var.equal = TRUE, alternative = "greater")
+t.test(advoc_total_score ~ Gender, data = df1, var.equal = TRUE,  alternative = "less")
+t.test(MRT_cor ~ Gender, data = df1, var.equal = TRUE, alternative = "less")
+t.test(MRT_cor_both ~ Gender, data = df1, var.equal = TRUE, alternative = "less")
+t.test(hobfem ~ Gender, data = df1, var.equal = TRUE,  alternative = "greater")
+t.test(hobmas ~ Gender, data = df1, var.equal = TRUE,  alternative = "less")
+```
+
+power analysis
+```{r}
+library(pwr)
+pwr.t2n.test(n1 = 102 , n2=30 , d = 2.2852, sig.level =0.01199, power = NULL, alternative="greater")
+is d correct?
+```
+
+correlation within gender
+# females
+```{r}
+# correlation table
+df1_f<- df1 %>%
+  filter(Gender=="Females")
+
+round(cor(df1_f[,3:9], use = "complete.obs",  method = "spearman"),
+  digits = 2 # rounded to 2 decimals
+)
+
+library(Hmisc)
+res <- rcorr(as.matrix(df1_f[,3:9])) 
+# display p-values (rounded to 3 decimals)
+round(res$P, 3)
+```
+
+```{r}
+df1_m<- df1 %>%
+  filter(Gender=="Males")
+
+cor(df1_m[,3:9], use = "complete.obs",  method = "spearman")
+```
+
+```{r}
+ggplot(df1, aes(x=mdt_median,y=MRT_cor, group=Gender, color=Gender)) +
+geom_point()
+
+ggplot(df1, aes(x=mdt_median,y=cst_median, group=Gender, color=Gender)) +
+geom_point() +
+geom_smooth()
+
+library("ggpubr")
+ggscatter(df1_f, x = "mdt_median", y = "MRT_cor", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "motion duration (s)", ylab = "Mental rotation")
+```
+
+power analysis
+```{r}
+# MRT_cor and mdt 
+pwr.r.test(n = 102, r = -0.29016986, sig.level = 0.006, power = NULL, alternative="less")
+```

@@ -24,6 +24,7 @@ library(ggplot2)
 library(dplyr)
 library(weibullness)
 library(MASS)
+library(fitdistrplus)
 ```
 
 ```{r}
@@ -484,7 +485,7 @@ v <- var(lx)
 shape <- 1.2/sqrt(v)
 scale <- exp(m + 0.572/shape)
 
-library(fitdistrplus)
+
 weibull_est4<-fitdist(data, "weibull")
 ```
 
@@ -587,35 +588,45 @@ data_files_mtd <- list.files(file.path(params$data_path,params$motion_raw_path),
 ## Import all files in list
 
 ```{r}
-output_cst <- data.frame(Participant = numeric(0), Gender=numeric(0), run = numeric(0), shape= numeric(0), scale= numeric(0), loglik=numeric(0),threshold=numeric(0))
+output_cst <- data.frame(Participant = numeric(0), Gender=numeric(0), run = numeric(0), shape= numeric(0), scale= numeric(0), loglik=numeric(0),threshold=numeric(0), percent_correct=numeric(0))
+
 for (id in 91:length(data_files_csv)){
 s_subset <- readr::read_csv(data_files_csv[id]) %>%
   filter(loop_trial.thisRepN >= 1) %>%
-  mutate(run = rep(1:4, each=30)) 
+  mutate(run = rep(1:4, each=30)) %>%
+  group_by(run) %>%
+  mutate(n=n(), corresp=sum(loop_trial.response)/n) 
 
 for (i in 1:4) {
   tep<- s_subset$loop_trial.intensity[which(s_subset$run==i)]
+  percent_correct<- s_subset$corresp[which(s_subset$run==i)][1]
   # mlm_est<-fitdistr(tep, densfun="weibull")
   mlm_est<-fitdist(tep, distr = "weibull", method = "mle", lower = c(0, 0))
   shape<-mlm_est$estimate[[1]]
   scale<-mlm_est$estimate[[2]]
   loglik<-mlm_est$loglik
   threshold<-scale*(-log(0.2))^(1/shape) # get the threshold of 80% cumulative accuracy 
- output_cst[nrow(output_cst)+1,] <-c(s_subset$Participant[1], s_subset$Gender[1], i, shape, scale, loglik, threshold)
- rm(tep,mlm_est, shape,scale,loglik, k, threshold)
+ output_cst[nrow(output_cst)+1,] <-c(s_subset$Participant[1], s_subset$Gender[1], i, shape, scale, loglik, threshold, percent_correct)
+ rm(tep,mlm_est, shape,scale,loglik,  threshold)
 }
 }
+output_cst$percent_correct<-as.numeric(output_cst$percent_correct)
+# 8th and 90th does not work
 # 389 has two files. 90th participant (389) did not start the experiment, while 89th did. 
+# 2019111812451739 has lower than 50% accuracy in all runs
 write.csv(output_cst,file.path(params$output_path,"contrast_output_Oct2020.csv"), row.names = FALSE)
 ```
 
 ```{r}
-output_mtd <- data.frame(Participant = numeric(0), Gender=numeric(0), run = numeric(0), shape= numeric(0), scale= numeric(0), loglik=numeric(0),threshold=numeric(0))
+output_mtd <- data.frame(Participant = numeric(0), Gender=numeric(0), run = numeric(0), shape= numeric(0), scale= numeric(0), loglik=numeric(0),threshold=numeric(0), percent_correct=numeric(0))
 for (id in 95:length(data_files_mtd)){
-s_subset <- readr::read_csv(data_files_mtd[id]) 
+s_subset <- readr::read_csv(data_files_mtd[id]) %>%
+  group_by(run_n) %>%
+  mutate(n=n(), corresp=sum(correct)/n) 
 
 for (i in 0:3) {
   tep<- s_subset$FWHM[which(s_subset$run_n==i)]
+  percent_correct<- s_subset$corresp[which(s_subset$run_n==i)][1]
   # mlm_est<-fitdistr(tep, densfun="weibull")
   mlm_est<-fitdist(tep, distr = "weibull", method = "mle", lower = c(0, 0))
   shape<-mlm_est$estimate[[1]]
@@ -623,11 +634,14 @@ for (i in 0:3) {
   loglik<-mlm_est$loglik
   threshold<-scale*(-log(0.2))^(1/shape) # get the threshold of 80% cumulative accuracy 
   
- output_mtd[nrow(output_mtd)+1,] <-c(s_subset$observer[1], s_subset$gender[1], i+1, shape, scale, loglik, threshold)
+ output_mtd[nrow(output_mtd)+1,] <-c(s_subset$observer[1], s_subset$gender[1], i+1, shape, scale, loglik, threshold, percent_correct)
  rm(tep, mlm_est, shape,scale,loglik, threshold)
 }
 }
-
+output_mtd$percent_correct<-as.numeric(output_mtd$percent_correct)
+# 2019120409523578(22th)  have lower than 50% accuracy in 1st run
+# 383(82th) have lower than 50% accuracy in 2nd run.
 # 395 (94th participant) has partial files. It is because of experimenter not exiting the psychopy 
+# 428(127th)
 write.csv(output_mtd,file.path(params$output_path,"motion_output_Oct2020.csv"), row.names = FALSE)
 ```
