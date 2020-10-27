@@ -68,12 +68,12 @@ visualize_all_motion_dur_data <- function(motion_fns) {
 }
 
 # Summary QA on individual computer task data files, also copies 
-run_session_qa_report <- function() {
+run_session_qa_report <- function(your_box_dir = "~/Box") {
   rmarkdown::render("analysis/session-qa.Rmd", 
                     output_format = "html_document", 
                     output_dir = "analysis/qa/summary-rpts",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
-                    params = list(box_path = "~/Box", 
+                    params = list(box_path = your_box_dir, 
                                   data_path = "/Project_Sex_difference_on_Motion_Perception/data",
                                   contrast_raw_path = "/raw_data/contrast_sensitivity_task_data",
                                   motion_raw_path = "/raw_data/motion_temporal_threshold_data",
@@ -82,12 +82,12 @@ run_session_qa_report <- function() {
 }
 
 # Summary report on Qualtrics
-run_qualtrics_qa_report <- function() {
+run_qualtrics_qa_report <- function(your_box_dir = "~/Box") {
   rmarkdown::render("analysis/gather-clean-qualtrics.Rmd", 
                     output_format = "html_document", 
                     output_dir = "analysis/qa",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qualtrics-qa-report.html"),
-                    params = list(box_path = "~/Box",
+                    params = list(box_path = your_box_dir,
                                   data_path = "/Project_Sex_difference_on_Motion_Perception/data",
                                   qualtrics_raw_path = "/raw_data/qualtrics_survey_data/csv",
                                   old_survey_fn = "survey_REV_2019-11-11.csv",
@@ -554,27 +554,38 @@ copy_decks_to_box <- function(path_2_decks = make_decks_path()) {
 
 # Full QA/plotting scheme ------------------------------------------------------------------------
 
-update_all_qa_plots_decks <- function() {
+update_all_qa_plots_decks <- function(your_box_dir = "~/Box", 
+                                      run_qualtrics_qa = FALSE) {
+  # Monitor evaluation time
+  start_time <- Sys.time()
+  
   # QA reports
-  run_session_qa_report()
-  run_qualtrics_qa_report()
+  message("--- Starting QA Reports...")
+  run_session_qa_report(your_box_dir)
+  if (run_qualtrics_qa) run_qualtrics_qa_report(your_box_dir)
   
   # R Markdown visualizations for each participant and task that passed QA
-  files_pass_qa_dir <- make_passed_qa_path()
+  files_pass_qa_dir <- make_passed_qa_path(box_path = your_box_dir)
   motion_files <- generate_motion_fl(files_pass_qa_dir)
   contr_files <- generate_contr_fl(files_pass_qa_dir)
     
+  message("--- Generating HTML summaries for each participant and condition...")
   visualize_all_contr_sens_data(contr_files)
   visualize_all_motion_dur_data(motion_files)
   
   # Copy reports to Box
-  copy_qa_rpts_to_box()
+  copy_qa_rpts_to_box(box_path = your_box_dir)
   
   # Make plots of data that pass QA
+  message("--- Making plots of RT and Cumulative p(corr)...")
   regenerate_all_plots_all_subs()
-  copy_figs_to_box()
+  copy_figs_to_box(make_figs_path(your_box_dir))
   
   # Make ioslides_presentation decks for inspection
+  message("---Making summary ioslides slide decks...")
   make_all_decks()
-  copy_decks_to_box()
+  copy_decks_to_box(make_decks_path(your_box_dir))
+  
+  message("Report finished with elapsed time...")
+  Sys.time() - start_time
 }
