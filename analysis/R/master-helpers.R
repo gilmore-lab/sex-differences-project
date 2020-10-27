@@ -1,6 +1,6 @@
 # R Markdown reports -----------------------------------------------------------------------------------
 
-list_full_fns_in_path <- function(df_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
+list_full_fns_in_path <- function(df_path = "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
   
   assertthat::is.string(df_path)
   assertthat::is.dir(df_path)
@@ -9,16 +9,19 @@ list_full_fns_in_path <- function(df_path = "~/Box\ Sync/Project_Sex_difference_
   fns
 }
 
-extract_ids_from_fns <- function(df_path = "~/Box\ Sync/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
+extract_ids_from_fns <- function(df_path = "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
   
   assertthat::is.string(df_path)
   assertthat::is.dir(df_path)
   
   fn_only <- list.files(paste0(df_path), pattern = "\\.csv$")
-  stringr::str_sub(fn_only, 1, 14)
+  #stringr::str_sub(fn_only, 1, 14)
+  stringr::str_extract(fn_only, "[0-9]+")
 }
 
 # Visualize contrast sensitivity data for individual sub
+# 
+# Generates html report for this participant
 visualize_contr_sens_data <- function(this_fn_full, regenerate = FALSE) {
   this_id <- extract_sub_id_from_fn(this_fn_full)
   out_fn <- paste0("analysis/qa/", this_id, "-contr-sens.html")
@@ -36,6 +39,8 @@ visualize_contr_sens_data <- function(this_fn_full, regenerate = FALSE) {
 }
 
 # Visualize motion task data for individual sub
+# 
+# Generates html report for this participant
 visualize_motion_dur_data <- function(this_fn_full, regenerate = FALSE) {
   this_id <- extract_sub_id_from_fn(this_fn_full)
   out_fn <- paste0("analysis/qa/", this_id, "-motion-dur.html")
@@ -66,9 +71,9 @@ visualize_all_motion_dur_data <- function(motion_fns) {
 run_session_qa_report <- function() {
   rmarkdown::render("analysis/session-qa.Rmd", 
                     output_format = "html_document", 
-                    output_dir = "analysis/qa",
+                    output_dir = "analysis/qa/summary-rpts",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
-                    params = list(box_path = "~/Box Sync", 
+                    params = list(box_path = "~/Box", 
                                   data_path = "/Project_Sex_difference_on_Motion_Perception/data",
                                   contrast_raw_path = "/raw_data/contrast_sensitivity_task_data",
                                   motion_raw_path = "/raw_data/motion_temporal_threshold_data",
@@ -82,7 +87,7 @@ run_qualtrics_qa_report <- function() {
                     output_format = "html_document", 
                     output_dir = "analysis/qa",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qualtrics-qa-report.html"),
-                    params = list(box_path = "~/Box Sync",
+                    params = list(box_path = "~/Box",
                                   data_path = "/Project_Sex_difference_on_Motion_Perception/data",
                                   qualtrics_raw_path = "/raw_data/qualtrics_survey_data/csv",
                                   old_survey_fn = "survey_REV_2019-11-11.csv",
@@ -92,7 +97,7 @@ run_qualtrics_qa_report <- function() {
   )
 }
 
-copy_qa_rpts_to_box <- function(box_path = "~/Box Sync", 
+copy_qa_rpts_to_box <- function(box_path = "~/Box", 
                                 data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   
   qa_files <- list.files("analysis/qa", pattern = "\\.html$", full.names = TRUE)
@@ -302,20 +307,10 @@ plot_save_motion_task <- function(fn) {
   
   df_clean <- clean_motion_df(df)
   
-  # p1 <- plot_motion_staircase(df_clean)
-  # p2 <- plot_motion_cum_perf(df_clean)
-  # p3 <- plot_motion_rt_across_trials(df_clean)
-  # p4 <- plot_motion_rt_by_dur(df_clean)
-  
   p1_nm <- generate_plot_fn(data_fn = fn, plot_type = "staircase")
   p2_nm <- generate_plot_fn(data_fn = fn, plot_type = "cum-perf")
   p3_nm <- generate_plot_fn(data_fn = fn, plot_type = "rt-trials")
   p4_nm <- generate_plot_fn(data_fn = fn, plot_type = "rt-by-dur")
-  
-  # save_plot(p1, p1_nm)
-  # save_plot(p2, p2_nm)
-  # save_plot(p3, p3_nm)
-  # save_plot(p4, p4_nm)
   
   if (!file.exists(paste0(p1_nm, ".png"))) {
     p1 <- plot_motion_staircase(df_clean)
@@ -330,7 +325,7 @@ plot_save_motion_task <- function(fn) {
     save_plot(p3, p3_nm)
   }
   if (!file.exists(paste0(p4_nm, ".png"))) {
-    p4 <- plot_contr_rt_by_contr(df_clean)
+    p4 <- plot_motion_rt_by_dur(df_clean)
     save_plot(p4, p4_nm)
   }
 }
@@ -378,12 +373,12 @@ plot_save_contr_all_subs <- function(fd = make_passed_qa_path()) {
   purrr::map(fl, plot_save_contr_task)
 }
 
-make_passed_qa_path <- function(box_path = "~/Box Sync",
+make_passed_qa_path <- function(box_path = "~/Box",
                                 data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   paste0(box_path, data_path, "/passed_qa")
 }
 
-make_figs_path <- function(box_path = "~/Box Sync",
+make_figs_path <- function(box_path = "~/Box",
                            data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   paste0(box_path, data_path, "/figs")
 }
@@ -433,7 +428,8 @@ write_slide_header <- function(deck_fn = "slides.R",
 
 extract_sub_id_from_fn <- function(fn) {
   if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
-  stringr::str_extract(fn, "[0-9-]+")
+  #stringr::str_extract(fn, "[0-9]+")
+  str_match(fn, "([0-9]+)[_-]")[2]
 }
 
 unique_sub_ids_from_fl <- function(fl) {
@@ -468,7 +464,7 @@ make_slide_of_plot <- function(plot_fn, deck_fn) {
   # cat("#'\n", file = deck_fn, append = TRUE)
 }
 
-make_decks_path <- function(box_path = "~/Box Sync",
+make_decks_path <- function(box_path = "~/Box",
                            data_path = "/Project_Sex_difference_on_Motion_Perception/data") {
   paste0(box_path, data_path, "/slide_decks")
 }
@@ -495,12 +491,13 @@ make_deck <- function(deck_fn,
   
   write_slide_header(deck_fn, deck_title)
   
-  fl <- list.files("figs", full.names = TRUE)
+  fl <- list.files("analysis/figs", full.names = TRUE)
   u_ids <- unique_sub_ids_from_fl(fl)
   pl_fns <- choose_plot_task_type(fl, task_type, plot_type)
   
   purrr::map(pl_fns, make_plots_for_task, deck_fn)
-  rmarkdown::render(input = deck_fn, output_format = "ioslides_presentation")
+  rmarkdown::render(input = deck_fn, output_format = "ioslides_presentation", 
+                    output_dir = 'analysis')
 }
 
 make_all_decks <- function() {
@@ -567,8 +564,8 @@ update_all_qa_plots_decks <- function() {
   motion_files <- generate_motion_fl(files_pass_qa_dir)
   contr_files <- generate_contr_fl(files_pass_qa_dir)
     
-  visualize_all_motion_dur_data(motion_files)
   visualize_all_contr_sens_data(contr_files)
+  visualize_all_motion_dur_data(motion_files)
   
   # Copy reports to Box
   copy_qa_rpts_to_box()

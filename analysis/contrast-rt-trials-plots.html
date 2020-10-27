@@ -40,6 +40,19 @@
     };
   </script>
 
+  <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
   <style type="text/css">@font-face {
 font-family: 'Open Sans';
 font-style: normal;
@@ -3120,471 +3133,933 @@ slide:not(.current) .plotly.html-widget{
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2020-03-10 09:23:21</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2020-10-27 14:34:32</p>
           </hgroup>
   </slide>
 
 <slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/1-contrast-rt-trials.png</p>
+<p>analysis/figs/1-contrast-rt-trials.png</p>
 
-<p><img src=" figs/1-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/1-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/20191107-contrast-rt-trials.png</p>
+<p>analysis/figs/20191107-contrast-rt-trials.png</p>
 
-<p><img src=" figs/20191107-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/20191107-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/20191108-contrast-rt-trials.png</p>
+<p>analysis/figs/20191108-contrast-rt-trials.png</p>
 
-<p><img src=" figs/20191108-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/20191108-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019111311102420-contrast-rt-trials.png</p>
+<p>analysis/figs/20191113-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019111311102420-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/20191113-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019111313380357-contrast-rt-trials.png</p>
+<p>analysis/figs/2019111311102420-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019111313380357-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019111311102420-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019111316121877-contrast-rt-trials.png</p>
+<p>analysis/figs/2019111313380357-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019111316121877-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019111313380357-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/20191118083974-contrast-rt-trials.png</p>
+<p>analysis/figs/2019111316121877-contrast-rt-trials.png</p>
 
-<p><img src=" figs/20191118083974-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019111316121877-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019111811264955-contrast-rt-trials.png</p>
+<p>analysis/figs/20191118083974-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019111811264955-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/20191118083974-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019111812451739-contrast-rt-trials.png</p>
+<p>analysis/figs/2019111811264955-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019111812451739-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019111811264955-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112013401963-contrast-rt-trials.png</p>
+<p>analysis/figs/2019111812451739-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112013401963-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019111812451739-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112014532376-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112013401963-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112014532376-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112013401963-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112016110741-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112014532376-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112016110741-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112014532376-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112110260325-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112016110741-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112110260325-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112016110741-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112111415316-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112110260325-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112111415316-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112110260325-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112112563983-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112111415316-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112112563983-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112111415316-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112209583295-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112112563983-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112209583295-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112112563983-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112210523539-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112209583295-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112210523539-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112209583295-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112213492145-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112210523539-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112213492145-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112210523539-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/201911221604385-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112213492145-contrast-rt-trials.png</p>
 
-<p><img src=" figs/201911221604385-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112213492145-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019112217002412-contrast-rt-trials.png</p>
+<p>analysis/figs/201911221604385-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019112217002412-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/201911221604385-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019120409523578-contrast-rt-trials.png</p>
+<p>analysis/figs/2019112217002412-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019120409523578-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019112217002412-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019120413585457-contrast-rt-trials.png</p>
+<p>analysis/figs/2019120409523578-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019120413585457-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019120409523578-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/201912041554552-contrast-rt-trials.png</p>
+<p>analysis/figs/2019120413585457-contrast-rt-trials.png</p>
 
-<p><img src=" figs/201912041554552-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019120413585457-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019120509244570-contrast-rt-trials.png</p>
+<p>analysis/figs/201912041554552-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019120509244570-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/201912041554552-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019120512235593-contrast-rt-trials.png</p>
+<p>analysis/figs/2019120509244570-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019120512235593-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019120509244570-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/20191212114750-contrast-rt-trials.png</p>
+<p>analysis/figs/2019120512235593-contrast-rt-trials.png</p>
 
-<p><img src=" figs/20191212114750-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019120512235593-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121212434199-contrast-rt-trials.png</p>
+<p>analysis/figs/20191212114750-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121212434199-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/20191212114750-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121214503690-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121212434199-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121214503690-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121212434199-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121215561995-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121214503690-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121215561995-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121214503690-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121217013332-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121215561995-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121217013332-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121215561995-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121313154134-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121217013332-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121313154134-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121217013332-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121314001724-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121313154134-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121314001724-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121313154134-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121315012099-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121314001724-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121315012099-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121314001724-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/2019121316322025-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121315012099-contrast-rt-trials.png</p>
 
-<p><img src=" figs/2019121316322025-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121315012099-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/335-contrast-rt-trials.png</p>
+<p>analysis/figs/2019121316322025-contrast-rt-trials.png</p>
 
-<p><img src=" figs/335-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/2019121316322025-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/336-contrast-rt-trials.png</p>
+<p>analysis/figs/335-contrast-rt-trials.png</p>
 
-<p><img src=" figs/336-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/335-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/337-contrast-rt-trials.png</p>
+<p>analysis/figs/336-contrast-rt-trials.png</p>
 
-<p><img src=" figs/337-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/336-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/338-contrast-rt-trials.png</p>
+<p>analysis/figs/337-contrast-rt-trials.png</p>
 
-<p><img src=" figs/338-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/337-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/339-contrast-rt-trials.png</p>
+<p>analysis/figs/338-contrast-rt-trials.png</p>
 
-<p><img src=" figs/339-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/338-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/340-contrast-rt-trials.png</p>
+<p>analysis/figs/339-contrast-rt-trials.png</p>
 
-<p><img src=" figs/340-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/339-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/341-contrast-rt-trials.png</p>
+<p>analysis/figs/340-contrast-rt-trials.png</p>
 
-<p><img src=" figs/341-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/340-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/342-contrast-rt-trials.png</p>
+<p>analysis/figs/341-contrast-rt-trials.png</p>
 
-<p><img src=" figs/342-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/341-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/343-contrast-rt-trials.png</p>
+<p>analysis/figs/342-contrast-rt-trials.png</p>
 
-<p><img src=" figs/343-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/342-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/344-contrast-rt-trials.png</p>
+<p>analysis/figs/343-contrast-rt-trials.png</p>
 
-<p><img src=" figs/344-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/343-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/345-contrast-rt-trials.png</p>
+<p>analysis/figs/344-contrast-rt-trials.png</p>
 
-<p><img src=" figs/345-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/344-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/346-contrast-rt-trials.png</p>
+<p>analysis/figs/345-contrast-rt-trials.png</p>
 
-<p><img src=" figs/346-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/345-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/347-contrast-rt-trials.png</p>
+<p>analysis/figs/346-contrast-rt-trials.png</p>
 
-<p><img src=" figs/347-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/346-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/348-contrast-rt-trials.png</p>
+<p>analysis/figs/347-contrast-rt-trials.png</p>
 
-<p><img src=" figs/348-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/347-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/349-contrast-rt-trials.png</p>
+<p>analysis/figs/348-contrast-rt-trials.png</p>
 
-<p><img src=" figs/349-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/348-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/350-contrast-rt-trials.png</p>
+<p>analysis/figs/349-contrast-rt-trials.png</p>
 
-<p><img src=" figs/350-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/349-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/351-contrast-rt-trials.png</p>
+<p>analysis/figs/350-contrast-rt-trials.png</p>
 
-<p><img src=" figs/351-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/350-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/352-contrast-rt-trials.png</p>
+<p>analysis/figs/351-contrast-rt-trials.png</p>
 
-<p><img src=" figs/352-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/351-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/353-contrast-rt-trials.png</p>
+<p>analysis/figs/352-contrast-rt-trials.png</p>
 
-<p><img src=" figs/353-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/352-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/354-contrast-rt-trials.png</p>
+<p>analysis/figs/353-contrast-rt-trials.png</p>
 
-<p><img src=" figs/354-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/353-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/355-contrast-rt-trials.png</p>
+<p>analysis/figs/354-contrast-rt-trials.png</p>
 
-<p><img src=" figs/355-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/354-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/356-contrast-rt-trials.png</p>
+<p>analysis/figs/355-contrast-rt-trials.png</p>
 
-<p><img src=" figs/356-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/355-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/357-contrast-rt-trials.png</p>
+<p>analysis/figs/356-contrast-rt-trials.png</p>
 
-<p><img src=" figs/357-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/356-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/358-contrast-rt-trials.png</p>
+<p>analysis/figs/357-contrast-rt-trials.png</p>
 
-<p><img src=" figs/358-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/357-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/359-contrast-rt-trials.png</p>
+<p>analysis/figs/358-contrast-rt-trials.png</p>
 
-<p><img src=" figs/359-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/358-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/360-contrast-rt-trials.png</p>
+<p>analysis/figs/359-contrast-rt-trials.png</p>
 
-<p><img src=" figs/360-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/359-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/361-contrast-rt-trials.png</p>
+<p>analysis/figs/360-contrast-rt-trials.png</p>
 
-<p><img src=" figs/361-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/360-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/362-contrast-rt-trials.png</p>
+<p>analysis/figs/361-contrast-rt-trials.png</p>
 
-<p><img src=" figs/362-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/361-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/363-contrast-rt-trials.png</p>
+<p>analysis/figs/362-contrast-rt-trials.png</p>
 
-<p><img src=" figs/363-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/362-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/364-contrast-rt-trials.png</p>
+<p>analysis/figs/363-contrast-rt-trials.png</p>
 
-<p><img src=" figs/364-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/363-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/365-contrast-rt-trials.png</p>
+<p>analysis/figs/364-contrast-rt-trials.png</p>
 
-<p><img src=" figs/365-contrast-rt-trials.png " height="500px"/></p></div>
+<p><img src=" analysis/figs/364-contrast-rt-trials.png "height="500px"/></p></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <div class="centered">
-<p>figs/366-contrast-rt-trials.png</p>
+<p>analysis/figs/365-contrast-rt-trials.png</p>
 
-<p><img src=" figs/366-contrast-rt-trials.png " height="500px"/></p></div></article></slide>
+<p><img src=" analysis/figs/365-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/366-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/366-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/367-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/367-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/368-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/368-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/369-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/369-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/370-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/370-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/371-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/371-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/372-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/372-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/373-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/373-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/374-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/374-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/375-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/375-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/376-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/376-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/377-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/377-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/378-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/378-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/379-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/379-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/380-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/380-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/381-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/381-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/382-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/382-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/383-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/383-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/384-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/384-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/385-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/385-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/386-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/386-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/387-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/387-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/388-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/388-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/389-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/389-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/390-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/390-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/391-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/391-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/392-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/392-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/393-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/393-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/394-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/394-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/395-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/395-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/396-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/396-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/397-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/397-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/398-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/398-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/399-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/399-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/400-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/400-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/401-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/401-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/402-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/402-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/403-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/403-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/404-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/404-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/405-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/405-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/406-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/406-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/407-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/407-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/408-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/408-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/409-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/409-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/410-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/410-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/411-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/411-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/412-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/412-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/413-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/413-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/414-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/414-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/415-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/415-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/416-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/416-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/417-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/417-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/418-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/418-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/419-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/419-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/420-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/420-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/421-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/421-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/422-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/422-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/423-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/423-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/424-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/424-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/425-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/425-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/426-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/426-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/427-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/427-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/428-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/428-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/429-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/429-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/430-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/430-contrast-rt-trials.png "height="500px"/></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<div class="centered">
+<p>analysis/figs/431-contrast-rt-trials.png</p>
+
+<p><img src=" analysis/figs/431-contrast-rt-trials.png "height="500px"/></p></div></article></slide>
 
 
   <slide class="backdrop"></slide>
