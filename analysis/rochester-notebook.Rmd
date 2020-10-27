@@ -29,13 +29,13 @@ This document describes explorations by Rick Gilmore and Yiming Qian about measu
 Let's pick one participant who is highly variable: 20191118083974.
 
 ```{r}
-s1 <- readr::read_csv("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa/20191118083974_motion_temporal_threshold.csv")
+s1 <- readr::read_csv("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa/20191118083974_motion_temporal_threshold.csv")
 ```
 
 And a second who is very consistent: 2019112209583295
 
 ```{r}
-s2 <- readr::read_csv("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa/2019112209583295_motion_temporal_threshold.csv")
+s2 <- readr::read_csv("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa/2019112209583295_motion_temporal_threshold.csv")
 ```
 
 ### Clean the data
@@ -186,7 +186,7 @@ compute_motion_var_measures <- function(fn) {
 
 
 ```{r}
-motion_fl <- list.files("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "motion", full.names = TRUE)
+motion_fl <- list.files("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "motion", full.names = TRUE)
 
 motion_var_df <- purrr::map_dfr(motion_fl,
                                 compute_motion_var_measures)
@@ -274,7 +274,7 @@ compute_contr_var_measures <- function(fn) {
   var_c_df
 }
 
-contrast_fl <- list.files("~/Box/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "contrast", full.names = TRUE)
+contrast_fl <- list.files("~/Box Sync/Project_Sex_difference_on_Motion_Perception/data/passed_qa", pattern = "contrast", full.names = TRUE)
 ```
 
 ```{r}

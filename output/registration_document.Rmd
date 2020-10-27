@@ -1,0 +1,62 @@
+---
+title: "Preregistration_document"
+author: "Yiming Qian"
+date: "10/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1) Data collection. Have any data been collected for this study already?
+     Yes, we already collected the data.
+     No, no data have been collected for this study yet.
+(x)  It's complicated. We have already collected some data but explain in Question 8 why readers may consider this a valid pre-registration nevertheless.
+(Note: "Yes" is not an accepted answer.)
+
+2) Hypothesis. What's the main question being asked or hypothesis being tested in this study?
+The main questions concern sex differences in visual perception, and their associations with sex-related cognitive abilities and interests. Consistent with previous work, we hypothesize that men have lower contrast sensitivity thresholds and need less time to detect the direction of motion than do women. We also hypothesize that, within sex, perceptual abilities will be correlated with spatial abilities and male-typed hobbies.
+
+3) Dependent variable. Describe the key dependent variable(s) specifying how they will be measured.
+There are five key dependent variables: contrast sensitivity threshold, temporal duration threshold, spatial ability, hobbies, and verbal ability. 
+
+Contrast sensitivity thresholds and temporal duration thresholds are measured in psychophysical experiments. Contrast sensitivity threshold refers to the minimum luminance contrast the participant needs to correctly detect a stimulus. Temporal duration threshold is measured as the minimum duration of a moving stimulus the participant needs to correctly detect its direction. In both experiments, sinusoidal gratings within a 4-degree-diameter circular aperture will be presented in the center of a mid-gray background. In the contrast sensitivity threshold task, participants will be asked to detect the orientation of a counter-phase grating (4 Hz temporal frequency) presented at a fixed duration of 2 s and at a spatial frequency of 12 cyc/deg). The gratings will vary in contrast across trials. In the temporal duration threshold task, the participants will be asked to discriminate the direction of a drifting grating (1.2 cyc/deg in spatial frequency) at Michelson contrast level of 98%, presented at a temporal frequency of 4 cyc/s. The gratings will appear for a variable duration. In each run of the experiment, the contrast or duration will be adjusted according to the participant’s performance of the previous several trials following staircase procedures using the QUEST algorithm. There will be 4 runs in each experiment. Each run will have 30 trials. There will be instructions and ten practice trials before the first run in each visual perception task. 
+
+Spatial ability, hobbies, and verbal ability will be measured with standard tasks. Spatial ability will be measured using the Mental Rotations test developed by Vandenberg and Kuse (1978) as an adaption of the Shepard and Metzler (1971) task. The measure of hobbies is one originally developed to measure Gender Diagnosticity (Lippa & Connelly, 1991), and has been used successfully by us to measure sex-typed everyday activity interests. Interests in male-typed activities (hobbies) will be scored from this measure. Verbal ability will be measured with an Advanced Vocabulary test (Ekstrom, French, & Harman, 1976).  
+
+4) Conditions. How many and which conditions will participants be assigned to?
+All participants will complete all measures. 
+
+5) Analyses. Specify exactly which analyses you will conduct to examine the main question/hypothesis.
+You have used 7060 characters across all answers so far. We recommend using up to about 3200 (Why?).
+For each participant and run, we will estimate a contrast or duration threshold that predicts 80% correct performance by fitting the data with a psychometric function (the Weibull function) using maximum likelihood estimation. An average threshold for each participant will be calculated across 4 runs for each visual perception task. If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.
+
+To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at α=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our t tests, we set the effect sizes at .5.
+
+To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks × two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test. 
+
+6) Outliers and Exclusions. Describe exactly how outliers will be defined and handled, and your precise rule(s) for excluding observations.
+We will exclude final scores of spatial ability, hobbies, and verbal ability data which are zero.
+We will exclude the run of visual perception tasks with less than 50% accuracy (guess rate).
+We will exclude the participant whose visual acuity is equal to or worse than 20/40 in HOTV visual acuity chart.
+
+7) Sample Size. How many observations will be collected or what will determine sample size?
+No need to justify decision, but be precise about exactly how the number will be determined.
+Data from about 300 participants will be collected, based on power analyses as described above. 
+
+8) Other. Anything else you would like to pre-register?
+(e.g., secondary analyses, variables collected for exploratory purposes, unusual analyses planned?)
+We will collect age, college major, race, and ethnicity to describe the sample. Because the participants are undergraduate students who are taking Introductory Psychology in a large university, the range of ages is likely too small to yield differences.  So we will not include age as a covariate. We will also collect visual acuity to confirm that participants meet the minimum requirements. The hobbies measure will also collect data about female-typed hobbies. We can explore the association between spatial abilities and female-typed hobbies within sex. Also, due to the nature of recruitment methods involving the subject pool in the Psychology department, most of the participants will have chosen to major in Psychology. If there is enough diversity in chosen major, the relationship between visual perception and major may be examined.
+We have collected data from 131 participants. Collected data and data to be collected both strictly follow the pre-registration procedures, and we have not analyzed the data.
+
+9) Name. Give a title for this AsPredicted pre-registration
+Individual difference in visual perception_2020
+
+Suggestion: use the name of the project, followed by study description.
+Finally. For record keeping purposes, please tell us the type of study you are pre-registering.
+     Class project or assignment
+(x)  Experiment
+     Survey
+     Observational/archival study
+     Other:
