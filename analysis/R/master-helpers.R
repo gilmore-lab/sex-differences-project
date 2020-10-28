@@ -426,10 +426,10 @@ write_slide_header <- function(deck_fn = "slides.R",
   cat("#' ---\n", file = deck_fn, append = TRUE)
 }
 
-extract_sub_id_from_fn <- function(fn) {
-  if (!file.exists(fn)) stop(paste0("File '", fn, "' not found."))
+extract_sub_id_from_fn <- function(fn, fn_prefix = 'analysis/figs/') {
+  if (!file.exists(paste0(fn_prefix, fn))) stop(paste0("File '", fn, "' not found."))
   #stringr::str_extract(fn, "[0-9]+")
-  str_match(fn, "([0-9]+)[_-]")[2]
+  stringr::str_match(fn, "([0-9]+)[_-]")[2]
 }
 
 unique_sub_ids_from_fl <- function(fl) {
@@ -491,11 +491,11 @@ make_deck <- function(deck_fn,
   
   write_slide_header(deck_fn, deck_title)
   
-  fl <- list.files("analysis/figs", full.names = TRUE)
+  fl <- list.files("analysis/figs")
   u_ids <- unique_sub_ids_from_fl(fl)
   pl_fns <- choose_plot_task_type(fl, task_type, plot_type)
   
-  purrr::map(pl_fns, make_plots_for_task, deck_fn)
+  purrr::map(paste0('figs/', pl_fns), make_plots_for_task, deck_fn)
   rmarkdown::render(input = deck_fn, output_format = "ioslides_presentation", 
                     output_dir = 'analysis')
 }
