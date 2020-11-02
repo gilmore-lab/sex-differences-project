@@ -295,30 +295,17 @@ qua$Participant<-as.character(qua$Participant)
 df <- full_join(mdt_median,cst_median, by=c("Participant","Gender")) %>% # 131 and 130 rows->132
   full_join(qua,k, by=c("Participant","Gender"))  # 131, 132 rows->132 rows?
 ```
+check visual acuity outliers
+>We will exclude the participant whose visual acuity is equal to or worse than 20/40 in HOTV visual acuity chart.
 
-check outliers
 ```{r}
-# define a function to remove outliers
-FindOutliers <- function(data) {
-  sd = sd(data, na.rm=T)
-  mean = mean(data,na.rm=T)
-  # we identify extreme outliers
-  extreme.threshold.upper = (sd * 3) + mean
-  extreme.threshold.lower = -(sd * 3) + mean
-  result <- which(data > extreme.threshold.upper | data < extreme.threshold.lower)
-  print(result)
-}
+# no participant with visual acuity lower than 20/40.
+```
 
-var<-c("Participant", "Gender","mdt_median","cst_median","advoc_total_score","MRT_cor","MRT_cor_both","hobfem","hobmas")
+```{r}
+# save data
+var<-c("Participant", "Gender","mdt_median","cst_median","advoc_total_score","advoc_num_cor","MRT_cor","MRT_cor_both","hobfem","hobmas")
 df1<-df[,var]
-a<-lapply(df1,FindOutliers) 
-df1$mdt_median[a[[3]]] # 122 125
-boxplot(df1$mdt_median)
-# check Flag_MRT
-
-df1$cst_median[a[[4]]] # 4 14 96
-boxplot(df1$cst_median)
-
 write.csv(df1,file.path(params$output_path,"data_output_Oct2020.csv"), row.names = FALSE)
 ```
 

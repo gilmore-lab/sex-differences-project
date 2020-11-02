@@ -1,5 +1,5 @@
 ---
-title: "Code_analysis"
+title: "Code_analysis_withoutoutliers"
 author: "Yiming Qian"
 date: "`r Sys.time()`"
 css: report.css
@@ -32,6 +32,36 @@ Importing and analyzing the data, where we have excluded the run which accuracy 
 df1<-readr::read_csv(file.path(params$data_path,params$csv_fn)) 
 ```
 
+## Exclude outliers
+Detect the outliers three sd out of mean
+```{r}
+# define a function to remove outliers
+FindOutliers <- function(data) {
+  sd = sd(data, na.rm=T)
+  mean = mean(data,na.rm=T)
+  # we identify extreme outliers
+  extreme.threshold.upper = (sd * 3) + mean
+  extreme.threshold.lower = -(sd * 3) + mean
+  result <- which(data > extreme.threshold.upper | data < extreme.threshold.lower)
+  print(result)
+}
+
+a<-lapply(df1,FindOutliers) 
+boxplot(df1$mdt_median)
+# check Flag_MRT
+
+df1$cst_median[a[[4]]] # 4 14 96
+boxplot(df1$cst_median)
+```
+
+Exclude outliers
+```{r}
+df2<-df1
+df2$cst_median[a[[4]]]<-NA
+df2$mdt_median[a[[3]]]<-NA
+```
+I excluded three outliers in motion duration threshold and two outliers in contrast sensitivity threshold.
+
 ## Check distributions
 Preleminary test to check the test assumptions
 1. Is the covariation linear? 
@@ -46,60 +76,49 @@ and look at the normality plot —> R function: ggpubr::ggqqplot()
 
 ```{r}
 # Shapiro-Wilk normality test 
-shapiro.test(df1$mdt_median) # => p <0.001
-shapiro.test(df1$cst_median) # => p <0.001
-shapiro.test(df1$advoc_total_score) # => p <0.001
-shapiro.test(df1$advoc_num_cor) # => p <0.001
-shapiro.test(df1$MRT_cor) # => p <0.001
-shapiro.test(df1$MRT_cor_both) # => p <0.001
-shapiro.test(df1$hobfem) # => p >0.05
-shapiro.test(df1$hobmas) # => p >0.05
+shapiro.test(df2$mdt_median) # => p <0.001
+shapiro.test(df2$cst_median) # => p <0.001
+shapiro.test(df2$advoc_total_score) # => p <0.001
+shapiro.test(df2$advoc_num_cor) # => p <0.001
+shapiro.test(df2$MRT_cor) # => p <0.001
+shapiro.test(df2$MRT_cor_both) # => p <0.001
+shapiro.test(df2$hobfem) # => p >0.05
+shapiro.test(df2$hobmas) # => p >0.05
 ```
-We found only, number of correct answers in vocabulary test, and two hobby tests are normally distributed. 
+Similarly, we found only, number of correct answers in vocabulary test, and two hobby tests are normally distributed. 
 The following histograms showed the distribution of each variable. 
-
-```{r}
-hist(df1$mdt_median)
-hist(df1$cst_median)
-hist(df1$advoc_total_score)
-hist(df1$advoc_num_cor)
-hist(df1$MRT_cor)
-hist(df1$MRT_cor_both)
-hist(df1$hobfem)
-hist(df1$hobmas)
-```
 
 ## t-test: compare between genders
 > To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at α=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our t tests, we set the effect sizes at .5.
 
 ```{r}
-mdt_t<-t.test(mdt_median ~ Gender, data = df1, var.equal = TRUE,  alternative = "greater") #Hypothesized
+mdt_t<-t.test(mdt_median ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater") #Hypothesized
 mdt_t
 ```
 As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females. 
 ```{r}
-cst_t<-t.test(cst_median ~ Gender, data = df1, var.equal = TRUE, alternative = "greater") #Hypothesized
+cst_t<-t.test(cst_median ~ Gender, data = df2, var.equal = TRUE, alternative = "greater") #Hypothesized
 cst_t
 ```
 As predicted, we found there are sex differences in contrast sensitivity threshold. Males can detect the stimuli with lower contrast than females. 
 ```{r}
-advoc_total_t<-t.test(advoc_total_score ~ Gender, data = df1, var.equal = TRUE,  alternative = "less")
+advoc_total_t<-t.test(advoc_total_score ~ Gender, data = df2, var.equal = TRUE,  alternative = "less")
 advoc_total_t
-advoc_cor_t<-t.test(advoc_num_cor ~ Gender, data = df1, var.equal = TRUE,  alternative = "less")
+advoc_cor_t<-t.test(advoc_num_cor ~ Gender, data = df2, var.equal = TRUE,  alternative = "less")
 advoc_cor_t
 ```
 Vocabulary is the control variable in the study. As we predicted, the vocabulary score did not differ between males and females. 
 ```{r}
-t.test(MRT_cor ~ Gender, data = df1, var.equal = TRUE, alternative = "less") #Hypothesized
-t.test(MRT_cor_both ~ Gender, data = df1, var.equal = TRUE, alternative = "less") #Hypothesized
+t.test(MRT_cor ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
+t.test(MRT_cor_both ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
 ```
 Sex difference in mental rotation test was found in our study. Males have significantly more correct answers in mental rotation task than females. So does in the number of mental rotation items where both correct responses were selected.
 ```{r}
-t.test(hobfem ~ Gender, data = df1, var.equal = TRUE,  alternative = "greater")
+t.test(hobfem ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater")
 ```
 Although we did not hypothesized female-type hobbies in preregistration, we found females had higher scores in female-typed hobbies than males. 
 ```{r}
-t.test(hobmas ~ Gender, data = df1, var.equal = TRUE,  alternative = "less") #Hypothesized
+t.test(hobmas ~ Gender, data = df2, var.equal = TRUE,  alternative = "less") #Hypothesized
 ```
 As predicted, we found males have higher scores in male-typed hobbies than females.
 
@@ -108,22 +127,22 @@ As predicted, we found males have higher scores in male-typed hobbies than femal
 
 For the distribution which is not normal (particiularly, for the distribution is right skewed), we will try the log transformation. 
 ```{r}
-shapiro.test(log(df1$mdt_median))
-hist(log(df1$mdt_median))
+shapiro.test(log(df2$mdt_median))
+hist(log(df2$mdt_median))
 ```
 ```{r}
-mdt_tt<-t.test(log(mdt_median) ~ Gender, data = df1, var.equal = TRUE,  alternative = "greater") #Hypothesized
+mdt_tt<-t.test(log(mdt_median) ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater") #Hypothesized
 mdt_tt
 ```
 As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females. 
 ```{r}
-t.test(log(cst_median) ~ Gender, data = df1, var.equal = TRUE, alternative = "greater") #Hypothesized
+t.test(log(cst_median) ~ Gender, data = df2, var.equal = TRUE, alternative = "greater") #Hypothesized
 ```
 As predicted, we found there are sex differences in contrast sensitivity threshold. Males can detect the stimuli with lower contrast than females. 
 
 ```{r}
-t.test(log(MRT_cor) ~ Gender, data = df1, var.equal = TRUE, alternative = "less") #Hypothesized
-t.test(log(MRT_cor_both) ~ Gender, data = df1, var.equal = TRUE, alternative = "less") #Hypothesized
+t.test(log(MRT_cor) ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
+t.test(log(MRT_cor_both) ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
 ```
 As predicted, we found there are sex differences in mental rotation scores. Males have better mental rotation scores than females. 
 
@@ -131,8 +150,9 @@ As predicted, we found there are sex differences in mental rotation scores. Male
 ```{r}
 library(pwr)
 t_power<-pwr.t2n.test(n1 = 102 , n2=30 , d = NULL, sig.level =0.0125, power = 0.8, alternative="greater")
+t_power
 ```
-We need |d|>t_power$d for one-side t test with p value of lower than 0.0125 with the power of 0.8.
+We need |d|>0.65 for one-side t test with p value of lower than 0.0125 with the power of 0.8.
 
 ## correlation within gender
 > To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks × two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test. 
@@ -140,23 +160,24 @@ We need |d|>t_power$d for one-side t test with p value of lower than 0.0125 with
 ### Females
 ```{r}
 # correlation table
-df1_f<- df1 %>%
+df2_f<- df2 %>%
   filter(Gender=="Females")
 
-# round(cor(df1_f[,3:9], use = "complete.obs",  method = "spearman"),
+# round(cor(df2_f[,3:9], use = "complete.obs",  method = "spearman"),
 #   digits = 2 # rounded to 2 decimals
 # )
 
 library(Hmisc)
-res <- rcorr(as.matrix(df1_f[,3:10], type = c("spearson")))  # could I do one-side? "spearman"
+res <- rcorr(as.matrix(df2_f[,3:10], type = c("spearson")))  # could I do one-side? "spearman"
 # Extract the correlation coefficients
 round(res$r, 2)
 # Extract p-values
 round(res$P, 3)
 ```
-- We found motion duration threshold is negatively correlated with mental rotation scores and female hobbies in females. It showed that shorter motion duration is correlated with better ability in mental rotation tasks. Shorter motion duration is correlated with hobbies which generally females like.  
-- We found contrast sensitivity threshold is negatively correlated with mental rotation scores and male-typed hobbies in females.
-- We did not find association between motion duration thresholds and contrast sensitivity thresholds in females.
+- We found motion duration threshold is negatively correlated with mental rotation scores in females. It showed that shorter motion duration is correlated with better ability in mental rotation tasks. 
+- We found contrast sensitivity threshold is negatively correlated with mental rotation scores in females.It showed that the lower contrast the participants can detect, the better ability in mental rotation tasks for women. 
+- We did find a positive association between motion duration thresholds and contrast sensitivity thresholds in females.
+- We did not find relationship between hobbies and two visual perception tasks 
 - Interestingly, we found mental rotation scores are negatively correlated with female-type hobbies in females.
 
 ```{r}
@@ -168,14 +189,14 @@ heatmap(x = res$r, col = col, symm = TRUE)
 ### Males
 ```{r}
 # correlation table
-df1_m<- df1 %>%
+df2_m<- df2 %>%
   filter(Gender=="Males")
 
-# round(cor(df1_f[,3:9], use = "complete.obs",  method = "spearman"),
+# round(cor(df2_f[,3:9], use = "complete.obs",  method = "spearman"),
 #   digits = 2 # rounded to 2 decimals
 # )
 
-res_m <- rcorr(as.matrix(df1_m[,3:10], type = c("spearson")))  # could I do one-side? "spearman"
+res_m <- rcorr(as.matrix(df2_m[,3:10], type = c("spearson")))  # could I do one-side? "spearman"
 # Extract the correlation coefficients
 round(res_m$r, 2)
 # Extract p-values
@@ -190,23 +211,23 @@ heatmap(x = res_m$r, col = col, symm = TRUE)
 ```
 Visualization 
 ```{r}
-df1 %>% ggplot( aes(x=log(cst_median),y=MRT_cor, group=Gender, color=Gender)) +
+df2 %>% ggplot( aes(x=log(cst_median),y=MRT_cor, group=Gender, color=Gender)) +
 geom_point() + xlab("log of contrast sensitivity threshold") + ylab("Mental Rotation")
 stat_smooth(method="lm",na.rm = TRUE)
 
 library("ggpubr")
-ggscatter(df1_f, x = "cst_median", y = "MRT_cor", 
+ggscatter(df2_f, x = "cst_median", y = "MRT_cor", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = "Contrast sensitivity", ylab = "Mental rotation") +theme_classic()
 ```
 ```{r}
-df1 %>% ggplot( aes(x=log(mdt_median),y=MRT_cor, group=Gender, color=Gender)) +
+df2 %>% ggplot( aes(x=log(mdt_median),y=MRT_cor, group=Gender, color=Gender)) +
 geom_point() + xlab("log of motion duration (s)") + ylab("contrast sensitivity")
 stat_smooth(method="lm",na.rm = TRUE)
 
 library("ggpubr")
-ggscatter(df1_f, x = "mdt_median", y = "MRT_cor", 
+ggscatter(df2_f, x = "mdt_median", y = "MRT_cor", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = "Motion duration (s)", ylab = "Mental rotation") +theme_classic()

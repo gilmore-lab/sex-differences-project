@@ -5,18 +5,22 @@ date: "10/14/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-#Analysis Workflow
+# Purpose
 This is a document to note the analysis workflow for sex difference in visual perception project (adult). It matched the preregistration documents.
 
 For the full registration document, check the link<https://aspredicted.org/see_one.php>
 
+# Setup
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data import and cleaning
+## Visual data
+### Preregistered procedures
 > For each participant and run, we will estimate a contrast or duration threshold that predicts 80% correct performance by fitting the data with a psychometric function (the Weibull function) using maximum likelihood estimation. 
 
-
+### Implementation plan
 1. get the aggregated weibull function parameters from each participant in two psychophysical experiments.
   - raw data: "~/Box/Project_Sex_Project_Sex_difference_on_Motion_Perception/data/raw_data"
   - output: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
@@ -24,20 +28,26 @@ For the full registration document, check the link<https://aspredicted.org/see_o
 ```{r, child="github/sex-difference-in-Motion-Perception/analysis/code_Weibull_MLM.Rmd"}
 # This chunk shows the code where I implemented this procedure.
 ```
+## Survey data
+In this step, we summed the scores in verbal, spatial and hobby surveys.
 
+### Implementation plan
 2. get the summarized scores from three qualtric surveys in SPSS (the pilot data and outliers are uncleaned)
   - raw data: "~/Box/Project_Sex_Project_Sex_difference_on_Motion_Perception/data/raw_data"
   - code: "~/Box/Project_Sex_Project_Sex_difference_on_Motion_Perception/data/code/" -3 sps files
   - output: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
 
-
+## Clean and Merge 
+In this step, we cleaned the datasets based on the preregistered plans. After this procedure, I merged three dataframes (2 visual perception tasks and one aggregated qualtric survey) into one dataset. 
+### Preregistered procedures
 > 6) Outliers and Exclusions. 
 We will exclude final scores of spatial ability, hobbies, and verbal ability data which are zero.
 We will exclude the participant whose visual acuity is equal to or worse than 20/40 in HOTV visual acuity chart.
 We will exclude the run of visual perception tasks with less than 50% accuracy (guess rate).
 > An average threshold for each participant will be calculated across 4 runs for each visual perception task. If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.
 
-3. merge the datasets and clean the data based on the above exclusion criterions
+### Implementation plan
+3. merge the three datasets and clean the data based on the above exclusion criterions
   - input: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data/contrast_output_Oct2020.csv"
            "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data/motion_output_Oct2020.csv"
            "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data/qualtrics_output_10_14_2020.csv"
@@ -47,13 +57,17 @@ We will exclude the run of visual perception tasks with less than 50% accuracy (
 # This chunk shows the code where I implemented this procedure.
 ```
 
+## Analysis
 
-
+### Preregistered procedures
 > To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at α=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our t tests, we set the effect sizes at .5.
 
 > To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks × two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test. 
 
+### Implementation plan
 4. data analysis
+ - input: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data.csv"
+ 
 ```{r,child="github/sex-difference-in-Motion-Perception/analysis/code_analysis.Rmd"}
 # This chunk shows the code where I implemented this procedure.
 ```
