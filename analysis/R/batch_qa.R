@@ -235,7 +235,7 @@ run_session_qa_report <- function() {
                     output_format = "html_document", 
                     output_dir = "analysis/qa",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qa-report.html"),
-                    params = list(box_path = "~/Box Sync", 
+                    params = list(box_path = "~/Box", 
                                   data_path = "/Project_Sex_difference_on_Motion_Perception/data",
                                   contrast_raw_path = "/raw_data/contrast_sensitivity_task_data",
                                   motion_raw_path = "/raw_data/motion_temporal_threshold_data",
@@ -250,7 +250,7 @@ run_qualtrics_qa_report <- function() {
                     output_format = "html_document", 
                     output_dir = "analysis/qa",
                     output_file = paste0(format(Sys.time(), "%Y-%m-%d-%H%M"), "-qualtrics-qa-report.html"),
-                    params = list(box_path = "~/Box Sync",
+                    params = list(box_path = "~/Box",
                                   data_path = "/Project_Sex_difference_on_Motion_Perception/data",
                                   qualtrics_raw_path = "/raw_data/qualtrics_survey_data/csv",
                                   old_survey_fn = "survey_REV_2019-11-11.csv",
@@ -289,5 +289,4 @@ extract_motion_file_from_fn <- function(fn) {
 extract_contrast_file_from_fn <- function(fn) {
   fn[stringr::str_detect(fn, "contrast")]
 }
-
 

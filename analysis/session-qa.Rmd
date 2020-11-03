@@ -32,7 +32,7 @@ library(qualtRics)
 This script describes the process for doing quality assurance (QA) review on each session, focusing on the computer based tasks.
 
 To render, enter `rmarkdown::render("analysis/session_qa.Rmd", params = list(box_path = "<YOUR_BOX_PATH>"))`, substituting the path to your Box folder on your local machine.
-On Mac OS the default is "~/Box Sync".
+On Mac OS the default is "~/Box".
 
 # Background
 
@@ -255,7 +255,6 @@ motion_file_qa <- motion_file_qa %>%
                                          params$passed_qa_path, "/", fn)) %>%
   dplyr::mutate(., failed_qa_full_path = paste0(params$box_path, params$data_path,
                                          params$failed_qa_path, "/", fn))
-
 
 contrast_file_qa <- contrast_file_qa %>%
   dplyr::mutate(., full_path = paste0(contr_data_path, "/", fn)) %>%
