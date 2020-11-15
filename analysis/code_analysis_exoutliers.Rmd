@@ -13,6 +13,7 @@ output:
 params:
   data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   csv_fn: "data_output_Oct2020.csv"
+  figure_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/figs/pub_figs"
 ---
 
 # Purpose
@@ -22,6 +23,7 @@ This document showed the analysis following the preregistered plan.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(sjPlot)  # create publishable table
 ```
 
 # Analysis
@@ -85,6 +87,14 @@ shapiro.test(df2$MRT_cor_both) # => p <0.001
 shapiro.test(df2$hobfem) # => p >0.05
 shapiro.test(df2$hobmas) # => p >0.05
 ```
+
+```{r}
+df2_f<- df2 %>%
+  filter(Gender=="Females")
+df2 %>% group_by(Gender)
+ %>% describe()
+
+```
 Similarly, we found only, number of correct answers in vocabulary test, and two hobby tests are normally distributed. 
 The following histograms showed the distribution of each variable. 
 
@@ -92,7 +102,7 @@ The following histograms showed the distribution of each variable.
 > To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at α=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our t tests, we set the effect sizes at .5.
 
 ```{r}
-mdt_t<-t.test(mdt_median ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater") #Hypothesized
+mdt_t<-t.test(mdt_median ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater", se) #Hypothesized
 mdt_t
 ```
 As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females. 
@@ -160,8 +170,7 @@ We need |d|>0.65 for one-side t test with p value of lower than 0.0125 with the 
 ### Females
 ```{r}
 # correlation table
-df2_f<- df2 %>%
-  filter(Gender=="Females")
+
 
 # round(cor(df2_f[,3:9], use = "complete.obs",  method = "spearman"),
 #   digits = 2 # rounded to 2 decimals
