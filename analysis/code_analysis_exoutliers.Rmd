@@ -1,5 +1,5 @@
 ---
-title: "Code_analysis_withoutoutliers"
+title: "Sex differences in vision data: Exclude outliers"
 author: "Yiming Qian"
 date: "`r Sys.time()`"
 css: report.css
@@ -13,11 +13,13 @@ output:
 params:
   data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   csv_fn: "data_output_Oct2020.csv"
-  figure_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/figs/pub_figs"
+  outlier_sd_thresh: 3
 ---
 
 # Purpose
-This document showed the analysis following the preregistered plan.
+
+This document shows our analyses following the preregistered plan.
+It also shows the results of trimming all cases whose scores on either of the visual perception measures exceed `r params$outlier_sd_thresh` SDs from the pooled mean.
 
 # Setup
 ```{r setup, include=FALSE}
@@ -28,13 +30,14 @@ library(pwr)
 library(Hmisc)
 library(ggpubr)
 library(pwr)
+library(ggExtra)
 ```
 
 # Analysis
 
 ## Imports
 
-Importing and analyzing the data, where we have excluded the run which accuracy is lower than guess rate and zero-score in surveys. 
+We import data previously cleaned to remove cases where accuracy is lower than the guess rate and any zero scores in the survey measures. 
 
 ```{r load}
 # load the data and make each variable right
@@ -47,12 +50,12 @@ Detect outliers three sd out of mean.
 
 ```{r}
 # define a function to remove outliers
-FindOutliers <- function(data) {
+FindOutliers <- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh)) {
   sd = sd(data, na.rm = T)
   mean = mean(data, na.rm = T)
   # we identify extreme outliers
-  extreme.threshold.upper = (sd * 3) + mean
-  extreme.threshold.lower = -(sd * 3) + mean
+  extreme.threshold.upper = (sd * sd_thresh) + mean
+  extreme.threshold.lower = -(sd * sd_thresh) + mean
   result <-
     which(data > extreme.threshold.upper |
             data < extreme.threshold.lower)
@@ -395,9 +398,9 @@ heatmap(x = corr_all$r, col = col, symm = TRUE)
 
 - We found a positive association between motion duration thresholds and contrast sensitivity thresholds $r=$ `r corr_all$r['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`.
 
-- We found a negative association between motion duration thresholds and mental rotation $r=$ `r corr_all$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Mental_Rotation_scores']`.
-- We found a negative association between motion duration thresholds and vocabulary scores $r=$ `r corr_all$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Vocabulary_scores']`.
-- We found a positive association between motion duration thresholds and feminine hobbies $r=$ `r corr_all$r['Motion_duration_Threshold', 'Feminine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Feminine_hobbies']`.
+- We found a negative association between motion duration thresholds and mental rotation $r=$ `r corr_all$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$n['Motion_duration_Threshold', 'Mental_Rotation_scores']`
+- We found a negative association between motion duration thresholds and vocabulary scores $r=$ `r corr_all$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Vocabulary_scores']`, , $p<$ `r corr_all$n['Motion_duration_Threshold', 'Vocabulary_scores']`.
+- We found a positive association between motion duration thresholds and feminine hobbies $r=$ `r corr_all$r['Motion_duration_Threshold', 'Feminine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Feminine_hobbies']`, $p<$ `r corr_all$n['Motion_duration_Threshold', 'Feminine_hobbies']`
 
 - We found a negative association between contrast sensitivity thresholds and mental rotation $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`.
 - We found a negative association between contrast sensitivity thresholds and masculine hobbies $r=$ `r corr_all$r['Motion_duration_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Masculine_hobbies']`.
@@ -482,112 +485,158 @@ heatmap(x = corr_M$r, col = col, symm = TRUE)
 
 # Visualization
 
+```{r}
+sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE) {
+  require(tidyverse)
+  require(ggExtra)
+  
+  x_var_s <- sym(x_var)
+  y_var_s <- sym(y_var)
+  
+  p <- ggplot(df) +
+  aes(x = !!x_var_s,
+      y = !!y_var_s, 
+      group = Sex,
+      color = Sex) +
+  geom_point() +
+  xlab(x_var) +
+  ylab(y_var) +
+  stat_smooth(method = "lm", na.rm = TRUE) +
+  theme_classic2() +
+  theme(legend.position="bottom", legend.title=element_blank())
+  
+  # Reverse scale for threshold measures?
+  if (x_rev) p <- p + scale_x_reverse()
+  if (y_rev) p <- p + scale_y_reverse()
+
+p1 <- ggExtra::ggMarginal(p, type = "histogram",
+                          margins = "both",
+                          xparams = list(bins = 10),
+                          yparams = list(bins = 10),
+                          groupFill = TRUE)
+p1    
+}
+
+sex_diff_corr_summ <- function(x_var, y_var) {
+  corr_all_df <- tibble::tibble(cor_coef = corr_all$r[x_var, y_var],
+                           p_val = corr_all$P[x_var, y_var],
+                           n =  corr_all$n[x_var, y_var], pop = "Both")
+  males_df <- tibble::tibble(cor_coef = corr_M$r[x_var, y_var],
+                           p_val = corr_M$P[x_var, y_var],
+                           n =  corr_M$n[x_var, y_var], pop = "Males")
+  
+  females_df <- tibble::tibble(cor_coef = corr_F$r[x_var, y_var],
+                           p_val = corr_F$P[x_var, y_var],
+                           n =  corr_F$n[x_var, y_var], pop = "Females")
+  
+  df <- rbind(corr_all_df, males_df, females_df)
+  
+  kableExtra::kable(df, format = 'html') %>%
+    kableExtra::kable_styling()
+}
+```
+
+
 ## Motion duration & Contrast sensitivity
 
 ```{r}
-df_complete %>% ggplot(aes(
-  x = Contrast_Sensitivity_Threshold,
-  y = Motion_duration_Threshold,
-  group = Sex,
-  color = Sex
-)) +
-  geom_point() +
-  xlab("Contrast Sensitivity") +
-  ylab("Motion Duration") +
-  stat_smooth(method = "lm", na.rm = TRUE)
+sex_diff_scatter(df_complete, "Motion_duration_Threshold", "Contrast_Sensitivity_Threshold",
+                 x_rev = TRUE, y_rev = TRUE)
+ 
+sex_diff_corr_summ("Motion_duration_Threshold", "Contrast_Sensitivity_Threshold")
 ```
 
 ## Motion duration & Mental rotation
 
 ```{r}
-df_complete %>% ggplot(aes(
-  x = Motion_duration_Threshold,
-  y = Mental_Rotation_scores,
-  group = Sex,
-  color = Sex
-)) +
-  geom_point() +
-  xlab("Motion duration threshold") +
-  ylab("Mental Rotation") +
-  stat_smooth(method = "lm", na.rm = TRUE)
+sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
+                 "Mental_Rotation_scores", x_rev = TRUE)
+sex_diff_corr_summ("Motion_duration_Threshold", "Mental_Rotation_scores")
 ```
+
+<!-- - Overall: $r=$ `r corr_all$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Mental_Rotation_scores']` -->
+<!-- - Males: $r=$ `r corr_M$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_M$P['Motion_duration_Threshold', 'Mental_Rotation_scores']` -->
+<!-- - Females: $r=$ `r corr_F$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_F$P['Motion_duration_Threshold', 'Mental_Rotation_scores']` -->
 
 ## Motion duration & vocabulary
 
 ```{r}
-df_complete %>% ggplot(aes(
-  x = Motion_duration_Threshold,
-  y = Vocabulary_scores,
-  group = Sex,
-  color = Sex
-)) +
-  geom_point() +
-  xlab("Motion duration threshold") +
-  ylab("Vocabulary") +
-  stat_smooth(method = "lm", na.rm = TRUE)
+sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
+                 "Vocabulary_scores", x_rev = TRUE)
+sex_diff_corr_summ("Motion_duration_Threshold", "Vocabulary_scores")
 ```
+
+<!-- - Overall: $r=$ `r corr_all$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Vocabulary_scores']` -->
+<!-- - Males: $r=$ `r corr_M$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_M$P['Motion_duration_Threshold', 'Vocabulary_scores']` -->
+<!-- - Females: $r=$ `r corr_F$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_F$P['Motion_duration_Threshold', 'Vocabulary_scores']` -->
 
 ## Contrast sensitivity and Mental rotation
 
 ```{r}
-df_complete %>% ggplot(aes(
-  x = Contrast_Sensitivity_Threshold,
-  y = Mental_Rotation_scores,
-  group = Sex,
-  color = Sex
-)) +
-  geom_point() +
-  xlab("Contrast sensitivity") +
-  ylab("Mental Rotation") +
-  stat_smooth(method = "lm", na.rm = TRUE)
+sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
+                 "Mental_Rotation_scores", x_rev = TRUE)
+sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Mental_Rotation_scores")
 ```
+
+<!-- - Overall: $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']` -->
+<!-- - Males: $r=$ `r corr_M$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_M$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']` -->
+<!-- - Females: $r=$ `r corr_F$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_F$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']` -->
 
 ## Contrast sensitivity & Masculine hobbies
 
 ```{r}
-df_complete %>% ggplot(aes(
-  x = Contrast_Sensitivity_Threshold,
-  y = Mental_Rotation_scores,
-  group = Sex,
-  color = Sex
-)) +
-  geom_point() +
-  xlab("Contrast sensitivity") +
-  ylab("Masculine hobbies") +
-  stat_smooth(method = "lm", na.rm = TRUE)
+sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
+                 "Masculine_hobbies", x_rev = TRUE)
+sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Masculine_hobbies")
 ```
+
+<!-- - Overall: $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
+<!-- - Males: $r=$ `r corr_M$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_M$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
+<!-- - Females: $r=$ `r corr_F$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_F$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
+
+## Masculine and Feminine hobbies
+
+```{r}
+sex_diff_scatter(df_complete, "Masculine_hobbies", 
+                 "Feminine_hobbies")
+sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies")
+```
+
+<!-- - Overall: $r=$ `r corr_all$r['Feminine_hobbies', 'Masculine_hobbies']`, $p<$ `r corr_all$P['Feminine_hobbies', 'Masculine_hobbies']` -->
+<!-- - Males: $r=$ `r corr_M$r['Feminine_hobbies', 'Masculine_hobbies']`, $p<$ `r corr_M$P['Feminine_hobbies', 'Masculine_hobbies']` -->
+<!-- - Females: $r=$ `r corr_F$r['Feminine_hobbies', 'Masculine_hobbies']`, $p<$ `r corr_F$P['Feminine_hobbies', 'Masculine_hobbies']` -->
 
 ## Other plots
 
 ```{r}
-ggscatter(
-  df2_f,
-  x = "Contrast_Sensitivity_Threshold",
-  y = "Mental_Rotation_scores",
-  add = "reg.line",
-  conf.int = TRUE,
-  cor.coef = TRUE,
-  cor.method = "pearson",
-  xlab = "Contrast sensitivity",
-  ylab = "Mental rotation"
-) + theme_classic()
+# ggscatter(
+#   df2_f,
+#   x = "Contrast_Sensitivity_Threshold",
+#   y = "Mental_Rotation_scores",
+#   add = "reg.line",
+#   conf.int = TRUE,
+#   cor.coef = TRUE,
+#   cor.method = "pearson",
+#   xlab = "Contrast sensitivity",
+#   ylab = "Mental rotation"
+# ) + theme_classic()
 ```
 
 ```{r}
-df2 %>% ggplot(aes(
-  x = log(Motion_duration_Threshold),
-  y = Mental_Rotation_scores,
-  group = Sex,
-  color = Sex
-)) +
-  geom_point() + xlab("log of motion duration (s)") + ylab("contrast sensitivity")
-stat_smooth(method = "lm", na.rm = TRUE)
-
-library("ggpubr")
-ggscatter(df2_f, x = "Motion_duration_Threshold", y = "Mental_Rotation_scores", 
-          add = "reg.line", conf.int = TRUE, 
-          cor.coef = TRUE, cor.method = "pearson",
-          xlab = "Motion duration (s)", ylab = "Mental rotation") +theme_classic()
+# df2 %>% ggplot(aes(
+#   x = log(Motion_duration_Threshold),
+#   y = Mental_Rotation_scores,
+#   group = Sex,
+#   color = Sex
+# )) +
+#   geom_point() + xlab("log of motion duration (s)") + ylab("contrast sensitivity")
+# stat_smooth(method = "lm", na.rm = TRUE)
+# 
+# library("ggpubr")
+# ggscatter(df2_f, x = "Motion_duration_Threshold", y = "Mental_Rotation_scores", 
+#           add = "reg.line", conf.int = TRUE, 
+#           cor.coef = TRUE, cor.method = "pearson",
+#           xlab = "Motion duration (s)", ylab = "Mental rotation") +theme_classic()
 ```
 
 ## Power analysis
