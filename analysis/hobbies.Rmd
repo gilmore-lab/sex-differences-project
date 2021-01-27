@@ -1,0 +1,95 @@
+---
+title: "Hobbies"
+author: "Yiming Qian & Rick Gilmore"
+date: "`r Sys.time()`"
+css: report.css
+output: 
+  html_document:
+    self_contained: yes
+    code_folding: hide
+    toc: true
+    toc_depth: 3
+    toc_float: true
+params:
+  data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  csv_fn: "qualtrics_output_10_14_2020.csv"
+---
+
+# Purpose
+
+This document describes analyses and visualizations of the hobby-choices data from the sex differences in vision project.
+
+# Setup
+
+This section loads the R packages needed to support the following sections.
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Source packages
+library(tidyverse)
+library(parameters)
+library(sjPlot)
+library(expss)
+library(pwr)
+library(ggpubr)
+library(parameters)
+```
+
+# Import and clean
+
+The hobbies data are embedded in a much larger Qualtrics data file.
+
+```{r load}
+data_fn <- file.path(file.path(params$data_path, params$csv_fn))
+if (!file.exists(data_fn)) {
+  stop('Data file cannot be found: `', data_fn, '`.')
+}
+surveys_df <- readr::read_csv(data_fn)
+```
+
+Let's look at the data using the `str()` or 'structure' function.
+
+```{r}
+str(surveys_df)
+```
+
+We need to work with Yiming to determine what rows to select.
+For now, let's keep `sex`, `age`, `schoolyear`, `major`, `race_1`:`race_7`, `handedness`,  the hobbies questions `h1`:`h60`, `acuity`, `color_vision1_4`:`color_vision_2_3`, `stereo`, and `hobfem` and `hobmas`.
+
+```{r}
+hobbies_df <- surveys_df %>%
+  dplyr::select(., 
+                StartDate,
+                participant,
+                sex,
+                age,
+                schoolyear,
+                major,
+                race_1:race_7,
+                handedness,
+                h1:h60,
+                acuity,
+                color_vision1_4:color_vision2_3,
+                stereo,
+                hobfem,
+                hobmas
+                )
+
+str(hobbies_df)
+```
+
+## Clean
+
+We'll need to clean the `major` variable, the `race_` variables, the `color_vision` variables, rename the hobby variables to reflect the actual hobby asked about, and we'll also want to label the hobbies as male- or female-typed.
+
+## Export cleaned file for use on RStudio Server Pro
+
+To facilitate students' use of RStudio Server Pro, here is code to export this trimmed dataset.
+
+```{r}
+readr::write_csv(hobbies_df, 'csv/hobbies_sex_diff.csv')
+```
+
+
+

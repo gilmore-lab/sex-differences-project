@@ -9,3 +9,4 @@ qa
 csv
 Sex-differences.Rproj
 .Renviron
+*.R

@@ -24,47 +24,122 @@ This document showed the analysis following the preregistered plan.
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sjPlot)  # create publishable table
+library(pwr)
+library(Hmisc)
+library(ggpubr)
+library(pwr)
 ```
 
 # Analysis
+
 ## Imports
+
 Importing and analyzing the data, where we have excluded the run which accuracy is lower than guess rate and zero-score in surveys. 
+
 ```{r load}
 # load the data and make each variable right
-df1<-readr::read_csv(file.path(params$data_path,params$csv_fn)) 
+df1 <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
 
 ## Exclude outliers
-Detect the outliers three sd out of mean
+
+Detect outliers three sd out of mean.
+
 ```{r}
 # define a function to remove outliers
 FindOutliers <- function(data) {
-  sd = sd(data, na.rm=T)
-  mean = mean(data,na.rm=T)
+  sd = sd(data, na.rm = T)
+  mean = mean(data, na.rm = T)
   # we identify extreme outliers
   extreme.threshold.upper = (sd * 3) + mean
   extreme.threshold.lower = -(sd * 3) + mean
-  result <- which(data > extreme.threshold.upper | data < extreme.threshold.lower)
+  result <-
+    which(data > extreme.threshold.upper |
+            data < extreme.threshold.lower)
   print(result)
 }
 
-a<-lapply(df1,FindOutliers) 
-boxplot(df1$mdt_median)
-# check Flag_MRT
+a <- lapply(df1, FindOutliers)
+a
+```
 
-df1$cst_median[a[[4]]] # 4 14 96
-boxplot(df1$cst_median)
+Question: Do we care about outliers in `Age`, `Color_vision`, or `Stereo` vision?
+
+ROG Answer: Probably not. We _might_ care about outliers in visual acuity, though.
+
+So, let's do some quick plots to see what's going on.
+
+```{r}
+df1 %>% 
+  ggplot(.) +
+  aes(y = Acuity, x = Sex) +
+  geom_violin() +
+  ggtitle('Visual acuity by sex: All participants')
+```
+
+```{r}
+df1[-a[['Acuity']],] %>%
+  ggplot(.) +
+  aes(y = Acuity, x = Sex) +
+  geom_violin() +
+  ggtitle('Visual acuity by sex: Outliers excluded')
+```
+
+```{r}
+df1 %>% 
+  ggplot(.) +
+  aes(y = Motion_duration_Threshold, x = Sex) +
+  geom_violin() +
+  ggtitle('Motion_duration_Threshold by sex: All participants')
+```
+
+```{r}
+df1[-a[['Motion_duration_Threshold']],] %>%
+  ggplot(.) +
+  aes(y = Motion_duration_Threshold, x = Sex) +
+  geom_violin() +
+  ggtitle('Motion_duration_Threshold: Outliers excluded')
+
+df1$Motion_duration_Threshold[a[['Motion_duration_Threshold']]]
+```
+
+```{r}
+df1 %>% 
+  ggplot(.) +
+  aes(y = Contrast_Sensitivity_Threshold, x = Sex) +
+  geom_violin() +
+  ggtitle('Contrast_Sensitivity_Threshold by sex: All participants')
+```
+
+```{r}
+df1[-a[['Contrast_Sensitivity_Threshold']],] %>%
+  ggplot(.) +
+  aes(y = Contrast_Sensitivity_Threshold, x = Sex) +
+  geom_violin() +
+  ggtitle('Contrast_Sensitivity_Threshold: Outliers excluded')
+
+df1$Contrast_Sensitivity_Threshold[a[['Contrast_Sensitivity_Threshold']]]
+```
+
+```{r}
+#boxplot(df1$Motion_duration_Threshold)
+# check Flag_MRT
+# 
+# df1$Contrast_Sensitivity_Threshold[a[[4]]] # 4 14 96
+# #boxplot(df1$Contrast_Sensitivity_Threshold)
 ```
 
 Exclude outliers
 ```{r}
-df2<-df1
-df2$cst_median[a[[4]]]<-NA
-df2$mdt_median[a[[3]]]<-NA
+df2 <- df1
+df2$Contrast_Sensitivity_Threshold[a[['Contrast_Sensitivity_Threshold']]] <- NA
+df2$Motion_duration_Threshold[a[['Motion_duration_Threshold']]] <- NA
 ```
-I excluded three outliers in motion duration threshold and two outliers in contrast sensitivity threshold.
+
+I excluded three outliers in `Motion_duration_Threshold` and two outliers in `Contrast_Sensitivity_Threshold`.
 
 ## Check distributions
+
 Preleminary test to check the test assumptions
 1. Is the covariation linear? 
 Form the plot below, check whether the relationship is linear. In the situation where the scatter plots show curved patterns, we are dealing with nonlinear association between the two variables.
@@ -78,178 +153,467 @@ and look at the normality plot —> R function: ggpubr::ggqqplot()
 
 ```{r}
 # Shapiro-Wilk normality test 
-shapiro.test(df2$mdt_median) # => p <0.001
-shapiro.test(df2$cst_median) # => p <0.001
-shapiro.test(df2$advoc_total_score) # => p <0.001
-shapiro.test(df2$advoc_num_cor) # => p <0.001
-shapiro.test(df2$MRT_cor) # => p <0.001
-shapiro.test(df2$MRT_cor_both) # => p <0.001
-shapiro.test(df2$hobfem) # => p >0.05
-shapiro.test(df2$hobmas) # => p >0.05
+shapiro.test(df2$Motion_duration_Threshold) # => p <0.001
+shapiro.test(df2$Contrast_Sensitivity_Threshold) # => p <0.001
+shapiro.test(df2$Vocabulary_scores) # => p <0.001
+shapiro.test(df2$Vocabulary_scores_cor_num) # => p <0.001
+shapiro.test(df2$Mental_Rotation_scores) # => p <0.001
+shapiro.test(df2$Mental_Rotation_scores_both) # => p <0.001
+shapiro.test(df2$Feminine_hobbies) # => p >0.05
+shapiro.test(df2$Masculine_hobbies) # => p >0.05
 ```
 
 ```{r}
-df2_f<- df2 %>%
-  filter(Gender=="Females")
-df2 %>% group_by(Gender)
- %>% describe()
+df2_f <- df2 %>%
+  filter(Sex == "Females")
 
+df2 %>% 
+  group_by(Sex) %>% 
+  Hmisc::describe(.)
 ```
+
 Similarly, we found only, number of correct answers in vocabulary test, and two hobby tests are normally distributed. 
 The following histograms showed the distribution of each variable. 
 
-## t-test: compare between genders
+## t-test: compare between Sexs
 > To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at α=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our t tests, we set the effect sizes at .5.
 
 ```{r}
-mdt_t<-t.test(mdt_median ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater", se) #Hypothesized
+mdt_t <-
+  t.test(
+    Motion_duration_Threshold ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = "greater"
+  ) #Hypothesized
 mdt_t
 ```
-As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females. 
+
+As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females.
+
 ```{r}
-cst_t<-t.test(cst_median ~ Gender, data = df2, var.equal = TRUE, alternative = "greater") #Hypothesized
+cst_t <-
+  t.test(
+    Contrast_Sensitivity_Threshold ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = "greater"
+  ) #Hypothesized
 cst_t
 ```
+
 As predicted, we found there are sex differences in contrast sensitivity threshold. Males can detect the stimuli with lower contrast than females. 
+
 ```{r}
-advoc_total_t<-t.test(advoc_total_score ~ Gender, data = df2, var.equal = TRUE,  alternative = "less")
+advoc_total_t <-
+  t.test(
+    Vocabulary_scores ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = "less"
+  )
 advoc_total_t
-advoc_cor_t<-t.test(advoc_num_cor ~ Gender, data = df2, var.equal = TRUE,  alternative = "less")
+advoc_cor_t <-
+  t.test(
+    Vocabulary_scores_cor_num ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = "less"
+  )
 advoc_cor_t
 ```
+
 Vocabulary is the control variable in the study. As we predicted, the vocabulary score did not differ between males and females. 
+
 ```{r}
-t.test(MRT_cor ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
-t.test(MRT_cor_both ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
+t.test(
+  Mental_Rotation_scores ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "less"
+) #Hypothesized
+t.test(
+  Mental_Rotation_scores_both ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "less"
+) #Hypothesized
 ```
+
 Sex difference in mental rotation test was found in our study. Males have significantly more correct answers in mental rotation task than females. So does in the number of mental rotation items where both correct responses were selected.
+
 ```{r}
-t.test(hobfem ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater")
+t.test(
+  Feminine_hobbies ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "greater"
+)
 ```
+
 Although we did not hypothesized female-type hobbies in preregistration, we found females had higher scores in female-typed hobbies than males. 
+
 ```{r}
-t.test(hobmas ~ Gender, data = df2, var.equal = TRUE,  alternative = "less") #Hypothesized
+t.test(
+  Masculine_hobbies ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "less"
+) #Hypothesized
 ```
+
 As predicted, we found males have higher scores in male-typed hobbies than females.
 
 ## Transformation
+
 >If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.
 
 For the distribution which is not normal (particiularly, for the distribution is right skewed), we will try the log transformation. 
+
 ```{r}
-shapiro.test(log(df2$mdt_median))
-hist(log(df2$mdt_median))
+shapiro.test(log(df2$Motion_duration_Threshold))
+hist(log(df2$Motion_duration_Threshold))
 ```
+
 ```{r}
-mdt_tt<-t.test(log(mdt_median) ~ Gender, data = df2, var.equal = TRUE,  alternative = "greater") #Hypothesized
+mdt_tt <-
+  t.test(
+    log(Motion_duration_Threshold) ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = "greater"
+  ) #Hypothesized
 mdt_tt
 ```
+
 As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females. 
+
 ```{r}
-t.test(log(cst_median) ~ Gender, data = df2, var.equal = TRUE, alternative = "greater") #Hypothesized
+t.test(
+  log(Contrast_Sensitivity_Threshold) ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "greater"
+) #Hypothesized
 ```
+
 As predicted, we found there are sex differences in contrast sensitivity threshold. Males can detect the stimuli with lower contrast than females. 
 
 ```{r}
-t.test(log(MRT_cor) ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
-t.test(log(MRT_cor_both) ~ Gender, data = df2, var.equal = TRUE, alternative = "less") #Hypothesized
+t.test(
+  log(Mental_Rotation_scores) ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "less"
+) #Hypothesized
+t.test(
+  log(Mental_Rotation_scores_both) ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "less"
+) #Hypothesized
 ```
+
 As predicted, we found there are sex differences in mental rotation scores. Males have better mental rotation scores than females. 
 
-## power analysis
+## Power analysis
+
 ```{r}
-library(pwr)
-t_power<-pwr.t2n.test(n1 = 102 , n2=30 , d = NULL, sig.level =0.0125, power = 0.8, alternative="greater")
+t_power <-
+  pwr.t2n.test(
+    n1 = 102 ,
+    n2 = 30 ,
+    d = NULL,
+    sig.level = 0.0125,
+    power = 0.8,
+    alternative = "greater"
+  )
 t_power
 ```
-We need |d|>0.65 for one-side t test with p value of lower than 0.0125 with the power of 0.8.
 
-## correlation within gender
+We need $|d|>0.65$ for a one-sided t test with $p$ value of lower than 0.0125 and with power of 0.8.
+
+## Correlation within Sex
+
 > To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks × two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test. 
 
-### Females
+### Overall
+
+We select the variables for our correlation analysis.
+
 ```{r}
-# correlation table
-
-
-# round(cor(df2_f[,3:9], use = "complete.obs",  method = "spearman"),
-#   digits = 2 # rounded to 2 decimals
-# )
-
-library(Hmisc)
-res <- rcorr(as.matrix(df2_f[,3:10], type = c("spearson")))  # could I do one-side? "spearman"
-# Extract the correlation coefficients
-round(res$r, 2)
-# Extract p-values
-round(res$P, 3)
+df_corr <- df2 %>%
+  dplyr::select(., Sex,
+                Motion_duration_Threshold,
+                Contrast_Sensitivity_Threshold,
+                Vocabulary_scores,
+                Vocabulary_scores_cor_num,
+                Mental_Rotation_scores,
+                Mental_Rotation_scores_both,
+                Feminine_hobbies,
+                Masculine_hobbies)
 ```
-- We found motion duration threshold is negatively correlated with mental rotation scores in females. It showed that shorter motion duration is correlated with better ability in mental rotation tasks. 
-- We found contrast sensitivity threshold is negatively correlated with mental rotation scores in females.It showed that the lower contrast the participants can detect, the better ability in mental rotation tasks for women. 
-- We did find a positive association between motion duration thresholds and contrast sensitivity thresholds in females.
-- We did not find relationship between hobbies and two visual perception tasks 
-- Interestingly, we found mental rotation scores are negatively correlated with female-type hobbies in females.
+
+Then, we drop incomplete cases.
+
+```{r}
+df_complete <- df_corr[stats::complete.cases(df_corr),]
+```
+
+This gives us $n= $`r dim(df_complete)[1]` complete cases.
+
+We select just the numeric scores to calculate the correlation table.
+
+```{r}
+df_complete_num <- df_complete %>%
+  select(., -Sex)
+```
+
+```{r}
+corr_all <- Hmisc::rcorr(as.matrix(df_complete_num), type = c("pearson"))
+```
+
+#### Coefficients
+
+```{r}
+corr_all$r
+```
+
+#### P-values
+
+```{r}
+corr_all$P
+```
 
 ```{r}
 # Get some colors
-col<- colorRampPalette(c("blue", "white", "red"))(20)
-heatmap(x = res$r, col = col, symm = TRUE)
+col <- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = corr_all$r, col = col, symm = TRUE)
 ```
+
+#### Observations
+
+- We found a positive association between motion duration thresholds and contrast sensitivity thresholds $r=$ `r corr_all$r['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`.
+
+- We found a negative association between motion duration thresholds and mental rotation $r=$ `r corr_all$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Mental_Rotation_scores']`.
+- We found a negative association between motion duration thresholds and vocabulary scores $r=$ `r corr_all$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Vocabulary_scores']`.
+- We found a positive association between motion duration thresholds and feminine hobbies $r=$ `r corr_all$r['Motion_duration_Threshold', 'Feminine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Feminine_hobbies']`.
+
+- We found a negative association between contrast sensitivity thresholds and mental rotation $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`.
+- We found a negative association between contrast sensitivity thresholds and masculine hobbies $r=$ `r corr_all$r['Motion_duration_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Masculine_hobbies']`.
+
+### Females
+
+Select the females and focus on the numeric scores.
+
+```{r}
+df_complete_F <- df_complete %>%
+  dplyr::filter(., Sex == 'Females') 
+
+df_corr_F <- df_complete_F %>%
+  dplyr::select(., -Sex)
+
+corr_F <- Hmisc::rcorr(as.matrix(df_corr_F), type = c("pearson"))
+```
+
+#### Coefficients
+
+```{r}
+corr_F$r
+```
+
+#### P values
+
+```{r}
+corr_F$P
+```
+
+```{r}
+# Get some colors
+col <- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = corr_F$r, col = col, symm = TRUE)
+```
+
+#### Observations
+
+- We found a positive association between motion duration thresholds and contrast sensitivity thresholds in females. $r=$ `r corr_F$r['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`, $p<$ `r corr_F$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`.
+- We found that motion duration threshold is negatively correlated with mental rotation scores in females, $r=$ `r corr_F$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_F$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`.
+This shows that shorter motion duration thresholds (better sensitivity) is correlated with better ability in mental rotation tasks. 
+- We found that contrast sensitivity threshold is negatively correlated with mental rotation scores in females, $r=$ `r corr_F$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_F$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`. This shows that the lower contrast the participants can detect, the better ability in mental rotation tasks for women. 
+- We did not find any relationship between hobbies and the two visual perception tasks 
+- Interestingly, we found mental rotation scores are negatively correlated with female-type hobbies in females, $r=$ `r corr_F$r['Mental_Rotation_scores', 'Feminine_hobbies']`, $p<$ `r corr_F$P['Mental_Rotation_scores', 'Feminine_hobbies']`.
 
 ### Males
+
+Select the females and focus on the numeric scores.
+
 ```{r}
-# correlation table
-df2_m<- df2 %>%
-  filter(Gender=="Males")
+df_complete_M <- df_complete %>%
+  dplyr::filter(., Sex == 'Males') 
 
-# round(cor(df2_f[,3:9], use = "complete.obs",  method = "spearman"),
-#   digits = 2 # rounded to 2 decimals
-# )
+df_corr_m <- df_complete_M %>%
+  dplyr::select(., -Sex)
 
-res_m <- rcorr(as.matrix(df2_m[,3:10], type = c("spearson")))  # could I do one-side? "spearman"
-# Extract the correlation coefficients
-round(res_m$r, 2)
-# Extract p-values
-round(res_m$P, 3)
+corr_M <- Hmisc::rcorr(as.matrix(df_corr_m), type = c("pearson"))
 ```
-- We only found motion duration threshold is positively correlated with contrast sensitivity threshold in males (p<0.01).  
+
+#### Coefficients
+
+```{r}
+corr_M$r
+```
+
+#### P values
+
+```{r}
+corr_M$P
+```
 
 ```{r}
 # Get some colors
-col<- colorRampPalette(c("blue", "white", "red"))(20)
-heatmap(x = res_m$r, col = col, symm = TRUE)
+col <- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = corr_M$r, col = col, symm = TRUE)
 ```
-Visualization 
+
+#### Observations
+
+- We found that motion duration threshold is positively correlated with contrast sensitivity threshold in males, $r=$ `r corr_M$r['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']` $p<$ `r corr_M$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`.
+- We found a positive correlation between masculine and feminine hobby interests in males, $r=$ `r corr_M$r['Feminine_hobbies', 'Masculine_hobbies']`, $p<$ `r corr_M$P['Feminine_hobbies', 'Masculine_hobbies']`
+
+# Visualization
+
+## Motion duration & Contrast sensitivity
+
 ```{r}
-df2 %>% ggplot( aes(x=log(cst_median),y=MRT_cor, group=Gender, color=Gender)) +
-geom_point() + xlab("log of contrast sensitivity threshold") + ylab("Mental Rotation")
-stat_smooth(method="lm",na.rm = TRUE)
+df_complete %>% ggplot(aes(
+  x = Contrast_Sensitivity_Threshold,
+  y = Motion_duration_Threshold,
+  group = Sex,
+  color = Sex
+)) +
+  geom_point() +
+  xlab("Contrast Sensitivity") +
+  ylab("Motion Duration") +
+  stat_smooth(method = "lm", na.rm = TRUE)
+```
+
+## Motion duration & Mental rotation
+
+```{r}
+df_complete %>% ggplot(aes(
+  x = Motion_duration_Threshold,
+  y = Mental_Rotation_scores,
+  group = Sex,
+  color = Sex
+)) +
+  geom_point() +
+  xlab("Motion duration threshold") +
+  ylab("Mental Rotation") +
+  stat_smooth(method = "lm", na.rm = TRUE)
+```
+
+## Motion duration & vocabulary
+
+```{r}
+df_complete %>% ggplot(aes(
+  x = Motion_duration_Threshold,
+  y = Vocabulary_scores,
+  group = Sex,
+  color = Sex
+)) +
+  geom_point() +
+  xlab("Motion duration threshold") +
+  ylab("Vocabulary") +
+  stat_smooth(method = "lm", na.rm = TRUE)
+```
+
+## Contrast sensitivity and Mental rotation
+
+```{r}
+df_complete %>% ggplot(aes(
+  x = Contrast_Sensitivity_Threshold,
+  y = Mental_Rotation_scores,
+  group = Sex,
+  color = Sex
+)) +
+  geom_point() +
+  xlab("Contrast sensitivity") +
+  ylab("Mental Rotation") +
+  stat_smooth(method = "lm", na.rm = TRUE)
+```
+
+## Contrast sensitivity & Masculine hobbies
+
+```{r}
+df_complete %>% ggplot(aes(
+  x = Contrast_Sensitivity_Threshold,
+  y = Mental_Rotation_scores,
+  group = Sex,
+  color = Sex
+)) +
+  geom_point() +
+  xlab("Contrast sensitivity") +
+  ylab("Masculine hobbies") +
+  stat_smooth(method = "lm", na.rm = TRUE)
+```
+
+## Other plots
+
+```{r}
+ggscatter(
+  df2_f,
+  x = "Contrast_Sensitivity_Threshold",
+  y = "Mental_Rotation_scores",
+  add = "reg.line",
+  conf.int = TRUE,
+  cor.coef = TRUE,
+  cor.method = "pearson",
+  xlab = "Contrast sensitivity",
+  ylab = "Mental rotation"
+) + theme_classic()
+```
+
+```{r}
+df2 %>% ggplot(aes(
+  x = log(Motion_duration_Threshold),
+  y = Mental_Rotation_scores,
+  group = Sex,
+  color = Sex
+)) +
+  geom_point() + xlab("log of motion duration (s)") + ylab("contrast sensitivity")
+stat_smooth(method = "lm", na.rm = TRUE)
 
 library("ggpubr")
-ggscatter(df2_f, x = "cst_median", y = "MRT_cor", 
-          add = "reg.line", conf.int = TRUE, 
-          cor.coef = TRUE, cor.method = "pearson",
-          xlab = "Contrast sensitivity", ylab = "Mental rotation") +theme_classic()
-```
-```{r}
-df2 %>% ggplot( aes(x=log(mdt_median),y=MRT_cor, group=Gender, color=Gender)) +
-geom_point() + xlab("log of motion duration (s)") + ylab("contrast sensitivity")
-stat_smooth(method="lm",na.rm = TRUE)
-
-library("ggpubr")
-ggscatter(df2_f, x = "mdt_median", y = "MRT_cor", 
+ggscatter(df2_f, x = "Motion_duration_Threshold", y = "Mental_Rotation_scores", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = "Motion duration (s)", ylab = "Mental rotation") +theme_classic()
 ```
 
-Power analysis
+## Power analysis
+
 ```{r}
-# MRT_cor and mdt 
-library(pwr)
-r_powerf<-pwr.r.test(n = 102, r = NULL, sig.level = 0.05, power = 0.8, alternative="greater")
+# Mental_Rotation_scores and mdt 
+
+r_powerf <-
+  pwr.r.test(
+    n = 102,
+    r = NULL,
+    sig.level = 0.05,
+    power = 0.8,
+    alternative = "greater"
+  )
 r_powerf
-r_powerm<-pwr.r.test(n = 30, r = NULL, sig.level = 0.05, power = 0.8, alternative="greater")
+r_powerm <-
+  pwr.r.test(
+    n = 30,
+    r = NULL,
+    sig.level = 0.05,
+    power = 0.8,
+    alternative = "greater"
+  )
 r_powerm
 ```
-As for sample size of 102, we need |r|>0.24 for one-side t test with p value of lower than 0.05 with the power of 0.8.
+
+For a sample size of 102, we need |r|>0.24 for one-side t test with p value of lower than 0.05 with the power of 0.8.
 As for sample size of 30, we need |r|>0.44 for one-side t test with p value of lower than 0.05 with the power of 0.8.
