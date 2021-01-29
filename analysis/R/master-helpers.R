@@ -538,7 +538,7 @@ make_all_decks <- function() {
   
   make_deck(deck_fn = "contrast-rt-by-cond-plots.R",
             deck_title = "Contrast: RT by condition",
-            task_type = "motion",
+            task_type = "contrast",
             plot_type = "rt-by-contr")
 }
 

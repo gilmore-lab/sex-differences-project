@@ -1,6 +1,6 @@
 ---
 title: "Sex differences in vision data: Exclude outliers"
-author: "Yiming Qian"
+author: "Yiming Qian & Rick Gilmore"
 date: "`r Sys.time()`"
 css: report.css
 output: 
@@ -143,16 +143,19 @@ I excluded three outliers in `Motion_duration_Threshold` and two outliers in `Co
 
 ## Check distributions
 
-Preleminary test to check the test assumptions
-1. Is the covariation linear? 
-Form the plot below, check whether the relationship is linear. In the situation where the scatter plots show curved patterns, we are dealing with nonlinear association between the two variables.
+Preliminary tests to check assumptions underlying  statistical tests.
 
-2. Are the data from each of the 2 variables (x, y) follow a normal distribution?
-Use Shapiro-Wilk normality test –> R function: shapiro.test()
-and look at the normality plot —> R function: ggpubr::ggqqplot()
-- Shapiro-Wilk test can be performed as follow:
-  Null hypothesis: the data are normally distributed
-  Alternative hypothesis: the data are not normally distributed
+<!-- 1. Is the covariation linear?  -->
+
+<!-- From the plot below, check whether the relationship is linear. In the situation where the scatter plots show curved patterns, we are dealing with nonlinear association between the two variables. -->
+
+Do the data follow a normal distributions?
+
+Use Shapiro-Wilk normality test, `shapiro.test()` and look at the normality plot —> R function: `ggpubr::ggqqplot()`. 
+
+The Shapiro-Wilk test can be performed as follows:
+- Null hypothesis: the data are normally distributed
+- Alternative hypothesis: the data are not normally distributed
 
 ```{r}
 # Shapiro-Wilk normality test 
@@ -166,6 +169,11 @@ shapiro.test(df2$Feminine_hobbies) # => p >0.05
 shapiro.test(df2$Masculine_hobbies) # => p >0.05
 ```
 
+Many of the variables are *not* normally distributed.
+In fact, only `Vocabulary_scores_cor_num`, `Feminine_hobbies`, and `Masculine_hobbies` were normally distributed.
+
+Let's now describe the data.
+
 ```{r}
 df2_f <- df2 %>%
   filter(Sex == "Females")
@@ -175,11 +183,14 @@ df2 %>%
   Hmisc::describe(.)
 ```
 
-Similarly, we found only, number of correct answers in vocabulary test, and two hobby tests are normally distributed. 
-The following histograms showed the distribution of each variable. 
 
-## t-test: compare between Sexs
-> To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at α=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our t tests, we set the effect sizes at .5.
+## T-test: compare between Sexes
+
+Here is our pre-registered description of how we planned to compare sex differences:
+
+> To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at $\alpha$=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s $d$) at the $p$ value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at WRONG URL! shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our $t$ tests, we set the effect sizes at .5.
+
+### Motion duration threshold
 
 ```{r}
 mdt_t <-
@@ -194,6 +205,8 @@ mdt_t
 
 As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females.
 
+### Contrast sensitivity threshold
+
 ```{r}
 cst_t <-
   t.test(
@@ -206,6 +219,10 @@ cst_t
 ```
 
 As predicted, we found there are sex differences in contrast sensitivity threshold. Males can detect the stimuli with lower contrast than females. 
+
+*ROG*: The test does not meet our criterion of $p<.0125$. Here, $p=$ `r cst_t$p.value`.
+
+### Vocabulary
 
 ```{r}
 advoc_total_t <-
@@ -226,7 +243,9 @@ advoc_cor_t <-
 advoc_cor_t
 ```
 
-Vocabulary is the control variable in the study. As we predicted, the vocabulary score did not differ between males and females. 
+Vocabulary is a control variable in the study. As we predicted, the vocabulary score did not differ between males and females. 
+
+### Mental rotation
 
 ```{r}
 t.test(
@@ -243,7 +262,11 @@ t.test(
 ) #Hypothesized
 ```
 
-Sex difference in mental rotation test was found in our study. Males have significantly more correct answers in mental rotation task than females. So does in the number of mental rotation items where both correct responses were selected.
+Sex differences in mental rotation test was found in our study. 
+Males had significantly more correct answers in the mental rotation task than females. 
+This was also the case where we analyzed just the mental rotation items where both correct responses were selected.
+
+### Feminine hobbies
 
 ```{r}
 t.test(
@@ -254,7 +277,9 @@ t.test(
 )
 ```
 
-Although we did not hypothesized female-type hobbies in preregistration, we found females had higher scores in female-typed hobbies than males. 
+Although we did not include female-type hobbies in our preregistration, we found that females had higher scores in female-typed hobbies than males. 
+
+### Masculine hobbies
 
 ```{r}
 t.test(
@@ -271,12 +296,16 @@ As predicted, we found males have higher scores in male-typed hobbies than femal
 
 >If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.
 
-For the distribution which is not normal (particiularly, for the distribution is right skewed), we will try the log transformation. 
+For the distributions which are not normal (particularly, for distributions that are right skewed), we will try the log transformation. 
+
+### log(Motion duration threshold)
 
 ```{r}
 shapiro.test(log(df2$Motion_duration_Threshold))
 hist(log(df2$Motion_duration_Threshold))
 ```
+
+Even after the log transformation, `Motion_duration_Threshold` remains non-normal.
 
 ```{r}
 mdt_tt <-
@@ -289,7 +318,16 @@ mdt_tt <-
 mdt_tt
 ```
 
-As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females. 
+We found there are sex differences in log(`Motion_duration_Threshold`). 
+Males took significantly shorter time to detect the direction of the motion than females. 
+### log(Contrast_Sensitivity_Threshold)
+
+```{r}
+shapiro.test(log(df2$Contrast_Sensitivity_Threshold))
+hist(log(df2$Contrast_Sensitivity_Threshold))
+```
+
+`Contrast_Sensitivity_Threshold` remains non-normal even after transformation.
 
 ```{r}
 t.test(
@@ -300,7 +338,21 @@ t.test(
 ) #Hypothesized
 ```
 
-As predicted, we found there are sex differences in contrast sensitivity threshold. Males can detect the stimuli with lower contrast than females. 
+Log transformed `Contrast_Sensitivity_Threshold` data show the predicted sex differences. Males can detect the stimuli with lower contrast than females. 
+
+### log(Mental_Rotation_scores)
+
+```{r}
+shapiro.test(log(df2$Mental_Rotation_scores))
+hist(log(df2$Mental_Rotation_scores))
+```
+
+```{r}
+shapiro.test(log(df2$Mental_Rotation_scores_both))
+hist(log(df2$Mental_Rotation_scores_both))
+```
+
+The log transformation seems to make the non-normality worse.
 
 ```{r}
 t.test(
@@ -317,7 +369,8 @@ t.test(
 ) #Hypothesized
 ```
 
-As predicted, we found there are sex differences in mental rotation scores. Males have better mental rotation scores than females. 
+As predicted, we found there are sex differences in log mental rotation scores. 
+Males have better mental rotation scores than females. 
 
 ## Power analysis
 
@@ -342,6 +395,8 @@ We need $|d|>0.65$ for a one-sided t test with $p$ value of lower than 0.0125 an
 
 ### Overall
 
+Because our preregistration envisioned a much larger total sample, we have chosen to report the overall correlations, combining males and females.
+
 We select the variables for our correlation analysis.
 
 ```{r}
@@ -363,7 +418,7 @@ Then, we drop incomplete cases.
 df_complete <- df_corr[stats::complete.cases(df_corr),]
 ```
 
-This gives us $n= $`r dim(df_complete)[1]` complete cases.
+This gives us $n= $ `r dim(df_complete)[1]` complete cases.
 
 We select just the numeric scores to calculate the correlation table.
 
