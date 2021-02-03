@@ -541,7 +541,7 @@ heatmap(x = corr_M$r, col = col, symm = TRUE)
 # Visualization
 
 ```{r}
-sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE) {
+sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE, an1,an2, anx,any) {
   require(tidyverse)
   require(ggExtra)
   
@@ -558,17 +558,14 @@ sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE) {
   ylab(y_var) +
   stat_smooth(method = "lm", na.rm = TRUE) +
   theme_classic2() +
-  theme(legend.position="bottom", legend.title=element_blank())
+  theme(legend.position="bottom", legend.title=element_blank())+ 
+    annotate("text", x = anx, y = any, label = c(an1,an2),color=c('red','darkturquoise'))
   
   # Reverse scale for threshold measures?
   if (x_rev) p <- p + scale_x_reverse()
   if (y_rev) p <- p + scale_y_reverse()
 
-p1 <- ggExtra::ggMarginal(p, type = "histogram",
-                          margins = "both",
-                          xparams = list(bins = 10),
-                          yparams = list(bins = 10),
-                          groupFill = TRUE)
+p1 <- ggExtra::ggMarginal(p,groupColour = TRUE, groupFill = TRUE)
 p1    
 }
 
@@ -596,7 +593,7 @@ sex_diff_corr_summ <- function(x_var, y_var) {
 
 ```{r}
 sex_diff_scatter(df_complete, "Motion_duration_Threshold", "Contrast_Sensitivity_Threshold",
-                 x_rev = TRUE, y_rev = TRUE)
+                 x_rev = TRUE, y_rev = TRUE,"r = 0.22*", "r=0.50***", c(0.16), c(0.16,0.24))
  
 sex_diff_corr_summ("Motion_duration_Threshold", "Contrast_Sensitivity_Threshold")
 ```
@@ -605,7 +602,7 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Contrast_Sensitivity_Threshold"
 
 ```{r}
 sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
-                 "Mental_Rotation_scores", x_rev = TRUE)
+                 "Mental_Rotation_scores", x_rev = TRUE,y_rev = FALSE,"r = 0.31**", "r=0.09", c(0.17), c(24,33))
 sex_diff_corr_summ("Motion_duration_Threshold", "Mental_Rotation_scores")
 ```
 
@@ -617,7 +614,7 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Mental_Rotation_scores")
 
 ```{r}
 sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
-                 "Vocabulary_scores", x_rev = TRUE)
+                 "Vocabulary_scores", x_rev = TRUE,y_rev = FALSE,"r = 0.18", "r=0.22", c(0.17), c(24,33))
 sex_diff_corr_summ("Motion_duration_Threshold", "Vocabulary_scores")
 ```
 
@@ -629,7 +626,7 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Vocabulary_scores")
 
 ```{r}
 sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
-                 "Mental_Rotation_scores", x_rev = TRUE)
+                 "Mental_Rotation_scores", x_rev = TRUE,y_rev = FALSE,"r = -0.19*", "r=0.12", c(0.24), c(19,32))
 sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Mental_Rotation_scores")
 ```
 
@@ -641,10 +638,16 @@ sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Mental_Rotation_scores")
 
 ```{r}
 sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
-                 "Masculine_hobbies", x_rev = TRUE)
+                 "Masculine_hobbies", x_rev = TRUE,y_rev = FALSE,"r = -0.19*", "r=0.26", c(0.24), c(2.4,4))
 sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Masculine_hobbies")
 ```
+## Motion duration & Feminine hobbies
 
+```{r}
+sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
+                 "Feminine_hobbies", x_rev = TRUE,y_rev = FALSE,"r = 0.17*", "r=-0.01", c(0.165), c(4,3))
+sex_diff_corr_summ("Motion_duration_Threshold", "Feminine_hobbies")
+```
 <!-- - Overall: $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
 <!-- - Males: $r=$ `r corr_M$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_M$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
 <!-- - Females: $r=$ `r corr_F$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_F$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
@@ -721,3 +724,19 @@ r_powerm
 
 For a sample size of 102, we need |r|>0.24 for one-side t test with p value of lower than 0.05 with the power of 0.8.
 As for sample size of 30, we need |r|>0.44 for one-side t test with p value of lower than 0.05 with the power of 0.8.
+
+
+## one-tailed correlation
+```{r}
+cor.test(formula = ~ Motion_duration_Threshold + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="greater")
+
+cor.test(formula = ~ Masculine_hobbies    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+
+cor.test(formula = ~ Feminine_hobbies    + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="greater")
+```
