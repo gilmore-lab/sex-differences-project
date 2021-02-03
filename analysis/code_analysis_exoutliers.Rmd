@@ -593,7 +593,7 @@ sex_diff_corr_summ <- function(x_var, y_var) {
 
 ```{r}
 sex_diff_scatter(df_complete, "Motion_duration_Threshold", "Contrast_Sensitivity_Threshold",
-                 x_rev = TRUE, y_rev = TRUE,"r = 0.22*", "r=0.50***", c(0.16), c(0.16,0.24))
+                 x_rev = TRUE, y_rev = TRUE,"r = 0.22*", "r=0.54***", c(0.16), c(0.16,0.24))
  
 sex_diff_corr_summ("Motion_duration_Threshold", "Contrast_Sensitivity_Threshold")
 ```
@@ -728,15 +728,50 @@ As for sample size of 30, we need |r|>0.44 for one-side t test with p value of l
 
 ## one-tailed correlation
 ```{r}
-cor.test(formula = ~ Motion_duration_Threshold + Contrast_Sensitivity_Threshold,
+# mental rotations
+cor.test(formula = ~ Mental_Rotation_scores + Motion_duration_Threshold,
          data = df_corr,
-         subset = Sex == "Females", alternative="greater")
-
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Mental_Rotation_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Mental_Rotation_scores + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+cor.test(formula = ~ Mental_Rotation_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+# vocabulary
+cor.test(formula = ~ Vocabulary_scores + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Vocabulary_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Vocabulary_scores + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+cor.test(formula = ~ Vocabulary_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+#hobbies
 cor.test(formula = ~ Masculine_hobbies    + Contrast_Sensitivity_Threshold,
          data = df_corr,
          subset = Sex == "Females", alternative="less")
-
 cor.test(formula = ~ Feminine_hobbies    + Motion_duration_Threshold,
          data = df_corr,
          subset = Sex == "Females", alternative="greater")
+cor.test(formula = ~ Masculine_hobbies    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="greater")
+cor.test(formula = ~ Feminine_hobbies    + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+# two vision tests
+cor.test(formula = ~ Motion_duration_Threshold    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="greater")
+cor.test(formula = ~ Motion_duration_Threshold    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="greater")
 ```
