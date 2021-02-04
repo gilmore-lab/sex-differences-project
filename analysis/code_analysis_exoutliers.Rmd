@@ -775,3 +775,110 @@ cor.test(formula = ~ Motion_duration_Threshold    + Contrast_Sensitivity_Thresho
          data = df_corr,
          subset = Sex == "Males", alternative="greater")
 ```
+# mediation analysis
+```{r}
+library(mediation)
+# scale the variables 
+```
+### Feminine_hobbies ->Motion_duration_Threshold->Mental_Rotation_scores
+```{r}
+# Step #1: The total effect
+fit.totaleffect=lm(Mental_Rotation_scores~Feminine_hobbies,df2)
+summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator=lm(Motion_duration_Threshold~Feminine_hobbies,df2)
+summary(fit.mediator) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv=lm(Mental_Rotation_scores~Motion_duration_Threshold+Feminine_hobbies,df2)
+summary(fit.dv) # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results = mediate(fit.mediator, fit.dv, treat='Feminine_hobbies', mediator='Motion_duration_Threshold') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results)
+# not significant ACME is boot=T
+```
+>> ACME stands for average causal mediation effects. This is the indirect effect of the IV (sepal length) on the DV (likelihood of pollination) that goes through the mediator (attractiveness to bee). Note that it estimated this effect to be -.50 — this is exactly X (the effect of the IV on the mediator from step #2) times X (the mediator's effect on the DV from step #3) — so not necessarily new information. However, what is new, is that we now have a confidence interval and significance levels for the entire indirect effect, not only its two parts. This is something we need for reporting the mediation.
+ADE stands for average direct effects. It describes the direct effect of the IV on the DV. Again — if you’ve been paying attention closely — this is not new information. We have calculated this effect before in step #3: the direct effect of the IV on the DV when controlling for the mediator.
+Total Effect stands for the total effect (direct + indirect) of the IV on the DV. This also isn’t new information. We calculated this in step #1. We can also get it by simply adding the ACME (.113) and the ADE (.019) to receive the total effect of .13. We also already knew that the total effect was significant from step #1.
+Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (-0.50) by the total effect (-3.41) to receive .14. This piece of information is a nice tidbit but not necessarily the focus of our interest.
+
+### Feminine_hobbies ->Mental_Rotation_scores->Motion_duration_Threshold
+```{r}
+fit.totaleffect=lm(Motion_duration_Threshold~Feminine_hobbies,df2)
+summary(fit.totaleffect) 
+fit.Y=lm(Motion_duration_Threshold~Mental_Rotation_scores+Feminine_hobbies,df_complete_F)
+summary(fit.Y)
+fit.M=lm(Mental_Rotation_scores~Feminine_hobbies,df_complete_F)
+summary(fit.M) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results1 = mediate(fit.M, fit.Y, treat='Feminine_hobbies', mediator='Mental_Rotation_scores') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results1)
+```
+
+###  Motion_duration_Threshold->Mental_Rotation_scores->Feminine_hobbies
+```{r}
+fit.totaleffect3=lm(Feminine_hobbies~Motion_duration_Threshold,df2)
+summary(fit.totaleffect3) 
+fit.Y3=lm(Feminine_hobbies~Mental_Rotation_scores+Motion_duration_Threshold,df2)
+summary(fit.Y3)
+fit.M3=lm(Mental_Rotation_scores~Motion_duration_Threshold,df2)
+summary(fit.M3) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results3 = mediate(fit.M3, fit.Y3, treat='Motion_duration_Threshold', mediator='Mental_Rotation_scores') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results3)
+```
+
+###  Motion_duration_Threshold->Feminine_hobbies->Mental_Rotation_scores
+```{r}
+fit.totaleffect4=lm(Mental_Rotation_scores~Motion_duration_Threshold,df2)
+summary(fit.totaleffect4) 
+fit.Y4=lm(Mental_Rotation_scores~Feminine_hobbies+Motion_duration_Threshold,df2)
+summary(fit.Y4)
+fit.M4=lm(Feminine_hobbies~Motion_duration_Threshold,df2)
+summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results4 = mediate(fit.M4, fit.Y4, treat='Motion_duration_Threshold', mediator='Feminine_hobbies') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results4)
+```
+### Masculine_hobbies ->Contrast_Sensitivity_Threshold->Mental_Rotation_scores
+```{r}
+# Step #1: The total effect
+fit.totaleffect2=lm(Mental_Rotation_scores~Masculine_hobbies,df2)
+summary(fit.totaleffect2) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.m2=lm(Contrast_Sensitivity_Threshold~Masculine_hobbies,df2)
+summary(fit.m2) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.y2=lm(Mental_Rotation_scores~Contrast_Sensitivity_Threshold+Masculine_hobbies,df2)
+summary(fit.y2) # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results2 = mediate(fit.m2, fit.y2, treat='Masculine_hobbies', mediator='Contrast_Sensitivity_Threshold') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results2)
+# not significant ACME is boot=T
+```
+
+###  Contrast_Sensitivity_Threshold->Masculine_hobbies->Mental_Rotation_scores
+```{r}
+fit.totaleffect=lm(Mental_Rotation_scores~Contrast_Sensitivity_Threshold,df2)
+summary(fit.totaleffect) 
+fit.Y5=lm(Mental_Rotation_scores~Masculine_hobbies+Contrast_Sensitivity_Threshold,df2)
+summary(fit.Y5)
+fit.M5=lm(Masculine_hobbies~Contrast_Sensitivity_Threshold,df2)
+summary(fit.M5) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results5 = mediate(fit.M5, fit.Y5, treat='Contrast_Sensitivity_Threshold', mediator='Masculine_hobbies') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results5)
+```
