@@ -8,12 +8,12 @@ output:
     self_contained: yes
     code_folding: hide
     toc: true
-    toc_depth: 3
+    toc_depth: 2
     toc_float: true
 params:
   data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   csv_fn: "data_output_Oct2020.csv"
-  outlier_sd_thresh: 3
+  outlier_sd_thresh: 2.5
 ---
 
 # Purpose
@@ -35,7 +35,7 @@ library(ggExtra)
 
 # Analysis
 
-## Imports
+## Import
 
 We import data previously cleaned to remove cases where accuracy is lower than the guess rate and any zero scores in the survey measures. 
 
@@ -43,6 +43,21 @@ We import data previously cleaned to remove cases where accuracy is lower than t
 # load the data and make each variable right
 df1 <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
+
+## Rename variables
+
+We rename some of the variables to make the exposition clearer.
+
+```{r, eval=FALSE}
+df1 <- df1 %>%
+  dplyr::rename(., 'motion_thr' = 'Motion_duration_Threshold',
+                'contrast_thr' = 'Contrast_Sensitivity_Threshold',
+                'mental_rot' = 'Mental_Rotation_scores',
+                'mental_rot_both' = 'Mental_Rotation_scores_both',
+                'vocab' = 'Vocabulary_scores',
+                'vocab_num' = 'Vocabulary_scores_cor_num')
+```
+
 
 ## Exclude outliers
 
@@ -169,8 +184,8 @@ shapiro.test(df2$Feminine_hobbies) # => p >0.05
 shapiro.test(df2$Masculine_hobbies) # => p >0.05
 ```
 
-Many of the variables are *not* normally distributed.
-In fact, only `Vocabulary_scores_cor_num`, `Feminine_hobbies`, and `Masculine_hobbies` were normally distributed.
+
+We use a strict Bonferroni-style criterion of $p<0.0125$ in determining which variables to transform.
 
 Let's now describe the data.
 
@@ -184,43 +199,13 @@ df2 %>%
 ```
 
 
-## T-test: compare between Sexes
+## T-test: Comparison between Sexes
 
 Here is our pre-registered description of how we planned to compare sex differences:
 
 > To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at $\alpha$=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s $d$) at the $p$ value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at WRONG URL! shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our $t$ tests, we set the effect sizes at .5.
 
-### Motion duration threshold
-
-```{r}
-mdt_t <-
-  t.test(
-    Motion_duration_Threshold ~ Sex,
-    data = df2,
-    var.equal = TRUE,
-    alternative = "greater"
-  ) #Hypothesized
-mdt_t
-```
-
-As predicted, we found there are sex differences in motion duration threshold. Males took significantly shorter time to detect the direction of the motion than females.
-
-### Contrast sensitivity threshold
-
-```{r}
-cst_t <-
-  t.test(
-    Contrast_Sensitivity_Threshold ~ Sex,
-    data = df2,
-    var.equal = TRUE,
-    alternative = "greater"
-  ) #Hypothesized
-cst_t
-```
-
-As predicted, we found there are sex differences in contrast sensitivity threshold. Males can detect the stimuli with lower contrast than females. 
-
-*ROG*: The test does not meet our criterion of $p<.0125$. Here, $p=$ `r cst_t$p.value`.
+Since the motion duration and contrast sensitivity theshold scores are not normally distributed, we (log) transform them (see below)
 
 ### Vocabulary
 
@@ -296,7 +281,7 @@ As predicted, we found males have higher scores in male-typed hobbies than femal
 
 >If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.
 
-For the distributions which are not normal (particularly, for distributions that are right skewed), we will try the log transformation. 
+For the distributions which are not normal (particularly for distributions that are right skewed), we will try the log transformation. 
 
 ### log(Motion duration threshold)
 
@@ -305,7 +290,7 @@ shapiro.test(log(df2$Motion_duration_Threshold))
 hist(log(df2$Motion_duration_Threshold))
 ```
 
-Even after the log transformation, `Motion_duration_Threshold` remains non-normal.
+Even after the log transformation, `Motion_duration_Threshold` remains non-normal, but it is more symmetric.
 
 ```{r}
 mdt_tt <-
@@ -320,6 +305,7 @@ mdt_tt
 
 We found there are sex differences in log(`Motion_duration_Threshold`). 
 Males took significantly shorter time to detect the direction of the motion than females. 
+
 ### log(Contrast_Sensitivity_Threshold)
 
 ```{r}
@@ -338,39 +324,7 @@ t.test(
 ) #Hypothesized
 ```
 
-Log transformed `Contrast_Sensitivity_Threshold` data show the predicted sex differences. Males can detect the stimuli with lower contrast than females. 
-
-### log(Mental_Rotation_scores)
-
-```{r}
-shapiro.test(log(df2$Mental_Rotation_scores))
-hist(log(df2$Mental_Rotation_scores))
-```
-
-```{r}
-shapiro.test(log(df2$Mental_Rotation_scores_both))
-hist(log(df2$Mental_Rotation_scores_both))
-```
-
-The log transformation seems to make the non-normality worse.
-
-```{r}
-t.test(
-  log(Mental_Rotation_scores) ~ Sex,
-  data = df2,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-t.test(
-  log(Mental_Rotation_scores_both) ~ Sex,
-  data = df2,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-```
-
-As predicted, we found there are sex differences in log mental rotation scores. 
-Males have better mental rotation scores than females. 
+Log transformed `Contrast_Sensitivity_Threshold` data show the predicted sex differences. Males detect the stimuli with lower contrast than females. 
 
 ## Power analysis
 
@@ -395,12 +349,24 @@ We need $|d|>0.65$ for a one-sided t test with $p$ value of lower than 0.0125 an
 
 ### Overall
 
+```{r}
+meets_criterion <- function(observed_p, criterion_p = .05/4) {
+  if (observed_p <= criterion_p) {
+    "meets"
+  } else {
+    "does not meet"
+  }
+}
+```
+
 Because our preregistration envisioned a much larger total sample, we have chosen to report the overall correlations, combining males and females.
 
-We select the variables for our correlation analysis.
+We select the variables for our correlation analysis, and make sure to log transform the threshold measures.
 
 ```{r}
 df_corr <- df2 %>%
+  dplyr::mutate(., Motion_duration_Threshold = log(Motion_duration_Threshold),
+                Contrast_Sensitivity_Threshold = log(Contrast_Sensitivity_Threshold)) %>%
   dplyr::select(., Sex,
                 Motion_duration_Threshold,
                 Contrast_Sensitivity_Threshold,
@@ -418,7 +384,7 @@ Then, we drop incomplete cases.
 df_complete <- df_corr[stats::complete.cases(df_corr),]
 ```
 
-This gives us $n= $ `r dim(df_complete)[1]` complete cases.
+This gives us $n=$ `r dim(df_complete)[1]` complete cases.
 
 We select just the numeric scores to calculate the correlation table.
 
@@ -451,14 +417,13 @@ heatmap(x = corr_all$r, col = col, symm = TRUE)
 
 #### Observations
 
-- We found a positive association between motion duration thresholds and contrast sensitivity thresholds $r=$ `r corr_all$r['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`.
+- In examining the association between motion duration thresholds and contrast sensitivity thresholds, we find $r=$ `r corr_all$r['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`, $n=$ `r corr_all$n['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold']`. This `r meets_criterion(corr_all$P['Motion_duration_Threshold', 'Contrast_Sensitivity_Threshold'])` criterion for statistical significance.
+- In examining the association between between motion duration thresholds and mental rotation, we find $r=$ `r corr_all$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $n=$ `r corr_all$n['Motion_duration_Threshold', 'Mental_Rotation_scores']`. This `r meets_criterion(corr_all$P['Motion_duration_Threshold', 'Mental_Rotation_scores'])` criterion for statistical significance.
+- In examining the association between motion duration thresholds and vocabulary scores, we find $r=$ `r corr_all$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Vocabulary_scores']`, , $n=$ `r corr_all$n['Motion_duration_Threshold', 'Vocabulary_scores']`. This `r meets_criterion(corr_all$P['Motion_duration_Threshold', 'Vocabulary_scores'])` criterion for statistical significance.
+- In examining the association between motion duration thresholds and interest in feminine-typed hobbies, we find $r=$ `r corr_all$r['Motion_duration_Threshold', 'Feminine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Feminine_hobbies']`, $n=$ `r corr_all$n['Motion_duration_Threshold', 'Feminine_hobbies']`. This `r meets_criterion(corr_all$P['Motion_duration_Threshold', 'Feminine_hobbies'])` criterion for statistical significance.
 
-- We found a negative association between motion duration thresholds and mental rotation $r=$ `r corr_all$r['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$n['Motion_duration_Threshold', 'Mental_Rotation_scores']`
-- We found a negative association between motion duration thresholds and vocabulary scores $r=$ `r corr_all$r['Motion_duration_Threshold', 'Vocabulary_scores']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Vocabulary_scores']`, , $p<$ `r corr_all$n['Motion_duration_Threshold', 'Vocabulary_scores']`.
-- We found a positive association between motion duration thresholds and feminine hobbies $r=$ `r corr_all$r['Motion_duration_Threshold', 'Feminine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Feminine_hobbies']`, $p<$ `r corr_all$n['Motion_duration_Threshold', 'Feminine_hobbies']`
-
-- We found a negative association between contrast sensitivity thresholds and mental rotation $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`.
-- We found a negative association between contrast sensitivity thresholds and masculine hobbies $r=$ `r corr_all$r['Motion_duration_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_all$P['Motion_duration_Threshold', 'Masculine_hobbies']`.
+- In examining the association between contrast sensitivity thresholds and mental rotation, we find $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $n=$ `r corr_all$n['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`. This `r meets_criterion(corr_all$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores'])` criterion for statistical significance.
+- In examining the association between contrast sensitivity thresholds and interest in masculine-typed hobbies, we find $r=$ `r corr_all$r['Motion_duration_Threshold', 'Masculine_hobbies']`, $p=$ `r corr_all$P['Motion_duration_Threshold', 'Masculine_hobbies']`, $n=$ `r corr_all$n['Motion_duration_Threshold', 'Masculine_hobbies']`. This `r meets_criterion(corr_all$P['Motion_duration_Threshold', 'Masculine_hobbies'])` criterion for statistical significance.
 
 ### Females
 
@@ -499,7 +464,7 @@ heatmap(x = corr_F$r, col = col, symm = TRUE)
 This shows that shorter motion duration thresholds (better sensitivity) is correlated with better ability in mental rotation tasks. 
 - We found that contrast sensitivity threshold is negatively correlated with mental rotation scores in females, $r=$ `r corr_F$r['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`, $p<$ `r corr_F$P['Contrast_Sensitivity_Threshold', 'Mental_Rotation_scores']`. This shows that the lower contrast the participants can detect, the better ability in mental rotation tasks for women. 
 - We did not find any relationship between hobbies and the two visual perception tasks 
-- Interestingly, we found mental rotation scores are negatively correlated with female-type hobbies in females, $r=$ `r corr_F$r['Mental_Rotation_scores', 'Feminine_hobbies']`, $p<$ `r corr_F$P['Mental_Rotation_scores', 'Feminine_hobbies']`.
+- Interestingly, we found mental rotation scores are negatively correlated with interest in female-typed hobbies in females, $r=$ `r corr_F$r['Mental_Rotation_scores', 'Feminine_hobbies']`, $p<$ `r corr_F$P['Mental_Rotation_scores', 'Feminine_hobbies']`.
 
 ### Males
 
@@ -541,7 +506,8 @@ heatmap(x = corr_M$r, col = col, symm = TRUE)
 # Visualization
 
 ```{r}
-sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE) {
+sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE,
+                             marginal_type = 'density') {
   require(tidyverse)
   require(ggExtra)
   
@@ -549,27 +515,34 @@ sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE) {
   y_var_s <- sym(y_var)
   
   p <- ggplot(df) +
-  aes(x = !!x_var_s,
-      y = !!y_var_s, 
-      group = Sex,
-      color = Sex) +
-  geom_point() +
-  xlab(x_var) +
-  ylab(y_var) +
-  stat_smooth(method = "lm", na.rm = TRUE) +
-  theme_classic2() +
-  theme(legend.position="bottom", legend.title=element_blank())
+    aes(x = !!x_var_s,
+        y = !!y_var_s, 
+        group = Sex,
+        color = Sex) +
+    geom_point() +
+    xlab(x_var) +
+    ylab(y_var) +
+    stat_smooth(method = "lm", na.rm = TRUE) +
+    theme_classic2() +
+    theme(legend.position="bottom", legend.title=element_blank())
+  
+  if (stringr::str_detect(x_var, 'hobbies')) {
+    p <- p + xlim(1,5)
+  }
+  if (stringr::str_detect(y_var, 'hobbies')) {
+    p <- p + ylim(1,5)
+  }
   
   # Reverse scale for threshold measures?
   if (x_rev) p <- p + scale_x_reverse()
   if (y_rev) p <- p + scale_y_reverse()
-
-p1 <- ggExtra::ggMarginal(p, type = "histogram",
-                          margins = "both",
-                          xparams = list(bins = 10),
-                          yparams = list(bins = 10),
-                          groupFill = TRUE)
-p1    
+  
+  p1 <- ggExtra::ggMarginal(p, type = marginal_type,
+                            margins = "both",
+                            xparams = list(bins = 10),
+                            yparams = list(bins = 10),
+                            groupFill = TRUE)
+  p1    
 }
 
 sex_diff_corr_summ <- function(x_var, y_var) {
@@ -594,7 +567,7 @@ sex_diff_corr_summ <- function(x_var, y_var) {
 
 ## Motion duration & Contrast sensitivity
 
-```{r}
+```{r motion-duration-contrast-sens}
 sex_diff_scatter(df_complete, "Motion_duration_Threshold", "Contrast_Sensitivity_Threshold",
                  x_rev = TRUE, y_rev = TRUE)
  
@@ -603,7 +576,7 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Contrast_Sensitivity_Threshold"
 
 ## Motion duration & Mental rotation
 
-```{r}
+```{r motion-duration-mental-rot}
 sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
                  "Mental_Rotation_scores", x_rev = TRUE)
 sex_diff_corr_summ("Motion_duration_Threshold", "Mental_Rotation_scores")
@@ -615,7 +588,7 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Mental_Rotation_scores")
 
 ## Motion duration & vocabulary
 
-```{r}
+```{r motion-duration-vocab}
 sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
                  "Vocabulary_scores", x_rev = TRUE)
 sex_diff_corr_summ("Motion_duration_Threshold", "Vocabulary_scores")
@@ -627,7 +600,7 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Vocabulary_scores")
 
 ## Contrast sensitivity and Mental rotation
 
-```{r}
+```{r contrast-sens-mental-rot}
 sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
                  "Mental_Rotation_scores", x_rev = TRUE)
 sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Mental_Rotation_scores")
@@ -639,7 +612,7 @@ sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Mental_Rotation_scores")
 
 ## Contrast sensitivity & Masculine hobbies
 
-```{r}
+```{r contrast-sens-m-hobbies}
 sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
                  "Masculine_hobbies", x_rev = TRUE)
 sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Masculine_hobbies")
@@ -651,7 +624,7 @@ sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Masculine_hobbies")
 
 ## Masculine and Feminine hobbies
 
-```{r}
+```{r m-hobbies-f-hobbies}
 sex_diff_scatter(df_complete, "Masculine_hobbies", 
                  "Feminine_hobbies")
 sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies")
