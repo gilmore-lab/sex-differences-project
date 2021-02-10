@@ -1,6 +1,6 @@
 ---
-title: "Code_Clean&visualization"
-author: "Yiming Qian"
+title: "Clean & Visualize"
+author: "Yiming Qian & Rick Gilmore"
 date: "`r Sys.time()`"
 output: 
   html_document:
@@ -15,7 +15,6 @@ params:
   output_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   contrast_raw_path: "contrast_sensitivity_task_data"
   motion_raw_path: "motion_temporal_threshold_data"
-  
 ---
 
 ```{r setup, include=FALSE}
@@ -23,151 +22,164 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
+## Load
+
+There are three data files:
+
+1. Qualtrics survey data
+2. Motion duration threshold task data.
+3. Contrast sensitivity task data.
+
 ```{r}
 # load the data and make each variable right
-cst<-readr::read_csv(file.path(params$output_path,params$contr_csv_fn)) 
-cst$Participant<-as.character(cst$Participant)
-cst$Gender[1:4]<-0
-cst$Gender<-factor(cst$Gender, levels=c(0,"m"), labels=c("Females","Males"))
+cst <- readr::read_csv(file.path(params$output_path,params$contr_csv_fn)) 
+cst$Participant <- as.character(cst$Participant)
+cst$Gender[1:4] <- 0
+cst$Gender <- factor(cst$Gender, levels=c(0,"m"), labels=c("Females","Males"))
 
-mdt<-readr::read_csv(file.path(params$output_path,params$motion_csv_fn)) 
-mdt$Participant<-as.character(mdt$Participant)
-mdt$Gender[313:316]<-0
-mdt$Gender<-factor(mdt$Gender, levels=c(0,"m"), labels=c("Females","Males"))
+mdt <- readr::read_csv(file.path(params$output_path,params$motion_csv_fn)) 
+mdt$Participant <- as.character(mdt$Participant)
+mdt$Gender[313:316] <- 0
+mdt$Gender <- factor(mdt$Gender, levels=c(0,"m"), labels=c("Females","Males"))
 
-qua_raw<-readr::read_csv(file.path(params$output_path,params$qualtrics_csv_fn)) 
+qua_raw <- readr::read_csv(file.path(params$output_path,params$qualtrics_csv_fn)) 
 ```
 rename the participant id
 ```{r}
 # for qualtric survey
-qua_raw$participant[which(qua_raw$participant=="2019-11-1309:49:2632")]<-101
-qua_raw$participant[which(qua_raw$participant=="2019-11-1311:10:2438")]<-102
-qua_raw$participant[which(qua_raw$participant=="2019-11-1313:38:0337")]<-103
-qua_raw$participant[which(qua_raw$participant=="2019-11-1314:56:0233")]<-105
-qua_raw$participant[which(qua_raw$participant=="2019-11-1316:12:1898")]<-107
+qua_raw$participant[which(qua_raw$participant=="2019-11-1309:49:2632")] <- 101
+qua_raw$participant[which(qua_raw$participant=="2019-11-1311:10:2438")] <- 102
+qua_raw$participant[which(qua_raw$participant=="2019-11-1313:38:0337")] <- 103
+qua_raw$participant[which(qua_raw$participant=="2019-11-1314:56:0233")] <- 105
+qua_raw$participant[which(qua_raw$participant=="2019-11-1316:12:1898")] <- 107
 
-qua_raw$participant[which(qua_raw$participant=="2019-11-1808:39:3927")]<-104
-qua_raw$participant[which(qua_raw$participant=="2019-11-1811:26:4976")]<-109
-qua_raw$participant[which(qua_raw$participant=="2019-11-1812:45:1738")]<-111
-qua_raw$participant[which(qua_raw$participant=="2019-11-1813:58:0893")]<-113
-qua_raw$participant[which(qua_raw$participant=="2019-11-1814:48:2896")]<-106
+qua_raw$participant[which(qua_raw$participant=="2019-11-1808:39:3927")] <- 104
+qua_raw$participant[which(qua_raw$participant=="2019-11-1811:26:4976")] <- 109
+qua_raw$participant[which(qua_raw$participant=="2019-11-1812:45:1738")] <- 111
+qua_raw$participant[which(qua_raw$participant=="2019-11-1813:58:0893")] <- 113
+qua_raw$participant[which(qua_raw$participant=="2019-11-1814:48:2896")] <- 106
 
-qua_raw$participant[which(qua_raw$participant=="2019-11-2013:40:1983")]<-115
-qua_raw$participant[which(qua_raw$participant=="2019-11-2014:53:2351")]<-108
-qua_raw$participant[which(qua_raw$participant=="2019-11-2016:11:0713")]<-117
-qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 11:14")]<-119
-qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 12:17")]<-110
+qua_raw$participant[which(qua_raw$participant=="2019-11-2013:40:1983")] <- 115
+qua_raw$participant[which(qua_raw$participant=="2019-11-2014:53:2351")] <- 108
+qua_raw$participant[which(qua_raw$participant=="2019-11-2016:11:0713")] <- 117
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 11:14")] <- 119
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 12:17")] <- 110
 
-qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 13:54")]<-121
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 10:45")]<-123
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 11:30")]<-125
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 14:35")]<-127
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 16:52")]<-320
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 13:54")] <- 121
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 10:45")] <- 123
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 11:30")] <- 125
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 14:35")] <- 127
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 16:52")] <- 320
 
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 17:40")]<-112
-qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 12:05")]<-114
-qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 14:36")]<-129
-qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 16:44")]<-324
-qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 9:59")]<-116
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 17:40")] <- 112
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 12:05")] <- 114
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 14:36")] <- 129
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 16:44")] <- 324
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 9:59")] <- 116
 
-qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 13:20")]<-131
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 13:23")]<-118
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 14:29")]<-133
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 15:44")]<-120
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 16:44")]<-330
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 13:20")] <- 131
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 13:23")] <- 118
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 14:29")] <- 133
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 15:44")] <- 120
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 16:44")] <- 330
 
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 17:45")]<-135
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 13:58")]<-122
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 14:47")]<-124
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 16:32")]<-137
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 17:04")]<-139
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 17:45")] <- 135
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 13:58")] <- 122
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 14:47")] <- 124
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 16:32")] <- 137
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 17:04")] <- 139
+```
 
+```{r}
 # contrast sensitivity
-cst$Participant[which(cst$Participant=="2019111309492663")]<-101
-cst$Participant[which(cst$Participant=="2019111311102420")]<-102
-cst$Participant[which(cst$Participant=="2019111313380357")]<-103
-cst$Participant[which(cst$Participant=="201911131456077")]<-105
-cst$Participant[which(cst$Participant=="2019111316121877")]<-107
+cst$Participant[which(cst$Participant=="2019111309492663")] <- 101
+cst$Participant[which(cst$Participant=="2019111311102420")] <- 102
+cst$Participant[which(cst$Participant=="2019111313380357")] <- 103
+cst$Participant[which(cst$Participant=="201911131456077")] <- 105
+cst$Participant[which(cst$Participant=="2019111316121877")] <- 107
 
-cst$Participant[which(cst$Participant=="20191118083974")]<-104
-cst$Participant[which(cst$Participant=="2019111811264955")]<-109
-cst$Participant[which(cst$Participant=="2019111812451739")]<-111
-cst$Participant[which(cst$Participant=="2.01911e+15")]<-113
+cst$Participant[which(cst$Participant=="20191118083974")] <- 104
+cst$Participant[which(cst$Participant=="2019111811264955")] <- 109
+cst$Participant[which(cst$Participant=="2019111812451739")] <- 111
+cst$Participant[which(cst$Participant=="2.01911e+15")] <- 113
 # miss one participant here
 
-cst$Participant[which(cst$Participant=="2019112013401963")]<-115
-cst$Participant[which(cst$Participant=="2019112014532376")]<-108
-cst$Participant[which(cst$Participant=="2019112016110741")]<-117
-cst$Participant[which(cst$Participant=="2019112110260325")]<-119
-cst$Participant[which(cst$Participant=="2019112111415316")]<-110
+cst$Participant[which(cst$Participant=="2019112013401963")] <- 115
+cst$Participant[which(cst$Participant=="2019112014532376")] <- 108
+cst$Participant[which(cst$Participant=="2019112016110741")] <- 117
+cst$Participant[which(cst$Participant=="2019112110260325")] <- 119
+cst$Participant[which(cst$Participant=="2019112111415316")] <- 110
 
-cst$Participant[which(cst$Participant=="2019112112563983")]<-121
-cst$Participant[which(cst$Participant=="2019112209583295")]<-123
-cst$Participant[which(cst$Participant=="2019112210523539")]<-125
-cst$Participant[which(cst$Participant=="2019112213492145")]<-127
-cst$Participant[which(cst$Participant=="201911221604385")]<-320 
+cst$Participant[which(cst$Participant=="2019112112563983")] <- 121
+cst$Participant[which(cst$Participant=="2019112209583295")] <- 123
+cst$Participant[which(cst$Participant=="2019112210523539")] <- 125
+cst$Participant[which(cst$Participant=="2019112213492145")] <- 127
+cst$Participant[which(cst$Participant=="201911221604385")] <- 320 
 
-cst$Participant[which(cst$Participant=="2019112217002412")]<-112
-cst$Participant[which(cst$Participant=="2019120409523578")]<-114
-cst$Participant[which(cst$Participant=="2019120413585457")]<-129
-cst$Participant[which(cst$Participant=="201912041554552")]<-324
-cst$Participant[which(cst$Participant=="2019120509244570")]<-116
+cst$Participant[which(cst$Participant=="2019112217002412")] <- 112
+cst$Participant[which(cst$Participant=="2019120409523578")] <- 114
+cst$Participant[which(cst$Participant=="2019120413585457")] <- 129
+cst$Participant[which(cst$Participant=="201912041554552")] <- 324
+cst$Participant[which(cst$Participant=="2019120509244570")] <- 116
 
-cst$Participant[which(cst$Participant=="2019120512235593")]<-131
-cst$Participant[which(cst$Participant=="20191212114750")]<-118
-cst$Participant[which(cst$Participant=="2019121212434199")]<-133
-cst$Participant[which(cst$Participant=="2019121214503690")]<-120
-cst$Participant[which(cst$Participant=="2019121215561995")]<-330
+cst$Participant[which(cst$Participant=="2019120512235593")] <- 131
+cst$Participant[which(cst$Participant=="20191212114750")] <- 118
+cst$Participant[which(cst$Participant=="2019121212434199")] <- 133
+cst$Participant[which(cst$Participant=="2019121214503690")] <- 120
+cst$Participant[which(cst$Participant=="2019121215561995")] <- 330
 
-cst$Participant[which(cst$Participant=="2019121217013332")]<-135
-cst$Participant[which(cst$Participant=="2019121313154134")]<-122
-cst$Participant[which(cst$Participant=="2019121314001724")]<-124
-cst$Participant[which(cst$Participant=="2019121315012099")]<-137
-cst$Participant[which(cst$Participant=="2019121316322025")]<-139
+cst$Participant[which(cst$Participant=="2019121217013332")] <- 135
+cst$Participant[which(cst$Participant=="2019121313154134")] <- 122
+cst$Participant[which(cst$Participant=="2019121314001724")] <- 124
+cst$Participant[which(cst$Participant=="2019121315012099")] <- 137
+cst$Participant[which(cst$Participant=="2019121316322025")] <- 139
 # 131 participants
+```
 
+
+```{r}
 # motion duration
-mdt$Participant[which(mdt$Participant=="2019111309492663")]<-101
-mdt$Participant[which(mdt$Participant=="2019111311102420")]<-102
-mdt$Participant[which(mdt$Participant=="2019111313380357")]<-103
-mdt$Participant[which(mdt$Participant=="2019111314560277")]<-105 # differnt from cst
-mdt$Participant[which(mdt$Participant=="2019111316121877")]<-107
+mdt$Participant[which(mdt$Participant=="2019111309492663")] <- 101
+mdt$Participant[which(mdt$Participant=="2019111311102420")] <- 102
+mdt$Participant[which(mdt$Participant=="2019111313380357")] <- 103
+mdt$Participant[which(mdt$Participant=="2019111314560277")] <- 105 # differnt from cst
+mdt$Participant[which(mdt$Participant=="2019111316121877")] <- 107
 
-mdt$Participant[which(mdt$Participant=="20191118083974")]<-104
-mdt$Participant[which(mdt$Participant=="2019111811264955")]<-109
-mdt$Participant[which(mdt$Participant=="2019111812451739")]<-111
-mdt$Participant[which(mdt$Participant=="2019111813580899")]<-113 # differnt from cst
-mdt$Participant[which(mdt$Participant=="2019111814482814")]<-106
+mdt$Participant[which(mdt$Participant=="20191118083974")] <- 104
+mdt$Participant[which(mdt$Participant=="2019111811264955")] <- 109
+mdt$Participant[which(mdt$Participant=="2019111812451739")] <- 111
+mdt$Participant[which(mdt$Participant=="2019111813580899")] <- 113 # differnt from cst
+mdt$Participant[which(mdt$Participant=="2019111814482814")] <- 106
 
-mdt$Participant[which(mdt$Participant=="2019112013401963")]<-115
-mdt$Participant[which(mdt$Participant=="2019112014532376")]<-108
-mdt$Participant[which(mdt$Participant=="2019112016110741")]<-117
-mdt$Participant[which(mdt$Participant=="2019112110260325")]<-119
-mdt$Participant[which(mdt$Participant=="2019112111415316")]<-110
+mdt$Participant[which(mdt$Participant=="2019112013401963")] <- 115
+mdt$Participant[which(mdt$Participant=="2019112014532376")] <- 108
+mdt$Participant[which(mdt$Participant=="2019112016110741")] <- 117
+mdt$Participant[which(mdt$Participant=="2019112110260325")] <- 119
+mdt$Participant[which(mdt$Participant=="2019112111415316")] <- 110
 
-mdt$Participant[which(mdt$Participant=="2019112112563983")]<-121
-mdt$Participant[which(mdt$Participant=="2019112209583295")]<-123
-mdt$Participant[which(mdt$Participant=="2019112210523539")]<-125
-mdt$Participant[which(mdt$Participant=="2019112213492145")]<-127
-mdt$Participant[which(mdt$Participant=="201911221604385")]<-320 
+mdt$Participant[which(mdt$Participant=="2019112112563983")] <- 121
+mdt$Participant[which(mdt$Participant=="2019112209583295")] <- 123
+mdt$Participant[which(mdt$Participant=="2019112210523539")] <- 125
+mdt$Participant[which(mdt$Participant=="2019112213492145")] <- 127
+mdt$Participant[which(mdt$Participant=="201911221604385")] <- 320 
 
-mdt$Participant[which(mdt$Participant=="2019112217002412")]<-112
-mdt$Participant[which(mdt$Participant=="2019120409523578")]<-114
-mdt$Participant[which(mdt$Participant=="2019120413585457")]<-129
-mdt$Participant[which(mdt$Participant=="201912041554552")]<-324
-mdt$Participant[which(mdt$Participant=="2019120509244570")]<-116
+mdt$Participant[which(mdt$Participant=="2019112217002412")] <- 112
+mdt$Participant[which(mdt$Participant=="2019120409523578")] <- 114
+mdt$Participant[which(mdt$Participant=="2019120413585457")] <- 129
+mdt$Participant[which(mdt$Participant=="201912041554552")] <- 324
+mdt$Participant[which(mdt$Participant=="2019120509244570")] <- 116
 
-mdt$Participant[which(mdt$Participant=="2019120512235593")]<-131
-mdt$Participant[which(mdt$Participant=="20191212114750")]<-118
-mdt$Participant[which(mdt$Participant=="2019121212434199")]<-133
-mdt$Participant[which(mdt$Participant=="2019121214503690")]<-120
-mdt$Participant[which(mdt$Participant=="2019121215561995")]<-330
+mdt$Participant[which(mdt$Participant=="2019120512235593")] <- 131
+mdt$Participant[which(mdt$Participant=="20191212114750")] <- 118
+mdt$Participant[which(mdt$Participant=="2019121212434199")] <- 133
+mdt$Participant[which(mdt$Participant=="2019121214503690")] <- 120
+mdt$Participant[which(mdt$Participant=="2019121215561995")] <- 330
 
-mdt$Participant[which(mdt$Participant=="201912121703332")]<-135   # differnt from cst
-mdt$Participant[which(mdt$Participant=="2019121313154134")]<-122
-mdt$Participant[which(mdt$Participant=="2019121314001724")]<-124
-mdt$Participant[which(mdt$Participant=="2019121315012099")]<-137
-mdt$Participant[which(mdt$Participant=="2019121316322025")]<-139 # missed
+mdt$Participant[which(mdt$Participant=="201912121703332")] <- 135   # differnt from cst
+mdt$Participant[which(mdt$Participant=="2019121313154134")] <- 122
+mdt$Participant[which(mdt$Participant=="2019121314001724")] <- 124
+mdt$Participant[which(mdt$Participant=="2019121315012099")] <- 137
+mdt$Participant[which(mdt$Participant=="2019121316322025")] <- 139 # missed
 # miss 371, 395 half
 
 # it should be 132 participants
@@ -175,9 +187,9 @@ mdt$Participant[which(mdt$Participant=="2019121316322025")]<-139 # missed
 
 Delete the test participants in qualtrics
 ```{r}
-qua_raw$participant<-as.numeric(qua_raw$participant)
+qua_raw$participant <- as.numeric(qua_raw$participant)
 
-qua<-qua_raw[,-c(1:6, 8:17)] %>%
+qua <- qua_raw[,-c(1:6, 8:17)] %>%
   filter(Finished==1) %>%
   filter(participant!="test") %>%
   filter(participant!=0) 
@@ -203,8 +215,8 @@ We will exclude the runs with less than 68% accuracy.
 which(cst$percent_correct<0.68)
 which(mdt$percent_correct<0.68)
 mdt$Participant[which(mdt$percent_correct<0.68)]
-cst<-cst %>% filter(percent_correct>=0.68)
-mdt<-mdt %>% filter(percent_correct>=0.68)
+cst <- cst %>% filter(percent_correct>=0.68)
+mdt <- mdt %>% filter(percent_correct>=0.68)
 ```
 
 
@@ -278,59 +290,181 @@ mdt$threshold[which(mdt$threshold>0.30)]
 
 get median
 ```{r}
-cst_median<-cst %>%
+cst_median <- cst %>%
   group_by(Participant, Gender) %>%
   summarise(cst_median=median(threshold))
 
-mdt_median<-mdt %>%
+mdt_median <- mdt %>%
   group_by(Participant, Gender) %>%
   summarise(mdt_median=median(threshold))
 ```
 
 merge dataframes
 ```{r}
-qua$sex<-factor(qua$sex, levels=c(2,1), labels=c("Females","Males"))
-names(qua)[names(qua)=="sex"] <- "Gender"
-names(qua)[names(qua)=="participant"] <- "Participant"
-qua$Participant<-as.character(qua$Participant)
-df <- full_join(mdt_median,cst_median, by=c("Participant","Gender")) %>% # 131 and 130 rows->132
+qua$sex <- factor(qua$sex, levels=c(2,1), labels=c("Females","Males"))
+names(qua)[names(qua)=="sex"]  <-  "Gender"
+names(qua)[names(qua)=="participant"]  <-  "Participant"
+qua$Participant <- as.character(qua$Participant)
+df  <-  full_join(mdt_median,cst_median, by=c("Participant","Gender")) %>% # 131 and 130 rows->132
   full_join(qua,k, by=c("Participant","Gender"))  # 131, 132 rows->132 rows?
 ```
+
 check visual acuity outliers
 >We will exclude the participant whose visual acuity is equal to or worse than 20/40 in HOTV visual acuity chart.
+
 
 ```{r}
 # no participant with visual acuity lower than 20/40.
 ```
 
+
 add other variables
 ```{r}
-df$race<-""
-df$colorvision<-NA
-df$race_5<-as.numeric(df$race_5)
-df$race_sum<-rowSums(df[,10:16],na.rm=TRUE)
+df$race <- ""
+df$colorvision <- NA
+df$race_5 <- as.numeric(df$race_5)
+df$race_sum <- rowSums(df[,10:16],na.rm=TRUE)
 df$race_sum[which(df$race_sum!=1)]
-df$race[which(df$race_1==1)]<-"Asian"
-df$race[which(df$race_2==1)]<-paste(df$race,"Black/African",sep=",")
-df$race[which(df$race_3==1)]<-paste(df$race,"Caucasian",sep=",")
-df$race[which(df$race_4==1)]<-paste(df$race,"Hispanic/Latino",sep=",")
-df$race[which(df$race_5==1)]<-paste(df$race,"Native American",sep=",")
-df$race[which(df$race_6==1)]<-paste(df$race,"Pacific Islander",sep=",")
-df$race[which(df$race_7==1)]<-paste(df$race,"Prefer not to answer",sep=",")
-# df$race[which(df$race_sum==2)]<-"Multiple"
+df$race[which(df$race_1==1)] <- "Asian"
+df$race[which(df$race_2==1)] <- paste(df$race,"Black/African",sep=",")
+df$race[which(df$race_3==1)] <- paste(df$race,"Caucasian",sep=",")
+df$race[which(df$race_4==1)] <- paste(df$race,"Hispanic/Latino",sep=",")
+df$race[which(df$race_5==1)] <- paste(df$race,"Native American",sep=",")
+df$race[which(df$race_6==1)] <- paste(df$race,"Pacific Islander",sep=",")
+df$race[which(df$race_7==1)] <- paste(df$race,"Prefer not to answer",sep=",")
+# df$race[which(df$race_sum==2)] <- "Multiple"
 which(df$color_vision1_4!=1)
 which(df$color_vision1_5!=1) 
 which(df$color_vision2_1!=4) 
 which(df$color_vision2_2!=4) #4   9  11  64  73  92  95 102 129
 which(df$color_vision2_3!=4)  #92
-df$colorvision<-rowSums(df[,226:228],na.rm=TRUE)
+df$colorvision <- rowSums(df[,226:228],na.rm=TRUE)
 ```
+
+## Data frame from all runs
+
+Create merged data frame with thresholds for all runs from all tasks.
+
+Add "task" variable to `mdt` and `cst` frames since we are merging the fitted psychophysical function data.
+
+```{r}
+mdt <- mdt %>%
+  dplyr::mutate(., task = 'motion')
+
+cst <- cst %>%
+  dplyr::mutate(., task = 'contrast')
+```
+
+
+```{r}
+vis_df <-
+  full_join(
+    mdt,
+    cst,
+    by = c(
+      "Participant",
+      "Gender"
+    )
+  )
+
+vis_df <- vis_df %>%
+  rename(., 
+         Sex = Gender,
+         motion_run = run.x,
+         motion_shape = shape.x,
+         motion_scale = scale.x,
+         motion_loglik = loglik.x,
+         motion_thresh = threshold.x,
+         motion_pcorr = percent_correct.x,
+         contr_run = run.y,
+         contr_shape = shape.y,
+         contr_scale = scale.y,
+         contr_loglik = loglik.y,
+         contr_thresh = threshold.y,
+         contr_pcorr = percent_correct.y) %>%
+  dplyr::mutate(.,
+                Sex = as.character(Sex))
+
+qua_df <- qua %>%
+  dplyr::rename(., Participant = participant,
+         Sex = sex) %>%
+  dplyr::mutate(., Participant = as.character(Participant),
+                Sex = as.character(Sex))
+
+all_df <- left_join(vis_df, qua_df, by = c("Participant", "Sex"))
+```
+
+Clean demographic variables.
+
+```{r}
+all_df$race <- ""
+all_df$colorvision <- NA
+all_df$race_5 <- as.numeric(all_df$race_5)
+all_df$race[which(all_df$race_1==1)] <- "Asian"
+all_df$race[which(all_df$race_2==1)] <- paste(all_df$race,"Black/African",sep=",")
+all_df$race[which(all_df$race_3==1)] <- paste(all_df$race,"Caucasian",sep=",")
+all_df$race[which(all_df$race_4==1)] <- paste(all_df$race,"Hispanic/Latino",sep=",")
+all_df$race[which(all_df$race_5==1)] <- paste(all_df$race,"Native American",sep=",")
+all_df$race[which(all_df$race_6==1)] <- paste(all_df$race,"Pacific Islander",sep=",")
+all_df$race[which(all_df$race_7==1)] <- paste(all_df$race,"Prefer not to answer",sep=",")
+# all_df$race[which(all_df$race_sum==2)] <- "Multiple"
+which(all_df$color_vision1_4!=1)
+which(all_df$color_vision1_5!=1) 
+which(all_df$color_vision2_1!=4) 
+which(all_df$color_vision2_2!=4) #4   9  11  64  73  92  95 102 129
+which(all_df$color_vision2_3!=4)  #92
+all_df$colorvision <- rowSums(all_df[,226:228],na.rm=TRUE)
+```
+
+## Export data
 
 ```{r}
 # save data
-var<-c("Participant", "Gender","race","age","schoolyear","major","handedness","glasses","acuity","colorvision","stereo","mdt_median","cst_median","advoc_total_score","advoc_num_cor","MRT_cor","MRT_cor_both","hobfem","hobmas")
-df1<-df[,var]
-colnames(df1) <- c("Participant", "Sex","Race","Age","School_year","Major","Handedness","Glasses","Acuity","Color_vision","Stereo","Motion_duration_Threshold","Contrast_Sensitivity_Threshold","Vocabulary_scores","Vocabulary_scores_cor_num","Mental_Rotation_scores","Mental_Rotation_scores_both","Feminine_hobbies","Masculine_hobbies")
+var <- c("Participant", "Gender","race","age","schoolyear","major","handedness","glasses","acuity","colorvision","stereo","mdt_median","cst_median","advoc_total_score","advoc_num_cor","MRT_cor","MRT_cor_both","hobfem","hobmas")
+df1 <- df[,var]
+colnames(df1)  <-  c("Participant", "Sex","Race","Age","School_year","Major","Handedness","Glasses","Acuity","Color_vision","Stereo","Motion_duration_Threshold","Contrast_Sensitivity_Threshold","Vocabulary_scores","Vocabulary_scores_cor_num","Mental_Rotation_scores","Mental_Rotation_scores_both","Feminine_hobbies","Masculine_hobbies")
 write.csv(df1,file.path(params$output_path,"data_output_Oct2020.csv"), row.names = FALSE)
+```
+
+```{r}
+these_vars <-
+  c(
+    "Participant",
+    "Sex",
+    "motion_run",
+    "motion_shape",
+    "motion_scale",
+    "motion_loglik",
+    "motion_thresh",
+    "motion_pcorr",
+    "contr_run",
+    "contr_shape",
+    "contr_scale",
+    "contr_loglik",
+    "contr_thresh",
+    "contr_pcorr",
+    "race",
+    "age",
+    "schoolyear",
+    "major",
+    "handedness",
+    "glasses",
+    "acuity",
+    "colorvision",
+    "stereo",
+    "advoc_total_score",
+    "advoc_num_cor",
+    "MRT_cor",
+    "MRT_cor_both",
+    "hobfem",
+    "hobmas"
+  )
+
+out_df <- all_df %>%
+  dplyr::select(., all_of(these_vars))
+
+readr::write_csv(out_df,
+                 file.path(params$output_path,
+                           "all-runs-2021-02-10.csv"))
 ```
 

@@ -1,0 +1,701 @@
+---
+title: "By-run data visualization"
+author: "Yiming Qian & Rick Gilmore"
+date: "`r Sys.time()`"
+css: report.css
+output: 
+  html_document:
+    self_contained: yes
+    code_folding: hide
+    toc: true
+    toc_depth: 2
+    toc_float: true
+params:
+  data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  csv_fn: "all-runs-2021-02-10.csv"
+  outlier_sd_thresh: 3
+---
+
+# Purpose
+
+This document shows our analyses following the preregistered plan.
+It also shows the results of trimming all cases whose scores on either of the visual perception measures exceed `r params$outlier_sd_thresh` SDs from the pooled mean.
+
+# Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(sjPlot)  # create publishable table
+library(pwr)
+library(Hmisc)
+library(ggpubr)
+library(pwr)
+library(ggExtra)
+library(mediation)
+```
+
+# Analysis
+
+## Import
+
+We import data previously cleaned using `code_clean&visualization.Rmd`. 
+
+```{r load}
+# load the data and make each variable right
+df1 <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
+```
+
+## Examine outliers
+
+Let's detect outliers based on the criterion specified in `params$outlier_sd_thresh`.
+
+But since we know we're going to log-transform the visual scores, we'll do the outlier detection in log space.
+
+```{r}
+# define a function to remove outliers
+FindOutliers <- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh)) {
+  sd = sd(data, na.rm = T)
+  mean = mean(data, na.rm = T)
+  # we identify extreme outliers
+  extreme.threshold.upper = (sd * sd_thresh) + mean
+  extreme.threshold.lower = -(sd * sd_thresh) + mean
+  result <-
+    which(data > extreme.threshold.upper |
+            data < extreme.threshold.lower)
+  print(result)
+}
+
+# Calculate indices (row numbers) of outliers for all measures.
+# all_outliers <- lapply(df1[,-c('Participant', 'Sex', 'race', 'age', 'schoolyear',
+#                                'handedness', 'glasses')], FindOutliers)
+# all_outliers
+
+motion_outliers <- FindOutliers(log(df1$motion_thresh))
+contrast_outliers <- FindOutliers(log(df1$contr_thresh))
+```
+
+### Vision task outliers
+
+```{r}
+df1 %>% 
+  ggplot(.) +
+  aes(y = motion_thresh, x = Sex) +
+  geom_violin() +
+  ggtitle('Motion thresholds by sex: All participants')
+```
+
+
+```{r}
+df1[-motion_outliers,] %>%
+  ggplot(.) +
+  aes(y = motion_thresh, x = Sex) +
+  geom_violin() +
+  ggtitle('Motion thresholds by sex: Excluding outliers')
+```
+
+By this criterion, we exclude `r length(motion_outliers)` runs from $n=$ `r length(unique(df1$Participant[motion_outliers]))`, specifically participants: `r unique(df1$Participant[motion_outliers])`.
+
+Now, the contrast data.
+
+```{r}
+df1 %>% 
+  ggplot(.) +
+  aes(y = contr_thresh, x = Sex) +
+  geom_violin() +
+  ggtitle('Contrast thresholds by sex: All participants')
+```
+
+```{r}
+df1[-contrast_outliers,] %>%
+  ggplot(.) +
+  aes(y = contr_thresh, x = Sex) +
+  geom_violin() +
+  ggtitle('Contrast thresholds by sex: Excluding outliers')
+```
+
+By this criterion, we exclude `r length(contrast_outliers)` runs from $n=$ `r length(unique(df1$Participant[contrast_outliers]))`, specifically participants: `r unique(df1$Participant[contrast_outliers])`.
+
+```{r}
+df2 <- df1[-c(contrast_outliers, motion_outliers),]
+```
+
+## Check distributions
+
+Do the data follow a normal distributions?
+
+We use Shapiro-Wilk normality test, `shapiro.test()` and look at the normality plot. 
+
+The Shapiro-Wilk test can be performed as follows:
+- Null hypothesis: the data are normally distributed
+- Alternative hypothesis: the data are not normally distributed
+
+```{r}
+# Shapiro-Wilk normality test
+
+this_var <- c("Vocab_score",
+             "Mental_rot_score",
+             "Feminine_hobbies",
+             "Masculine_hobbies",
+             "Motion thresh",
+             "Contrast thresh")
+
+sw_stat <- c(shapiro.test(df2$Vocab_score)['statistic'],
+             shapiro.test(df2$Mental_rot_score)['statistic'],
+             shapiro.test(df2$Feminine_hobbies)['statistic'],
+             shapiro.test(df2$Masculine_hobbies)['statistic'],
+             shapiro.test(df2$motion_thresh)['statistic'],
+             shapiro.test(df2$contr_thresh)['statistic']
+             )
+
+sw_p_val <- c(shapiro.test(df2$Vocab_score)['p.value'],
+             shapiro.test(df2$Mental_rot_score)['p.value'],
+             shapiro.test(df2$Feminine_hobbies)['p.value'],
+             shapiro.test(df2$Masculine_hobbies)['p.value'],
+             shapiro.test(df2$motion_thresh)['p.value'],
+             shapiro.test(df2$contr_thresh)['p.value']
+             )
+
+shapiro_wilks_df <- tibble::tibble(this_var, sw_stat, sw_p_val)
+
+shapiro_wilks_df %>%
+  kableExtra::kable(., format = 'html') %>%
+  kableExtra::kable_styling()
+```
+
+The threshold measurements are especially non-normal.
+
+## T-test: Comparison between Sexes
+
+Here is our pre-registered description of how we planned to compare sex differences:
+
+> To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at $\alpha$=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s $d$) at the $p$ value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at WRONG URL! shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our $t$ tests, we set the effect sizes at .5.
+
+### Transformation
+
+>If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.
+
+For vision task thresholds which are not normal (particularly for distributions that are right skewed), we will try the log transformation. 
+
+### log(Motion duration threshold)
+
+```{r}
+shapiro.test(log(df2$motion_thresh))
+hist(log(df2$motion_thresh))
+```
+
+Even after the log transformation, `Motion_duration_Threshold` remains non-normal, but it is more symmetric.
+
+```{r}
+mdt_tt <-
+  t.test(
+    log(df2$motion_thresh) ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = "greater"
+  ) #Hypothesized
+mdt_tt
+```
+
+We found there are sex differences in log(`Motion_duration_Threshold`). 
+Males took significantly shorter time to detect the direction of the motion than females. 
+
+### log(Contrast_Sensitivity_Threshold)
+
+```{r}
+shapiro.test(log(df2$contr_thresh))
+hist(log(df2$contr_thresh))
+```
+
+`Contrast_Sensitivity_Threshold` remains non-normal even after transformation.
+
+```{r}
+t.test(
+  log(df2$contr_thresh) ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "greater"
+) #Hypothesized
+```
+
+Log transformed `Contrast_Sensitivity_Threshold` data show the predicted sex differences. Males detect the stimuli with lower contrast than females. 
+
+## Power analysis
+
+```{r}
+t_power <-
+  pwr.t2n.test(
+    n1 = 102 ,
+    n2 = 30 ,
+    d = NULL,
+    sig.level = 0.0125,
+    power = 0.8,
+    alternative = "greater"
+  )
+t_power
+```
+
+We need $|d|>0.65$ for a one-sided t test with $p$ value of lower than 0.0125 and with power of 0.8.
+
+## Correlation within Sex
+
+> To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks × two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test. 
+
+### Overall
+
+```{r}
+meets_criterion <- function(observed_p, criterion_p = .05/4) {
+  if (observed_p <= criterion_p) {
+    "meets"
+  } else {
+    "does not meet"
+  }
+}
+```
+
+Because our preregistration envisioned a much larger total sample, we have also chosen to report the overall correlations, combining males and females.
+
+We select the variables for our correlation analysis, separate the two threshold measures, and make sure to log transform the threshold measures.
+
+```{r}
+df_corr <- df2 %>%
+  dplyr::arrange(., Participant) %>%
+  dplyr::mutate(., log_motion_sens = log(motion_thresh),
+                log_contrast_sens = log(contr_thresh)) 
+
+df_corr_numeric <- df_corr %>%
+  dplyr::select(., log_motion_sens,
+                log_contrast_sens,
+                Vocab_score,
+                Mental_rot_score,
+                Feminine_hobbies,
+                Masculine_hobbies)
+```
+
+
+```{r}
+corr_all <- Hmisc::rcorr(as.matrix(df_corr_numeric), type = c("pearson"))
+```
+
+#### Coefficients
+
+```{r}
+corr_all$r
+```
+
+#### P-values
+
+```{r}
+corr_all$P
+```
+
+```{r}
+# Get some colors
+col <- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = corr_all$r, col = col, symm = TRUE)
+```
+
+### Females
+
+Select the females and focus on the numeric scores.
+
+```{r}
+df_complete_F <- df_corr %>%
+  dplyr::filter(., Sex == 'Females') 
+
+df_corr_F <- df_complete_F %>%
+  dplyr::select(., -Sex)
+
+corr_F <- Hmisc::rcorr(as.matrix(df_corr_F), type = c("pearson"))
+```
+
+#### Coefficients
+
+```{r}
+corr_F$r
+```
+
+#### P values
+
+```{r}
+corr_F$P
+```
+
+```{r}
+# Get some colors
+col <- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = corr_F$r, col = col, symm = TRUE)
+```
+
+
+### Males
+
+Select the males and focus on the numeric scores.
+
+```{r}
+df_complete_M <- df_corr %>%
+  dplyr::filter(., Sex == 'Males') 
+
+df_corr_m <- df_complete_M %>%
+  dplyr::select(., -Sex)
+
+corr_M <- Hmisc::rcorr(as.matrix(df_corr_m), type = c("pearson"))
+```
+
+#### Coefficients
+
+```{r}
+corr_M$r
+```
+
+#### P values
+
+```{r}
+corr_M$P
+```
+
+```{r}
+# Get some colors
+col <- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = corr_M$r, col = col, symm = TRUE)
+```
+
+# Visualization
+
+```{r}
+sex_diff_scatter <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an1 = "",
+           an2 = "",
+           anx = NULL,
+           any = NULL,
+           square_axis = FALSE) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex
+      ) +
+      geom_point() +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = "lm", na.rm = TRUE) +
+      theme_classic2() +
+      theme(legend.position = "bottom",
+            legend.title = element_blank()) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        label = c(an1, an2),
+        color = c('red', 'darkturquoise')
+      )
+    
+    if (square_axis)
+    {
+      p + coord_fixed()
+    }
+    
+    if (stringr::str_detect(x_var, 'hobbies')) {
+      p <- p + xlim(1, 5)
+    }
+    if (stringr::str_detect(y_var, 'hobbies')) {
+      p <- p + ylim(1, 5)
+    }
+    
+    # Reverse scale for threshold measures?
+    if (x_rev)
+      p <- p + scale_x_reverse()
+    if (y_rev)
+      p <- p + scale_y_reverse()
+    
+    p1 <- ggExtra::ggMarginal(
+      p,
+      type = "density",
+      margins = "both",
+      xparams = list(bins = 10),
+      yparams = list(bins = 10),
+      groupFill = TRUE
+    )
+    p1
+  }
+```
+
+```{r sex-diff-corr-sum-function}
+sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE) {
+  require(tidyverse) # for %>%
+  
+  corr_all_df <- tibble::tibble(
+    cor_coef = corr_all$r[x_var, y_var],
+    p_val = corr_all$P[x_var, y_var],
+    n =  corr_all$n[x_var, y_var],
+    pop = "Both"
+  )
+  males_df <- tibble::tibble(
+    cor_coef = corr_M$r[x_var, y_var],
+    p_val = corr_M$P[x_var, y_var],
+    n =  corr_M$n[x_var, y_var],
+    pop = "Males"
+  )
+  
+  females_df <- tibble::tibble(
+    cor_coef = corr_F$r[x_var, y_var],
+    p_val = corr_F$P[x_var, y_var],
+    n =  corr_F$n[x_var, y_var],
+    pop = "Females"
+  )
+  
+  df <- rbind(corr_all_df, males_df, females_df)
+  
+  df <- df %>%
+    mutate(., stars = if_else(p_val < .005, "***",
+                              if_else(p_val < .01, "**",
+                                      if_else(p_val < .05, "*", " ns"))))
+    
+  
+  if (print_table) {
+  kableExtra::kable(df, format = 'html') %>%
+    kableExtra::kable_styling()    
+  } else {
+    df
+  }
+}
+```
+
+## Motion & Contrast
+
+```{r motion-sens-contrast-sens}
+corr_df <- sex_diff_corr_summ("log_motion_sens",
+                   "log_contrast_sens", print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_motion_sens",
+  "log_contrast_sens",
+  x_rev = TRUE,
+  y_rev = TRUE,
+  # "r=0.22*",
+  # "r=0.54***",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-2.9, -2.9),
+  c(-1.13, -1.06)
+)
+
+sex_diff_corr_summ("log_motion_sens",
+                   "log_contrast_sens")
+```
+
+Linear model
+
+```{r}
+motion_contr_lm <- lm(formula = log_contrast_sens ~ log_motion_sens*Sex, data = df_corr)
+summary(motion_contr_lm)
+anova(motion_contr_lm)
+```
+
+## Motion & Mental rotation
+
+```{r motion-sens-mental-rot}
+corr_df <- sex_diff_corr_summ("log_motion_sens", 
+                   "Mental_rot_score", print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_motion_sens",
+  "Mental_rot_score",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = 0.31**",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  # "r = 0.09",
+  c(-2.75),
+  c(17, 15)
+)
+
+sex_diff_corr_summ("log_motion_sens", "Mental_rot_score")
+```
+
+## Motion & vocabulary
+
+```{r motion-sens-vocab}
+corr_df <- sex_diff_corr_summ("log_motion_sens", "Vocab_score",
+                   print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_motion_sens",
+  "Vocab_score",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = 0.18",
+  # "r=0.22",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.75),
+  c(21, 19)
+)
+sex_diff_corr_summ("log_motion_sens", "Vocab_score")
+```
+
+## Motion & Feminine hobbies
+
+```{r motion-f-hobbies}
+corr_df <- sex_diff_corr_summ("log_motion_sens", "Feminine_hobbies",
+                   print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_motion_sens",
+  "Feminine_hobbies",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = 0.18",
+  # "r=0.22",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.75),
+  c(2.5, 2.2)
+)
+sex_diff_corr_summ("log_motion_sens", "Feminine_hobbies")
+```
+
+
+## Motion & Masculine hobbies
+
+```{r motion-m-hobbies}
+corr_df <- sex_diff_corr_summ("log_motion_sens", "Masculine_hobbies",
+                   print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_motion_sens",
+  "Masculine_hobbies",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = 0.18",
+  # "r=0.22",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.75),
+  c(4.5, 4.2)
+)
+sex_diff_corr_summ("log_motion_sens", "Masculine_hobbies")
+```
+
+## Contrast and Mental rotation
+
+```{r contrast-sens-mental-rot}
+corr_df <- sex_diff_corr_summ("log_contrast_sens", "Mental_rot_score",
+                   print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_contrast_sens",
+  "Mental_rot_score",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = -0.19*",
+  # "r = 0.12",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.0),
+  c(36, 34)
+)
+sex_diff_corr_summ("log_contrast_sens", "Mental_rot_score")
+```
+
+## Contrast and vocabulary
+
+```{r contrast-sens-vocab}
+corr_df <- sex_diff_corr_summ("log_contrast_sens", "Vocab_score",
+                   print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_contrast_sens",
+  "Vocab_score",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = -0.19*",
+  # "r = 0.12",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.5),
+  c(28, 25)
+)
+sex_diff_corr_summ("log_contrast_sens", "Vocab_score")
+```
+
+## Contrast & Feminine hobbies
+
+```{r contrast-sens-f-hobbies}
+corr_df <- sex_diff_corr_summ("log_contrast_sens", "Feminine_hobbies",
+                              print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_contrast_sens",
+  "Feminine_hobbies",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = -0.19*",
+  # "r = 0.26",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.3),
+  c(2.5, 2.2)
+)
+sex_diff_corr_summ("log_contrast_sens", "Feminine_hobbies")
+```
+
+## Contrast & Masculine hobbies
+
+```{r contrast-sens-m-hobbies}
+corr_df <- sex_diff_corr_summ("log_contrast_sens", "Masculine_hobbies",
+                              print_table = FALSE)
+
+sex_diff_scatter(
+  df_corr,
+  "log_contrast_sens",
+  "Masculine_hobbies",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = -0.19*",
+  # "r = 0.26",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.3),
+  c(4.5, 4.2)
+)
+sex_diff_corr_summ("log_contrast_sens", "Masculine_hobbies")
+```
+
+## Masculine and Feminine hobbies
+
+```{r m-hobbies-f-hobbies}
+corr_df <- sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies", print_table = FALSE)
+
+sex_diff_scatter(df_corr, 
+                x_var = "Masculine_hobbies",
+                y_var = "Feminine_hobbies",
+                x_rev = FALSE,
+                y_rev = FALSE,
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+                anx = 3,
+                any = c(1.9, 1.6))
+sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies")
+```
