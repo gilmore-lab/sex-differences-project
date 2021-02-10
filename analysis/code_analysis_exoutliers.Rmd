@@ -31,6 +31,7 @@ library(Hmisc)
 library(ggpubr)
 library(pwr)
 library(ggExtra)
+library(mediation)
 ```
 
 # Analysis
@@ -390,7 +391,7 @@ We select just the numeric scores to calculate the correlation table.
 
 ```{r}
 df_complete_num <- df_complete %>%
-  select(., -Sex)
+  dplyr::select(., -Sex)
 ```
 
 ```{r}
@@ -506,56 +507,96 @@ heatmap(x = corr_M$r, col = col, symm = TRUE)
 # Visualization
 
 ```{r}
-sex_diff_scatter <- function(df, x_var, y_var, x_rev = FALSE, y_rev = FALSE,
-                             marginal_type = 'density') {
-  require(tidyverse)
-  require(ggExtra)
-  
-  x_var_s <- sym(x_var)
-  y_var_s <- sym(y_var)
-  
-  p <- ggplot(df) +
-    aes(x = !!x_var_s,
-        y = !!y_var_s, 
+sex_diff_scatter <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an1 = "",
+           an2 = "",
+           anx = NULL,
+           any = NULL,
+           square_axis = TRUE) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
         group = Sex,
-        color = Sex) +
-    geom_point() +
-    xlab(x_var) +
-    ylab(y_var) +
-    stat_smooth(method = "lm", na.rm = TRUE) +
-    theme_classic2() +
-    theme(legend.position="bottom", legend.title=element_blank())
-  
-  if (stringr::str_detect(x_var, 'hobbies')) {
-    p <- p + xlim(1,5)
+        color = Sex
+      ) +
+      geom_point() +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = "lm", na.rm = TRUE) +
+      theme_classic2() +
+      theme(legend.position = "bottom",
+            legend.title = element_blank()) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        label = c(an1, an2),
+        color = c('red', 'darkturquoise')
+      )
+    
+    if (square_axis)
+    {
+      p + coord_fixed()
+    }
+    
+    if (stringr::str_detect(x_var, 'hobbies')) {
+      p <- p + xlim(1, 5)
+    }
+    if (stringr::str_detect(y_var, 'hobbies')) {
+      p <- p + ylim(1, 5)
+    }
+    
+    # Reverse scale for threshold measures?
+    if (x_rev)
+      p <- p + scale_x_reverse()
+    if (y_rev)
+      p <- p + scale_y_reverse()
+    
+    p1 <- ggExtra::ggMarginal(
+      p,
+      type = "density",
+      margins = "both",
+      xparams = list(bins = 10),
+      yparams = list(bins = 10),
+      groupFill = TRUE
+    )
+    p1
   }
-  if (stringr::str_detect(y_var, 'hobbies')) {
-    p <- p + ylim(1,5)
-  }
-  
-  # Reverse scale for threshold measures?
-  if (x_rev) p <- p + scale_x_reverse()
-  if (y_rev) p <- p + scale_y_reverse()
-  
-  p1 <- ggExtra::ggMarginal(p, type = marginal_type,
-                            margins = "both",
-                            xparams = list(bins = 10),
-                            yparams = list(bins = 10),
-                            groupFill = TRUE)
-  p1    
-}
+```
 
+```{r sex-diff-corr-sum-function}
 sex_diff_corr_summ <- function(x_var, y_var) {
-  corr_all_df <- tibble::tibble(cor_coef = corr_all$r[x_var, y_var],
-                           p_val = corr_all$P[x_var, y_var],
-                           n =  corr_all$n[x_var, y_var], pop = "Both")
-  males_df <- tibble::tibble(cor_coef = corr_M$r[x_var, y_var],
-                           p_val = corr_M$P[x_var, y_var],
-                           n =  corr_M$n[x_var, y_var], pop = "Males")
+  corr_all_df <- tibble::tibble(
+    cor_coef = corr_all$r[x_var, y_var],
+    p_val = corr_all$P[x_var, y_var],
+    n =  corr_all$n[x_var, y_var],
+    pop = "Both"
+  )
+  males_df <- tibble::tibble(
+    cor_coef = corr_M$r[x_var, y_var],
+    p_val = corr_M$P[x_var, y_var],
+    n =  corr_M$n[x_var, y_var],
+    pop = "Males"
+  )
   
-  females_df <- tibble::tibble(cor_coef = corr_F$r[x_var, y_var],
-                           p_val = corr_F$P[x_var, y_var],
-                           n =  corr_F$n[x_var, y_var], pop = "Females")
+  females_df <- tibble::tibble(
+    cor_coef = corr_F$r[x_var, y_var],
+    p_val = corr_F$P[x_var, y_var],
+    n =  corr_F$n[x_var, y_var],
+    pop = "Females"
+  )
   
   df <- rbind(corr_all_df, males_df, females_df)
   
@@ -568,17 +609,36 @@ sex_diff_corr_summ <- function(x_var, y_var) {
 ## Motion duration & Contrast sensitivity
 
 ```{r motion-duration-contrast-sens}
-sex_diff_scatter(df_complete, "Motion_duration_Threshold", "Contrast_Sensitivity_Threshold",
-                 x_rev = TRUE, y_rev = TRUE)
- 
-sex_diff_corr_summ("Motion_duration_Threshold", "Contrast_Sensitivity_Threshold")
+sex_diff_scatter(
+  df_complete,
+  "Motion_duration_Threshold",
+  "Contrast_Sensitivity_Threshold",
+  x_rev = TRUE,
+  y_rev = TRUE,
+  "r=0.22*",
+  "r=0.54***",
+  c(-2.16, -2.16),
+  c(-1.4, -1.3)
+)
+
+sex_diff_corr_summ("Motion_duration_Threshold",
+                   "Contrast_Sensitivity_Threshold")
 ```
 
 ## Motion duration & Mental rotation
 
 ```{r motion-duration-mental-rot}
-sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
-                 "Mental_Rotation_scores", x_rev = TRUE)
+sex_diff_scatter(
+  df_complete,
+  "Motion_duration_Threshold",
+  "Mental_Rotation_scores",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  "r = 0.31**",
+  "r = 0.09",
+  c(0.17),
+  c(24, 33)
+)
 sex_diff_corr_summ("Motion_duration_Threshold", "Mental_Rotation_scores")
 ```
 
@@ -589,8 +649,17 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Mental_Rotation_scores")
 ## Motion duration & vocabulary
 
 ```{r motion-duration-vocab}
-sex_diff_scatter(df_complete, "Motion_duration_Threshold", 
-                 "Vocabulary_scores", x_rev = TRUE)
+sex_diff_scatter(
+  df_complete,
+  "Motion_duration_Threshold",
+  "Vocabulary_scores",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  "r = 0.18",
+  "r=0.22",
+  c(0.17),
+  c(24, 33)
+)
 sex_diff_corr_summ("Motion_duration_Threshold", "Vocabulary_scores")
 ```
 
@@ -601,8 +670,17 @@ sex_diff_corr_summ("Motion_duration_Threshold", "Vocabulary_scores")
 ## Contrast sensitivity and Mental rotation
 
 ```{r contrast-sens-mental-rot}
-sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
-                 "Mental_Rotation_scores", x_rev = TRUE)
+sex_diff_scatter(
+  df_complete,
+  "Contrast_Sensitivity_Threshold",
+  "Mental_Rotation_scores",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  "r = -0.19*",
+  "r = 0.12",
+  c(0.24),
+  c(19, 32)
+)
 sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Mental_Rotation_scores")
 ```
 
@@ -613,11 +691,35 @@ sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Mental_Rotation_scores")
 ## Contrast sensitivity & Masculine hobbies
 
 ```{r contrast-sens-m-hobbies}
-sex_diff_scatter(df_complete, "Contrast_Sensitivity_Threshold", 
-                 "Masculine_hobbies", x_rev = TRUE)
+sex_diff_scatter(
+  df_complete,
+  "Contrast_Sensitivity_Threshold",
+  "Masculine_hobbies",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  "r = -0.19*",
+  "r = 0.26",
+  c(0.24),
+  c(2.4, 4)
+)
 sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Masculine_hobbies")
 ```
+## Motion duration & Feminine hobbies
 
+```{r}
+sex_diff_scatter(
+  df_complete,
+  "Motion_duration_Threshold",
+  "Feminine_hobbies",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  "r = 0.17*",
+  "r = -0.01",
+  c(0.165),
+  c(4, 3)
+)
+sex_diff_corr_summ("Motion_duration_Threshold", "Feminine_hobbies")
+```
 <!-- - Overall: $r=$ `r corr_all$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_all$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
 <!-- - Males: $r=$ `r corr_M$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_M$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
 <!-- - Females: $r=$ `r corr_F$r['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']`, $p<$ `r corr_F$P['Contrast_Sensitivity_Threshold', 'Masculine_hobbies']` -->
@@ -625,8 +727,15 @@ sex_diff_corr_summ("Contrast_Sensitivity_Threshold", "Masculine_hobbies")
 ## Masculine and Feminine hobbies
 
 ```{r m-hobbies-f-hobbies}
-sex_diff_scatter(df_complete, "Masculine_hobbies", 
-                 "Feminine_hobbies")
+sex_diff_scatter(df_complete, 
+                x_var = "Masculine_hobbies",
+                y_var = "Feminine_hobbies",
+                x_rev = FALSE,
+                y_rev = FALSE,
+                an1 = "",
+                an2 = "",
+                anx = 3,
+                any = c(1.8, 1.7))
 sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies")
 ```
 
@@ -671,7 +780,6 @@ sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies")
 
 ```{r}
 # Mental_Rotation_scores and mdt 
-
 r_powerf <-
   pwr.r.test(
     n = 102,
@@ -694,3 +802,163 @@ r_powerm
 
 For a sample size of 102, we need |r|>0.24 for one-side t test with p value of lower than 0.05 with the power of 0.8.
 As for sample size of 30, we need |r|>0.44 for one-side t test with p value of lower than 0.05 with the power of 0.8.
+
+
+## one-tailed correlation
+```{r}
+# mental rotations
+cor.test(formula = ~ Mental_Rotation_scores + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Mental_Rotation_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Mental_Rotation_scores + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+cor.test(formula = ~ Mental_Rotation_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+# vocabulary
+cor.test(formula = ~ Vocabulary_scores + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Vocabulary_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Vocabulary_scores + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+cor.test(formula = ~ Vocabulary_scores + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+#hobbies
+cor.test(formula = ~ Masculine_hobbies    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="less")
+cor.test(formula = ~ Feminine_hobbies    + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="greater")
+cor.test(formula = ~ Masculine_hobbies    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="greater")
+cor.test(formula = ~ Feminine_hobbies    + Motion_duration_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="less")
+# two vision tests
+cor.test(formula = ~ Motion_duration_Threshold    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Females", alternative="greater")
+cor.test(formula = ~ Motion_duration_Threshold    + Contrast_Sensitivity_Threshold,
+         data = df_corr,
+         subset = Sex == "Males", alternative="greater")
+```
+
+# mediation analysis
+```{r}
+library(mediation)
+# scale the variables 
+```
+
+### Feminine_hobbies ->Motion_duration_Threshold->Mental_Rotation_scores
+```{r}
+# Step #1: The total effect
+fit.totaleffect=lm(Mental_Rotation_scores~Feminine_hobbies,df2)
+summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator=lm(Motion_duration_Threshold~Feminine_hobbies,df2)
+summary(fit.mediator) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv=lm(Mental_Rotation_scores~Motion_duration_Threshold+Feminine_hobbies,df2)
+summary(fit.dv) # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results = mediate(fit.mediator, fit.dv, treat='Feminine_hobbies', mediator='Motion_duration_Threshold') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results)
+# not significant ACME is boot=T
+```
+>> ACME stands for average causal mediation effects. This is the indirect effect of the IV (sepal length) on the DV (likelihood of pollination) that goes through the mediator (attractiveness to bee). Note that it estimated this effect to be -.50 — this is exactly X (the effect of the IV on the mediator from step #2) times X (the mediator's effect on the DV from step #3) — so not necessarily new information. However, what is new, is that we now have a confidence interval and significance levels for the entire indirect effect, not only its two parts. This is something we need for reporting the mediation.
+ADE stands for average direct effects. It describes the direct effect of the IV on the DV. Again — if you’ve been paying attention closely — this is not new information. We have calculated this effect before in step #3: the direct effect of the IV on the DV when controlling for the mediator.
+Total Effect stands for the total effect (direct + indirect) of the IV on the DV. This also isn’t new information. We calculated this in step #1. We can also get it by simply adding the ACME (.113) and the ADE (.019) to receive the total effect of .13. We also already knew that the total effect was significant from step #1.
+Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (-0.50) by the total effect (-3.41) to receive .14. This piece of information is a nice tidbit but not necessarily the focus of our interest.
+
+### Feminine_hobbies ->Mental_Rotation_scores->Motion_duration_Threshold
+```{r}
+fit.totaleffect=lm(Motion_duration_Threshold~Feminine_hobbies,df2)
+summary(fit.totaleffect) 
+fit.Y=lm(Motion_duration_Threshold~Mental_Rotation_scores+Feminine_hobbies,df_complete_F)
+summary(fit.Y)
+fit.M=lm(Mental_Rotation_scores~Feminine_hobbies,df_complete_F)
+summary(fit.M) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results1 = mediate(fit.M, fit.Y, treat='Feminine_hobbies', mediator='Mental_Rotation_scores') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results1)
+```
+
+###  Motion_duration_Threshold->Mental_Rotation_scores->Feminine_hobbies
+```{r}
+fit.totaleffect3=lm(Feminine_hobbies~Motion_duration_Threshold,df2)
+summary(fit.totaleffect3) 
+fit.Y3=lm(Feminine_hobbies~Mental_Rotation_scores+Motion_duration_Threshold,df2)
+summary(fit.Y3)
+fit.M3=lm(Mental_Rotation_scores~Motion_duration_Threshold,df2)
+summary(fit.M3) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results3 = mediate(fit.M3, fit.Y3, treat='Motion_duration_Threshold', mediator='Mental_Rotation_scores') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results3)
+```
+
+###  Motion_duration_Threshold->Feminine_hobbies->Mental_Rotation_scores
+```{r}
+fit.totaleffect4=lm(Mental_Rotation_scores~Motion_duration_Threshold,df2)
+summary(fit.totaleffect4) 
+fit.Y4=lm(Mental_Rotation_scores~Feminine_hobbies+Motion_duration_Threshold,df2)
+summary(fit.Y4)
+fit.M4=lm(Feminine_hobbies~Motion_duration_Threshold,df2)
+summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results4 = mediate(fit.M4, fit.Y4, treat='Motion_duration_Threshold', mediator='Feminine_hobbies') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results4)
+```
+### Masculine_hobbies ->Contrast_Sensitivity_Threshold->Mental_Rotation_scores
+```{r}
+# Step #1: The total effect
+fit.totaleffect2=lm(Mental_Rotation_scores~Masculine_hobbies,df2)
+summary(fit.totaleffect2) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.m2=lm(Contrast_Sensitivity_Threshold~Masculine_hobbies,df2)
+summary(fit.m2) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.y2=lm(Mental_Rotation_scores~Contrast_Sensitivity_Threshold+Masculine_hobbies,df2)
+summary(fit.y2) # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results2 = mediate(fit.m2, fit.y2, treat='Masculine_hobbies', mediator='Contrast_Sensitivity_Threshold') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results2)
+# not significant ACME is boot=T
+```
+
+###  Contrast_Sensitivity_Threshold->Masculine_hobbies->Mental_Rotation_scores
+```{r}
+fit.totaleffect=lm(Mental_Rotation_scores~Contrast_Sensitivity_Threshold,df2)
+summary(fit.totaleffect) 
+fit.Y5=lm(Mental_Rotation_scores~Masculine_hobbies+Contrast_Sensitivity_Threshold,df2)
+summary(fit.Y5)
+fit.M5=lm(Masculine_hobbies~Contrast_Sensitivity_Threshold,df2)
+summary(fit.M5) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M) 
+# Step #3: The effect of the mediator on the dependent variable
+ # The mediator has a significant effect (p<.05) on the dv. 
+# Step #4: Causal Mediation Analysis
+results5 = mediate(fit.M5, fit.Y5, treat='Contrast_Sensitivity_Threshold', mediator='Masculine_hobbies') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. 
+summary(results5)
+```
