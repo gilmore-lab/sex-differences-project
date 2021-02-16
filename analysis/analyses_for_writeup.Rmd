@@ -59,9 +59,29 @@ df1 <- df1 %>%
                 'vocab_num' = 'Vocabulary_scores_cor_num')
 ```
 
+### Identify missing threshold values 
+
+```{r}
+missing_motion <- is.na(df1$motion_dur_thr)
+missing_contrast <- is.na(df1$contrast_thr)
+
+case_ids <- 1:dim(df1)[1]
+```
+
+There are `r sum(missing_motion)` NAs for `motion_dur_thr`, (cases `r case_ids[missing_motion]`) and `r sum(missing_contrast)` for `contrast_thr`, (cases `r case_ids[missing_contrast]`). 
+We exclude them for now.
+
+```{r}
+df1 <- df1 %>%
+  dplyr::filter(., !is.na(motion_dur_thr),
+                !is.na(contrast_thr))
+```
+
+These leaves us with $n=$ `r dim(df1)[1]` cases.
+
 ### Exclude outliers
 
-Detect outliers `r params$outlier_sd_thresh` SD from the grouped mean.
+We detect outliers `r params$outlier_sd_thresh` SD from the grouped mean.
 
 ```{r}
 # define a function to remove outliers
@@ -130,18 +150,20 @@ df1$contrast_thr[outliers[['contrast_thr']]]
 Exclude the outliers and create a new data frame.
 
 ```{r}
-df2 <- df1
-df2$contrast_thr[outliers[['contrast_thr']]] <- NA
-df2$motion_dur_thr[outliers[['motion_dur_thr']]] <- NA
+#df2 <- df1
+# df2$contrast_thr[outliers[['contrast_thr']]] <- NA
+# df2$motion_dur_thr[outliers[['motion_dur_thr']]] <- NA
+
+df2 <- df1[-c(outliers[['contrast_thr']], outliers[['motion_dur_thr']]),]
 ```
 
-There were `r length(df2$motion_thr[outliers[['motion_thr']]])` outliers in the motion duration threshold measure, and `r length(df2$contrast_thr[outliers[['contrast_thr']]])` outliers in the contrast threshold measure.
+There were `r length(outliers[['motion_dur_thr']])` outliers in the motion duration threshold measure (cases `r outliers[['motion_dur_thr']]`), and `r length(outliers[['contrast_thr']])` outliers in the contrast threshold measure (cases `r outliers[['contrast_thr']]`).
+The total number of participants excluding these outliers is $n=$ `r dim(df2)[1]`.
 
 ### Check distributions
 
 Do the data follow a normal distribution?
-
-Use Shapiro-Wilk normality test, `shapiro.test()`. 
+We use the Shapiro-Wilk normality test, `shapiro.test()` to answer.
 
 ```{r}
 # Shapiro-Wilk normality test 
@@ -184,7 +206,7 @@ df2 <- df2 %>%
                 log_contrast = log(contrast_thr))
 ```
 
-## T-tests: Comparisons between sexes
+## Comparisons between sexes
 
 Here is our pre-registered description of how we planned to compare sex differences:
 
@@ -204,7 +226,8 @@ mdt_tt
 ```
 
 We found sex differences in log(`motion_dur_thr`). 
-Males took significantly shorter time to detect the direction of motion than females. 
+Males took significantly shorter time (had lower log threshold) to detect the direction of motion than did females.
+Specifically, males had a mean duration threshold of `r mean(df2$motion_dur_thr[df2$Sex == 'Males'])` versus `r mean(df2$motion_dur_thr[df2$Sex == 'Females'])` for females.
 
 ### log(contrast_thr)
 
@@ -217,8 +240,8 @@ t.test(
 ) #Hypothesized
 ```
 
-Log transformed `contrast_thr` data show the predicted sex differences. 
-Males detect the stimuli with lower contrast than females. 
+We found sex differences in log(`contrast_thr`), as well. 
+Males detect the grating stimuli with lower contrast than females. 
 
 ### Mental rotation
 
@@ -311,7 +334,7 @@ We found that males have higher interest scores in male-typed hobbies than femal
 
 All predicted findings about sex differences, and the lack of sex differences, were confirmed.
 
-## Correlation within Sex
+## Correlations among measures
 
 ### Pregistered analysis plan
 
@@ -339,9 +362,11 @@ options(digits=2)
 
 This gives us $n=$ `r dim(df_complete)[1]` complete cases.
 
+We note that case 78 has threshold measures for motion and contrast but no data from the mental rotation, vocabulary, or hobbies measures.
+
 ### Females
 
-Select the females and focus on the numeric scores.
+Select the females, focus on the numeric scores, and calculate a correlation matrix.
 
 ```{r}
 df_complete_F <- df_complete %>%

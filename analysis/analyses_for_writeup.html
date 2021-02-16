@@ -281,7 +281,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for write-up</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-02-16 09:10:21</h4>
+<h4 class="date">2021-02-16 11:55:26</h4>
 
 </div>
 
@@ -334,9 +334,21 @@ df1 &lt;- readr::read_csv(file.path(params$data_path, params$csv_fn)) </code></p
                 &#39;vocab&#39; = &#39;Vocabulary_scores&#39;,
                 &#39;vocab_num&#39; = &#39;Vocabulary_scores_cor_num&#39;)</code></pre>
 </div>
+<div id="identify-missing-threshold-values" class="section level3">
+<h3>Identify missing threshold values</h3>
+<pre class="r"><code>missing_motion &lt;- is.na(df1$motion_dur_thr)
+missing_contrast &lt;- is.na(df1$contrast_thr)
+
+case_ids &lt;- 1:dim(df1)[1]</code></pre>
+<p>There are 4 NAs for <code>motion_dur_thr</code>, (cases 129, 130, 131, 132) and 2 for <code>contrast_thr</code>, (cases 6, 11). We exclude them for now.</p>
+<pre class="r"><code>df1 &lt;- df1 %&gt;%
+  dplyr::filter(., !is.na(motion_dur_thr),
+                !is.na(contrast_thr))</code></pre>
+<p>These leaves us with <span class="math inline">\(n=\)</span> 126 cases.</p>
+</div>
 <div id="exclude-outliers" class="section level3">
 <h3>Exclude outliers</h3>
-<p>Detect outliers 3 SD from the grouped mean.</p>
+<p>We detect outliers 3 SD from the grouped mean.</p>
 <pre class="r"><code># define a function to remove outliers
 FindOutliers &lt;- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh)) {
   sd = sd(data, na.rm = T)
@@ -363,7 +375,7 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 ## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
 ## na.rm): argument is not numeric or logical: returning NA</code></pre>
 <pre><code>## integer(0)
-## [1]  1 21 56
+## [1]  1 19 54
 ## integer(0)</code></pre>
 <pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
 ## na.rm): NAs introduced by coercion
@@ -373,11 +385,11 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 <pre><code>## integer(0)
 ## integer(0)
 ## integer(0)
-## [1]  39  59 104
-## [1] 82 92
-## [1] 42 47 79
-## [1] 125 128
-## [1]  16 129
+## [1]  37  57 102
+## [1] 80 90
+## [1] 40 45 77
+## [1] 123 126
+## [1]  4 14
 ## integer(0)
 ## integer(0)
 ## integer(0)
@@ -395,7 +407,7 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 ## integer(0)
 ## 
 ## $Age
-## [1]  1 21 56
+## [1]  1 19 54
 ## 
 ## $School_year
 ## integer(0)
@@ -410,19 +422,19 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 ## integer(0)
 ## 
 ## $Acuity
-## [1]  39  59 104
+## [1]  37  57 102
 ## 
 ## $Color_vision
-## [1] 82 92
+## [1] 80 90
 ## 
 ## $Stereo
-## [1] 42 47 79
+## [1] 40 45 77
 ## 
 ## $motion_dur_thr
-## [1] 125 128
+## [1] 123 126
 ## 
 ## $contrast_thr
-## [1]  16 129
+## [1]  4 14
 ## 
 ## $vocab
 ## integer(0)
@@ -448,16 +460,14 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
   aes(y = motion_dur_thr, x = Sex) +
   geom_violin() +
   ggtitle(&#39;Motion threshold by sex: All participants&#39;)</code></pre>
-<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_ydensity).</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Excluding outliers.</p>
 <pre class="r"><code>df1[-outliers[[&#39;motion_dur_thr&#39;]],] %&gt;%
   ggplot(.) +
   aes(y = motion_dur_thr, x = Sex) +
   geom_violin() +
   ggtitle(&#39;Motion threshold by sex: Outliers excluded&#39;)</code></pre>
-<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_ydensity).</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>df1$motion_dur_thr[outliers[[&#39;motion_dur_thr&#39;]]]</code></pre>
 <pre><code>## [1] 0.4219021 0.2371627</code></pre>
 <p>Contrast threshold with all participants.</p>
@@ -466,28 +476,27 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
   aes(y = contrast_thr, x = Sex) +
   geom_violin() +
   ggtitle(&#39;Contrast threshold by sex: All participants&#39;)</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_ydensity).</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Excluding outliers</p>
 <pre class="r"><code>df1[-outliers[[&#39;contrast_thr&#39;]],] %&gt;%
   ggplot(.) +
   aes(y = contrast_thr, x = Sex) +
   geom_violin() +
   ggtitle(&#39;Contrast threshold by sex: Outliers excluded&#39;)</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_ydensity).</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>df1$contrast_thr[outliers[[&#39;contrast_thr&#39;]]]</code></pre>
-<pre><code>## [1] 0.2772047 0.2834012</code></pre>
+<pre><code>## [1] 0.2726373 0.2772047</code></pre>
 <p>Exclude the outliers and create a new data frame.</p>
-<pre class="r"><code>df2 &lt;- df1
-df2$contrast_thr[outliers[[&#39;contrast_thr&#39;]]] &lt;- NA
-df2$motion_dur_thr[outliers[[&#39;motion_dur_thr&#39;]]] &lt;- NA</code></pre>
-<p>There were 0 outliers in the motion duration threshold measure, and 2 outliers in the contrast threshold measure.</p>
+<pre class="r"><code>#df2 &lt;- df1
+# df2$contrast_thr[outliers[[&#39;contrast_thr&#39;]]] &lt;- NA
+# df2$motion_dur_thr[outliers[[&#39;motion_dur_thr&#39;]]] &lt;- NA
+
+df2 &lt;- df1[-c(outliers[[&#39;contrast_thr&#39;]], outliers[[&#39;motion_dur_thr&#39;]]),]</code></pre>
+<p>There were 2 outliers in the motion duration threshold measure (cases 123, 126), and 2 outliers in the contrast threshold measure (cases 4, 14). The total number of participants excluding these outliers is <span class="math inline">\(n=\)</span> 122.</p>
 </div>
 <div id="check-distributions" class="section level3">
 <h3>Check distributions</h3>
-<p>Do the data follow a normal distribution?</p>
-<p>Use Shapiro-Wilk normality test, <code>shapiro.test()</code>.</p>
+<p>Do the data follow a normal distribution? We use the Shapiro-Wilk normality test, <code>shapiro.test()</code> to answer.</p>
 <pre class="r"><code># Shapiro-Wilk normality test 
 this_var &lt;- c(&quot;vocab&quot;,
              &quot;mental_rot&quot;,
@@ -536,10 +545,10 @@ sw_p_val
 vocab
 </td>
 <td style="text-align:left;">
-0.978852
+0.9778826
 </td>
 <td style="text-align:left;">
-0.03864609
+0.04375178
 </td>
 </tr>
 <tr>
@@ -547,10 +556,10 @@ vocab
 mental_rot
 </td>
 <td style="text-align:left;">
-0.979328
+0.9779955
 </td>
 <td style="text-align:left;">
-0.04313858
+0.04482522
 </td>
 </tr>
 <tr>
@@ -558,10 +567,10 @@ mental_rot
 Feminine_hobbies
 </td>
 <td style="text-align:left;">
-0.9825442
+0.9799577
 </td>
 <td style="text-align:left;">
-0.09098377
+0.06838952
 </td>
 </tr>
 <tr>
@@ -569,10 +578,10 @@ Feminine_hobbies
 Masculine_hobbies
 </td>
 <td style="text-align:left;">
-0.9939924
+0.9934831
 </td>
 <td style="text-align:left;">
-0.8568382
+0.8485429
 </td>
 </tr>
 <tr>
@@ -580,10 +589,10 @@ Masculine_hobbies
 contrast_thr
 </td>
 <td style="text-align:left;">
-0.8261428
+0.8338595
 </td>
 <td style="text-align:left;">
-5.362356e-11
+2.094765e-10
 </td>
 </tr>
 <tr>
@@ -591,10 +600,10 @@ contrast_thr
 motion_dur_thr
 </td>
 <td style="text-align:left;">
-0.857625
+0.8713644
 </td>
 <td style="text-align:left;">
-1.170354e-09
+7.012649e-09
 </td>
 </tr>
 </tbody>
@@ -608,8 +617,8 @@ motion_dur_thr
                 log_contrast = log(contrast_thr))</code></pre>
 </div>
 </div>
-<div id="t-tests-comparisons-between-sexes" class="section level2">
-<h2>T-tests: Comparisons between sexes</h2>
+<div id="comparisons-between-sexes" class="section level2">
+<h2>Comparisons between sexes</h2>
 <p>Here is our pre-registered description of how we planned to compare sex differences:</p>
 <blockquote>
 <p>To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at <span class="math inline">\(\alpha\)</span>=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s <span class="math inline">\(d\)</span>) at the <span class="math inline">\(p\)</span> value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at WRONG URL! shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our <span class="math inline">\(t\)</span> tests, we set the effect sizes at .5.</p>
@@ -628,14 +637,14 @@ mdt_tt</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  log_motion by Sex
-## t = 3.7359, df = 124, p-value = 0.000142
+## t = 4.4959, df = 120, p-value = 8.044e-06
 ## alternative hypothesis: true difference in means is greater than 0
 ## 95 percent confidence interval:
-##  0.089656      Inf
+##  0.1183739       Inf
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##             -2.293820             -2.454955</code></pre>
-<p>We found sex differences in log(<code>motion_dur_thr</code>). Males took significantly shorter time to detect the direction of motion than females.</p>
+##             -2.294463             -2.481972</code></pre>
+<p>We found sex differences in log(<code>motion_dur_thr</code>). Males took significantly shorter time (had lower log threshold) to detect the direction of motion than did females. Specifically, males had a mean duration threshold of 0.0856819 versus 0.1027578 for females.</p>
 </div>
 <div id="logcontrast_thr" class="section level3">
 <h3>log(contrast_thr)</h3>
@@ -649,14 +658,14 @@ mdt_tt</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  log_contrast by Sex
-## t = 2.3409, df = 126, p-value = 0.0104
+## t = 3.0455, df = 120, p-value = 0.001428
 ## alternative hypothesis: true difference in means is greater than 0
 ## 95 percent confidence interval:
-##  0.02259136        Inf
+##  0.04516994        Inf
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##             -1.750928             -1.828258</code></pre>
-<p>Log transformed <code>contrast_thr</code> data show the predicted sex differences. Males detect the stimuli with lower contrast than females.</p>
+##             -1.747365             -1.846487</code></pre>
+<p>We found sex differences in log(<code>contrast_thr</code>), as well. Males detect the grating stimuli with lower contrast than females.</p>
 </div>
 <div id="mental-rotation" class="section level3">
 <h3>Mental rotation</h3>
@@ -670,13 +679,13 @@ mdt_tt</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  mental_rot by Sex
-## t = -2.7478, df = 129, p-value = 0.003429
+## t = -2.7034, df = 119, p-value = 0.003934
 ## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
-##       -Inf -1.373374
+##       -Inf -1.332008
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##              26.20792              29.66667</code></pre>
+##              26.52174              29.96552</code></pre>
 <p>Sex differences in mental rotation test were found. Males had significantly more correct answers in the mental rotation task than females.</p>
 <div id="supplemental" class="section level4">
 <h4>Supplemental</h4>
@@ -691,13 +700,13 @@ mdt_tt</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  mental_rot_both by Sex
-## t = -2.9895, df = 129, p-value = 0.001673
+## t = -2.9607, df = 119, p-value = 0.001853
 ## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
-##       -Inf -1.274324
+##       -Inf -1.266812
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##              8.841584             11.700000</code></pre>
+##              9.086957             11.965517</code></pre>
 <p>This comparison also shows higher performance in males.</p>
 </div>
 </div>
@@ -715,13 +724,13 @@ advoc_total_t</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  vocab by Sex
-## t = -0.74845, df = 129, p-value = 0.2278
+## t = -0.98084, df = 119, p-value = 0.1643
 ## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
-##       -Inf 0.9111823
+##       -Inf 0.7008859
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##              9.165842              9.916667</code></pre>
+##              9.070652             10.086207</code></pre>
 <p>Vocabulary was a control variable in the study. As we predicted, the vocabulary score did not differ between males and females.</p>
 <div id="supplemental-1" class="section level4">
 <h4>Supplemental</h4>
@@ -738,13 +747,13 @@ advoc_total_t</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  vocab_num by Sex
-## t = -0.66033, df = 129, p-value = 0.2551
+## t = -0.83846, df = 119, p-value = 0.2017
 ## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
-##       -Inf 0.8386487
+##       -Inf 0.7215078
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##              13.91089              14.46667</code></pre>
+##              13.84783              14.58621</code></pre>
 <p>This measure also shows no evidence of sex differences.</p>
 </div>
 </div>
@@ -760,13 +769,13 @@ advoc_total_t</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  Feminine_hobbies by Sex
-## t = 4.8717, df = 129, p-value = 1.592e-06
+## t = 4.5427, df = 119, p-value = 6.704e-06
 ## alternative hypothesis: true difference in means is greater than 0
 ## 95 percent confidence interval:
-##  0.2887051       Inf
+##  0.2690788       Inf
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##              3.602397              3.164912</code></pre>
+##              3.596110              3.172414</code></pre>
 <p>We found that females had higher interest scores in female-typed hobbies than males.</p>
 </div>
 <div id="masculine-hobbies" class="section level3">
@@ -781,13 +790,13 @@ advoc_total_t</code></pre>
 ##  Two Sample t-test
 ## 
 ## data:  Masculine_hobbies by Sex
-## t = -7.422, df = 129, p-value = 6.896e-12
+## t = -7.0781, df = 119, p-value = 5.48e-11
 ## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
-##        -Inf -0.5307975
+##        -Inf -0.5231186
 ## sample estimates:
 ## mean in group Females   mean in group Males 
-##              2.797619              3.480952</code></pre>
+##              2.798007              3.481117</code></pre>
 <p>We found that males have higher interest scores in male-typed hobbies than females.</p>
 </div>
 <div id="summary" class="section level3">
@@ -795,8 +804,8 @@ advoc_total_t</code></pre>
 <p>All predicted findings about sex differences, and the lack of sex differences, were confirmed.</p>
 </div>
 </div>
-<div id="correlation-within-sex" class="section level2">
-<h2>Correlation within Sex</h2>
+<div id="correlations-among-measures" class="section level2">
+<h2>Correlations among measures</h2>
 <div id="pregistered-analysis-plan" class="section level3">
 <h3>Pregistered analysis plan</h3>
 <blockquote>
@@ -817,11 +826,12 @@ df_complete &lt;- df_corr[stats::complete.cases(df_corr),]
 
 # Set the number of digits to display in the tables
 options(digits=2)</code></pre>
-<p>This gives us <span class="math inline">\(n=\)</span> 122 complete cases.</p>
+<p>This gives us <span class="math inline">\(n=\)</span> 121 complete cases.</p>
+<p>We note that case 78 has threshold measures for motion and contrast but no data from the mental rotation, vocabulary, or hobbies measures.</p>
 </div>
 <div id="females" class="section level3">
 <h3>Females</h3>
-<p>Select the females and focus on the numeric scores.</p>
+<p>Select the females, focus on the numeric scores, and calculate a correlation matrix.</p>
 <pre class="r"><code>df_complete_F &lt;- df_complete %&gt;%
   dplyr::filter(., Sex == &#39;Females&#39;) 
 
@@ -867,7 +877,7 @@ corr_F &lt;- Hmisc::rcorr(as.matrix(df_corr_F), type = c(&quot;pearson&quot;))</
 <pre class="r"><code># Get some colors
 col &lt;- colorRampPalette(c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))(20)
 heatmap(x = corr_F$r, col = col, symm = TRUE)</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 </div>
 <div id="males" class="section level3">
@@ -884,41 +894,41 @@ corr_M &lt;- Hmisc::rcorr(as.matrix(df_corr_m), type = c(&quot;pearson&quot;))</
 <h4>Coefficients</h4>
 <pre class="r"><code>corr_M$r</code></pre>
 <pre><code>##                   log_motion log_contrast mental_rot  vocab Feminine_hobbies
-## log_motion             1.000        0.407      0.120 -0.209           -0.024
-## log_contrast           0.407        1.000     -0.244 -0.201            0.085
-## mental_rot             0.120       -0.244      1.000 -0.171            0.155
-## vocab                 -0.209       -0.201     -0.171  1.000           -0.124
-## Feminine_hobbies      -0.024        0.085      0.155 -0.124            1.000
-## Masculine_hobbies      0.155        0.149     -0.036 -0.035            0.424
+## log_motion             1.000       -0.050      0.342 -0.138            0.033
+## log_contrast          -0.050        1.000     -0.071 -0.111            0.236
+## mental_rot             0.342       -0.071      1.000 -0.227            0.136
+## vocab                 -0.138       -0.111     -0.227  1.000           -0.142
+## Feminine_hobbies       0.033        0.236      0.136 -0.142            1.000
+## Masculine_hobbies      0.190        0.232     -0.038 -0.036            0.425
 ##                   Masculine_hobbies
-## log_motion                    0.155
-## log_contrast                  0.149
-## mental_rot                   -0.036
-## vocab                        -0.035
-## Feminine_hobbies              0.424
+## log_motion                    0.190
+## log_contrast                  0.232
+## mental_rot                   -0.038
+## vocab                        -0.036
+## Feminine_hobbies              0.425
 ## Masculine_hobbies             1.000</code></pre>
 </div>
 <div id="p-values-1" class="section level4">
 <h4>P values</h4>
 <pre class="r"><code>corr_M$P</code></pre>
 <pre><code>##                   log_motion log_contrast mental_rot vocab Feminine_hobbies
-## log_motion                NA        0.026       0.53  0.27             0.90
-## log_contrast           0.026           NA       0.19  0.29             0.65
-## mental_rot             0.526        0.193         NA  0.37             0.41
-## vocab                  0.267        0.286       0.37    NA             0.51
-## Feminine_hobbies       0.899        0.653       0.41  0.51               NA
-## Masculine_hobbies      0.415        0.430       0.85  0.85             0.02
+## log_motion                NA         0.80       0.07  0.47            0.865
+## log_contrast            0.80           NA       0.71  0.57            0.217
+## mental_rot              0.07         0.71         NA  0.24            0.481
+## vocab                   0.47         0.57       0.24    NA            0.461
+## Feminine_hobbies        0.87         0.22       0.48  0.46               NA
+## Masculine_hobbies       0.32         0.23       0.84  0.85            0.022
 ##                   Masculine_hobbies
-## log_motion                     0.41
-## log_contrast                   0.43
-## mental_rot                     0.85
-## vocab                          0.85
-## Feminine_hobbies               0.02
+## log_motion                    0.324
+## log_contrast                  0.226
+## mental_rot                    0.844
+## vocab                         0.853
+## Feminine_hobbies              0.022
 ## Masculine_hobbies                NA</code></pre>
 <pre class="r"><code># Get some colors
 col &lt;- colorRampPalette(c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))(20)
 heatmap(x = corr_M$r, col = col, symm = TRUE)</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 </div>
 <div id="overall" class="section level3">
@@ -932,41 +942,41 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_complete_numeric), type = c(&quot;pears
 <h4>Coefficients</h4>
 <pre class="r"><code>corr_all$r</code></pre>
 <pre><code>##                   log_motion log_contrast mental_rot  vocab Feminine_hobbies
-## log_motion              1.00         0.29     -0.221 -0.205             0.23
-## log_contrast            0.29         1.00     -0.282 -0.107             0.12
-## mental_rot             -0.22        -0.28      1.000  0.021            -0.26
-## vocab                  -0.21        -0.11      0.021  1.000            -0.12
-## Feminine_hobbies        0.23         0.12     -0.262 -0.119             1.00
-## Masculine_hobbies      -0.13        -0.22      0.075  0.059             0.15
+## log_motion              1.00        0.236     -0.204 -0.191             0.27
+## log_contrast            0.24        1.000     -0.268 -0.089             0.15
+## mental_rot             -0.20       -0.268      1.000  0.013            -0.27
+## vocab                  -0.19       -0.089      0.013  1.000            -0.13
+## Feminine_hobbies        0.27        0.149     -0.275 -0.129             1.00
+## Masculine_hobbies      -0.16       -0.248      0.084  0.067             0.16
 ##                   Masculine_hobbies
-## log_motion                   -0.129
-## log_contrast                 -0.215
-## mental_rot                    0.075
-## vocab                         0.059
-## Feminine_hobbies              0.146
+## log_motion                   -0.160
+## log_contrast                 -0.248
+## mental_rot                    0.084
+## vocab                         0.067
+## Feminine_hobbies              0.157
 ## Masculine_hobbies             1.000</code></pre>
 </div>
 <div id="p-values-2" class="section level4">
 <h4>P-values</h4>
 <pre class="r"><code>corr_all$P</code></pre>
 <pre><code>##                   log_motion log_contrast mental_rot vocab Feminine_hobbies
-## log_motion                NA       0.0011     0.0145 0.023           0.0122
-## log_contrast          0.0011           NA     0.0016 0.242           0.2044
-## mental_rot            0.0145       0.0016         NA 0.821           0.0035
-## vocab                 0.0235       0.2419     0.8209    NA           0.1914
-## Feminine_hobbies      0.0122       0.2044     0.0035 0.191               NA
-## Masculine_hobbies     0.1556       0.0174     0.4110 0.517           0.1081
+## log_motion                NA       0.0091     0.0250 0.036           0.0031
+## log_contrast          0.0091           NA     0.0029 0.332           0.1017
+## mental_rot            0.0250       0.0029         NA 0.885           0.0023
+## vocab                 0.0360       0.3320     0.8850    NA           0.1597
+## Feminine_hobbies      0.0031       0.1017     0.0023 0.160               NA
+## Masculine_hobbies     0.0794       0.0062     0.3602 0.468           0.0861
 ##                   Masculine_hobbies
-## log_motion                    0.156
-## log_contrast                  0.017
-## mental_rot                    0.411
-## vocab                         0.517
-## Feminine_hobbies              0.108
+## log_motion                   0.0794
+## log_contrast                 0.0062
+## mental_rot                   0.3602
+## vocab                        0.4678
+## Feminine_hobbies             0.0861
 ## Masculine_hobbies                NA</code></pre>
 <pre class="r"><code># Get some colors
 col &lt;- colorRampPalette(c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))(20)
 heatmap(x = corr_all$r, col = col, symm = TRUE)</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -1130,37 +1140,37 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
-0.29
+0.24
 </td>
 <td style="text-align:right;">
-0.00
+0.01
 </td>
 <td style="text-align:right;">
-122
+121
 </td>
 <td style="text-align:left;">
 Both
 </td>
 <td style="text-align:left;">
-***
+**
 </td>
 </tr>
 <tr>
 <td style="text-align:right;">
-0.41
+-0.05
 </td>
 <td style="text-align:right;">
-0.03
+0.80
 </td>
 <td style="text-align:right;">
-30
+29
 </td>
 <td style="text-align:left;">
 Males
 </td>
 <td style="text-align:left;">
-<ul>
-<li></td>
+ns
+</td>
 </tr>
 <tr>
 <td style="text-align:right;">
@@ -1180,8 +1190,7 @@ ns
 </td>
 </tr>
 </tbody>
-</table></li>
-</ul>
+</table>
 </div>
 <div id="motion-sensitivity-mental-rotation" class="section level2">
 <h2>Motion sensitivity &amp; Mental rotation</h2>
@@ -1230,13 +1239,13 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
--0.22
+-0.20
 </td>
 <td style="text-align:right;">
-0.01
+0.03
 </td>
 <td style="text-align:right;">
-122
+121
 </td>
 <td style="text-align:left;">
 Both
@@ -1247,13 +1256,13 @@ Both
 </tr>
 <tr>
 <td style="text-align:right;">
-0.12
+0.34
 </td>
 <td style="text-align:right;">
-0.53
+0.07
 </td>
 <td style="text-align:right;">
-30
+29
 </td>
 <td style="text-align:left;">
 Males
@@ -1330,13 +1339,13 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
--0.21
+-0.19
 </td>
 <td style="text-align:right;">
-0.02
+0.04
 </td>
 <td style="text-align:right;">
-122
+121
 </td>
 <td style="text-align:left;">
 Both
@@ -1347,13 +1356,13 @@ Both
 </tr>
 <tr>
 <td style="text-align:right;">
--0.21
+-0.14
 </td>
 <td style="text-align:right;">
-0.27
+0.47
 </td>
 <td style="text-align:right;">
-30
+29
 </td>
 <td style="text-align:left;">
 Males
@@ -1405,7 +1414,7 @@ sex_diff_scatter(
 )</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <pre class="r"><code>sex_diff_corr_summ(&quot;log_motion&quot;, &quot;Feminine_hobbies&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -1430,30 +1439,30 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
-0.23
+0.27
 </td>
 <td style="text-align:right;">
-0.01
+0.00
 </td>
 <td style="text-align:right;">
-122
+121
 </td>
 <td style="text-align:left;">
 Both
 </td>
 <td style="text-align:left;">
-<ul>
-<li></td>
+***
+</td>
 </tr>
 <tr>
 <td style="text-align:right;">
--0.02
+0.03
 </td>
 <td style="text-align:right;">
-0.90
+0.87
 </td>
 <td style="text-align:right;">
-30
+29
 </td>
 <td style="text-align:left;">
 Males
@@ -1480,8 +1489,7 @@ ns
 </td>
 </tr>
 </tbody>
-</table></li>
-</ul>
+</table>
 </div>
 <div id="contrast-sensitivity-mental-rotation" class="section level2">
 <h2>Contrast sensitivity &amp; mental rotation</h2>
@@ -1530,13 +1538,13 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
--0.28
+-0.27
 </td>
 <td style="text-align:right;">
 0.00
 </td>
 <td style="text-align:right;">
-122
+121
 </td>
 <td style="text-align:left;">
 Both
@@ -1547,13 +1555,13 @@ Both
 </tr>
 <tr>
 <td style="text-align:right;">
--0.24
+-0.07
 </td>
 <td style="text-align:right;">
-0.19
+0.71
 </td>
 <td style="text-align:right;">
-30
+29
 </td>
 <td style="text-align:left;">
 Males
@@ -1630,30 +1638,30 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
--0.22
+-0.25
 </td>
 <td style="text-align:right;">
-0.02
+0.01
 </td>
 <td style="text-align:right;">
-122
+121
 </td>
 <td style="text-align:left;">
 Both
 </td>
 <td style="text-align:left;">
-<ul>
-<li></td>
+**
+</td>
 </tr>
 <tr>
 <td style="text-align:right;">
-0.15
+0.23
 </td>
 <td style="text-align:right;">
-0.43
+0.23
 </td>
 <td style="text-align:right;">
-30
+29
 </td>
 <td style="text-align:left;">
 Males
@@ -1680,8 +1688,7 @@ ns
 </td>
 </tr>
 </tbody>
-</table></li>
-</ul>
+</table>
 </div>
 <div id="masculine-and-feminine-hobbies" class="section level2">
 <h2>Masculine and Feminine hobbies</h2>
@@ -1725,13 +1732,13 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
-0.15
+0.16
 </td>
 <td style="text-align:right;">
-0.11
+0.09
 </td>
 <td style="text-align:right;">
-122
+121
 </td>
 <td style="text-align:left;">
 Both
@@ -1742,13 +1749,13 @@ ns
 </tr>
 <tr>
 <td style="text-align:right;">
-0.42
+0.43
 </td>
 <td style="text-align:right;">
 0.02
 </td>
 <td style="text-align:right;">
-30
+29
 </td>
 <td style="text-align:left;">
 Males
@@ -1794,19 +1801,19 @@ summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -12.153  -4.216   0.081   4.374  13.786 
+## -12.549  -3.555  -0.106   4.269  13.518 
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)         38.73       3.99    9.71   &lt;2e-16 ***
-## Feminine_hobbies    -3.35       1.13   -2.97   0.0036 ** 
+## (Intercept)         39.82       4.04    9.86   &lt;2e-16 ***
+## Feminine_hobbies    -3.57       1.14   -3.12   0.0023 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6 on 129 degrees of freedom
+## Residual standard error: 5.9 on 119 degrees of freedom
 ##   (1 observation deleted due to missingness)
-## Multiple R-squared:  0.0639, Adjusted R-squared:  0.0566 
-## F-statistic:  8.8 on 1 and 129 DF,  p-value: 0.00359</code></pre>
+## Multiple R-squared:  0.0755, Adjusted R-squared:  0.0678 
+## F-statistic: 9.72 on 1 and 119 DF,  p-value: 0.00228</code></pre>
 <pre class="r"><code># Step #2: The effect of the IV onto the mediator
 # To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
 fit.mediator = lm(motion_dur_thr ~ Feminine_hobbies, df2)
@@ -1817,19 +1824,19 @@ summary(fit.mediator) # the total effect of f hobbies on our MRT is significant 
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -0.04081 -0.01350 -0.00504  0.00588  0.09419 
+## -0.04073 -0.01301 -0.00455  0.00699  0.09107 
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)       0.06331    0.01605    3.94  0.00013 ***
-## Feminine_hobbies  0.01034    0.00456    2.27  0.02500 *  
+## (Intercept)       0.05567    0.01528    3.64   0.0004 ***
+## Feminine_hobbies  0.01228    0.00433    2.83   0.0054 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.024 on 123 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.0402, Adjusted R-squared:  0.0324 
-## F-statistic: 5.15 on 1 and 123 DF,  p-value: 0.025</code></pre>
+## Residual standard error: 0.022 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0632, Adjusted R-squared:  0.0553 
+## F-statistic: 8.03 on 1 and 119 DF,  p-value: 0.00541</code></pre>
 <pre class="r"><code># Step #3: The effect of the mediator on the dependent variable
 fit.dv = lm(mental_rot ~ motion_dur_thr + Feminine_hobbies, df2)
 summary(fit.dv) # The mediator has a significant effect (p&lt;.05) on the dv.</code></pre>
@@ -1839,21 +1846,21 @@ summary(fit.dv) # The mediator has a significant effect (p&lt;.05) on the dv.</c
 ##     data = df2)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -12.375  -3.817  -0.177   3.797  15.571 
+##    Min     1Q Median     3Q    Max 
+## -12.31  -4.03  -0.12   4.00  15.01 
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)         42.25       4.18   10.11   &lt;2e-16 ***
-## motion_dur_thr     -48.40      22.11   -2.19    0.030 *  
-## Feminine_hobbies    -2.91       1.14   -2.55    0.012 *  
+## (Intercept)         42.13       4.22    9.98   &lt;2e-16 ***
+## motion_dur_thr     -41.47      24.02   -1.73    0.087 .  
+## Feminine_hobbies    -3.06       1.17   -2.61    0.010 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 5.8 on 122 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.104,  Adjusted R-squared:  0.0891 
-## F-statistic: 7.06 on 2 and 122 DF,  p-value: 0.00125</code></pre>
+## Residual standard error: 5.9 on 118 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0983, Adjusted R-squared:  0.083 
+## F-statistic: 6.43 on 2 and 118 DF,  p-value: 0.00223</code></pre>
 <pre class="r"><code># Step #4: Causal Mediation Analysis
 results = mediate(fit.mediator, fit.dv, treat = &#39;Feminine_hobbies&#39;, mediator =
                     &#39;motion_dur_thr&#39;) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
@@ -1863,15 +1870,15 @@ summary(results)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                 Estimate 95% CI Lower 95% CI Upper p-value    
-## ACME           -4.84e-01    -1.24e+00         0.00   0.050 *  
-## ADE            -2.89e+00    -5.06e+00        -0.82   0.002 ** 
-## Total Effect   -3.37e+00    -5.53e+00        -1.33  &lt;2e-16 ***
-## Prop. Mediated  1.34e-01     3.44e-05         0.48   0.050 *  
+##                Estimate 95% CI Lower 95% CI Upper p-value   
+## ACME            -0.4980      -1.2384         0.09   0.106   
+## ADE             -3.0613      -5.3831        -0.82   0.006 **
+## Total Effect    -3.5593      -5.7750        -1.27   0.002 **
+## Prop. Mediated   0.1324      -0.0319         0.46   0.108   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Sample Size Used: 125 
+## Sample Size Used: 121 
 ## 
 ## 
 ## Simulations: 1000</code></pre>
@@ -1892,19 +1899,19 @@ summary(fit.totaleffect)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -0.4773 -0.1184 -0.0269  0.0814  0.7190 
+## -0.4759 -0.1244 -0.0248  0.0916  0.6405 
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)       -2.6995     0.1437  -18.79   &lt;2e-16 ***
-## Feminine_hobbies   0.1049     0.0408    2.57    0.011 *  
+## (Intercept)       -2.7581     0.1394  -19.78   &lt;2e-16 ***
+## Feminine_hobbies   0.1195     0.0395    3.02   0.0031 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.21 on 123 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.051,  Adjusted R-squared:  0.0433 
-## F-statistic: 6.61 on 1 and 123 DF,  p-value: 0.0113</code></pre>
+## Residual standard error: 0.2 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0713, Adjusted R-squared:  0.0635 
+## F-statistic: 9.14 on 1 and 119 DF,  p-value: 0.00307</code></pre>
 <pre class="r"><code>fit.Y = lm(log_motion ~ mental_rot + Feminine_hobbies, df_complete_F)
 summary(fit.Y)</code></pre>
 <pre><code>## 
@@ -1959,10 +1966,10 @@ summary(results1)</code></pre>
 ## Quasi-Bayesian Confidence Intervals
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME            0.03727      0.00474         0.08   0.020 *
-## ADE             0.04491     -0.05167         0.14   0.316  
-## Total Effect    0.08218     -0.00914         0.18   0.082 .
-## Prop. Mediated  0.41742     -1.53210         3.27   0.098 .
+## ACME            0.03720      0.00585         0.08   0.016 *
+## ADE             0.04579     -0.04483         0.13   0.344  
+## Total Effect    0.08299     -0.00292         0.17   0.056 .
+## Prop. Mediated  0.42176     -0.35248         3.22   0.072 .
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -1981,19 +1988,19 @@ summary(fit.totaleffect3)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -1.1080 -0.2322  0.0191  0.3455  1.0180 
+## -1.0995 -0.2664  0.0225  0.3478  1.0311 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    4.627      0.443   10.44   &lt;2e-16 ***
-## log_motion     0.486      0.189    2.57    0.011 *  
+## (Intercept)    4.891      0.464   10.55   &lt;2e-16 ***
+## log_motion     0.597      0.197    3.02   0.0031 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.46 on 123 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.051,  Adjusted R-squared:  0.0433 
-## F-statistic: 6.61 on 1 and 123 DF,  p-value: 0.0113</code></pre>
+## Residual standard error: 0.46 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0713, Adjusted R-squared:  0.0635 
+## F-statistic: 9.14 on 1 and 119 DF,  p-value: 0.00307</code></pre>
 <pre class="r"><code>fit.Y3 = lm(Feminine_hobbies ~ mental_rot + log_motion, df2)
 summary(fit.Y3)</code></pre>
 <pre><code>## 
@@ -2002,20 +2009,20 @@ summary(fit.Y3)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -1.1123 -0.2375  0.0075  0.3175  0.9938 
+## -1.1202 -0.2534  0.0031  0.3079  1.0066 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  4.84051    0.44221   10.95   &lt;2e-16 ***
-## mental_rot  -0.01706    0.00677   -2.52    0.013 *  
-## log_motion   0.37871    0.19007    1.99    0.049 *  
+## (Intercept)  5.12989    0.46197   11.10   &lt;2e-16 ***
+## mental_rot  -0.01770    0.00678   -2.61    0.010 *  
+## log_motion   0.49190    0.19682    2.50    0.014 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.45 on 122 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.0979, Adjusted R-squared:  0.0832 
-## F-statistic: 6.62 on 2 and 122 DF,  p-value: 0.00186</code></pre>
+## Residual standard error: 0.45 on 118 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.122,  Adjusted R-squared:  0.107 
+## F-statistic:  8.2 on 2 and 118 DF,  p-value: 0.000464</code></pre>
 <pre class="r"><code>fit.M3 = lm(mental_rot ~ log_motion, df2)
 summary(fit.M3) # the total effect of f hobbies on our MRT is significant (p&lt;.05).</code></pre>
 <pre><code>## 
@@ -2024,19 +2031,19 @@ summary(fit.M3) # the total effect of f hobbies on our MRT is significant (p&lt;
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -13.056  -3.953  -0.761   3.419  15.405 
+## -13.047  -3.951  -0.473   3.409  15.129 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)    12.53       5.78    2.17    0.032 *
-## log_motion     -6.31       2.47   -2.56    0.012 *
+## (Intercept)    13.51       6.12    2.21    0.029 *
+## log_motion     -5.91       2.60   -2.27    0.025 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6 on 123 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.0506, Adjusted R-squared:  0.0429 
-## F-statistic: 6.55 on 1 and 123 DF,  p-value: 0.0117</code></pre>
+## Residual standard error: 6 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0415, Adjusted R-squared:  0.0334 
+## F-statistic: 5.15 on 1 and 119 DF,  p-value: 0.025</code></pre>
 <pre class="r"><code># gvlma(fit.M)
 # Step #3: The effect of the mediator on the dependent variable
 # The mediator has a significant effect (p&lt;.05) on the dv.
@@ -2048,15 +2055,15 @@ summary(results3)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME            0.11064      0.00904         0.26   0.030 *
-## ADE             0.38900      0.01010         0.74   0.044 *
-## Total Effect    0.49965      0.12557         0.86   0.014 *
-## Prop. Mediated  0.20505      0.00885         0.86   0.044 *
+##                Estimate 95% CI Lower 95% CI Upper p-value   
+## ACME            0.10872      0.00620         0.26   0.036 * 
+## ADE             0.49616      0.10553         0.91   0.014 * 
+## Total Effect    0.60488      0.21747         1.00   0.004 **
+## Prop. Mediated  0.17256      0.00834         0.58   0.040 * 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Sample Size Used: 125 
+## Sample Size Used: 121 
 ## 
 ## 
 ## Simulations: 1000</code></pre>
@@ -2071,19 +2078,19 @@ summary(fit.totaleffect4)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -13.056  -3.953  -0.761   3.419  15.405 
+## -13.047  -3.951  -0.473   3.409  15.129 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)    12.53       5.78    2.17    0.032 *
-## log_motion     -6.31       2.47   -2.56    0.012 *
+## (Intercept)    13.51       6.12    2.21    0.029 *
+## log_motion     -5.91       2.60   -2.27    0.025 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6 on 123 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.0506, Adjusted R-squared:  0.0429 
-## F-statistic: 6.55 on 1 and 123 DF,  p-value: 0.0117</code></pre>
+## Residual standard error: 6 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0415, Adjusted R-squared:  0.0334 
+## F-statistic: 5.15 on 1 and 119 DF,  p-value: 0.025</code></pre>
 <pre class="r"><code>fit.Y4 = lm(mental_rot ~ Feminine_hobbies + log_motion, df2)
 summary(fit.Y4)</code></pre>
 <pre><code>## 
@@ -2092,20 +2099,20 @@ summary(fit.Y4)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -12.321  -4.191  -0.105   3.898  14.838 
+## -12.245  -4.320  -0.055   4.082  14.308 
 ## 
 ## Coefficients:
-##                  Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)         25.95       7.77    3.34   0.0011 **
-## Feminine_hobbies    -2.90       1.15   -2.52   0.0130 * 
-## log_motion          -4.90       2.48   -1.98   0.0502 . 
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         28.59       8.31    3.44  0.00081 ***
+## Feminine_hobbies    -3.08       1.18   -2.61  0.01023 *  
+## log_motion          -4.07       2.64   -1.54  0.12544    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 5.8 on 122 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.0975, Adjusted R-squared:  0.0827 
-## F-statistic: 6.59 on 2 and 122 DF,  p-value: 0.00191</code></pre>
+## Residual standard error: 5.9 on 118 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0938, Adjusted R-squared:  0.0785 
+## F-statistic: 6.11 on 2 and 118 DF,  p-value: 0.00299</code></pre>
 <pre class="r"><code>fit.M4 = lm(Feminine_hobbies ~ log_motion, df2)
 summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p&lt;.05).</code></pre>
 <pre><code>## 
@@ -2114,19 +2121,19 @@ summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p&lt;
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -1.1080 -0.2322  0.0191  0.3455  1.0180 
+## -1.0995 -0.2664  0.0225  0.3478  1.0311 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    4.627      0.443   10.44   &lt;2e-16 ***
-## log_motion     0.486      0.189    2.57    0.011 *  
+## (Intercept)    4.891      0.464   10.55   &lt;2e-16 ***
+## log_motion     0.597      0.197    3.02   0.0031 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.46 on 123 degrees of freedom
-##   (7 observations deleted due to missingness)
-## Multiple R-squared:  0.051,  Adjusted R-squared:  0.0433 
-## F-statistic: 6.61 on 1 and 123 DF,  p-value: 0.0113</code></pre>
+## Residual standard error: 0.46 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0713, Adjusted R-squared:  0.0635 
+## F-statistic: 9.14 on 1 and 119 DF,  p-value: 0.00307</code></pre>
 <pre class="r"><code># gvlma(fit.M)
 # Step #3: The effect of the mediator on the dependent variable
 # The mediator has a significant effect (p&lt;.05) on the dv.
@@ -2139,14 +2146,14 @@ summary(results4)</code></pre>
 ## Quasi-Bayesian Confidence Intervals
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            -1.3932      -3.2698        -0.12   0.034 * 
-## ADE             -4.9396      -9.4986        -0.13   0.040 * 
-## Total Effect    -6.3328     -11.1588        -1.72   0.006 **
-## Prop. Mediated   0.2108       0.0137         0.89   0.040 * 
+## ACME            -1.9278      -4.0586        -0.31   0.010 **
+## ADE             -3.9907      -8.9713         1.06   0.132   
+## Total Effect    -5.9185     -10.9544        -0.79   0.022 * 
+## Prop. Mediated   0.3083       0.0427         1.51   0.032 * 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Sample Size Used: 125 
+## Sample Size Used: 121 
 ## 
 ## 
 ## Simulations: 1000</code></pre>
@@ -2162,19 +2169,19 @@ summary(fit.totaleffect2) # As you can see, the total effect of f hobbies on our
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -12.484  -4.087   0.002   4.009  13.884 
+## -12.839  -3.614  -0.113   4.026  13.573 
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)         24.263      3.101    7.82  1.6e-12 ***
-## Masculine_hobbies    0.927      1.033    0.90     0.37    
+## (Intercept)         24.512      3.136    7.82  2.4e-12 ***
+## Masculine_hobbies    0.957      1.042    0.92     0.36    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6.2 on 129 degrees of freedom
+## Residual standard error: 6.1 on 119 degrees of freedom
 ##   (1 observation deleted due to missingness)
-## Multiple R-squared:  0.00619,    Adjusted R-squared:  -0.00151 
-## F-statistic: 0.804 on 1 and 129 DF,  p-value: 0.372</code></pre>
+## Multiple R-squared:  0.00704,    Adjusted R-squared:  -0.00131 
+## F-statistic: 0.844 on 1 and 119 DF,  p-value: 0.36</code></pre>
 <pre class="r"><code># Step #2: The effect of the IV onto the mediator
 # To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
 fit.m2 = lm(log_contrast ~ Masculine_hobbies, df2)
@@ -2185,19 +2192,19 @@ summary(fit.m2) # the total effect of f hobbies on our MRT is significant (p&lt;
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -0.2269 -0.1191 -0.0380  0.0583  0.5041 
+## -0.2323 -0.1132 -0.0375  0.0623  0.4152 
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)        -1.5825     0.0793  -19.95   &lt;2e-16 ***
-## Masculine_hobbies  -0.0636     0.0264   -2.42    0.017 *  
+## (Intercept)        -1.5590     0.0780  -19.98   &lt;2e-16 ***
+## Masculine_hobbies  -0.0723     0.0259   -2.79   0.0062 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.16 on 125 degrees of freedom
-##   (5 observations deleted due to missingness)
-## Multiple R-squared:  0.0446, Adjusted R-squared:  0.0369 
-## F-statistic: 5.83 on 1 and 125 DF,  p-value: 0.0172</code></pre>
+## Residual standard error: 0.15 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0613, Adjusted R-squared:  0.0534 
+## F-statistic: 7.77 on 1 and 119 DF,  p-value: 0.00617</code></pre>
 <pre class="r"><code># Step #3: The effect of the mediator on the dependent variable
 fit.y2 = lm(mental_rot ~ log_contrast + Masculine_hobbies, df2)
 summary(fit.y2) # The mediator has a significant effect (p&lt;.05) on the dv.</code></pre>
@@ -2207,20 +2214,20 @@ summary(fit.y2) # The mediator has a significant effect (p&lt;.05) on the dv.</c
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -12.631  -3.934  -0.335   3.981  13.003 
+## -12.830  -3.492  -0.249   4.432  12.845 
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)          7.613      6.175    1.23    0.220   
-## log_contrast       -10.743      3.404   -3.16    0.002 **
-## Masculine_hobbies    0.161      1.026    0.16    0.875   
+## (Intercept)          8.445      6.352    1.33   0.1863   
+## log_contrast       -10.306      3.576   -2.88   0.0047 **
+## Masculine_hobbies    0.212      1.044    0.20   0.8394   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6 on 124 degrees of freedom
-##   (5 observations deleted due to missingness)
-## Multiple R-squared:  0.0792, Adjusted R-squared:  0.0644 
-## F-statistic: 5.34 on 2 and 124 DF,  p-value: 0.00599</code></pre>
+## Residual standard error: 6 on 118 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0723, Adjusted R-squared:  0.0566 
+## F-statistic:  4.6 on 2 and 118 DF,  p-value: 0.0119</code></pre>
 <pre class="r"><code># Step #4: Causal Mediation Analysis
 results2 = mediate(fit.m2, fit.y2, treat = &#39;Masculine_hobbies&#39;, mediator =
                      &#39;log_contrast&#39;) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
@@ -2231,14 +2238,14 @@ summary(results2)</code></pre>
 ## Quasi-Bayesian Confidence Intervals
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME              0.687        0.107         1.51   0.006 **
-## ADE               0.209       -1.811         2.15   0.840   
-## Total Effect      0.897       -1.178         2.85   0.376   
-## Prop. Mediated    0.467       -4.931         6.61   0.378   
+## ACME              0.737        0.151         1.59    0.01 **
+## ADE               0.260       -1.615         2.35    0.80   
+## Total Effect      0.997       -1.054         3.04    0.33   
+## Prop. Mediated    0.515       -8.101         7.18    0.33   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Sample Size Used: 127 
+## Sample Size Used: 121 
 ## 
 ## 
 ## Simulations: 1000</code></pre>
@@ -2254,19 +2261,19 @@ summary(fit.totaleffect)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -12.608  -3.849  -0.386   3.948  12.847 
+## -12.799  -3.510  -0.378   4.319  12.640 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)      7.89       5.89    1.34   0.1830   
-## log_contrast   -10.86       3.31   -3.28   0.0014 **
+## (Intercept)      8.75       6.14    1.43   0.1567   
+## log_contrast   -10.49       3.45   -3.04   0.0029 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6 on 125 degrees of freedom
-##   (5 observations deleted due to missingness)
-## Multiple R-squared:  0.0791, Adjusted R-squared:  0.0717 
-## F-statistic: 10.7 on 1 and 125 DF,  p-value: 0.00136</code></pre>
+## Residual standard error: 5.9 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.072,  Adjusted R-squared:  0.0642 
+## F-statistic: 9.23 on 1 and 119 DF,  p-value: 0.00292</code></pre>
 <pre class="r"><code>fit.Y5 = lm(mental_rot ~ Masculine_hobbies + log_contrast, df2)
 summary(fit.Y5)</code></pre>
 <pre><code>## 
@@ -2275,20 +2282,20 @@ summary(fit.Y5)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -12.631  -3.934  -0.335   3.981  13.003 
+## -12.830  -3.492  -0.249   4.432  12.845 
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)          7.613      6.175    1.23    0.220   
-## Masculine_hobbies    0.161      1.026    0.16    0.875   
-## log_contrast       -10.743      3.404   -3.16    0.002 **
+## (Intercept)          8.445      6.352    1.33   0.1863   
+## Masculine_hobbies    0.212      1.044    0.20   0.8394   
+## log_contrast       -10.306      3.576   -2.88   0.0047 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6 on 124 degrees of freedom
-##   (5 observations deleted due to missingness)
-## Multiple R-squared:  0.0792, Adjusted R-squared:  0.0644 
-## F-statistic: 5.34 on 2 and 124 DF,  p-value: 0.00599</code></pre>
+## Residual standard error: 6 on 118 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0723, Adjusted R-squared:  0.0566 
+## F-statistic:  4.6 on 2 and 118 DF,  p-value: 0.0119</code></pre>
 <pre class="r"><code>fit.M5 = lm(Masculine_hobbies ~ log_contrast, df2)
 summary(fit.M5) # the total effect of f hobbies on our MRT is significant (p&lt;.05).</code></pre>
 <pre><code>## 
@@ -2297,19 +2304,19 @@ summary(fit.M5) # the total effect of f hobbies on our MRT is significant (p&lt;
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -1.2350 -0.3258 -0.0026  0.3087  1.3635 
+## -1.2386 -0.3192 -0.0074  0.3120  1.3456 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)     1.723      0.516    3.34   0.0011 **
-## log_contrast   -0.701      0.290   -2.42   0.0172 * 
+## (Intercept)     1.458      0.542    2.69   0.0081 **
+## log_contrast   -0.848      0.304   -2.79   0.0062 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.52 on 125 degrees of freedom
-##   (5 observations deleted due to missingness)
-## Multiple R-squared:  0.0446, Adjusted R-squared:  0.0369 
-## F-statistic: 5.83 on 1 and 125 DF,  p-value: 0.0172</code></pre>
+## Residual standard error: 0.52 on 119 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.0613, Adjusted R-squared:  0.0534 
+## F-statistic: 7.77 on 1 and 119 DF,  p-value: 0.00617</code></pre>
 <pre class="r"><code># gvlma(fit.M)
 # Step #3: The effect of the mediator on the dependent variable
 # The mediator has a significant effect (p&lt;.05) on the dv.
@@ -2321,15 +2328,15 @@ summary(results5)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                 Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            -0.13808     -1.66810         1.28   0.864   
-## ADE            -10.78500    -17.39314        -4.41   0.004 **
-## Total Effect   -10.92307    -17.30313        -4.41   0.002 **
-## Prop. Mediated   0.00844     -0.14754         0.18   0.866   
+##                Estimate 95% CI Lower 95% CI Upper p-value    
+## ACME            -0.1518      -1.9939         1.63    0.84    
+## ADE            -10.2249     -16.9881        -3.24  &lt;2e-16 ***
+## Total Effect   -10.3767     -16.9020        -3.42  &lt;2e-16 ***
+## Prop. Mediated   0.0145      -0.2004         0.22    0.84    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Sample Size Used: 127 
+## Sample Size Used: 121 
 ## 
 ## 
 ## Simulations: 1000</code></pre>
