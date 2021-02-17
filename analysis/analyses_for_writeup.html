@@ -281,7 +281,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for write-up</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-02-16 11:55:26</h4>
+<h4 class="date">2021-02-17 09:04:47</h4>
 
 </div>
 
@@ -293,49 +293,34 @@ div.tocify {
 <div id="setup" class="section level1">
 <h1>Setup</h1>
 </div>
-<div id="analysis" class="section level1">
-<h1>Analysis</h1>
-<div id="import-and-clean" class="section level2">
-<h2>Import and clean</h2>
+<div id="import-and-clean" class="section level1">
+<h1>Import and clean</h1>
 <p>We import data previously cleaned to remove cases where accuracy is lower than the guess rate and any zero scores in the survey measures.</p>
 <pre class="r"><code># load the data and make each variable right
 df1 &lt;- readr::read_csv(file.path(params$data_path, params$csv_fn)) </code></pre>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
-##   Participant = col_double(),
+##   .default = col_double(),
 ##   Sex = col_character(),
 ##   Race = col_character(),
-##   Age = col_double(),
-##   School_year = col_double(),
 ##   Major = col_character(),
-##   Handedness = col_double(),
-##   Glasses = col_double(),
-##   Acuity = col_double(),
-##   Color_vision = col_double(),
-##   Stereo = col_double(),
-##   Motion_duration_Threshold = col_double(),
-##   Contrast_Sensitivity_Threshold = col_double(),
-##   Vocabulary_scores = col_double(),
-##   Vocabulary_scores_cor_num = col_double(),
-##   Mental_Rotation_scores = col_double(),
-##   Mental_Rotation_scores_both = col_double(),
-##   Feminine_hobbies = col_double(),
-##   Masculine_hobbies = col_double()
-## )</code></pre>
-<div id="rename-variables" class="section level3">
-<h3>Rename variables</h3>
+##   Color_vision = col_logical()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<div id="rename-variables" class="section level2">
+<h2>Rename variables</h2>
 <p>We rename some of the variables to make the exposition clearer.</p>
 <pre class="r"><code>df1 &lt;- df1 %&gt;%
-  dplyr::rename(., &#39;motion_dur_thr&#39; = &#39;Motion_duration_Threshold&#39;,
-                &#39;contrast_thr&#39; = &#39;Contrast_Sensitivity_Threshold&#39;,
+  dplyr::rename(., &#39;motion_dur_thr&#39; = &#39;med_Motion_duration_Threshold&#39;,
+                &#39;contrast_thr&#39; = &#39;med_Contrast_Sensitivity_Threshold&#39;,
                 &#39;mental_rot&#39; = &#39;Mental_Rotation_scores&#39;,
                 &#39;mental_rot_both&#39; = &#39;Mental_Rotation_scores_both&#39;,
                 &#39;vocab&#39; = &#39;Vocabulary_scores&#39;,
                 &#39;vocab_num&#39; = &#39;Vocabulary_scores_cor_num&#39;)</code></pre>
 </div>
-<div id="identify-missing-threshold-values" class="section level3">
-<h3>Identify missing threshold values</h3>
+<div id="identify-missing-threshold-values" class="section level2">
+<h2>Identify missing threshold values</h2>
 <pre class="r"><code>missing_motion &lt;- is.na(df1$motion_dur_thr)
 missing_contrast &lt;- is.na(df1$contrast_thr)
 
@@ -346,8 +331,8 @@ case_ids &lt;- 1:dim(df1)[1]</code></pre>
                 !is.na(contrast_thr))</code></pre>
 <p>These leaves us with <span class="math inline">\(n=\)</span> 126 cases.</p>
 </div>
-<div id="exclude-outliers" class="section level3">
-<h3>Exclude outliers</h3>
+<div id="exclude-outliers" class="section level2">
+<h2>Exclude outliers</h2>
 <p>We detect outliers 3 SD from the grouped mean.</p>
 <pre class="r"><code># define a function to remove outliers
 FindOutliers &lt;- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh)) {
@@ -386,10 +371,14 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 ## integer(0)
 ## integer(0)
 ## [1]  37  57 102
-## [1] 80 90
+## integer(0)
 ## [1] 40 45 77
 ## [1] 123 126
+## [1] 123
+## [1] 117 123
 ## [1]  4 14
+## [1]   8 112
+## [1]   8 112
 ## integer(0)
 ## integer(0)
 ## integer(0)
@@ -425,7 +414,7 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 ## [1]  37  57 102
 ## 
 ## $Color_vision
-## [1] 80 90
+## integer(0)
 ## 
 ## $Stereo
 ## [1] 40 45 77
@@ -433,8 +422,20 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 ## $motion_dur_thr
 ## [1] 123 126
 ## 
+## $motion_dur_thr_mean
+## [1] 123
+## 
+## $motion_dur_thr_sd
+## [1] 117 123
+## 
 ## $contrast_thr
 ## [1]  4 14
+## 
+## $contrast_thr_mean
+## [1]   8 112
+## 
+## $contrast_thr_sd
+## [1]   8 112
 ## 
 ## $vocab
 ## integer(0)
@@ -494,8 +495,8 @@ outliers &lt;- lapply(df1, FindOutliers)</code></pre>
 df2 &lt;- df1[-c(outliers[[&#39;contrast_thr&#39;]], outliers[[&#39;motion_dur_thr&#39;]]),]</code></pre>
 <p>There were 2 outliers in the motion duration threshold measure (cases 123, 126), and 2 outliers in the contrast threshold measure (cases 4, 14). The total number of participants excluding these outliers is <span class="math inline">\(n=\)</span> 122.</p>
 </div>
-<div id="check-distributions" class="section level3">
-<h3>Check distributions</h3>
+<div id="check-distributions" class="section level2">
+<h2>Check distributions</h2>
 <p>Do the data follow a normal distribution? We use the Shapiro-Wilk normality test, <code>shapiro.test()</code> to answer.</p>
 <pre class="r"><code># Shapiro-Wilk normality test 
 this_var &lt;- c(&quot;vocab&quot;,
@@ -617,6 +618,8 @@ motion_dur_thr
                 log_contrast = log(contrast_thr))</code></pre>
 </div>
 </div>
+<div id="analysis" class="section level1">
+<h1>Analysis</h1>
 <div id="comparisons-between-sexes" class="section level2">
 <h2>Comparisons between sexes</h2>
 <p>Here is our pre-registered description of how we planned to compare sex differences:</p>
@@ -981,8 +984,8 @@ heatmap(x = corr_all$r, col = col, symm = TRUE)</code></pre>
 </div>
 </div>
 </div>
-<div id="visualization" class="section level1">
-<h1>Visualization</h1>
+<div id="visualizations" class="section level1">
+<h1>Visualizations</h1>
 <p>We create several functions to make our graphs have similar appearance.</p>
 <pre class="r"><code>sex_diff_scatter &lt;-
   function(df,
@@ -1871,10 +1874,10 @@ summary(results)</code></pre>
 ## Quasi-Bayesian Confidence Intervals
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            -0.4980      -1.2384         0.09   0.106   
-## ADE             -3.0613      -5.3831        -0.82   0.006 **
-## Total Effect    -3.5593      -5.7750        -1.27   0.002 **
-## Prop. Mediated   0.1324      -0.0319         0.46   0.108   
+## ACME             -0.521       -1.318         0.02   0.062 . 
+## ADE              -2.998       -5.265        -0.56   0.020 * 
+## Total Effect     -3.519       -5.688        -1.13   0.004 **
+## Prop. Mediated    0.135       -0.005         0.53   0.066 . 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -1965,11 +1968,11 @@ summary(results1)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME            0.03720      0.00585         0.08   0.016 *
-## ADE             0.04579     -0.04483         0.13   0.344  
-## Total Effect    0.08299     -0.00292         0.17   0.056 .
-## Prop. Mediated  0.42176     -0.35248         3.22   0.072 .
+##                Estimate 95% CI Lower 95% CI Upper p-value   
+## ACME            0.03686      0.00603         0.08   0.006 **
+## ADE             0.04504     -0.04818         0.14   0.322   
+## Total Effect    0.08190     -0.01057         0.17   0.096 . 
+## Prop. Mediated  0.41824     -1.87166         2.55   0.102   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -2055,11 +2058,11 @@ summary(results3)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            0.10872      0.00620         0.26   0.036 * 
-## ADE             0.49616      0.10553         0.91   0.014 * 
-## Total Effect    0.60488      0.21747         1.00   0.004 **
-## Prop. Mediated  0.17256      0.00834         0.58   0.040 * 
+##                Estimate 95% CI Lower 95% CI Upper p-value    
+## ACME            0.10537      0.00454         0.25   0.028 *  
+## ADE             0.49463      0.12082         0.88   0.012 *  
+## Total Effect    0.60000      0.23712         1.00  &lt;2e-16 ***
+## Prop. Mediated  0.17027      0.00836         0.57   0.028 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -2145,11 +2148,11 @@ summary(results4)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            -1.9278      -4.0586        -0.31   0.010 **
-## ADE             -3.9907      -8.9713         1.06   0.132   
-## Total Effect    -5.9185     -10.9544        -0.79   0.022 * 
-## Prop. Mediated   0.3083       0.0427         1.51   0.032 * 
+##                Estimate 95% CI Lower 95% CI Upper p-value  
+## ACME            -1.8013      -4.0114        -0.18   0.016 *
+## ADE             -4.1888      -9.6568         1.19   0.114  
+## Total Effect    -5.9902     -11.5692        -0.66   0.030 *
+## Prop. Mediated   0.2930       0.0129         1.46   0.046 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -2238,10 +2241,10 @@ summary(results2)</code></pre>
 ## Quasi-Bayesian Confidence Intervals
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME              0.737        0.151         1.59    0.01 **
-## ADE               0.260       -1.615         2.35    0.80   
-## Total Effect      0.997       -1.054         3.04    0.33   
-## Prop. Mediated    0.515       -8.101         7.18    0.33   
+## ACME              0.732        0.159         1.51   0.008 **
+## ADE               0.197       -1.768         2.14   0.858   
+## Total Effect      0.929       -1.158         2.98   0.398   
+## Prop. Mediated    0.469       -7.522         5.74   0.402   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -2328,11 +2331,11 @@ summary(results5)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value    
-## ACME            -0.1518      -1.9939         1.63    0.84    
-## ADE            -10.2249     -16.9881        -3.24  &lt;2e-16 ***
-## Total Effect   -10.3767     -16.9020        -3.42  &lt;2e-16 ***
-## Prop. Mediated   0.0145      -0.2004         0.22    0.84    
+##                Estimate 95% CI Lower 95% CI Upper p-value   
+## ACME            -0.1791      -2.2092         1.69   0.802   
+## ADE            -10.2476     -16.8487        -2.94   0.002 **
+## Total Effect   -10.4267     -16.6809        -3.04   0.002 **
+## Prop. Mediated   0.0168      -0.2045         0.26   0.804   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -2340,6 +2343,398 @@ summary(results5)</code></pre>
 ## 
 ## 
 ## Simulations: 1000</code></pre>
+</div>
+</div>
+<div id="supplemental-analyses" class="section level1">
+<h1>Supplemental analyses</h1>
+<p>The primary analysis was based on the median threshold scores. The next set of analyses focus on <em>mean</em> threshold scores and mean threshold scores weighted by the variability across runs.</p>
+<p>We return to <code>df1</code>.</p>
+<pre class="r"><code>outliers_suppl &lt;- lapply(df1, FindOutliers)</code></pre>
+<pre><code>## integer(0)</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in mean.default(data, na.rm = T): argument is not numeric or logical:
+## returning NA</code></pre>
+<pre><code>## integer(0)</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## integer(0)
+## [1]  1 19 54
+## integer(0)</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## integer(0)
+## integer(0)
+## integer(0)
+## [1]  37  57 102
+## integer(0)
+## [1] 40 45 77
+## [1] 123 126
+## [1] 123
+## [1] 117 123
+## [1]  4 14
+## [1]   8 112
+## [1]   8 112
+## integer(0)
+## integer(0)
+## integer(0)
+## integer(0)
+## integer(0)
+## integer(0)</code></pre>
+<pre class="r"><code>outliers_suppl</code></pre>
+<pre><code>## $Participant
+## integer(0)
+## 
+## $Sex
+## integer(0)
+## 
+## $Race
+## integer(0)
+## 
+## $Age
+## [1]  1 19 54
+## 
+## $School_year
+## integer(0)
+## 
+## $Major
+## integer(0)
+## 
+## $Handedness
+## integer(0)
+## 
+## $Glasses
+## integer(0)
+## 
+## $Acuity
+## [1]  37  57 102
+## 
+## $Color_vision
+## integer(0)
+## 
+## $Stereo
+## [1] 40 45 77
+## 
+## $motion_dur_thr
+## [1] 123 126
+## 
+## $motion_dur_thr_mean
+## [1] 123
+## 
+## $motion_dur_thr_sd
+## [1] 117 123
+## 
+## $contrast_thr
+## [1]  4 14
+## 
+## $contrast_thr_mean
+## [1]   8 112
+## 
+## $contrast_thr_sd
+## [1]   8 112
+## 
+## $vocab
+## integer(0)
+## 
+## $vocab_num
+## integer(0)
+## 
+## $mental_rot
+## integer(0)
+## 
+## $mental_rot_both
+## integer(0)
+## 
+## $Feminine_hobbies
+## integer(0)
+## 
+## $Masculine_hobbies
+## integer(0)</code></pre>
+<p>Curiously, there are different case numbers that meet the outlier criteria.</p>
+<pre class="r"><code>outliers_suppl$motion_dur_thr_mean</code></pre>
+<pre><code>## [1] 123</code></pre>
+<pre class="r"><code>outliers_suppl$contrast_thr_mean</code></pre>
+<pre><code>## [1]   8 112</code></pre>
+<p>As before, we will remove them.</p>
+<pre class="r"><code>df2 &lt;- df1[-c(outliers$contrast_thr_mean, outliers$motion_dur_thr_mean),]</code></pre>
+<p>We’ll plot to look at normality and symmetry.</p>
+<pre class="r"><code>df2 %&gt;% 
+  ggplot(.) +
+  aes(y = motion_dur_thr_mean, x = Sex) +
+  geom_violin() +
+  ggtitle(&#39;Motion threshold by sex: All participants&#39;)</code></pre>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<pre class="r"><code>df2 %&gt;% 
+  ggplot(.) +
+  aes(y = contrast_thr_mean, x = Sex) +
+  geom_violin() +
+  ggtitle(&#39;Contrast threshold by sex: All participants&#39;)</code></pre>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p>We run the SW test to confirm non-normality.</p>
+<pre class="r"><code>this_var &lt;- c(&quot;contrast_thr_mean&quot;,
+             &quot;motion_dur_thr_mean&quot;)
+sw_stat &lt;- c(shapiro.test(df2$contrast_thr_mean)[&#39;statistic&#39;],
+             shapiro.test(df2$motion_dur_thr_mean)[&#39;statistic&#39;]
+             )
+
+sw_p_val &lt;- c(shapiro.test(df2$contrast_thr_mean)[&#39;p.value&#39;],
+             shapiro.test(df2$motion_dur_thr_mean)[&#39;p.value&#39;]
+             )
+
+shapiro_wilks_df &lt;- tibble::tibble(this_var, sw_stat, sw_p_val)
+
+shapiro_wilks_df %&gt;%
+  kableExtra::kable(., format = &#39;html&#39;) %&gt;%
+  kableExtra::kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+this_var
+</th>
+<th style="text-align:left;">
+sw_stat
+</th>
+<th style="text-align:left;">
+sw_p_val
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+contrast_thr_mean
+</td>
+<td style="text-align:left;">
+0.87
+</td>
+<td style="text-align:left;">
+7.5e-09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+motion_dur_thr_mean
+</td>
+<td style="text-align:left;">
+0.84
+</td>
+<td style="text-align:left;">
+2.8e-10
+</td>
+</tr>
+</tbody>
+</table>
+<p>And we also log transform the scores.</p>
+<pre class="r"><code>df2 &lt;- df2 %&gt;%
+  dplyr::mutate(., log_motion_th_mean = log(motion_dur_thr_mean),
+                log_contrast_th_mean = log(contrast_thr_mean))</code></pre>
+<div id="logmotion-duration-threshold-mean" class="section level2">
+<h2>log(motion duration threshold mean)</h2>
+<pre class="r"><code>mdt_tt &lt;-
+  t.test(
+    log_motion_th_mean ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = &quot;greater&quot;
+  ) #Hypothesized
+mdt_tt</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  log_motion_th_mean by Sex
+## t = 4, df = 121, p-value = 3e-04
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.096   Inf
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                  -2.3                  -2.4</code></pre>
+</div>
+<div id="logcontrast-threshold-mean" class="section level2">
+<h2>log(contrast threshold mean)</h2>
+<pre class="r"><code>t.test(
+  log_contrast_th_mean ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = &quot;greater&quot;
+) #Hypothesized</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  log_contrast_th_mean by Sex
+## t = 3, df = 121, p-value = 0.001
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.054   Inf
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                  -1.7                  -1.8</code></pre>
+</div>
+<div id="correlations-unweighted-by-sd" class="section level2">
+<h2>Correlations (unweighted by SD)</h2>
+<pre class="r"><code>df_corr &lt;- df2 %&gt;%
+  dplyr::select(., Sex,
+                log_motion_th_mean,
+                log_contrast_th_mean,
+                mental_rot,
+                vocab,
+                Feminine_hobbies,
+                Masculine_hobbies)
+
+df_complete &lt;- df_corr[stats::complete.cases(df_corr),]</code></pre>
+<p>Generate correlation tables for scatterplot annotations.</p>
+<pre class="r"><code># All participants
+df_complete_numeric &lt;- df_complete %&gt;%
+  dplyr::select(., -Sex)
+
+corr_all &lt;- Hmisc::rcorr(as.matrix(df_complete_numeric), type = c(&quot;pearson&quot;))
+
+# Female
+df_complete_F &lt;- df_complete %&gt;%
+  dplyr::filter(., Sex == &#39;Females&#39;) 
+
+df_corr_F &lt;- df_complete_F %&gt;%
+  dplyr::select(., -Sex)
+
+corr_F &lt;- Hmisc::rcorr(as.matrix(df_corr_F), type = c(&quot;pearson&quot;))
+
+df_complete_M &lt;- df_complete %&gt;%
+  dplyr::filter(., Sex == &#39;Males&#39;) 
+
+# Male
+df_corr_m &lt;- df_complete_M %&gt;%
+  dplyr::select(., -Sex)
+
+corr_M &lt;- Hmisc::rcorr(as.matrix(df_corr_m), type = c(&quot;pearson&quot;))</code></pre>
+<pre class="r"><code>## Motion sensitivity &amp; contrast sensitivity
+corr_df &lt;- sex_diff_corr_summ(&quot;log_motion_th_mean&quot;,
+                   &quot;log_contrast_th_mean&quot;, print_table = FALSE)
+
+sex_diff_scatter(
+  df_complete,
+  &quot;log_motion_th_mean&quot;,
+  &quot;log_contrast_th_mean&quot;,
+  x_rev = TRUE,
+  y_rev = TRUE,
+  # &quot;r=0.22*&quot;,
+  # &quot;r=0.54***&quot;,
+  paste0(&quot;r = &quot;, format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0(&quot;r = &quot;, format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-2.16, -2.16),
+  c(-1.4, -1.3),
+  &quot;log(motion threshold)&quot;,
+  &quot;log(contrast threshold)&quot;
+)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<pre class="r"><code>sex_diff_corr_summ(&quot;log_motion_th_mean&quot;,
+                   &quot;log_contrast_th_mean&quot;)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+cor_coef
+</th>
+<th style="text-align:right;">
+p_val
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pop
+</th>
+<th style="text-align:left;">
+stars
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.30
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:left;">
+Both
+</td>
+<td style="text-align:left;">
+***
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.28
+</td>
+<td style="text-align:right;">
+0.14
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+Males
+</td>
+<td style="text-align:left;">
+ns
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.23
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+92
+</td>
+<td style="text-align:left;">
+Females
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+<div id="within-person-variability" class="section level2">
+<h2>Within-person variability</h2>
+<div id="using-across-run-sd" class="section level3">
+<h3>Using across run SD</h3>
+<p>One approach is to look at the SD (across runs) of the threshold estimates.</p>
+<pre class="r"><code>df2 %&gt;% 
+  ggplot(.) +
+  aes(y = motion_dur_thr_sd, x = Sex) +
+  geom_violin() +
+  ggtitle(&#39;Motion threshold SD by sex: All participants&#39;)</code></pre>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<pre class="r"><code>df2 %&gt;% 
+  ggplot(.) +
+  aes(y = contrast_thr_sd, x = Sex) +
+  geom_violin() +
+  ggtitle(&#39;Contrast threshold SD by sex: All participants&#39;)</code></pre>
+<p><img src="analyses_for_writeup_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+</div>
+<div id="using-loglikelihood" class="section level3">
+<h3>Using loglikelihood</h3>
+<p>Another approach would look at the goodness-of-fit estimates for the Weibull functions for each run.</p>
+</div>
 </div>
 </div>
 

@@ -12,7 +12,7 @@ output:
     toc_float: true
 params:
   data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
-  csv_fn: "data_output_Oct2020.csv"
+  csv_fn: "combined_2021-02-17.csv"
   outlier_sd_thresh: 3.0
 ---
 
@@ -34,9 +34,7 @@ library(ggExtra)
 library(mediation)
 ```
 
-# Analysis
-
-## Import and clean
+# Import and clean
 
 We import data previously cleaned to remove cases where accuracy is lower than the guess rate and any zero scores in the survey measures. 
 
@@ -45,21 +43,21 @@ We import data previously cleaned to remove cases where accuracy is lower than t
 df1 <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
 
-### Rename variables
+## Rename variables
 
 We rename some of the variables to make the exposition clearer.
 
 ```{r}
 df1 <- df1 %>%
-  dplyr::rename(., 'motion_dur_thr' = 'Motion_duration_Threshold',
-                'contrast_thr' = 'Contrast_Sensitivity_Threshold',
+  dplyr::rename(., 'motion_dur_thr' = 'med_Motion_duration_Threshold',
+                'contrast_thr' = 'med_Contrast_Sensitivity_Threshold',
                 'mental_rot' = 'Mental_Rotation_scores',
                 'mental_rot_both' = 'Mental_Rotation_scores_both',
                 'vocab' = 'Vocabulary_scores',
                 'vocab_num' = 'Vocabulary_scores_cor_num')
 ```
 
-### Identify missing threshold values 
+## Identify missing threshold values 
 
 ```{r}
 missing_motion <- is.na(df1$motion_dur_thr)
@@ -79,7 +77,7 @@ df1 <- df1 %>%
 
 These leaves us with $n=$ `r dim(df1)[1]` cases.
 
-### Exclude outliers
+## Exclude outliers
 
 We detect outliers `r params$outlier_sd_thresh` SD from the grouped mean.
 
@@ -160,7 +158,7 @@ df2 <- df1[-c(outliers[['contrast_thr']], outliers[['motion_dur_thr']]),]
 There were `r length(outliers[['motion_dur_thr']])` outliers in the motion duration threshold measure (cases `r outliers[['motion_dur_thr']]`), and `r length(outliers[['contrast_thr']])` outliers in the contrast threshold measure (cases `r outliers[['contrast_thr']]`).
 The total number of participants excluding these outliers is $n=$ `r dim(df2)[1]`.
 
-### Check distributions
+## Check distributions
 
 Do the data follow a normal distribution?
 We use the Shapiro-Wilk normality test, `shapiro.test()` to answer.
@@ -205,6 +203,8 @@ df2 <- df2 %>%
   dplyr::mutate(., log_motion =log(motion_dur_thr),
                 log_contrast = log(contrast_thr))
 ```
+
+# Analysis
 
 ## Comparisons between sexes
 
@@ -457,7 +457,7 @@ col <- colorRampPalette(c("blue", "white", "red"))(20)
 heatmap(x = corr_all$r, col = col, symm = TRUE)
 ```
 
-# Visualization
+# Visualizations
 
 We create several functions to make our graphs have similar appearance.
 
@@ -856,3 +856,191 @@ summary(fit.M5) # the total effect of f hobbies on our MRT is significant (p<.05
 results5 = mediate(fit.M5, fit.Y5, treat = 'log_contrast', mediator = 'Masculine_hobbies') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
 summary(results5)
 ```
+# Supplemental analyses
+
+The primary analysis was based on the median threshold scores. 
+The next set of analyses focus on _mean_ threshold scores and mean threshold scores weighted by the variability across runs.
+
+We return to `df1`.
+
+```{r}
+outliers_suppl <- lapply(df1, FindOutliers)
+outliers_suppl
+```
+Curiously, there are different case numbers that meet the outlier criteria.
+
+```{r}
+outliers_suppl$motion_dur_thr_mean
+outliers_suppl$contrast_thr_mean
+```
+
+As before, we will remove them.
+
+```{r}
+df2 <- df1[-c(outliers$contrast_thr_mean, outliers$motion_dur_thr_mean),]
+```
+
+We'll plot to look at normality and symmetry.
+
+```{r}
+df2 %>% 
+  ggplot(.) +
+  aes(y = motion_dur_thr_mean, x = Sex) +
+  geom_violin() +
+  ggtitle('Motion threshold by sex: All participants')
+```
+
+```{r}
+df2 %>% 
+  ggplot(.) +
+  aes(y = contrast_thr_mean, x = Sex) +
+  geom_violin() +
+  ggtitle('Contrast threshold by sex: All participants')
+```
+
+We run the SW test to confirm non-normality.
+
+```{r}
+this_var <- c("contrast_thr_mean",
+             "motion_dur_thr_mean")
+sw_stat <- c(shapiro.test(df2$contrast_thr_mean)['statistic'],
+             shapiro.test(df2$motion_dur_thr_mean)['statistic']
+             )
+
+sw_p_val <- c(shapiro.test(df2$contrast_thr_mean)['p.value'],
+             shapiro.test(df2$motion_dur_thr_mean)['p.value']
+             )
+
+shapiro_wilks_df <- tibble::tibble(this_var, sw_stat, sw_p_val)
+
+shapiro_wilks_df %>%
+  kableExtra::kable(., format = 'html') %>%
+  kableExtra::kable_styling()
+
+```
+
+And we also log transform the scores.
+
+```{r}
+df2 <- df2 %>%
+  dplyr::mutate(., log_motion_th_mean = log(motion_dur_thr_mean),
+                log_contrast_th_mean = log(contrast_thr_mean))
+```
+
+## log(motion duration threshold mean)
+
+```{r}
+mdt_tt <-
+  t.test(
+    log_motion_th_mean ~ Sex,
+    data = df2,
+    var.equal = TRUE,
+    alternative = "greater"
+  ) #Hypothesized
+mdt_tt
+```
+
+## log(contrast threshold mean)
+
+```{r}
+t.test(
+  log_contrast_th_mean ~ Sex,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "greater"
+) #Hypothesized
+```
+
+## Correlations (unweighted by SD)
+
+```{r}
+df_corr <- df2 %>%
+  dplyr::select(., Sex,
+                log_motion_th_mean,
+                log_contrast_th_mean,
+                mental_rot,
+                vocab,
+                Feminine_hobbies,
+                Masculine_hobbies)
+
+df_complete <- df_corr[stats::complete.cases(df_corr),]
+```
+
+Generate correlation tables for scatterplot annotations.
+
+```{r}
+# All participants
+df_complete_numeric <- df_complete %>%
+  dplyr::select(., -Sex)
+
+corr_all <- Hmisc::rcorr(as.matrix(df_complete_numeric), type = c("pearson"))
+
+# Female
+df_complete_F <- df_complete %>%
+  dplyr::filter(., Sex == 'Females') 
+
+df_corr_F <- df_complete_F %>%
+  dplyr::select(., -Sex)
+
+corr_F <- Hmisc::rcorr(as.matrix(df_corr_F), type = c("pearson"))
+
+df_complete_M <- df_complete %>%
+  dplyr::filter(., Sex == 'Males') 
+
+# Male
+df_corr_m <- df_complete_M %>%
+  dplyr::select(., -Sex)
+
+corr_M <- Hmisc::rcorr(as.matrix(df_corr_m), type = c("pearson"))
+```
+
+```{r}
+## Motion sensitivity & contrast sensitivity
+corr_df <- sex_diff_corr_summ("log_motion_th_mean",
+                   "log_contrast_th_mean", print_table = FALSE)
+
+sex_diff_scatter(
+  df_complete,
+  "log_motion_th_mean",
+  "log_contrast_th_mean",
+  x_rev = TRUE,
+  y_rev = TRUE,
+  # "r=0.22*",
+  # "r=0.54***",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-2.16, -2.16),
+  c(-1.4, -1.3),
+  "log(motion threshold)",
+  "log(contrast threshold)"
+)
+
+sex_diff_corr_summ("log_motion_th_mean",
+                   "log_contrast_th_mean")
+```
+
+## Within-person variability
+
+### Using across run SD
+
+One approach is to look at the SD (across runs) of the threshold estimates.
+
+```{r}
+df2 %>% 
+  ggplot(.) +
+  aes(y = motion_dur_thr_sd, x = Sex) +
+  geom_violin() +
+  ggtitle('Motion threshold SD by sex: All participants')
+```
+
+```{r}
+df2 %>% 
+  ggplot(.) +
+  aes(y = contrast_thr_sd, x = Sex) +
+  geom_violin() +
+  ggtitle('Contrast threshold SD by sex: All participants')
+```
+
+### Using loglikelihood
+
+Another approach would look at the goodness-of-fit estimates for the Weibull functions for each run.

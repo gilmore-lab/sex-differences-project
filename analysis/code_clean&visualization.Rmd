@@ -278,13 +278,17 @@ mdt$threshold[which(mdt$threshold>0.30)]
 
 get median
 ```{r}
-cst_median<-cst %>%
+cst_median <- cst %>%
   group_by(Participant, Gender) %>%
-  summarise(cst_median=median(threshold))
+  summarise(cst_median = median(threshold),
+            cst_mean = mean(threshold),
+            cst_sd = sqrt(var(threshold)))
 
-mdt_median<-mdt %>%
+mdt_median <- mdt %>%
   group_by(Participant, Gender) %>%
-  summarise(mdt_median=median(threshold))
+  summarise(mdt_median = median(threshold),
+            mdt_mean = mean(threshold),
+            mdt_sd = sqrt(var(threshold)))
 ```
 
 merge dataframes
@@ -305,32 +309,96 @@ check visual acuity outliers
 
 add other variables
 ```{r}
-df$race<-""
-df$colorvision<-NA
-df$race_5<-as.numeric(df$race_5)
-df$race_sum<-rowSums(df[,10:16],na.rm=TRUE)
-df$race_sum[which(df$race_sum!=1)]
-df$race[which(df$race_1==1)]<-"Asian"
-df$race[which(df$race_2==1)]<-paste(df$race,"Black/African",sep=",")
-df$race[which(df$race_3==1)]<-paste(df$race,"Caucasian",sep=",")
-df$race[which(df$race_4==1)]<-paste(df$race,"Hispanic/Latino",sep=",")
-df$race[which(df$race_5==1)]<-paste(df$race,"Native American",sep=",")
-df$race[which(df$race_6==1)]<-paste(df$race,"Pacific Islander",sep=",")
-df$race[which(df$race_7==1)]<-paste(df$race,"Prefer not to answer",sep=",")
+df$race <- ""
+df$colorvision <- NA
+df$race_5 <- as.numeric(df$race_5)
+# df$race_sum<-rowSums(df[,10:16],na.rm=TRUE)
+#df$race_sum <- rowSums(df[, 'race_1':'race_7'], na.rm = TRUE)
+#df$race_sum[which(df$race_sum != 1)]
+df$race[which(df$race_1 == 1)] <- "Asian"
+df$race[which(df$race_2 == 1)] <-
+  paste(df$race, "Black/African", sep = ",")
+df$race[which(df$race_3 == 1)] <- paste(df$race, "Caucasian", sep = ",")
+df$race[which(df$race_4 == 1)] <-
+  paste(df$race, "Hispanic/Latino", sep = ",")
+df$race[which(df$race_5 == 1)] <-
+  paste(df$race, "Native American", sep = ",")
+df$race[which(df$race_6 == 1)] <-
+  paste(df$race, "Pacific Islander", sep = ",")
+df$race[which(df$race_7 == 1)] <-
+  paste(df$race, "Prefer not to answer", sep = ",")
 # df$race[which(df$race_sum==2)]<-"Multiple"
-which(df$color_vision1_4!=1)
-which(df$color_vision1_5!=1) 
-which(df$color_vision2_1!=4) 
-which(df$color_vision2_2!=4) #4   9  11  64  73  92  95 102 129
-which(df$color_vision2_3!=4)  #92
-df$colorvision<-rowSums(df[,226:228],na.rm=TRUE)
+which(df$color_vision1_4 != 1)
+which(df$color_vision1_5 != 1)
+which(df$color_vision2_1 != 4)
+which(df$color_vision2_2 != 4) #4   9  11  64  73  92  95 102 129
+which(df$color_vision2_3 != 4)  #92
+#df$colorvision <- rowSums(df[, 226:228], na.rm = TRUE)
+#df$colorvision <- rowSums(df[, 'color_vision1_4':'color_vision_2_3'], na.rm = TRUE)
 ```
 
 ```{r}
 # save data
-var<-c("Participant", "Gender","race","age","schoolyear","major","handedness","glasses","acuity","colorvision","stereo","mdt_median","cst_median","advoc_total_score","advoc_num_cor","MRT_cor","MRT_cor_both","hobfem","hobmas")
-df1<-df[,var]
-colnames(df1) <- c("Participant", "Sex","Race","Age","School_year","Major","Handedness","Glasses","Acuity","Color_vision","Stereo","Motion_duration_Threshold","Contrast_Sensitivity_Threshold","Vocabulary_scores","Vocabulary_scores_cor_num","Mental_Rotation_scores","Mental_Rotation_scores_both","Feminine_hobbies","Masculine_hobbies")
-write.csv(df1,file.path(params$output_path,"data_output_Oct2020.csv"), row.names = FALSE)
+var <-
+  c(
+    "Participant",
+    "Gender",
+    "race",
+    "age",
+    "schoolyear",
+    "major",
+    "handedness",
+    "glasses",
+    "acuity",
+    "colorvision",
+    "stereo",
+    "mdt_median",
+    "mdt_mean",
+    "mdt_sd",
+    "cst_median",
+    "cst_mean",
+    "cst_sd",
+    "advoc_total_score",
+    "advoc_num_cor",
+    "MRT_cor",
+    "MRT_cor_both",
+    "hobfem",
+    "hobmas"
+  )
+df1 <- df[, var]
+colnames(df1) <-
+  c(
+    "Participant",
+    "Sex",
+    "Race",
+    "Age",
+    "School_year",
+    "Major",
+    "Handedness",
+    "Glasses",
+    "Acuity",
+    "Color_vision",
+    "Stereo",
+    "med_Motion_duration_Threshold",
+    "motion_dur_thr_mean",
+    "motion_dur_thr_sd",
+    "med_Contrast_Sensitivity_Threshold",
+    "contrast_thr_mean",
+    "contrast_thr_sd",
+    "Vocabulary_scores",
+    "Vocabulary_scores_cor_num",
+    "Mental_Rotation_scores",
+    "Mental_Rotation_scores_both",
+    "Feminine_hobbies",
+    "Masculine_hobbies"
+  )
+# write.csv(df1,
+#           file.path(params$output_path, "data_output_Oct2020.csv"),
+#           row.names = FALSE)
+
+output_fn <- paste0('combined_', format.Date(Sys.Date()), '.csv')
+write.csv(df1,
+          file.path(params$output_path, output_fn),
+          row.names = FALSE)
 ```
 
