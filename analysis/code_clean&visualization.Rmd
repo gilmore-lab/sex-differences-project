@@ -168,7 +168,7 @@ mdt$Participant[which(mdt$Participant=="2019121313154134")]<-122
 mdt$Participant[which(mdt$Participant=="2019121314001724")]<-124
 mdt$Participant[which(mdt$Participant=="2019121315012099")]<-137
 mdt$Participant[which(mdt$Participant=="2019121316322025")]<-139 # missed
-# miss 371, 395 half
+# miss 371, half of 395
 
 # it should be 132 participants
 ```
@@ -200,9 +200,10 @@ The marginal error is 1.97*sqrt(p(1-p)/30)=0.18
 The 95 confidence intervals are 50% +/- 18% [32% 68%]
 We will exclude the runs with less than 68% accuracy.
 ```{r}
-which(cst$percent_correct<0.68)
-which(mdt$percent_correct<0.68)
-mdt$Participant[which(mdt$percent_correct<0.68)]
+which(cst$percent_correct<0.68)  # 29  30  31  32 371
+which(mdt$percent_correct<0.68) # 85  86  87  88 325 326 327 328 480 504 505
+cst$Participant[which(cst$percent_correct<0.68)] # "111" "111" "111" "111" "393"
+mdt$Participant[which(mdt$percent_correct<0.68)] # "114" "114" "114" "114" "383" "383" "383" "383" "422" "428" "428"
 cst<-cst %>% filter(percent_correct>=0.68)
 mdt<-mdt %>% filter(percent_correct>=0.68)
 ```
@@ -297,7 +298,7 @@ qua$sex<-factor(qua$sex, levels=c(2,1), labels=c("Females","Males"))
 names(qua)[names(qua)=="sex"] <- "Gender"
 names(qua)[names(qua)=="participant"] <- "Participant"
 qua$Participant<-as.character(qua$Participant)
-df <- full_join(mdt_median,cst_median, by=c("Participant","Gender")) %>% # 131 and 130 rows->132
+df <- full_join(mdt_median,cst_median, by=c("Participant","Gender")) %>% # 128 and 130 rows->132
   full_join(qua,k, by=c("Participant","Gender"))  # 131, 132 rows->132 rows?
 ```
 check visual acuity outliers

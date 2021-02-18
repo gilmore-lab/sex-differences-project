@@ -616,8 +616,8 @@ sex_diff_scatter <-
       p,
       type = "density",
       margins = "both",
-#      xparams = list(bins = 10),
- #     yparams = list(bins = 10),
+      xparams = list(bins = 10),
+      yparams = list(bins = 10),
       groupFill = TRUE
     )
     p1
