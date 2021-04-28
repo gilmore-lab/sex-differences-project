@@ -90,6 +90,3 @@ To facilitate students' use of RStudio Server Pro, here is code to export this t
 ```{r}
 readr::write_csv(hobbies_df, 'csv/hobbies_sex_diff.csv')
 ```
-
-
-

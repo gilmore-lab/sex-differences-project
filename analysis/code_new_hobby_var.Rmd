@@ -1,0 +1,164 @@
+---
+title: "get_new_hobby_var"
+author: "Yiming Qian"
+date: "3/4/2021"
+output: 
+  html_document:
+    self_contained: yes
+    code_folding: hide
+params:
+  contr_csv_fn: "contrast_output_Oct2020.csv"
+  motion_csv_fn: "motion_output_Oct2020.csv"
+  qualtrics_csv_fn: "qualtrics_output_10_14_2020.csv"
+  this_sub_id: "2019111309492663"
+  data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data"
+  output_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  contrast_raw_path: "contrast_sensitivity_task_data"
+  motion_raw_path: "motion_temporal_threshold_data"
+  csv_fn: "combined_2021-02-16.csv"
+  hobby_data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data"
+  outlier_sd_thresh: 3.0
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# use discriminitation analysis to get a new variable "hobby"
+### discrimination analysis
+#### get the data
+```{r}
+qua_raw <- readr::read_csv(file.path(params$output_path, "qualtrics_output_10_14_2020.csv")) 
+hobby_name<-readr::read_csv(file.path(params$hobby_data_path, "hobbies_names.csv")) 
+
+# rename variables
+names(qua_raw)[177:236] <- hobby_name$new_name
+qua_raw$participant[which(qua_raw$participant=="2019-11-1309:49:2632")]<-101
+qua_raw$participant[which(qua_raw$participant=="2019-11-1311:10:2438")]<-102
+qua_raw$participant[which(qua_raw$participant=="2019-11-1313:38:0337")]<-103
+qua_raw$participant[which(qua_raw$participant=="2019-11-1314:56:0233")]<-105
+qua_raw$participant[which(qua_raw$participant=="2019-11-1316:12:1898")]<-107
+
+qua_raw$participant[which(qua_raw$participant=="2019-11-1808:39:3927")]<-104
+qua_raw$participant[which(qua_raw$participant=="2019-11-1811:26:4976")]<-109
+qua_raw$participant[which(qua_raw$participant=="2019-11-1812:45:1738")]<-111
+qua_raw$participant[which(qua_raw$participant=="2019-11-1813:58:0893")]<-113
+qua_raw$participant[which(qua_raw$participant=="2019-11-1814:48:2896")]<-106
+
+qua_raw$participant[which(qua_raw$participant=="2019-11-2013:40:1983")]<-115
+qua_raw$participant[which(qua_raw$participant=="2019-11-2014:53:2351")]<-108
+qua_raw$participant[which(qua_raw$participant=="2019-11-2016:11:0713")]<-117
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 11:14")]<-119
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 12:17")]<-110
+
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 13:54")]<-121
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 10:45")]<-123
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 11:30")]<-125
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 14:35")]<-127
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 16:52")]<-320
+
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 17:40")]<-112
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 12:05")]<-114
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 14:36")]<-129
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 16:44")]<-324
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 9:59")]<-116
+
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 13:20")]<-131
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 13:23")]<-118
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 14:29")]<-133
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 15:44")]<-120
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 16:44")]<-330
+
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 17:45")]<-135
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 13:58")]<-122
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 14:47")]<-124
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 16:32")]<-137
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 17:04")]<-139
+
+qua_raw$participant<-as.numeric(qua_raw$participant)
+qua_raw$sex<-factor(qua_raw$sex, levels=c(2,1), labels=c("Females","Males"))
+hobbies<-qua_raw[,c(7,18,20,177:236, 276,277)] %>%
+  filter(Finished==1) %>%
+  filter(participant!="test") %>%
+  filter(participant!=0) 
+hobby<-hobbies[,-c(1,2,64,65)]
+```
+
+#### Linear discriminant analysis - LDA
+
+The LDA algorithm starts by finding directions that maximize the separation between classes, then use these directions to predict the class of individuals. These directions, called linear discriminants, are a linear combinations of predictor variables.
+
+LDA assumes that predictors are normally distributed (Gaussian distribution) and that the different classes have class-specific means and equal variance/covariance. 
+`the equal variance is not true`
+
+Before performing LDA, consider:
+
+-  Inspecting the univariate distributions of each variable and make sure that they are normally distribute. If not, you can transform them using log and root for exponential distributions and Box-Cox for skewed distributions.
+-  removing outliers from your data and standardize the variables to make their scale comparable
+
+```{r}
+library(MASS)
+hresult <- lda(sex~ .,na.action="na.omit", data=hobby)
+hresult
+
+# Assess the accuracy of the prediction
+# percent correct for each category of G
+hresult.values <- predict(hresult)
+ct <- table(hobby$sex, hresult.values$class)
+diag(prop.table(ct, 1))
+# total percent correct
+sum(diag(prop.table(ct)))
+```
+
+
+### plot 
+```{r}
+ldahist(data = hresult.values$x, g=hresult.values$class)
+```
+
+```{r load}
+# load the data and make each variable right
+df1 <- readr::read_csv(file.path(params$output_path, params$csv_fn)) 
+```
+
+## Rename variables
+
+We rename some of the variables to make the exposition clearer.
+
+```{r}
+df1 <- df1 %>%
+  dplyr::rename(., 'motion_dur_thr' = 'med_Motion_duration_Threshold',
+                'contrast_thr' = 'med_Contrast_Sensitivity_Threshold',
+                'mental_rot' = 'Mental_Rotation_scores',
+                'mental_rot_both' = 'Mental_Rotation_scores_both',
+                'vocab' = 'Vocabulary_scores',
+                'vocab_num' = 'Vocabulary_scores_cor_num')
+
+
+```
+
+### merge the data 
+```{r}
+hobbies<-cbind(hobbies,hresult.values$x) 
+colnames(hobbies)[2]<-"Participant"
+colnames(hobbies)[3]<-"Sex"
+colnames(hobbies)[66]<-"Interests"
+add<-c(1, 385,"Females", c(rep("NA",64)))
+hobbies<-rbind(hobbies, add)
+df2<-merge(df1, hobbies[,c(2,3, 66)], by=c("Participant","Sex"))
+```
+
+### save the dataframe
+```{r}
+output_fn <- paste0('combined_', format.Date(Sys.Date()), '.csv')
+write.csv(df2,
+          file.path(params$output_path, output_fn),
+          row.names = FALSE )
+```
+
+```{r}
+hobby_new <- readr::read_csv(file.path("~/Box/Project_Sex_difference_on_Motion_Perception/Hobby_SPSS", "hobby.csv")) 
+
+hobby_new$participant[1:23]<-c(119,110,121,123,125,127,320,112,114,129,324,116,131,118,133,120,330,135,122,124,137,139)
+```
+
