@@ -13,7 +13,7 @@ output:
 params:
   data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   hobby_data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data"
-  csv_fn: "combined_2021-03-04.csv"
+  csv_fn: "combined_2021-03-12.csv"
   outlier_sd_thresh: 3.0
 ---
 
@@ -194,6 +194,30 @@ shapiro_wilks_df %>%
 
 
 # Analysis
+## get n, mean and sd
+```{r}
+
+
+table(df1.f$Age)
+table(df1.m$Age)
+
+table(df1.f$School_year)
+table(df1.m$School_year)
+
+table(df1.f$Handedness)
+table(df1.m$Handedness)
+
+df1.f[grep("Hispanic/Latino", df1.f$Race),]
+df1.m[grep("Hispanic/Latino", df1.m$Race),]
+
+# race
+table( df1.f$Race)
+df1.f[grep("Black/African", df1.f$Race),]
+
+table( df1.m$Race)
+df1.m[grep("Black/African", df1.m$Race),]
+```
+
 
 ## Comparisons between sexes
 
@@ -206,6 +230,20 @@ Here is our pre-registered description of how we planned to compare sex differen
 ```{r}
 psych::describe(df1 %>% filter(Sex=="Males"))
 psych::describe(df1 %>% filter(Sex=="Females"))  
+
+var<-c("Sex","log_motion","Log_contrast","vocab","mental_rot", "femscale","masscale") 
+df1$Sex<-factor(df1$Sex)
+na.omit(df1[,var]) %>% group_by(Sex) %>%
+  summarize(N=n(),
+               mean=mean(),
+               sd=sd())
+df1.f<- df1 %>% filter(Sex=="Females")
+sd(df1.f$femscale, na.rm = TRUE)
+sd(df1.f$masscale, na.rm = TRUE)
+
+df1.m<- df1  %>% filter(Sex=="Males")
+sd(df1.m$femscale, na.rm = TRUE)
+sd(df1.m$masscale, na.rm = TRUE)
 ```
 
 
@@ -216,7 +254,7 @@ psych::describe(df1 %>% filter(Sex=="Females"))
 mdt_tt <-
   t.test(
     log_motion ~ Sex,
-    data = df1,
+    data = df2,
     var.equal = TRUE,
     alternative = "greater"
   ) #Hypothesized
@@ -311,6 +349,13 @@ t.test(
   var.equal = TRUE,
   alternative = "greater"
 )
+
+t.test(
+  femscale ~ Sex,
+  data = df1,
+  var.equal = TRUE,
+  alternative = "greater"
+)
 ```
 
 We found that females had higher interest scores in female-typed hobbies than males. 
@@ -320,6 +365,13 @@ We found that females had higher interest scores in female-typed hobbies than ma
 ```{r}
 t.test(
   Masculine_hobbies ~ Sex,
+  data = df1,
+  var.equal = TRUE,
+  alternative = "less"
+) #Hypothesized
+
+t.test(
+  masscale ~ Sex,
   data = df1,
   var.equal = TRUE,
   alternative = "less"
@@ -355,14 +407,16 @@ Because our preregistration envisioned a much larger total sample, we have chose
 We select the variables for our correlation analysis, and drop incomplete cases.
 ```{r}
 df_corr <- df2 %>%
-  dplyr::select(., Sex,
+  dplyr::select( Sex,
                 log_contrast,
                 log_motion,
                 mental_rot,
                 vocab,
-                Feminine_hobbies,
-                Masculine_hobbies,
-                Interests)
+           #      Masculine_hobbies,
+            #    Feminine_hobbies,
+                femscale,
+                masscale,m
+               )
 
 df_complete <- df_corr[stats::complete.cases(df_corr),]
 
@@ -413,18 +467,35 @@ df_complete_M <- df_complete %>%
 ### Females
 ```{r}
 cor.test(df_complete_F$log_contrast, df_complete_F$mental_rot, method = "pearson", alternative = "less")
-cor.test(df_complete_F$log_contrast, df_complete_F$Interests, method = "pearson", alternative = "less")
+cor.test(df_complete_F$log_contrast, df_complete_F$masscale, method = "pearson", alternative = "less")
+cor.test(df_complete_F$log_contrast, df_complete_F$femscale, method = "pearson", alternative = "greater")
 cor.test(df_complete_F$log_motion, df_complete_F$mental_rot, method = "pearson", alternative = "less")
-cor.test(df_complete_F$log_motion, df_complete_F$Interests, method = "pearson", alternative = "less")
+cor.test(df_complete_F$log_motion, df_complete_F$masscale, method = "pearson", alternative = "less")
+cor.test(df_complete_F$log_motion, df_complete_F$femscale, method = "pearson", alternative = "greater")
+```
+```{r}
+cor.test(df_complete_F$log_contrast, df_complete_F$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df_complete_F$log_contrast, df_complete_F$Feminine_hobbies, method = "pearson", alternative = "greater")
+cor.test(df_complete_F$log_motion, df_complete_F$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df_complete_F$log_motion, df_complete_F$Feminine_hobbies, method = "pearson", alternative = "greater")
 ```
 
 ### Males
 ```{r}
 cor.test(df_complete_M$log_contrast,df_complete_M$mental_rot, method = "pearson", alternative = "less")
-cor.test(df_complete_M$log_contrast, df_complete_M$Interests, method = "pearson", alternative = "less")
+cor.test(df_complete_M$log_contrast, df_complete_M$masscale, method = "pearson", alternative = "less")
+cor.test(df_complete_M$log_contrast, df_complete_M$femscale, method = "pearson", alternative = "greater")
 cor.test(df_complete_M$log_motion, df_complete_M$mental_rot, method = "pearson", alternative = "less")
-cor.test(df_complete_M$log_motion, df_complete_M$Interests, method = "pearson", alternative = "less")
+cor.test(df_complete_M$log_motion, df_complete_M$masscale, method = "pearson", alternative = "less")
+cor.test(df_complete_M$log_motion, df_complete_M$femscale, method = "pearson", alternative = "greater")
 ```
+```{r}
+cor.test(df_complete_M$log_contrast, df_complete_M$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df_complete_M$log_contrast, df_complete_M$Feminine_hobbies, method = "pearson", alternative = "greater")
+cor.test(df_complete_M$log_motion, df_complete_M$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df_complete_M$log_motion, df_complete_M$Feminine_hobbies, method = "pearson", alternative = "greater")
+```
+
 ### Females
 
 Select the females, focus on the numeric scores, and calculate a correlation matrix.
@@ -492,8 +563,8 @@ heatmap(x = corr_M$r, col = col, symm = TRUE)
 ```{r}
 out.m<-lapply(df_complete_M[,2:3],FindOutliers)
 out.f<-lapply(df_complete_F[,2:3],FindOutliers)
-df_complete_M <- df_complete_M[-which(df_complete_M$log_motion>-2),]
-df_test<-rbind(df_complete_M, df_complete_F)
+df_complete_M2 <- df_complete_M[-which(df_complete_M$log_motion>-2),]
+df_test<-rbind(df_complete_M2, df_complete_F)
 df_complete2 <- df_test[stats::complete.cases(df_test),]
 ```
 ### Overall for the outliers excluded datasets
@@ -672,7 +743,7 @@ sex_diff_scatter(
   "Mental rotation score"
 )
 
-sex_diff_corr_summ("log_motion", "mental_rot")
+ sex_diff_corr_summ("log_motion", "mental_rot")
 ```
 
 ## Motion sensitivity & vocabulary
@@ -722,6 +793,71 @@ sex_diff_scatter(
 )
 sex_diff_corr_summ("log_motion", "Feminine_hobbies")
 ```
+```{r}
+corr_df <- sex_diff_corr_summ("log_motion", "femscale",
+                              print_table = FALSE)
+
+sex_diff_scatter(
+  df_complete2,
+  "log_motion",
+  "femscale",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = 0.17*",
+  # "r = -0.01",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-2,-2.4),
+  c(1, -1),
+  "log(motion threshold)",
+  "Interest in feminine hobbies"
+)
+```
+
+```{r}
+corr_df <- sex_diff_corr_summ("log_contrast", "femscale",
+                              print_table = FALSE)
+
+sex_diff_scatter(
+  df_complete2,
+  "log_contrast",
+  "femscale",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = 0.17*",
+  # "r = -0.01",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-2,-2.4),
+  c(1, -1),
+  "log(contrast threshold)",
+  "Interest in feminine hobbies"
+)
+```
+
+```{r}
+corr_df <- sex_diff_corr_summ("log_motion", "masscale",
+                              print_table = FALSE)
+
+sex_diff_scatter(
+  df_complete2,
+  "log_motion",
+  "masscale",
+  x_rev = TRUE,
+  y_rev = FALSE,
+  # "r = 0.17*",
+  # "r = -0.01",
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  c(-1.5,-2.4),
+  c(-1, 1),
+  "log(motion threshold)",
+  "Interest in male_typed hobbies
+  "
+)
+```
+
+
 ## Contrast sensitivity &  hobbies
 
 ```{r}
@@ -856,6 +992,24 @@ sex_diff_scatter(df_complete2,
   "Interest in masculine hobbies",
   "Interest in feminine hobbies")
 sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies")
+```
+
+
+```{r m-hobbies-f-hobbies}
+corr_df <- sex_diff_corr_summ("mental_rot", "femscale", print_table = FALSE)
+
+sex_diff_scatter(df_complete2, 
+                x_var = "mental_rot",
+                y_var = "femscale",
+                x_rev = FALSE,
+                y_rev = FALSE,
+  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+                anx = 25,
+                any = c(1, -1),
+  "mental rotation",
+  "Interest in feminine hobbies")
+sex_diff_corr_summ("mental_rot", "Feminine_hobbies")
 ```
 
 # Mediation analysis

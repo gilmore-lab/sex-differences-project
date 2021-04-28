@@ -55,32 +55,32 @@ qua_raw$participant[which(qua_raw$participant=="2019-11-1814:48:2896")]<-106
 qua_raw$participant[which(qua_raw$participant=="2019-11-2013:40:1983")]<-115
 qua_raw$participant[which(qua_raw$participant=="2019-11-2014:53:2351")]<-108
 qua_raw$participant[which(qua_raw$participant=="2019-11-2016:11:0713")]<-117
-qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 11:14")]<-119
-qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 12:17")]<-110
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/19 11:14")]<-119
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/19 12:17")]<-110
 
-qua_raw$participant[which(qua_raw$RecordedDate=="11/21/2019 13:54")]<-121
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 10:45")]<-123
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 11:30")]<-125
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 14:35")]<-127
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 16:52")]<-320
+qua_raw$participant[which(qua_raw$RecordedDate=="11/21/19 13:54")]<-121
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/19 10:45")]<-123
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/19 11:30")]<-125
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/19 14:35")]<-127
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/19 16:52")]<-320
 
-qua_raw$participant[which(qua_raw$RecordedDate=="11/22/2019 17:40")]<-112
-qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 12:05")]<-114
-qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 14:36")]<-129
-qua_raw$participant[which(qua_raw$RecordedDate=="12/4/2019 16:44")]<-324
-qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 9:59")]<-116
+qua_raw$participant[which(qua_raw$RecordedDate=="11/22/19 17:40")]<-112
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/19 12:05")]<-114
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/19 14:36")]<-129
+qua_raw$participant[which(qua_raw$RecordedDate=="12/4/19 16:44")]<-324
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/19 9:59")]<-116
 
-qua_raw$participant[which(qua_raw$RecordedDate=="12/5/2019 13:20")]<-131
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 13:23")]<-118
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 14:29")]<-133
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 15:44")]<-120
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 16:44")]<-330
+qua_raw$participant[which(qua_raw$RecordedDate=="12/5/19 13:20")]<-131
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/19 13:23")]<-118
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/19 14:29")]<-133
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/19 15:44")]<-120
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/19 16:44")]<-330
 
-qua_raw$participant[which(qua_raw$RecordedDate=="12/12/2019 17:45")]<-135
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 13:58")]<-122
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 14:47")]<-124
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 16:32")]<-137
-qua_raw$participant[which(qua_raw$RecordedDate=="12/13/2019 17:04")]<-139
+qua_raw$participant[which(qua_raw$RecordedDate=="12/12/19 17:45")]<-135
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/19 13:58")]<-122
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/19 14:47")]<-124
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/19 16:32")]<-137
+qua_raw$participant[which(qua_raw$RecordedDate=="12/13/19 17:04")]<-139
 
 # contrast sensitivity
 cst$Participant[which(cst$Participant=="2019111309492663")]<-101
@@ -275,6 +275,7 @@ cst$threshold[which(cst$threshold>1)]
 # 20191119083974 (this may be a test data), 2019121215561995 (330,none is deleted), 354 (none is deleted) , 422 (the 1st, deleted due to low accuracy) has 1 weird runs
 # 201912040923578 (all deleted), 383 (all deleted), 428 (2 runs deleted due to low accuracy), 431 (none is deleted) has 4 wrong runs
 mdt$threshold[which(mdt$threshold>0.30)]
+mdt$Participant[which(mdt$threshold>0.30)]
 ```
 
 get median
@@ -364,7 +365,10 @@ var <-
     "MRT_cor",
     "MRT_cor_both",
     "hobfem",
-    "hobmas"
+    "hobmas",
+    "hobby_mean",
+    "femscale",
+    "masscale"
   )
 df1 <- df[, var]
 colnames(df1) <-
@@ -380,18 +384,21 @@ colnames(df1) <-
     "Acuity",
     "Color_vision",
     "Stereo",
-    "med_Motion_duration_Threshold",
+    "motion_dur_thr",
     "motion_dur_thr_mean",
     "motion_dur_thr_sd",
-    "med_Contrast_Sensitivity_Threshold",
+    "contrast_thr",
     "contrast_thr_mean",
     "contrast_thr_sd",
-    "Vocabulary_scores",
+    "vocab",
     "Vocabulary_scores_cor_num",
-    "Mental_Rotation_scores",
+    "mental_rot",
     "Mental_Rotation_scores_both",
     "Feminine_hobbies",
-    "Masculine_hobbies"
+    "Masculine_hobbies",
+    "hobby_mean",
+    "femscale",
+    "masscale"
   )
 # write.csv(df1,
 #           file.path(params$output_path, "data_output_Oct2020.csv"),
@@ -401,5 +408,17 @@ output_fn <- paste0('combined_', format.Date(Sys.Date()), '.csv')
 write.csv(df1,
           file.path(params$output_path, output_fn),
           row.names = FALSE)
+```
+
+```{r}
+df1$m<-df1$masscale-df1$femscale
+```
+
+# calculate alpha
+```{r}
+feshob<-data.frame(hobby[,c(4,9,10,15,16,20,21,22,38,44,46,51,54,56,57,60,61),])
+psych::alpha(feshob)
+mashob<-data.frame(hobby[,c(2,7,12,18,19,23,24,25,29,32,34,35,36,42,43,45,49,58,59)])
+psych::alpha(mashob)
 ```
 

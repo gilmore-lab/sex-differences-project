@@ -16,6 +16,7 @@ params:
   contrast_raw_path: "contrast_sensitivity_task_data"
   motion_raw_path: "motion_temporal_threshold_data"
   csv_fn: "combined_2021-02-16.csv"
+  hobby_data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data"
   outlier_sd_thresh: 3.0
 ---
 
@@ -27,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### discrimination analysis
 #### get the data
 ```{r}
-qua_raw <- readr::read_csv(file.path(params$data_path, "qualtrics_output_10_14_2020.csv")) 
+qua_raw <- readr::read_csv(file.path(params$output_path, "qualtrics_output_10_14_2020.csv")) 
 hobby_name<-readr::read_csv(file.path(params$hobby_data_path, "hobbies_names.csv")) 
 
 # rename variables
@@ -153,5 +154,11 @@ output_fn <- paste0('combined_', format.Date(Sys.Date()), '.csv')
 write.csv(df2,
           file.path(params$output_path, output_fn),
           row.names = FALSE )
+```
+
+```{r}
+hobby_new <- readr::read_csv(file.path("~/Box/Project_Sex_difference_on_Motion_Perception/Hobby_SPSS", "hobby.csv")) 
+
+hobby_new$participant[1:23]<-c(119,110,121,123,125,127,320,112,114,129,324,116,131,118,133,120,330,135,122,124,137,139)
 ```
 
