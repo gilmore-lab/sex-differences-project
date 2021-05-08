@@ -1,6 +1,10 @@
 ---
 title: "Analyses for write-up"
-author: "Yiming Qian & Rick Gilmore"
+author: "Yiming Qian & Rick Gilmore"params:
+  data_path: "C:/Users/yimin/Box Sync/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  hobby_data_path: "C:/Users/yimin/Box Sync/Project_Sex_difference_on_Motion_Perception/data"
+  csv_fn: "combined_2021-04-30.csv"
+  outlier_sd_thresh: 3.0
 date: "`r Sys.time()`"
 css: report.css
 output: 
@@ -10,11 +14,7 @@ output:
     toc: true
     toc_depth: 2
     toc_float: true
-params:
-  data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
-  hobby_data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data"
-  csv_fn: "combined_2021-03-12.csv"
-  outlier_sd_thresh: 3.0
+
 ---
 
 # Purpose
@@ -46,30 +46,6 @@ We import data previously cleaned to remove cases where accuracy is lower than t
 df1 <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
 
-## Identify missing threshold values 
-
-```{r}
-missing_motion <- is.na(df1$motion_dur_thr)
-missing_contrast <- is.na(df1$contrast_thr)
-
-case_ids <- 1:dim(df1)[1]
-```
-
-There are `r sum(missing_motion)` NAs for `motion_dur_thr`, (cases 114, 139, 371, 383) and `r sum(missing_contrast)` for `contrast_thr`, (cases 106, 111). 
-We exclude them for now.
-Missing data: 106 (contrast), 139 (motion), 371 (motion)
-all four runs of 114 and 338 motion thresholds was deleted because they are less than 68% accuracy.
-all four runs of 111 contrast sensitivity thresholds was deleted because they are less than 68% accuracy.
-Half missing data: 371 (motion), 395 (motion)
-
-# ```{r}
-# df1 <- df1 %>%
-#   dplyr::filter(., !is.na(motion_dur_thr),
-#                 !is.na(contrast_thr))
-# ```
-
-# These leaves us with $n=$ `r dim(df1)[1]` cases.
-
 ## Exclude outliers
 
 We detect outliers `r params$outlier_sd_thresh` SD from the grouped mean.
@@ -91,52 +67,25 @@ FindOutliers <- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh))
 outliers <- lapply(df1, FindOutliers)
 outliers
 ```
-
-Focus on vision measures.
-
-Motion duration threshold with all participants.
-
+# demographic information
 ```{r}
-df1 %>% 
-  ggplot(.) +
-  aes(y = motion_dur_thr, x = Sex) +
-  geom_violin() +
-  ggtitle('Motion threshold by sex: All participants')
+chisq.test(df1$Sex, df1$Age)
+chisq.test(df1$Sex, df1$School_year)
+table(df1$Sex, df1$Handedness)
+chisq.test(df1$Sex, df1$Handedness)
+
+chisq.test(data.frame(hispanic=c(5,1),
+          non=c(96,29)))
+
+chisq.test(data.frame(asian=c(37,11),
+          cas=c(49,14),
+          afric=c(13,3),
+          Pacificislander=c(1,0),
+          no=c(1,2)))
 ```
 
-Excluding outliers.
 
-```{r}
-df1[-outliers[['motion_dur_thr']],] %>%
-  ggplot(.) +
-  aes(y = motion_dur_thr, x = Sex) +
-  geom_violin() +
-  ggtitle('Motion threshold by sex: Outliers excluded')
 
-df1$motion_dur_thr[outliers[['motion_dur_thr']]]
-```
-
-Contrast threshold with all participants.
-
-```{r}
-df1 %>% 
-  ggplot(.) +
-  aes(y = contrast_thr, x = Sex) +
-  geom_violin() +
-  ggtitle('Contrast threshold by sex: All participants')
-```
-
-Excluding outliers
-
-```{r}
-df1[-outliers[['contrast_thr']],] %>%
-  ggplot(.) +
-  aes(y = contrast_thr, x = Sex) +
-  geom_violin() +
-  ggtitle('Contrast threshold by sex: Outliers excluded')
-
-df1$contrast_thr[outliers[['contrast_thr']]]
-```
 
 Exclude the outliers and create a new data frame.
 
@@ -152,248 +101,10 @@ df2<-df2 %>%
 # df2 <- df1[-c(outliers[['contrast_thr']], outliers[['motion_dur_thr']]),] # we cannot use this code, because there is overlap in the outliers of these two threshold. It will delete one good data.
 ```
 
-There were `r length(outliers[['motion_dur_thr']])` outliers in the motion duration threshold measure (cases `r outliers[['motion_dur_thr']]`), and `r length(outliers[['contrast_thr']])` outliers in the contrast threshold measure (cases `r outliers[['contrast_thr']]`).
-The total number of participants excluding these outliers is $n=$ `r dim(df2)[1]`.
-
-## Check distributions
-
-Do the data follow a normal distribution?
-We use the Shapiro-Wilk normality test, `shapiro.test()` to answer.
-
 ```{r}
-# Shapiro-Wilk normality test 
-this_var <- c("vocab",
-             "mental_rot",
-             "Feminine_hobbies",
-             "Masculine_hobbies",
-             "contrast_thr",
-             "motion_dur_thr")
-sw_stat <- c(shapiro.test(df2$vocab)['statistic'],
-             shapiro.test(df2$mental_rot)['statistic'],
-             shapiro.test(df2$Feminine_hobbies)['statistic'],
-             shapiro.test(df2$Masculine_hobbies)['statistic'],
-             shapiro.test(df2$contrast_thr)['statistic'],
-             shapiro.test(df2$motion_dur_thr)['statistic']
-             )
-
-sw_p_val <- c(shapiro.test(df2$vocab)['p.value'],
-             shapiro.test(df2$mental_rot)['p.value'],
-             shapiro.test(df2$Feminine_hobbies)['p.value'],
-             shapiro.test(df2$Masculine_hobbies)['p.value'],
-             shapiro.test(df2$contrast_thr)['p.value'],
-             shapiro.test(df2$motion_dur_thr)['p.value']
-             )
-
-shapiro_wilks_df <- tibble::tibble(this_var, sw_stat, sw_p_val)
-
-shapiro_wilks_df %>%
-  kableExtra::kable(., format = 'html') %>%
-  kableExtra::kable_styling()
+str(df2)
+df2$Age<-factor(df2$Age,levels=1:4,labels=1:4)
 ```
-
-
-
-# Analysis
-## get n, mean and sd
-```{r}
-
-
-table(df1.f$Age)
-table(df1.m$Age)
-
-table(df1.f$School_year)
-table(df1.m$School_year)
-
-table(df1.f$Handedness)
-table(df1.m$Handedness)
-
-df1.f[grep("Hispanic/Latino", df1.f$Race),]
-df1.m[grep("Hispanic/Latino", df1.m$Race),]
-
-# race
-table( df1.f$Race)
-df1.f[grep("Black/African", df1.f$Race),]
-
-table( df1.m$Race)
-df1.m[grep("Black/African", df1.m$Race),]
-```
-
-
-## Comparisons between sexes
-
-Here is our pre-registered description of how we planned to compare sex differences:
-
-> To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at $\alpha$=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s $d$) at the $p$ value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study. The minimum effect size of .50 can be obtained by at least 45 male participants out of a total sample size of 300 (see the R-code for power analysis at WRONG URL! shorturl.at/nDHLV). The minimum detectable effect size decreases when male and female sample sizes differ less, but to simply our $t$ tests, we set the effect sizes at .5.
-
-
-### get the mean and sd of each group
-```{r}
-psych::describe(df1 %>% filter(Sex=="Males"))
-psych::describe(df1 %>% filter(Sex=="Females"))  
-
-var<-c("Sex","log_motion","Log_contrast","vocab","mental_rot", "femscale","masscale") 
-df1$Sex<-factor(df1$Sex)
-na.omit(df1[,var]) %>% group_by(Sex) %>%
-  summarize(N=n(),
-               mean=mean(),
-               sd=sd())
-df1.f<- df1 %>% filter(Sex=="Females")
-sd(df1.f$femscale, na.rm = TRUE)
-sd(df1.f$masscale, na.rm = TRUE)
-
-df1.m<- df1  %>% filter(Sex=="Males")
-sd(df1.m$femscale, na.rm = TRUE)
-sd(df1.m$masscale, na.rm = TRUE)
-```
-
-
-
-### log(Motion duration threshold)
-
-```{r}
-mdt_tt <-
-  t.test(
-    log_motion ~ Sex,
-    data = df2,
-    var.equal = TRUE,
-    alternative = "greater"
-  ) #Hypothesized
-mdt_tt
-```
-
-We found sex differences in log(`motion_dur_thr`). 
-Males took significantly shorter time (had lower log threshold) to detect the direction of motion than did females.
-Specifically, males had a mean duration threshold of `r mean(df2$motion_dur_thr[df2$Sex == 'Males'])` versus `r mean(df2$motion_dur_thr[df2$Sex == 'Females'])` for females.
-
-### log(contrast_thr)
-
-```{r}
-t.test(
-  log_contrast ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "greater"
-) #Hypothesized
-```
-
-We found sex differences in log(`contrast_thr`), as well. 
-Males detect the grating stimuli with lower contrast than females. 
-
-### Mental rotation
-
-```{r}
-t.test(
-  mental_rot ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-```
-
-Sex differences in mental rotation test were found. 
-Males had significantly more correct answers in the mental rotation task than females. 
-
-#### Supplemental
-
-A secondary, supplemental measure of mental rotation task performance is the number of trials in which both correct answers were reported.
-
-```{r mental-rot-both}
-t.test(
-  mental_rot_both ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-```
-
-This comparison also shows higher performance in males.
-
-### Vocabulary
-
-```{r}
-advoc_total_t <-
-  t.test(
-    vocab ~ Sex,
-    data = df1,
-    var.equal = TRUE,
-    alternative = "less"
-  )
-advoc_total_t
-```
-
-Vocabulary was a control variable in the study. As we predicted, the vocabulary score did not differ between males and females. 
-
-#### Supplemental
-
-A secondary measure of vocabulary performance taking the total number of correct answers, but not penalizing incorrect answers, can be used.
-
-```{r}
-advoc_total_t <-
-  t.test(
-    vocab_num ~ Sex,
-    data = df1,
-    var.equal = TRUE,
-    alternative = "less"
-  )
-advoc_total_t
-```
-
-This measure also shows no evidence of sex differences.
-
-### Feminine hobbies
-
-```{r}
-t.test(
-  Feminine_hobbies ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "greater"
-)
-
-t.test(
-  femscale ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "greater"
-)
-```
-
-We found that females had higher interest scores in female-typed hobbies than males. 
-
-### Masculine hobbies
-
-```{r}
-t.test(
-  Masculine_hobbies ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-
-t.test(
-  masscale ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-```
-
-We found that males have higher interest scores in male-typed hobbies than females.
-
-### lda hobbies
-
-```{r}
-t.test(
-  Interests ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-```
-
-### Summary
-
-All predicted findings about sex differences, and the lack of sex differences, were confirmed.
 
 ## Correlations among measures
 
@@ -407,7 +118,7 @@ Because our preregistration envisioned a much larger total sample, we have chose
 We select the variables for our correlation analysis, and drop incomplete cases.
 ```{r}
 df_corr <- df2 %>%
-  dplyr::select( Sex,
+  dplyr::select( Sex,Age,
                 log_contrast,
                 log_motion,
                 mental_rot,
@@ -415,7 +126,7 @@ df_corr <- df2 %>%
            #      Masculine_hobbies,
             #    Feminine_hobbies,
                 femscale,
-                masscale,m
+                masscale
                )
 
 df_complete <- df_corr[stats::complete.cases(df_corr),]
@@ -427,41 +138,20 @@ options(digits=2)
 This gives us $n=$ `r dim(df_complete)[1]` complete cases.
 
 We note that case 78 has threshold measures for motion and contrast but no data from the mental rotation, vocabulary, or hobbies measures.
-### Overall
 
-This combines males and females.
-
-```{r}
-df_complete_numeric <- df_complete %>%
-  dplyr::select(., -Sex)
-
-corr <- Hmisc::rcorr(as.matrix(df_complete_numeric), type = c("pearson"))
-```
-
-#### Coefficients
-
-```{r}
-corr$r
-```
-
-#### P-values
-
-```{r}
-corr$P
-```
-
-```{r}
-# Get some colors
-col <- colorRampPalette(c("blue", "white", "red"))(20)
-heatmap(x = corr$r, col = col, symm = TRUE)
-```
 
 ```{r}
 df_complete_F <- df_complete %>%
   dplyr::filter(., Sex == 'Females') 
 df_complete_M <- df_complete %>%
   dplyr::filter(., Sex == 'Males') 
+
+df_corr_F <- df_corr %>%
+  dplyr::filter(., Sex == 'Females') 
+df_corr_M <- df_corr %>%
+  dplyr::filter(., Sex == 'Males') 
 ```
+
 
 # get the one-tailed correlation
 ### Females
@@ -472,6 +162,40 @@ cor.test(df_complete_F$log_contrast, df_complete_F$femscale, method = "pearson",
 cor.test(df_complete_F$log_motion, df_complete_F$mental_rot, method = "pearson", alternative = "less")
 cor.test(df_complete_F$log_motion, df_complete_F$masscale, method = "pearson", alternative = "less")
 cor.test(df_complete_F$log_motion, df_complete_F$femscale, method = "pearson", alternative = "greater")
+```
+### one-tailed regression
+```{r}
+mod<-lm(mental_rot~Age+log_contrast, data = df_complete_F)
+res <- summary(mod)
+# For the two-sided hypotheses
+2*pt(-abs(coef(res)[, 3]), mod$df)
+# For H1: beta < 0
+pt(coef(res)[, 3], mod$df, lower = TRUE)
+
+mod<-lm(mental_rot~Age+masscale, data = df_complete_F)
+res <- summary(mod)
+
+mod<-lm(log_contrast~Age+masscale, data = df_complete_F)
+res <- summary(mod)
+
+mod<-lm(log_motion~Age+masscale, data = df_complete_F)
+res <- summary(mod)
+
+mod<-lm(log_contrast~Age+masscale, data = df_complete_M)
+res <- summary(mod)
+mod<-lm(log_motion~Age+masscale, data = df_complete_M)
+res <- summary(mod)
+```
+
+
+```{r}
+cor.test(df_complete_F$log_contrast, df_complete_F$mental_rot, method = "pearson", alternative = "less",na.action=na.exclude)  # for 'cor' function, use="pairwise.complete.obs"the cases with missing values are only removed during the calculation of each pairwise correlation, while use="complete.obs", the matrix m first has all cases with missing values removed
+# na.omit is listwise deletion (th whole row is deleted); na.exclude used the residuals and predictions are padded to the correct length by inserting NAs for cases omitted by na.exclude
+cor.test(df_complete_F$log_contrast, df_complete_F$masscale, method = "pearson", alternative = "less",na.action=na.exclude)
+cor.test(df_complete_F$log_contrast, df_complete_F$femscale, method = "pearson", alternative = "greater",na.action=na.exclude)
+cor.test(df_complete_F$log_motion, df_complete_F$mental_rot, method = "pearson", alternative = "less",na.action=na.exclude)
+cor.test(df_complete_F$log_motion, df_complete_F$masscale, method = "pearson", alternative = "less",na.action=na.exclude)
+cor.test(df_complete_F$log_motion, df_complete_F$femscale, method = "pearson", alternative = "greater",na.action=na.exclude)
 ```
 ```{r}
 cor.test(df_complete_F$log_contrast, df_complete_F$Masculine_hobbies, method = "pearson", alternative = "less")
@@ -1024,37 +748,172 @@ library(mediation)
 
 ```{r}
 # Step #1: The total effect
-fit.totaleffect = lm(mental_rot ~ Feminine_hobbies+vocab+Sex, df_complete2)
+fit.totaleffect = lm(mental_rot ~ femscale+vocab+Sex, df2)
 summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
 # Step #2: The effect of the IV onto the mediator
 # To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
-fit.mediator = lm(log_motion ~ Feminine_hobbies+Sex, df_complete2)
+fit.mediator = lm(log_motion ~ femscale+Sex, df2)
 summary(fit.mediator) # the total effect of f hobbies on our MRT is significant (p<.05).
 # Step #3: The effect of the mediator on the dependent variable
-fit.dv = lm(mental_rot ~ log_motion + Feminine_hobbies+vocab+Sex, df_complete2)
+fit.dv = lm(mental_rot ~ log_motion + femscale+vocab+Sex, df2)
 summary(fit.dv) # The mediator has a significant effect (p<.05) on the dv.
 # Step #4: Causal Mediation Analysis
-results = mediate(fit.mediator, fit.dv, treat = 'Feminine_hobbies', mediator =
+results = mediate(fit.mediator, fit.dv, treat = 'femscale', mediator =
                     'log_motion', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
 summary(results)
 # not significant ACME is boot=T
 ```
+
 ```{r}
 # Step #1: The total effect
-fit.totaleffect = lm(mental_rot ~ hobby+vocab, df_complete2)
+fit.totaleffect = lm(mental_rot ~ femscale+Sex, df2)
 summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
 # Step #2: The effect of the IV onto the mediator
 # To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
-fit.mediator = lm(log_motion ~ hobby, df_complete2)
+fit.mediator = lm(log_motion ~ femscale+Sex, df2)
 summary(fit.mediator) # the total effect of f hobbies on our MRT is significant (p<.05).
 # Step #3: The effect of the mediator on the dependent variable
-fit.dv = lm(mental_rot ~ log_motion + hobby+vocab, df_complete2)
+fit.dv = lm(mental_rot ~ log_motion + femscale+Sex, df2)
 summary(fit.dv) # The mediator has a significant effect (p<.05) on the dv.
 # Step #4: Causal Mediation Analysis
-results = mediate(fit.mediator, fit.dv, treat = 'hobby', mediator =
+results = mediate(fit.mediator, fit.dv, treat = 'femscale', mediator =
                     'log_motion', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
 summary(results)
+# not significant ACME is boot=T
 ```
+
+```{r}
+# Step #1: The total effect
+fit.totaleffect3 = lm(mental_rot ~ femscale, df_complete_F)
+summary(fit.totaleffect3) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator3 = lm(log_motion ~ femscale, df_complete_F)
+summary(fit.mediator3) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv3 = lm(mental_rot ~ log_motion + femscale, df_complete_F)
+summary(fit.dv3) # The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results3 = mediate(fit.mediator3, fit.dv3, treat = 'femscale', mediator =
+                    'log_motion', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results3)
+# not significant ACME is boot=T
+```
+
+```{r}
+# Step #1: The total effect
+fit.totaleffect4 = lm(mental_rot ~ femscale+vocab, df_complete_F)
+summary(fit.totaleffect4) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator4 = lm(log_motion ~ femscale, df_complete_F)
+summary(fit.mediator4) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv4 = lm(mental_rot ~ log_motion + femscale+vocab, df_complete_F)
+summary(fit.dv4) # The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results4 = mediate(fit.mediator4, fit.dv4, treat = 'femscale', mediator =
+                    'log_motion', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results4)
+# not significant ACME is boot=T
+```
+
+### Feminine_hobbies ->contrast->mental_rot
+```{r}
+# Step #1: The total effect
+fit.totaleffect = lm(mental_rot ~ femscale+vocab+Sex, df_complete)
+summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator = lm(log_contrast ~ femscale+Sex, df_complete)
+summary(fit.mediator) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv = lm(mental_rot ~ log_contrast + femscale+vocab+Sex, df_complete)
+summary(fit.dv) # The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results = mediate(fit.mediator, fit.dv, treat = 'femscale', mediator =
+                    'log_contrast', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results)
+
+summary(lm(mental_rot ~ log_contrast +vocab+Sex, df_complete))
+# summary(lm(mental_rot ~ log_contrast +Sex, df2))
+# significant ACME 
+```
+```{r}
+# Step #1: The total effect
+fit.totaleffect = lm(mental_rot ~ femscale+vocab+Sex, df2)
+summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator = lm(log_contrast ~ femscale+Sex, df2)
+summary(fit.mediator) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv = lm(mental_rot ~ log_contrast + femscale+vocab+Sex, df2)
+summary(fit.dv) # The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results = mediate(fit.mediator, fit.dv, treat = 'femscale', mediator =
+                    'log_contrast', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results)
+
+summary(lm(mental_rot ~ log_contrast +vocab+Sex, df2))
+# summary(lm(mental_rot ~ log_contrast +Sex, df2))
+# significant ACME 
+```
+
+```{r}
+# Step #1: The total effect
+fit.totaleffect8 = lm(mental_rot ~ femscale+Sex, df2)
+summary(fit.totaleffect8) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator8 = lm(log_contrast ~ femscale+Sex, df2)
+summary(fit.mediator8) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv8 = lm(mental_rot ~ log_contrast + femscale+Sex, df2)
+summary(fit.dv8) # The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results8 = mediate(fit.mediator8, fit.dv8, treat = 'femscale', mediator =
+                    'log_contrast', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results8)
+# significant ACME 
+```
+```{r}
+# Step #1: The total effect
+fit.totaleffect = lm(mental_rot ~ femscale+vocab, df_complete_F)
+summary(fit.totaleffect) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator = lm(log_contrast ~ femscale,df_complete_F)
+summary(fit.mediator) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv = lm(mental_rot ~ log_contrast + femscale+vocab, df_complete_F)
+summary(fit.dv) # The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results = mediate(fit.mediator, fit.dv, treat = 'femscale', mediator =
+                    'log_contrast', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results)
+
+summary(lm(mental_rot ~ log_contrast +vocab, df_complete_F))
+# summary(lm(mental_rot ~ log_contrast +Sex, df2))
+# significant ACME 
+```
+```{r}
+# Step #1: The total effect
+# Step #2: The effect of the IV onto the mediator
+# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
+fit.mediator5 = lm(log_contrast ~ femscale, df_complete_F)
+summary(fit.mediator5) # the total effect of f hobbies on our MRT is significant (p<.05).
+# Step #3: The effect of the mediator on the dependent variable
+fit.dv5 = lm(mental_rot ~ log_contrast + femscale+vocab, df_complete_F)
+summary(fit.dv5) # The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results5 = mediate(fit.mediator5, fit.dv5, treat = 'femscale', mediator =
+                    'log_contrast', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results5)
+# not significant ACME is boot=T
+```
+
+
 
 >> ACME stands for average causal mediation effects. This is the indirect effect of the IV (sepal length) on the DV (likelihood of pollination) that goes through the mediator (attractiveness to bee). Note that it estimated this effect to be -.50 — this is exactly X (the effect of the IV on the mediator from step #2) times X (the mediator's effect on the DV from step #3) — so not necessarily new information. However, what is new, is that we now have a confidence interval and significance levels for the entire indirect effect, not only its two parts. This is something we need for reporting the mediation.
 ADE stands for average direct effects. It describes the direct effect of the IV on the DV. Again — if you’ve been paying attention closely — this is not new information. We have calculated this effect before in step #3: the direct effect of the IV on the DV when controlling for the mediator.
@@ -1064,86 +923,68 @@ Prop. Mediated describes the proportion of the effect of the IV on the DV that g
 
 ###  log_motion->Feminine_hobbies->mental_rot
 ```{r}
-fit.totaleffect4 = lm(mental_rot ~ log_motion+vocab+Sex, df_complete2)
-summary(fit.totaleffect4)
-fit.Y4 = lm(mental_rot ~ Feminine_hobbies + log_motion+vocab+Sex, df_complete2)
+fit.t4 = lm(mental_rot ~ log_motion+vocab+Sex, df2)
+summary(fit.t4)
+fit.Y4 = lm(mental_rot ~ femscale + log_motion+vocab+Sex, df2)
 summary(fit.Y4)
-fit.M4 = lm(Feminine_hobbies ~ log_motion+Sex, df_complete2)
+fit.M4 = lm(femscale ~ log_motion+Sex, df2)
 summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p<.05).
 # gvlma(fit.M)
 # Step #3: The effect of the mediator on the dependent variable
 # The mediator has a significant effect (p<.05) on the dv.
 # Step #4: Causal Mediation Analysis
-results4 = mediate(fit.M4, fit.Y4, treat = 'log_motion', mediator = 'Feminine_hobbies', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
-summary(results4)
+results6 = mediate(fit.M4, fit.Y4, treat = 'log_motion', mediator = 'femscale', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results6)
+```
+```{r}
+fit.t4 = lm(mental_rot ~ log_motion+Sex, df2)
+summary(fit.t4)
+fit.Y4 = lm(mental_rot ~ femscale + log_motion+Sex, df2)
+summary(fit.Y4)
+fit.M4 = lm(femscale ~ log_motion+Sex, df2)
+summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M)
+# Step #3: The effect of the mediator on the dependent variable
+# The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results6 = mediate(fit.M4, fit.Y4, treat = 'log_motion', mediator = 'femscale', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results6)
 ```
 
-###  log_motion->hobbies->mental_rot
+###  log_contrast->fem_hobbies->mental_rot
 ```{r}
-fit.totaleffect4 = lm(mental_rot ~ log_motion+vocab+Sex, df_complete)
-summary(fit.totaleffect4)
-fit.Y4 = lm(mental_rot ~ Interests + log_motion+vocab+Sex, df_complete)
-summary(fit.Y4)
-fit.M4 = lm(Interests ~ log_motion+Sex, df_complete)
-summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p<.05).
-# gvlma(fit.M)
-# Step #3: The effect of the mediator on the dependent variable
-# The mediator has a significant effect (p<.05) on the dv.
-# Step #4: Causal Mediation Analysis
-results4 = mediate(fit.M4, fit.Y4, treat = 'log_motion', mediator = 'Interests', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
-summary(results4)
-```
-###  log_motion->Feminine_hobbies->mental_rot
-```{r}
-fit.totaleffect4 = lm(mental_rot ~ log_motion+vocab+Sex, df_complete2)
-summary(fit.totaleffect4)
-fit.Y4 = lm(mental_rot ~ hobby + log_motion+vocab+Sex, df_complete2)
-summary(fit.Y4)
-fit.M4 = lm(hobby ~ log_motion+Sex, df_complete2)
-summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p<.05).
-# gvlma(fit.M)
-# Step #3: The effect of the mediator on the dependent variable
-# The mediator has a significant effect (p<.05) on the dv.
-# Step #4: Causal Mediation Analysis
-results4 = mediate(fit.M4, fit.Y4, treat = 'log_motion', mediator = 'hobby', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
-summary(results4)
-```
-### hobbies ->log_contrast->mental_rot
-```{r}
-# Step #1: The total effect
-fit.totaleffect2 = lm(mental_rot ~ hobby+vocab, df_complete2)
-summary(fit.totaleffect2) # As you can see, the total effect of f hobbies on our dv is significant (p<.05).
-# Step #2: The effect of the IV onto the mediator
-# To establish any mediation, the independent variable (iv, “sepal length” in our case) must significantly affect the mediator. This is logical as, without any effect here, no mediation can take place.
-fit.m2 = lm(log_contrast ~ Masculine_hobbies, df_complete2)
-summary(fit.m2) # the total effect of f hobbies on our MRT is significant (p<.05).
-# Step #3: The effect of the mediator on the dependent variable
-fit.y2 = lm(mental_rot ~ log_contrast + Masculine_hobbies+vocab, df_complete2)
-summary(fit.y2) # The mediator has a significant effect (p<.05) on the dv.
-# Step #4: Causal Mediation Analysis
-results2 = mediate(fit.m2, fit.y2, treat = 'Masculine_hobbies', mediator =
-                     'log_contrast') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
-summary(results2)
-# not significant ACME is boot=T
-```
-
-###  log_contrast->Masculine_hobbies->mental_rot
-```{r}
-fit.totaleffect = lm(mental_rot ~ log_contrast, df_complete)
-summary(fit.totaleffect)
-fit.Y5 = lm(mental_rot ~ Masculine_hobbies + log_contrast, df2)
+fit.T5 = lm(mental_rot ~ log_contrast, df2)
+summary(fit.T5)
+fit.Y5 = lm(mental_rot ~ femscale + log_contrast, df2)
 summary(fit.Y5)
-fit.M5 = lm(Masculine_hobbies ~ log_contrast, df2)
+fit.M5 = lm(femscale ~ log_contrast, df2)
 summary(fit.M5) # the total effect of f hobbies on our MRT is significant (p<.05).
 # gvlma(fit.M)
 # Step #3: The effect of the mediator on the dependent variable
 # The mediator has a significant effect (p<.05) on the dv.
 # Step #4: Causal Mediation Analysis
-results5 = mediate(fit.M5, fit.Y5, treat = 'log_contrast', mediator = 'Masculine_hobbies') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
-summary(results5)
+results7 = mediate(fit.M5, fit.Y5, treat = 'log_contrast', mediator = 'femscale') # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results7)
+summary(lm( mental_rot~femscale, df2))
+
+# Sobel’s test 
+bda:sobel(df2$femscale,df2$log_contrast, df2$mental_rot) # (mv,iv,dv)
 ```
 
-
+```{r}
+fit.t4 = lm(mental_rot ~ log_contrast+Sex+vocab, df2)
+summary(fit.t4)
+fit.Y4 = lm(mental_rot ~ femscale + log_contrast+Sex+vocab, df2)
+summary(fit.Y4)
+fit.M4 = lm(femscale ~ log_contrast+Sex, df2)
+summary(fit.M4) # the total effect of f hobbies on our MRT is significant (p<.05).
+# gvlma(fit.M)
+# Step #3: The effect of the mediator on the dependent variable
+# The mediator has a significant effect (p<.05) on the dv.
+# Step #4: Causal Mediation Analysis
+results6 = mediate(fit.M4, fit.Y4, treat = 'log_contrast', mediator = 'femscale', boot=T) # Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true.
+summary(results6)
+```
 # Supplemental analyses
 
 The primary analysis was based on the median threshold scores. 
