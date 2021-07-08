@@ -1,48 +1,60 @@
 ---
 title: "plot_for_VSS"
-author: "yiming"
-date: "May 7, 2021"
+author: "Yiming Qian & Rick Gilmore"
+date: "`r Sys.time()`"
 output: html_document
 params:
-  data_path: "C:/Users/yimin/Box Sync/Project_Sex_difference_on_Motion_Perception/data/processed_data"
-  hobby_data_path: "C:/Users/yimin/Box Sync/Project_Sex_difference_on_Motion_Perception/data"
+  data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  hobby_data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data"
   csv_fn: "combined_2021-04-30.csv"
   outlier_sd_thresh: 3.0
 ---
+
+# Purpose
+
+This document generates visualizations for a poster by Qian & Gilmore, 2021.
+
+Qian, Y. & Gilmore, R.O. (2021, May). Sex differences in visual processing: Does it relate to cognition or other behaviors? Poster presented at the Virtual Vision Sciences Society (V-VSS) 2021 meeting.
+
+# Setup
+
+Set chunk options and load libraries.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
-#library(sjPlot)  # create publishable table
-#library(pwr)
+library(add2ggplot)
+library(gridExtra)
 library(Hmisc)
-#library(ggpubr)
-#library(pwr)
-# library(ggExtra)
-# library(mixtools)
-# library(mediation)
-#library("gridExtra")
 ```
+
+# Import data and clean
 
 ```{r load}
 # load the data and make each variable right
 df1 <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
 
+Remove outliers using a threshold based on the number of standard deviations from the mean.
+
+Here we use `r params$outlier_sd_thresh`.
+
 ```{r}
 # define a function to remove outliers
-FindOutliers <- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh)) {
-  sd = sd(data, na.rm = T)
-  mean = mean(data, na.rm = T)
-  # we identify extreme outliers
-  extreme.threshold.upper = (sd * sd_thresh) + mean
-  extreme.threshold.lower = -(sd * sd_thresh) + mean
-  result <-
-    which(data > extreme.threshold.upper |
-            data < extreme.threshold.lower)
-  print(result)
-}
+FindOutliers <-
+  function(data,
+           sd_thresh = as.numeric(params$outlier_sd_thresh)) {
+    sd = sd(data, na.rm = T)
+    mean = mean(data, na.rm = T)
+    # we identify extreme outliers
+    extreme.threshold.upper = (sd * sd_thresh) + mean
+    extreme.threshold.lower = -(sd * sd_thresh) + mean
+    result <-
+      which(data > extreme.threshold.upper |
+              data < extreme.threshold.lower)
+    print(result)
+  }
 
 outliers <- lapply(df1, FindOutliers)
 outliers
@@ -53,95 +65,141 @@ df2 <- df1
 df2$contrast_thr[outliers[['contrast_thr']]] <- NA
 df2$motion_dur_thr[outliers[['motion_dur_thr']]] <- NA
 
-df2<-df2 %>%
+df2 <- df2 %>%
   dplyr::mutate(.,
                 log_contrast = log(contrast_thr),
-                  log_motion =log(motion_dur_thr))
+                log_motion = log(motion_dur_thr))
 # df2 <- df1[-c(outliers[['contrast_thr']], outliers[['motion_dur_thr']]),] # we cannot use this code, because there is overlap in the outliers of these two threshold. It will delete one good data.
 ```
 
-
+# Plots
 
 ```{r}
-p1<-ggplot(df2, aes(x=Sex, y=log_contrast, color=Sex)) + 
-  stat_summary(fun.y = mean,
-                 geom = "point",size=2,   position = position_dodge(0.8)
-    ) + 
-    stat_summary(fun.data = mean_se,  
-                 geom = "errorbar", position = position_dodge(0.8),
-    width = .5) + 
-  scale_fill_discrete("Sex")+
- theme_classic() +
-   theme(legend.position = "none")+
+p1 <- ggplot(df2, aes(x = Sex, y = log_contrast, color = Sex)) +
+  stat_summary(
+    fun.y = mean,
+    geom = "point",
+    size = 2,
+    position = position_dodge(0.8)
+  ) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    position = position_dodge(0.8),
+    width = .5
+  ) +
+  scale_fill_discrete("Sex") +
+  theme_classic() +
+  theme(legend.position = "none") +
   ylab("Contrast Sensitivity")
 ```
+
+
 ```{r}
-p2<-ggplot(df2, aes(x=Sex, y=log_motion, color=Sex)) + 
-  stat_summary(fun.y = mean,
-                 geom = "point",size=2,   position = position_dodge(0.8)
-    ) + 
-    stat_summary(fun.data = mean_se,  
-                 geom = "errorbar", position = position_dodge(0.8),
-    width = .5) + 
-  scale_fill_discrete("Sex")+
- theme_classic() +
-   theme(legend.position = "none")+
+p2 <- ggplot(df2, aes(x = Sex, y = log_motion, color = Sex)) +
+  stat_summary(
+    fun.y = mean,
+    geom = "point",
+    size = 2,
+    position = position_dodge(0.8)
+  ) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    position = position_dodge(0.8),
+    width = .5
+  ) +
+  scale_fill_discrete("Sex") +
+  theme_classic() +
+  theme(legend.position = "none") +
   ylab("Motion Perception")
 ```
+
 ```{r}
-p3<-ggplot(df2, aes(x=Sex, y=mental_rot, color=Sex)) + 
-  stat_summary(fun.y = mean,
-                 geom = "point",size=2,   position = position_dodge(0.8)
-    ) + 
-    stat_summary(fun.data = mean_se,  
-                 geom = "errorbar", position = position_dodge(0.8),
-    width = .5) + 
-  scale_fill_discrete("Sex")+
- theme_classic() +
+p3 <- ggplot(df2, aes(x = Sex, y = mental_rot, color = Sex)) +
+  stat_summary(
+    fun.y = mean,
+    geom = "point",
+    size = 2,
+    position = position_dodge(0.8)
+  ) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    position = position_dodge(0.8),
+    width = .5
+  ) +
+  scale_fill_discrete("Sex") +
+  theme_classic() +
   ylab("Mental Rotation Scores")
 ```
+
+
 ```{r}
-p4<-ggplot(df2, aes(x=Sex, y=vocab, color=Sex)) + 
-  stat_summary(fun.y = mean,
-                 geom = "point",size=2,   position = position_dodge(0.8)
-    ) + 
-    stat_summary(fun.data = mean_se,  
-                 geom = "errorbar", position = position_dodge(0.8),
-    width = .5) + 
-  scale_fill_discrete("Sex")+
- theme_classic() +
-   theme(legend.position = "none")+
+p4 <- ggplot(df2, aes(x = Sex, y = vocab, color = Sex)) +
+  stat_summary(
+    fun.y = mean,
+    geom = "point",
+    size = 2,
+    position = position_dodge(0.8)
+  ) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    position = position_dodge(0.8),
+    width = .5
+  ) +
+  scale_fill_discrete("Sex") +
+  theme_classic() +
+  theme(legend.position = "none") +
   ylab("Vocabulary Scores")
 ```
+
+
 ```{r}
-p5<-ggplot(df2, aes(x=Sex, y=masscale, color=Sex)) + 
-  stat_summary(fun.y = mean,
-                 geom = "point",size=2,   position = position_dodge(0.8)
-    ) + 
-    stat_summary(fun.data = mean_se,  
-                 geom = "errorbar", position = position_dodge(0.8),
-    width = .5) + 
-  scale_fill_discrete("Sex")+
- theme_classic() +
-   theme(legend.position = "none")+
+p5 <- ggplot(df2, aes(x = Sex, y = masscale, color = Sex)) +
+  stat_summary(
+    fun.y = mean,
+    geom = "point",
+    size = 2,
+    position = position_dodge(0.8)
+  ) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    position = position_dodge(0.8),
+    width = .5
+  ) +
+  scale_fill_discrete("Sex") +
+  theme_classic() +
+  theme(legend.position = "none") +
   ylab("Masculine Hobbies")
 ```
+
+
 ```{r}
-p6<-ggplot(df2, aes(x=Sex, y=femscale, color=Sex)) + 
-  stat_summary(fun.y = mean,
-                 geom = "point",size=2,   position = position_dodge(0.8)
-    ) + 
-    stat_summary(fun.data = mean_se,  
-                 geom = "errorbar", position = position_dodge(0.8),
-    width = .5) + 
-  scale_fill_discrete("Sex")+
- theme_classic() +
+p6 <- ggplot(df2, aes(x = Sex, y = femscale, color = Sex)) +
+  stat_summary(
+    fun.y = mean,
+    geom = "point",
+    size = 2,
+    position = position_dodge(0.8)
+  ) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    position = position_dodge(0.8),
+    width = .5
+  ) +
+  scale_fill_discrete("Sex") +
+  theme_classic() +
   ylab("Feminine Hobbies")
 ```
 
+
 ```{r}
-p = grid.arrange(layout_matrix = rbind(c(1,1, 2,2, 3,3,3),
-                                       c(4,4, 5,5, 6,6,6)), p1, p2, p3,p4,p5,p6)
+p = grid.arrange(layout_matrix = rbind(c(1, 1, 2, 2, 3, 3, 3),
+                                       c(4, 4, 5, 5, 6, 6, 6)), p1, p2, p3, p4, p5, p6)
 #labels = c("a", "b", "c")
 ggsave(
   plot = p,
@@ -152,34 +210,47 @@ ggsave(
   dpi = 600
 )
 ```
+
+
 ```{r}
 df_corr <- df2 %>%
-  dplyr::select( Sex,Age,
+  dplyr::select(Sex,
+                Age,
                 log_contrast,
                 log_motion,
                 mental_rot,
                 vocab,
-           #      Masculine_hobbies,
-            #    Feminine_hobbies,
+                #      Masculine_hobbies,
+                #    Feminine_hobbies,
                 femscale,
-                masscale
-               )
+                masscale)
 
-df_complete <- df_corr[stats::complete.cases(df_corr),]
+df_complete <- df_corr[stats::complete.cases(df_corr), ]
 
 # Set the number of digits to display in the tables
-options(digits=2)
+options(digits = 2)
 ```
+
 
 ```{r}
 df_complete_F <- df_complete %>%
   dplyr::filter(., Sex == 'Females') 
+
 df_complete_M <- df_complete %>%
   dplyr::filter(., Sex == 'Males') 
 
-corr_M <- Hmisc::rcorr(as.matrix(df_corr_m), type = c("pearson"))
+df_corr_m <-df_complete %>%
+  dplyr::filter(., Sex == 'Males') %>%
+  dplyr::select(., -Sex)
+
+df_corr_f <-df_complete %>%
+  dplyr::filter(., Sex == 'Females') %>%
+  dplyr::select(., -Sex)
+
 corr_M <- Hmisc::rcorr(as.matrix(df_corr_m), type = c("pearson"))
 ```
+
+Create a function to generate scatter plots.
 
 ```{r}
 sex_diff_scatter <-
@@ -223,7 +294,7 @@ sex_diff_scatter <-
         x = anx,
         y = any,
         label = c(an_f, an_m),
-        color = c('red','darkturquoise' )
+        color = c('red', 'darkturquoise')
       )
     
     if (square_axis)
@@ -244,10 +315,11 @@ sex_diff_scatter <-
     if (y_rev)
       p <- p + scale_y_reverse()
     
-
+    
     p1
   }
 ```
+
 
 ```{r sex-diff-corr-sum-function}
 sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE) {
@@ -277,39 +349,48 @@ sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE) {
   
   df <- df %>%
     mutate(., stars = if_else(p_val < .005, "***",
-                              if_else(p_val < .01, "**",
-                                      if_else(p_val < .05, "*", " ns"))))
-    
+                              if_else(
+                                p_val < .01, "**",
+                                if_else(p_val < .05, "*", " ns")
+                              )))
+  
   
   if (print_table) {
-  kableExtra::kable(df, format = 'html') %>%
-    kableExtra::kable_styling()    
+    kableExtra::kable(df, format = 'html') %>%
+      kableExtra::kable_styling()
   } else {
     df
   }
 }
 ```
+
+
 ```{r}
 df_corr <- df_complete %>%
-  dplyr::select(., -Sex)
+  dplyr::select(.,-Sex)
 
 corr_all <- Hmisc::rcorr(as.matrix(df_corr), type = c("pearson"))
 ```
+
+
 ```{r}
-df_corr_m <-df_complete %>%
+df_corr_m <- df_complete %>%
   dplyr::filter(., Sex == 'Males') %>%
-  dplyr::select(., -Sex)
+  dplyr::select(.,-Sex)
 
 corr_M <- Hmisc::rcorr(as.matrix(df_corr_m), type = c("pearson"))
-df_corr_f <-df_complete %>%
+
+df_corr_f <- df_complete %>%
   dplyr::filter(., Sex == 'Females') %>%
-  dplyr::select(., -Sex)
+  dplyr::select(.,-Sex)
 
 corr_F <- Hmisc::rcorr(as.matrix(df_corr_f), type = c("pearson"))
 ```
+
+
 ```{r motion-duration-contrast-sens}
 corr_df <- sex_diff_corr_summ("log_motion",
-                   "log_contrast", print_table = FALSE)
+                              "log_contrast", print_table = FALSE)
 
 sex_diff_scatter(
   df_complete,
@@ -319,10 +400,18 @@ sex_diff_scatter(
   y_rev = TRUE,
   # "r=0.22*",
   # "r=0.54***",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-1.9,-2.04),
-  c(-1.4,-1.98),
+  paste0(
+    "r = ",
+    format(corr_df$cor_coef[3], digits = 2, nsmall = 2),
+    corr_df$stars[3]
+  ),
+  paste0(
+    "r = ",
+    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
+    corr_df$stars[2]
+  ),
+  c(-1.9, -2.04),
+  c(-1.4, -1.98),
   "Motion threshold",
   "Contrast threshold"
 )
