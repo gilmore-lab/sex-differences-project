@@ -34,7 +34,6 @@ library(sjPlot)  # create publishable table
 library(pwr)
 library(Hmisc)
 library(ggpubr)
-library(pwr)
 library(ggExtra)
 library(mixtools)
 library(mediation)
@@ -230,6 +229,7 @@ mod <- lm(log_motion ~ Age + masscale, data = df_complete_M)
 res <- summary(mod)
 ```
 
+
 ```{r}
 cor.test(
   df_complete_F$log_contrast,
@@ -275,6 +275,7 @@ cor.test(
   na.action = na.exclude
 )
 ```
+
 
 ### Males
 
@@ -477,6 +478,7 @@ sex_diff_scatter <-
     p1
   }
 ```
+
 
 ```{r sex-diff-corr-sum-function}
 sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE, 
@@ -888,7 +890,6 @@ sex_diff_corr_summ("log_contrast", "Masculine_hobbies")
 ```{r contrast-sens-m-hobbies-scaled}
 corr_df <- sex_diff_corr_summ("log_contrast", "masscale",
                               print_table = FALSE)
-
 sex_diff_scatter(
   df_complete2,
   "log_contrast",
@@ -914,7 +915,6 @@ sex_diff_scatter(
 )
 sex_diff_corr_summ("log_contrast", "masscale")
 ```
-
 
 ## Masculine and feminine hobbies
 
@@ -980,7 +980,7 @@ sex_diff_corr_summ("masscale", "femscale")
 
 ## Mental rotation & (scaled) hobbies
 
-### Feminine
+### Feminine hobbies
 
 ```{r ment-rot-f-hobbies-scaled}
 corr_df <-
@@ -1010,7 +1010,7 @@ sex_diff_scatter(
 sex_diff_corr_summ("mental_rot", "femscale")
 ```
 
-### Masculine
+### Masculine hobbies
 
 ```{r ment-rot-m-hobbies-scaled}
 corr_df <-
@@ -1039,6 +1039,423 @@ sex_diff_scatter(
 )
 sex_diff_corr_summ("mental_rot", "masscale")
 ```
+
+# Does vision account for mental rotation?
+
+There are two approaches to answering this question.
+One looks for sex differences in the residuals of the models `mental rotation ~ contrast` and `mental rotation ~ motion`.
+The other models `mental rotation ~ contrast + sex + contrast:sex` and determines whether adding the `sex` term provides a better fit relative to `mental rotation ~ contrast` alone. 
+
+## Residuals-based approach
+
+We'll take evaluate the first approach using residuals.
+
+### Contrast
+
+Focus on the log contrast sensitivity threshold data.
+
+```{r}
+# Select relevant data from data frame.
+df_mr_log_contr <- df_complete2 %>%
+  dplyr::select(., Sex, log_contrast, mental_rot)
+```
+
+Visualize mental rotation scores.
+
+```{r}
+df_mr_log_contr %>%
+  ggplot(.) +
+  aes(Sex, mental_rot, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+```{r}
+t.test(
+  mental_rot ~ Sex,
+  data = df_complete2,
+  var.equal = TRUE,
+  alternative = "less"
+)
+```
+
+Mental rotation scores differ between males and females.
+
+Fit `mental_rot ~ log_contrast`.
+
+```{r}
+lm_mr_log_contr <- lm(mental_rot ~ log_contrast, df_mr_log_contr)
+summary(lm_mr_log_contr)
+```
+
+Extract the residuals and fit `mr_resids ~ Sex`.
+
+```{r}
+resids <- resid(lm_mr_log_contr)
+df_mr_resids <- data.frame(mr_resids = resids, Sex = df_mr_log_contr$Sex)
+lm_mr_resids_sex <- lm(mr_resids ~ Sex, df_mr_resids)
+summary(lm_mr_resids_sex)
+```
+
+Plot to visualize.
+
+```{r}
+df_mr_resids %>%
+  ggplot(.) +
+  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+Test for differences in means.
+
+```{r}
+t.test(
+  mr_resids ~ Sex,
+  data = df_mr_resids,
+  var.equal = TRUE,
+  alternative = "less"
+)
+```
+
+So, including contrast sensitivity reduces, but does not eliminate, a statistically significant difference in mental rotation scores by sex favoring men.
+
+### Motion
+
+```{r}
+# Select relevant data from data frame.
+df_mr_log_motion <- df_complete2 %>%
+  dplyr::select(., Sex, log_motion, mental_rot)
+```
+
+Fit `mental_rot ~ log_cmotion`.
+
+```{r}
+lm_mr_log_motion <- lm(mental_rot ~ log_motion, df_mr_log_motion)
+summary(lm_mr_log_motion)
+```
+
+Extract the residuals and fit `mr_resids ~ Sex`.
+
+```{r}
+resids <- resid(lm_mr_log_motion)
+df_mr_resids <- data.frame(mr_resids = resids, Sex = df_mr_log_motion$Sex)
+lm_mr_resids_sex <- lm(mr_resids ~ Sex, df_mr_resids)
+summary(lm_mr_resids_sex)
+```
+
+Plot to visualize.
+
+```{r}
+df_mr_resids %>%
+  ggplot(.) +
+  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+Test for mean differences.
+
+```{r}
+t.test(
+  mr_resids ~ Sex,
+  data = df_mr_resids,
+  var.equal = TRUE,
+  alternative = "less"
+)
+```
+
+So, including motion eliminates a statistically significant difference in mental rotation scores by sex favoring men.
+
+## Combining vision measures
+
+Let's see whether combining the vision measures can do even better in accounting for mental rotation.
+
+```{r}
+df_mr_contr_motion <- df_complete2 %>%
+  dplyr::select(., Sex, log_contrast, log_motion, mental_rot)
+```
+
+Full model.
+
+```{r}
+lm_mr_contr_motion_full <- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_full)
+```
+
+Drop interactions.
+
+```{r}
+lm_mr_contr_motion_no_interactions <- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_interactions)
+```
+
+Drop sex.
+
+```{r}
+lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_sex)
+```
+
+Compare models.
+
+```{r}
+anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)
+```
+So, the RSS down a bit, but not significantly. All things being equal, we'd choose the simpler model for parsimony reasons.
+
+```{r}
+lm_mr_only_sex <- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
+summary(lm_mr_only_sex)
+```
+
+Comparing models.
+
+```{r}
+anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)
+```
+The model with the smaller RSS is the one with the vision variables. And the .
+
+# Does vision account for hobby choices?
+
+We'll take the same approach as above.
+
+## Feminine hobbies
+
+### Contrast
+
+```{r}
+df_complete2 %>%
+  ggplot(.) +
+  aes(Sex, femscale, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+Fit `femscale ~ log_contrast`.
+
+```{r}
+lm_femscale_log_contr <- lm(femscale ~ log_contrast, df_complete2)
+summary(lm_femscale_log_contr)
+```
+Extract the residuals and fit `femscale_resids ~ Sex`.
+
+```{r}
+resids <- resid(lm_femscale_log_contr)
+df_femscale_resids <- data.frame(femscale_resids = resids, Sex = df_complete2$Sex)
+lm_femscale_resids_sex <- lm(femscale_resids ~ Sex, df_femscale_resids)
+summary(lm_femscale_resids_sex)
+```
+Plot to visualize.
+
+```{r}
+df_femscale_resids %>%
+  ggplot(.) +
+  aes(Sex, femscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+Test for mean differences.
+
+```{r}
+t.test(
+  femscale_resids ~ Sex,
+  data = df_femscale_resids,
+  var.equal = TRUE,
+  alternative = "less"
+)
+```
+
+Accounting for `log_contrast` does NOT eliminate the sex difference in `femscale`.
+
+**NB: This workflow should be packaged in a function to reduce the likelihood of errors.**
+
+### Motion
+
+Fit `femscale ~ log_motion`.
+
+```{r}
+lm_femscale_log_motion <- lm(femscale ~ log_motion, df_complete2)
+summary(lm_femscale_log_motion)
+```
+
+Extract the residuals and fit `femscale_resids ~ Sex`.
+
+```{r}
+resids <- resid(lm_femscale_log_motion)
+df_femscale_resids <- data.frame(femscale_resids = resids, Sex = df_complete2$Sex)
+lm_femscale_resids_sex <- lm(femscale_resids ~ Sex, df_femscale_resids)
+summary(lm_femscale_resids_sex)
+```
+
+Plot to visualize.
+
+```{r}
+df_femscale_resids %>%
+  ggplot(.) +
+  aes(Sex, femscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+Test for mean differences.
+
+```{r}
+t.test(
+  femscale_resids ~ Sex,
+  data = df_femscale_resids,
+  var.equal = TRUE,
+  alternative = "less"
+)
+```
+
+Motion thresholds do *not* eliminate sex differences in `femscale`.
+
+### Combining contrast and motion
+
+For simplicity, we will compare a model with `Sex` alone to one with both vision measures.
+
+```{r}
+lm_femscale_vision <- lm(femscale ~ log_contrast + log_motion, df_complete2)
+lm_femscale_sex <- lm(femscale ~ Sex, df_complete2)
+anova(lm_femscale_sex, lm_femscale_vision)
+```
+The RSS goes up with the model including the vision measures.
+
+```{r}
+summary(lm_femscale_sex)
+```
+
+Vision measures are *not* a better predictor of `femscales` than `Sex` alone.
+
+## Masculine hobbies
+
+```{r}
+df_complete2 %>%
+  ggplot(.) +
+  aes(Sex, masscale, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+### Contrast
+
+Fit `masscale ~ log_contrast`.
+
+```{r}
+lm_masscale_log_contrast <- lm(masscale ~ log_contrast, df_complete2)
+summary(lm_masscale_log_contrast)
+```
+
+Extract the residuals and fit `masscale_resids ~ Sex`.
+
+```{r}
+resids <- resid(lm_masscale_log_contrast)
+df_masscale_resids <- data.frame(masscale_resids = resids, Sex = df_complete2$Sex)
+lm_masscale_resids_sex <- lm(masscale_resids ~ Sex, df_masscale_resids)
+summary(lm_masscale_resids_sex)
+```
+
+
+```{r}
+df_masscale_resids %>%
+  ggplot(.) +
+  aes(Sex, masscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+Test for mean differences.
+
+```{r}
+t.test(
+  masscale_resids ~ Sex,
+  data = df_masscale_resids,
+  var.equal = TRUE,
+  alternative = "less"
+)
+```
+
+Contrast sensitivity does *not* account for `masscale`.
+
+### Motion
+
+Fit `masscale ~ log_motion`.
+
+```{r}
+lm_masscale_log_motion <- lm(masscale ~ log_motion, df_complete2)
+summary(lm_masscale_log_motion)
+```
+
+Extract the residuals and fit `masscale_resids ~ Sex`.
+
+```{r}
+resids <- resid(lm_masscale_log_motion)
+df_masscale_resids <- data.frame(masscale_resids = resids, Sex = df_complete2$Sex)
+lm_masscale_resids_sex <- lm(masscale_resids ~ Sex, df_masscale_resids)
+summary(lm_masscale_resids_sex)
+```
+
+
+```{r}
+df_masscale_resids %>%
+  ggplot(.) +
+  aes(Sex, masscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+Test for mean differences.
+
+```{r}
+t.test(
+  masscale_resids ~ Sex,
+  data = df_masscale_resids,
+  var.equal = TRUE,
+  alternative = "less"
+)
+```
+
+Motion sensitivity does *not* account for `masscale`.
+
+### Combining contrast and motion
+
+For simplicity, we will compare a model with `Sex` alone to one with both vision measures.
+
+```{r}
+lm_masscale_vision <- lm(masscale ~ log_contrast + log_motion, df_complete2)
+lm_masscale_sex <- lm(masscale ~ Sex, df_complete2)
+anova(lm_masscale_sex, lm_masscale_vision)
+```
+
+
+The RSS goes *up* with the more complex model. The increase is not statistically significant, and so we choose the simpler model with `Sex` alone.
+
+```{r}
+summary(lm_masscale_vision)
+summary(lm_masscale_sex)
+```
+
+Again, `Sex` is a better predictor of `masscale` than the combined vision measures.
 
 # Mediation analysis
 

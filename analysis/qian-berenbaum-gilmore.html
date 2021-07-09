@@ -257,7 +257,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for write-up</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-07-08 10:33:49</h4>
+<h4 class="date">2021-07-09 13:36:18</h4>
 
 </div>
 
@@ -1916,8 +1916,7 @@ sex_diff_scatter(
   c(-1.5,-2.4),
   c(-1, 1),
   &quot;log(motion threshold)&quot;,
-  &quot;Interest in male_typed hobbies
-  &quot;
+  &quot;Interest in male_typed hobbies&quot;
 )</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
@@ -2437,7 +2436,6 @@ Females
 <h3>Scaled</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;masscale&quot;,
                               print_table = FALSE)
-
 sex_diff_scatter(
   df_complete2,
   &quot;log_contrast&quot;,
@@ -2757,8 +2755,8 @@ Females
 </div>
 <div id="mental-rotation-scaled-hobbies" class="section level2">
 <h2>Mental rotation &amp; (scaled) hobbies</h2>
-<div id="feminine" class="section level3">
-<h3>Feminine</h3>
+<div id="feminine-hobbies" class="section level3">
+<h3>Feminine hobbies</h3>
 <pre class="r"><code>corr_df &lt;-
   sex_diff_corr_summ(&quot;mental_rot&quot;, &quot;femscale&quot;, print_table = FALSE)
 
@@ -2862,8 +2860,8 @@ Females
 </tbody>
 </table>
 </div>
-<div id="masculine" class="section level3">
-<h3>Masculine</h3>
+<div id="masculine-hobbies" class="section level3">
+<h3>Masculine hobbies</h3>
 <pre class="r"><code>corr_df &lt;-
   sex_diff_corr_summ(&quot;mental_rot&quot;, &quot;masscale&quot;, print_table = FALSE)
 
@@ -2970,6 +2968,727 @@ ns
 </div>
 </div>
 </div>
+<div id="does-vision-account-for-mental-rotation" class="section level1">
+<h1>Does vision account for mental rotation?</h1>
+<p>There are two approaches to answering this question. One looks for sex differences in the residuals of the models <code>mental rotation ~ contrast</code> and <code>mental rotation ~ motion</code>. The other models <code>mental rotation ~ contrast + sex + contrast:sex</code> and determines whether adding the <code>sex</code> term provides a better fit relative to <code>mental rotation ~ contrast</code> alone.</p>
+<div id="residuals-based-approach" class="section level2">
+<h2>Residuals-based approach</h2>
+<p>We’ll take evaluate the first approach using residuals.</p>
+<div id="contrast" class="section level3">
+<h3>Contrast</h3>
+<p>Focus on the log contrast sensitivity threshold data.</p>
+<pre class="r"><code># Select relevant data from data frame.
+df_mr_log_contr &lt;- df_complete2 %&gt;%
+  dplyr::select(., Sex, log_contrast, mental_rot)</code></pre>
+<p>Visualize mental rotation scores.</p>
+<pre class="r"><code>df_mr_log_contr %&gt;%
+  ggplot(.) +
+  aes(Sex, mental_rot, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<pre class="r"><code>t.test(
+  mental_rot ~ Sex,
+  data = df_complete2,
+  var.equal = TRUE,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  mental_rot by Sex
+## t = -2, df = 118, p-value = 0.008
+## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## 95 percent confidence interval:
+##   -Inf -0.99
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                    27                    30</code></pre>
+<p>Mental rotation scores differ between males and females.</p>
+<p>Fit <code>mental_rot ~ log_contrast</code>.</p>
+<pre class="r"><code>lm_mr_log_contr &lt;- lm(mental_rot ~ log_contrast, df_mr_log_contr)
+summary(lm_mr_log_contr)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast, data = df_mr_log_contr)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -12.703  -3.426  -0.369   3.758  12.739 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)      8.55       6.07    1.41   0.1614   
+## log_contrast   -10.55       3.41   -3.10   0.0025 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.9 on 118 degrees of freedom
+## Multiple R-squared:  0.0751, Adjusted R-squared:  0.0673 
+## F-statistic: 9.58 on 1 and 118 DF,  p-value: 0.00245</code></pre>
+<p>Extract the residuals and fit <code>mr_resids ~ Sex</code>.</p>
+<pre class="r"><code>resids &lt;- resid(lm_mr_log_contr)
+df_mr_resids &lt;- data.frame(mr_resids = resids, Sex = df_mr_log_contr$Sex)
+lm_mr_resids_sex &lt;- lm(mr_resids ~ Sex, df_mr_resids)
+summary(lm_mr_resids_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mr_resids ~ Sex, data = df_mr_resids)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -12.501  -3.946  -0.258   4.085  13.222 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   -0.483      0.604   -0.80     0.43
+## SexMales       2.069      1.251    1.65     0.10
+## 
+## Residual standard error: 5.8 on 118 degrees of freedom
+## Multiple R-squared:  0.0227, Adjusted R-squared:  0.0144 
+## F-statistic: 2.74 on 1 and 118 DF,  p-value: 0.101</code></pre>
+<p>Plot to visualize.</p>
+<pre class="r"><code>df_mr_resids %&gt;%
+  ggplot(.) +
+  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>Test for differences in means.</p>
+<pre class="r"><code>t.test(
+  mr_resids ~ Sex,
+  data = df_mr_resids,
+  var.equal = TRUE,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  mr_resids by Sex
+## t = -2, df = 118, p-value = 0.05
+## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## 95 percent confidence interval:
+##   -Inf 0.004
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                 -0.48                  1.59</code></pre>
+<p>So, including contrast sensitivity reduces, but does not eliminate, a statistically significant difference in mental rotation scores by sex favoring men.</p>
+</div>
+<div id="motion" class="section level3">
+<h3>Motion</h3>
+<pre class="r"><code># Select relevant data from data frame.
+df_mr_log_motion &lt;- df_complete2 %&gt;%
+  dplyr::select(., Sex, log_motion, mental_rot)</code></pre>
+<p>Fit <code>mental_rot ~ log_cmotion</code>.</p>
+<pre class="r"><code>lm_mr_log_motion &lt;- lm(mental_rot ~ log_motion, df_mr_log_motion)
+summary(lm_mr_log_motion)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_motion, data = df_mr_log_motion)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.124  -3.974  -0.552   3.678  12.010 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)     9.19       6.18    1.49   0.1397   
+## log_motion     -7.70       2.63   -2.93   0.0041 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.9 on 118 degrees of freedom
+## Multiple R-squared:  0.0679, Adjusted R-squared:  0.06 
+## F-statistic: 8.59 on 1 and 118 DF,  p-value: 0.00405</code></pre>
+<p>Extract the residuals and fit <code>mr_resids ~ Sex</code>.</p>
+<pre class="r"><code>resids &lt;- resid(lm_mr_log_motion)
+df_mr_resids &lt;- data.frame(mr_resids = resids, Sex = df_mr_log_motion$Sex)
+lm_mr_resids_sex &lt;- lm(mr_resids ~ Sex, df_mr_resids)
+summary(lm_mr_resids_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mr_resids ~ Sex, data = df_mr_resids)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -12.778  -4.042  -0.422   3.949  12.357 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   -0.347      0.610   -0.57     0.57
+## SexMales       1.486      1.263    1.18     0.24
+## 
+## Residual standard error: 5.8 on 118 degrees of freedom
+## Multiple R-squared:  0.0116, Adjusted R-squared:  0.00323 
+## F-statistic: 1.39 on 1 and 118 DF,  p-value: 0.242</code></pre>
+<p>Plot to visualize.</p>
+<pre class="r"><code>df_mr_resids %&gt;%
+  ggplot(.) +
+  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>Test for mean differences.</p>
+<pre class="r"><code>t.test(
+  mr_resids ~ Sex,
+  data = df_mr_resids,
+  var.equal = TRUE,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  mr_resids by Sex
+## t = -1, df = 118, p-value = 0.1
+## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## 95 percent confidence interval:
+##  -Inf 0.61
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                 -0.35                  1.14</code></pre>
+<p>So, including motion eliminates a statistically significant difference in mental rotation scores by sex favoring men.</p>
+</div>
+</div>
+<div id="combining-vision-measures" class="section level2">
+<h2>Combining vision measures</h2>
+<p>Let’s see whether combining the vision measures can do even better in accounting for mental rotation.</p>
+<pre class="r"><code>df_mr_contr_motion &lt;- df_complete2 %&gt;%
+  dplyr::select(., Sex, log_contrast, log_motion, mental_rot)</code></pre>
+<p>Full model.</p>
+<pre class="r"><code>lm_mr_contr_motion_full &lt;- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_full)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast * log_motion * Sex, data = df_mr_contr_motion)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.332  -4.113  -0.189   3.575  11.925 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                        -19.32      61.45   -0.31     0.75
+## log_contrast                       -16.04      36.02   -0.45     0.66
+## log_motion                         -14.67      27.23   -0.54     0.59
+## SexMales                            80.18     401.27    0.20     0.84
+## log_contrast:log_motion             -3.95      15.89   -0.25     0.80
+## log_contrast:SexMales               23.44     215.65    0.11     0.91
+## log_motion:SexMales                 31.45     157.40    0.20     0.84
+## log_contrast:log_motion:SexMales     9.25      84.73    0.11     0.91
+## 
+## Residual standard error: 5.8 on 112 degrees of freedom
+## Multiple R-squared:  0.152,  Adjusted R-squared:  0.0986 
+## F-statistic: 2.86 on 7 and 112 DF,  p-value: 0.00876</code></pre>
+<p>Drop interactions.</p>
+<pre class="r"><code>lm_mr_contr_motion_no_interactions &lt;- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_interactions)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -12.883  -4.110  -0.285   3.743  12.381 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)     0.777      8.402    0.09    0.926  
+## log_contrast   -8.051      3.514   -2.29    0.024 *
+## log_motion     -5.077      2.893   -1.75    0.082 .
+## SexMales        1.240      1.409    0.88    0.381  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.8 on 116 degrees of freedom
+## Multiple R-squared:  0.121,  Adjusted R-squared:  0.0983 
+## F-statistic: 5.33 on 3 and 116 DF,  p-value: 0.00179</code></pre>
+<p>Drop sex.</p>
+<pre class="r"><code>lm_mr_contr_motion_no_sex &lt;- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.313  -4.240  -0.394   3.606  11.960 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)     -2.35       7.61   -0.31    0.758  
+## log_contrast    -8.63       3.45   -2.50    0.014 *
+## log_motion      -6.10       2.65   -2.30    0.023 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.8 on 117 degrees of freedom
+## Multiple R-squared:  0.115,  Adjusted R-squared:   0.1 
+## F-statistic: 7.62 on 2 and 117 DF,  p-value: 0.000777</code></pre>
+<p>Compare models.</p>
+<pre class="r"><code>anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: mental_rot ~ log_contrast + log_motion
+## Model 2: mental_rot ~ log_contrast + log_motion + Sex
+##   Res.Df  RSS Df Sum of Sq    F Pr(&gt;F)
+## 1    117 3878                         
+## 2    116 3852  1      25.7 0.77   0.38</code></pre>
+<p>So, the RSS down a bit, but not significantly. All things being equal, we’d choose the simpler model for parsimony reasons.</p>
+<pre class="r"><code>lm_mr_only_sex &lt;- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
+summary(lm_mr_only_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ Sex, data = df_mr_contr_motion)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -11.643  -3.643   0.357   3.478  13.478 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    26.52       0.62   42.78   &lt;2e-16 ***
+## SexMales        3.12       1.28    2.43    0.017 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6 on 118 degrees of freedom
+## Multiple R-squared:  0.0477, Adjusted R-squared:  0.0396 
+## F-statistic: 5.91 on 1 and 118 DF,  p-value: 0.0165</code></pre>
+<p>Comparing models.</p>
+<pre class="r"><code>anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: mental_rot ~ Sex
+## Model 2: mental_rot ~ log_contrast + log_motion
+##   Res.Df  RSS Df Sum of Sq    F Pr(&gt;F)   
+## 1    118 4173                            
+## 2    117 3878  1       296 8.92 0.0034 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The model with the smaller RSS is the one with the vision variables. And the .</p>
+</div>
+</div>
+<div id="does-vision-account-for-hobby-choices" class="section level1">
+<h1>Does vision account for hobby choices?</h1>
+<p>We’ll take the same approach as above.</p>
+<div id="feminine-hobbies-1" class="section level2">
+<h2>Feminine hobbies</h2>
+<div id="contrast-1" class="section level3">
+<h3>Contrast</h3>
+<pre class="r"><code>df_complete2 %&gt;%
+  ggplot(.) +
+  aes(Sex, femscale, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p>Fit <code>femscale ~ log_contrast</code>.</p>
+<pre class="r"><code>lm_femscale_log_contr &lt;- lm(femscale ~ log_contrast, df_complete2)
+summary(lm_femscale_log_contr)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = femscale ~ log_contrast, data = df_complete2)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -1.217 -0.177  0.044  0.251  0.764 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     1.410      0.332    4.24  4.4e-05 ***
+## log_contrast    0.704      0.187    3.77  0.00025 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.32 on 118 degrees of freedom
+## Multiple R-squared:  0.108,  Adjusted R-squared:   0.1 
+## F-statistic: 14.2 on 1 and 118 DF,  p-value: 0.000255</code></pre>
+<p>Extract the residuals and fit <code>femscale_resids ~ Sex</code>.</p>
+<pre class="r"><code>resids &lt;- resid(lm_femscale_log_contr)
+df_femscale_resids &lt;- data.frame(femscale_resids = resids, Sex = df_complete2$Sex)
+lm_femscale_resids_sex &lt;- lm(femscale_resids ~ Sex, df_femscale_resids)
+summary(lm_femscale_resids_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = femscale_resids ~ Sex, data = df_femscale_resids)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.8894 -0.1913  0.0103  0.1905  0.6644 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   0.0997     0.0275    3.62  0.00044 ***
+## SexMales     -0.4273     0.0570   -7.49  1.3e-11 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.26 on 118 degrees of freedom
+## Multiple R-squared:  0.322,  Adjusted R-squared:  0.317 
+## F-statistic: 56.2 on 1 and 118 DF,  p-value: 1.34e-11</code></pre>
+<p>Plot to visualize.</p>
+<pre class="r"><code>df_femscale_resids %&gt;%
+  ggplot(.) +
+  aes(Sex, femscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p>Test for mean differences.</p>
+<pre class="r"><code>t.test(
+  femscale_resids ~ Sex,
+  data = df_femscale_resids,
+  var.equal = TRUE,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  femscale_resids by Sex
+## t = 7, df = 118, p-value = 1
+## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## 95 percent confidence interval:
+##  -Inf 0.52
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                  0.10                 -0.33</code></pre>
+<p>Accounting for <code>log_contrast</code> does NOT eliminate the sex difference in <code>femscale</code>.</p>
+<p><strong>NB: This workflow should be packaged in a function to reduce the likelihood of errors.</strong></p>
+</div>
+<div id="motion-1" class="section level3">
+<h3>Motion</h3>
+<p>Fit <code>femscale ~ log_motion</code>.</p>
+<pre class="r"><code>lm_femscale_log_motion &lt;- lm(femscale ~ log_motion, df_complete2)
+summary(lm_femscale_log_motion)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = femscale ~ log_motion, data = df_complete2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.2584 -0.1686  0.0249  0.2089  0.6885 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    1.587      0.332    4.78  5.0e-06 ***
+## log_motion     0.608      0.141    4.31  3.4e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.32 on 118 degrees of freedom
+## Multiple R-squared:  0.136,  Adjusted R-squared:  0.129 
+## F-statistic: 18.6 on 1 and 118 DF,  p-value: 3.38e-05</code></pre>
+<p>Extract the residuals and fit <code>femscale_resids ~ Sex</code>.</p>
+<pre class="r"><code>resids &lt;- resid(lm_femscale_log_motion)
+df_femscale_resids &lt;- data.frame(femscale_resids = resids, Sex = df_complete2$Sex)
+lm_femscale_resids_sex &lt;- lm(femscale_resids ~ Sex, df_femscale_resids)
+summary(lm_femscale_resids_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = femscale_resids ~ Sex, data = df_femscale_resids)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -0.976 -0.163  0.040  0.212  0.603 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   0.0860     0.0286    3.01   0.0032 ** 
+## SexMales     -0.3684     0.0591   -6.23  7.4e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.27 on 118 degrees of freedom
+## Multiple R-squared:  0.248,  Adjusted R-squared:  0.241 
+## F-statistic: 38.8 on 1 and 118 DF,  p-value: 7.38e-09</code></pre>
+<p>Plot to visualize.</p>
+<pre class="r"><code>df_femscale_resids %&gt;%
+  ggplot(.) +
+  aes(Sex, femscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p>Test for mean differences.</p>
+<pre class="r"><code>t.test(
+  femscale_resids ~ Sex,
+  data = df_femscale_resids,
+  var.equal = TRUE,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  femscale_resids by Sex
+## t = 6, df = 118, p-value = 1
+## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## 95 percent confidence interval:
+##  -Inf 0.47
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                 0.086                -0.282</code></pre>
+<p>Motion thresholds do <em>not</em> eliminate sex differences in <code>femscale</code>.</p>
+</div>
+<div id="combining-contrast-and-motion" class="section level3">
+<h3>Combining contrast and motion</h3>
+<p>For simplicity, we will compare a model with <code>Sex</code> alone to one with both vision measures.</p>
+<pre class="r"><code>lm_femscale_vision &lt;- lm(femscale ~ log_contrast + log_motion, df_complete2)
+lm_femscale_sex &lt;- lm(femscale ~ Sex, df_complete2)
+anova(lm_femscale_sex, lm_femscale_vision)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: femscale ~ Sex
+## Model 2: femscale ~ log_contrast + log_motion
+##   Res.Df   RSS Df Sum of Sq F Pr(&gt;F)
+## 1    118  8.31                      
+## 2    117 10.94  1     -2.63</code></pre>
+<p>The RSS goes up with the model including the vision measures.</p>
+<pre class="r"><code>summary(lm_femscale_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = femscale ~ Sex, data = df_complete2)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -0.890 -0.136  0.022  0.174  0.828 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   0.2780     0.0277   10.05  &lt; 2e-16 ***
+## SexMales     -0.4974     0.0573   -8.69  2.5e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.27 on 118 degrees of freedom
+## Multiple R-squared:  0.39,   Adjusted R-squared:  0.385 
+## F-statistic: 75.5 on 1 and 118 DF,  p-value: 2.49e-14</code></pre>
+<p>Vision measures are <em>not</em> a better predictor of <code>femscales</code> than <code>Sex</code> alone.</p>
+</div>
+</div>
+<div id="masculine-hobbies-1" class="section level2">
+<h2>Masculine hobbies</h2>
+<pre class="r"><code>df_complete2 %&gt;%
+  ggplot(.) +
+  aes(Sex, masscale, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<div id="contrast-2" class="section level3">
+<h3>Contrast</h3>
+<p>Fit <code>masscale ~ log_contrast</code>.</p>
+<pre class="r"><code>lm_masscale_log_contrast &lt;- lm(masscale ~ log_contrast, df_complete2)
+summary(lm_masscale_log_contrast)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = masscale ~ log_contrast, data = df_complete2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.7122 -0.2322 -0.0621  0.2130  0.8328 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    -1.438      0.352   -4.08  8.2e-05 ***
+## log_contrast   -0.598      0.198   -3.02   0.0031 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.34 on 118 degrees of freedom
+## Multiple R-squared:  0.0718, Adjusted R-squared:  0.064 
+## F-statistic: 9.13 on 1 and 118 DF,  p-value: 0.00308</code></pre>
+<p>Extract the residuals and fit <code>masscale_resids ~ Sex</code>.</p>
+<pre class="r"><code>resids &lt;- resid(lm_masscale_log_contrast)
+df_masscale_resids &lt;- data.frame(masscale_resids = resids, Sex = df_complete2$Sex)
+lm_masscale_resids_sex &lt;- lm(masscale_resids ~ Sex, df_masscale_resids)
+summary(lm_masscale_resids_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = masscale_resids ~ Sex, data = df_masscale_resids)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.5833 -0.1362 -0.0149  0.1498  0.6802 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -0.1289     0.0256   -5.03  1.8e-06 ***
+## SexMales      0.5525     0.0531   10.41  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.25 on 118 degrees of freedom
+## Multiple R-squared:  0.479,  Adjusted R-squared:  0.474 
+## F-statistic:  108 on 1 and 118 DF,  p-value: &lt;2e-16</code></pre>
+<pre class="r"><code>df_masscale_resids %&gt;%
+  ggplot(.) +
+  aes(Sex, masscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p>Test for mean differences.</p>
+<pre class="r"><code>t.test(
+  masscale_resids ~ Sex,
+  data = df_masscale_resids,
+  var.equal = TRUE,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  masscale_resids by Sex
+## t = -10, df = 118, p-value &lt;2e-16
+## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## 95 percent confidence interval:
+##   -Inf -0.46
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                 -0.13                  0.42</code></pre>
+<p>Contrast sensitivity does <em>not</em> account for <code>masscale</code>.</p>
+</div>
+<div id="motion-2" class="section level3">
+<h3>Motion</h3>
+<p>Fit <code>masscale ~ log_motion</code>.</p>
+<pre class="r"><code>lm_masscale_log_motion &lt;- lm(masscale ~ log_motion, df_complete2)
+summary(lm_masscale_log_motion)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = masscale ~ log_motion, data = df_complete2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.6453 -0.2126 -0.0442  0.1974  0.8916 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -1.681      0.351   -4.78    5e-06 ***
+## log_motion    -0.556      0.149   -3.72    3e-04 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.33 on 118 degrees of freedom
+## Multiple R-squared:  0.105,  Adjusted R-squared:  0.0976 
+## F-statistic: 13.9 on 1 and 118 DF,  p-value: 0.000302</code></pre>
+<p>Extract the residuals and fit <code>masscale_resids ~ Sex</code>.</p>
+<pre class="r"><code>resids &lt;- resid(lm_masscale_log_motion)
+df_masscale_resids &lt;- data.frame(masscale_resids = resids, Sex = df_complete2$Sex)
+lm_masscale_resids_sex &lt;- lm(masscale_resids ~ Sex, df_masscale_resids)
+summary(lm_masscale_resids_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = masscale_resids ~ Sex, data = df_masscale_resids)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.5300 -0.1385 -0.0035  0.1431  0.7359 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -0.1153     0.0271   -4.26  4.2e-05 ***
+## SexMales      0.4941     0.0560    8.82  1.2e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.26 on 118 degrees of freedom
+## Multiple R-squared:  0.397,  Adjusted R-squared:  0.392 
+## F-statistic: 77.7 on 1 and 118 DF,  p-value: 1.24e-14</code></pre>
+<pre class="r"><code>df_masscale_resids %&gt;%
+  ggplot(.) +
+  aes(Sex, masscale_resids, color = Sex, alpha = 0.3) +
+  geom_boxplot() +
+  geom_violin() +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="qian-berenbaum-gilmore_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p>Test for mean differences.</p>
+<pre class="r"><code>t.test(
+  masscale_resids ~ Sex,
+  data = df_masscale_resids,
+  var.equal = TRUE,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  masscale_resids by Sex
+## t = -9, df = 118, p-value = 6e-15
+## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## 95 percent confidence interval:
+##  -Inf -0.4
+## sample estimates:
+## mean in group Females   mean in group Males 
+##                 -0.12                  0.38</code></pre>
+<p>Motion sensitivity does <em>not</em> account for <code>masscale</code>.</p>
+</div>
+<div id="combining-contrast-and-motion-1" class="section level3">
+<h3>Combining contrast and motion</h3>
+<p>For simplicity, we will compare a model with <code>Sex</code> alone to one with both vision measures.</p>
+<pre class="r"><code>lm_masscale_vision &lt;- lm(masscale ~ log_contrast + log_motion, df_complete2)
+lm_masscale_sex &lt;- lm(masscale ~ Sex, df_complete2)
+anova(lm_masscale_sex, lm_masscale_vision)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: masscale ~ Sex
+## Model 2: masscale ~ log_contrast + log_motion
+##   Res.Df  RSS Df Sum of Sq F Pr(&gt;F)
+## 1    118  6.7                      
+## 2    117 12.6  1     -5.93</code></pre>
+<p>The RSS goes <em>up</em> with the more complex model. The increase is not statistically significant, and so we choose the simpler model with <code>Sex</code> alone.</p>
+<pre class="r"><code>summary(lm_masscale_vision)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = masscale ~ log_contrast + log_motion, data = df_complete2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.6364 -0.2156 -0.0415  0.2072  0.8481 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    -2.282      0.434   -5.26  6.7e-07 ***
+## log_contrast   -0.449      0.197   -2.28   0.0242 *  
+## log_motion     -0.472      0.151   -3.13   0.0022 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.33 on 117 degrees of freedom
+## Multiple R-squared:  0.143,  Adjusted R-squared:  0.129 
+## F-statistic: 9.79 on 2 and 117 DF,  p-value: 0.000117</code></pre>
+<pre class="r"><code>summary(lm_masscale_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = masscale ~ Sex, data = df_complete2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.5608 -0.1360 -0.0026  0.1297  0.6582 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -0.5201     0.0249   -20.9   &lt;2e-16 ***
+## SexMales      0.6122     0.0514    11.9   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.24 on 118 degrees of freedom
+## Multiple R-squared:  0.545,  Adjusted R-squared:  0.542 
+## F-statistic:  142 on 1 and 118 DF,  p-value: &lt;2e-16</code></pre>
+<p>Again, <code>Sex</code> is a better predictor of <code>masscale</code> than the combined vision measures.</p>
+</div>
+</div>
+</div>
 <div id="mediation-analysis" class="section level1">
 <h1>Mediation analysis</h1>
 <p>The following reference may be useful for some (it was for ROG):</p>
@@ -3068,10 +3787,10 @@ results = mediate(
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value
-## ACME             -0.425       -1.297         0.58    0.33
-## ADE              -3.151       -8.158         1.18    0.16
-## Total Effect     -3.576       -8.592         1.08    0.14
-## Prop. Mediated    0.119       -0.616         0.77    0.40
+## ACME             -0.425       -1.265         0.36    0.32
+## ADE              -3.151       -7.914         1.02    0.15
+## Total Effect     -3.576       -8.303         1.00    0.13
+## Prop. Mediated    0.119       -0.505         0.55    0.38
 ## 
 ## Sample Size Used: 125 
 ## 
@@ -3166,10 +3885,10 @@ results = mediate(
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value
-## ACME             -0.406       -1.222         0.46    0.37
-## ADE              -3.052       -7.949         1.02    0.14
-## Total Effect     -3.458       -8.285         0.90    0.12
-## Prop. Mediated    0.117       -0.309         0.57    0.38
+## ACME             -0.406       -1.232         0.39    0.32
+## ADE              -3.052       -7.732         1.15    0.15
+## Total Effect     -3.458       -8.187         1.08    0.13
+## Prop. Mediated    0.117       -0.522         0.58    0.37
 ## 
 ## Sample Size Used: 125 
 ## 
@@ -3258,10 +3977,10 @@ results3 = mediate(
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            -1.1896      -2.4590         0.28   0.100 . 
-## ADE             -5.9716     -10.6834        -1.69   0.006 **
-## Total Effect    -7.1612     -11.8315        -2.34   0.004 **
-## Prop. Mediated   0.1661      -0.0477         0.40   0.100 . 
+## ACME            -1.1896      -2.3367         0.19   0.112   
+## ADE             -5.9716     -10.9370        -1.41   0.014 * 
+## Total Effect    -7.1612     -11.9705        -2.23   0.008 **
+## Prop. Mediated   0.1661      -0.0471         0.44   0.116   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3354,10 +4073,10 @@ results4 = mediate(
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME             -1.196       -2.531         0.41   0.122  
-## ADE              -5.990      -11.709        -1.53   0.016 *
-## Total Effect     -7.185      -12.787        -1.75   0.012 *
-## Prop. Mediated    0.166       -0.115         0.42   0.126  
+## ACME            -1.1958      -2.3508         0.34   0.108  
+## ADE             -5.9897     -11.0340        -1.46   0.020 *
+## Total Effect    -7.1854     -12.2593        -1.92   0.014 *
+## Prop. Mediated   0.1664      -0.0571         0.39   0.118  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3457,10 +4176,10 @@ results = mediate(
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME             -0.957       -1.908         0.00   0.052 .
-## ADE              -2.597       -7.529         1.56   0.258  
-## Total Effect     -3.555       -8.319         0.80   0.128  
-## Prop. Mediated    0.269       -1.481         2.58   0.168  
+## ACME             -0.957       -1.961        -0.09   0.022 *
+## ADE              -2.597       -7.279         1.61   0.218  
+## Total Effect     -3.555       -8.416         0.92   0.118  
+## Prop. Mediated    0.269       -0.783         1.88   0.140  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3582,10 +4301,10 @@ results = mediate(
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME             -0.958       -2.031        -0.13   0.016 *
-## ADE              -2.356       -7.125         1.93   0.288  
-## Total Effect     -3.314       -8.015         1.11   0.148  
-## Prop. Mediated    0.289       -1.546         2.50   0.164  
+## ACME             -0.958       -1.940        -0.07   0.034 *
+## ADE              -2.356       -7.201         2.30   0.296  
+## Total Effect     -3.314       -8.203         1.46   0.176  
+## Prop. Mediated    0.289       -1.226         2.12   0.178  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3699,10 +4418,10 @@ results8 = mediate(fit.mediator8, fit.dv8, treat = &#39;femscale&#39;, mediator 
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME             -0.940       -1.905        -0.14   0.022 *
-## ADE              -2.162       -6.912         2.27   0.340  
-## Total Effect     -3.102       -7.929         1.56   0.200  
-## Prop. Mediated    0.303       -1.728         2.35   0.202  
+## ACME             -0.940       -1.951        -0.04   0.034 *
+## ADE              -2.162       -6.800         2.02   0.350  
+## Total Effect     -3.102       -7.835         1.66   0.210  
+## Prop. Mediated    0.303       -2.241         2.00   0.212  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3788,11 +4507,11 @@ results = mediate(fit.mediator, fit.dv, treat = &#39;femscale&#39;, mediator =
 ## 
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME            -1.0694      -2.3045         0.10   0.072 .
-## ADE             -6.0141     -11.5538        -0.56   0.028 *
-## Total Effect    -7.0836     -12.2099        -1.73   0.014 *
-## Prop. Mediated   0.1510      -0.0313         0.60   0.086 .
+##                Estimate 95% CI Lower 95% CI Upper p-value   
+## ACME            -1.0694      -2.5242         0.05   0.058 . 
+## ADE             -6.0141     -10.9751        -1.03   0.016 * 
+## Total Effect    -7.0836     -11.8238        -2.00   0.010 **
+## Prop. Mediated   0.1510      -0.0185         0.50   0.068 . 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3879,10 +4598,10 @@ results5 = mediate(fit.mediator5, fit.dv5, treat = &#39;femscale&#39;, mediator 
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            -1.0694      -2.4328         0.04   0.060 . 
-## ADE             -6.0141     -11.1226        -0.82   0.024 * 
-## Total Effect    -7.0836     -11.9534        -2.07   0.008 **
-## Prop. Mediated   0.1510      -0.0104         0.58   0.068 . 
+## ACME            -1.0694      -2.3586         0.10   0.074 . 
+## ADE             -6.0141     -11.0621        -1.14   0.012 * 
+## Total Effect    -7.0836     -11.9790        -2.18   0.002 **
+## Prop. Mediated   0.1510      -0.0201         0.51   0.076 . 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3985,13 +4704,11 @@ results6 = mediate(fit.M4,
 ## 
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME            -0.4717      -2.6223         0.23   0.304  
-## ADE             -4.5662     -10.4042         1.70   0.152  
-## Total Effect    -5.0379     -11.1607         0.71   0.084 .
-## Prop. Mediated   0.0936      -0.2596         1.14   0.360  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+##                Estimate 95% CI Lower 95% CI Upper p-value
+## ACME            -0.4717      -2.6246         0.26    0.31
+## ADE             -4.5662     -10.3066         1.80    0.15
+## Total Effect    -5.0379     -10.9766         0.80    0.10
+## Prop. Mediated   0.0936      -0.5249         1.09    0.38
 ## 
 ## Sample Size Used: 125 
 ## 
@@ -4081,10 +4798,10 @@ results6 = mediate(fit.M4,
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value
-## ACME            -0.4567      -2.6132         0.22    0.31
-## ADE             -4.3654      -9.8919         1.53    0.16
-## Total Effect    -4.8221     -10.5038         1.10    0.11
-## Prop. Mediated   0.0947      -0.3530         1.20    0.36
+## ACME            -0.4567      -2.7400         0.26    0.35
+## ADE             -4.3654      -9.4252         1.71    0.17
+## Total Effect    -4.8221     -10.2137         0.74    0.12
+## Prop. Mediated   0.0947      -0.8132         1.12    0.43
 ## 
 ## Sample Size Used: 125 
 ## 
@@ -4168,11 +4885,11 @@ summary(results7)</code></pre>
 ## 
 ## Quasi-Bayesian Confidence Intervals
 ## 
-##                Estimate 95% CI Lower 95% CI Upper p-value    
-## ACME            -1.8880      -4.3759        -0.10   0.038 *  
-## ADE             -8.9048     -15.1415        -2.02   0.006 ** 
-## Total Effect   -10.7927     -17.0510        -4.35  &lt;2e-16 ***
-## Prop. Mediated   0.1656       0.0134         0.56   0.038 *  
+##                 Estimate 95% CI Lower 95% CI Upper p-value    
+## ACME            -1.87370     -4.27759         0.02   0.056 .  
+## ADE             -9.08326    -15.37582        -2.43   0.008 ** 
+## Total Effect   -10.95696    -17.30152        -4.11  &lt;2e-16 ***
+## Prop. Mediated   0.16489     -0.00173         0.51   0.056 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -4289,10 +5006,10 @@ results6 = mediate(fit.M4,
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME            -0.6871      -3.0372         0.55   0.286   
-## ADE             -9.0002     -14.9055        -2.76   0.006 **
-## Total Effect    -9.6873     -15.6291        -3.92   0.002 **
-## Prop. Mediated   0.0709      -0.0643         0.36   0.288   
+## ACME            -0.6871      -2.9332         0.55   0.324   
+## ADE             -9.0002     -14.5235        -2.98   0.006 **
+## Total Effect    -9.6873     -15.3859        -3.85   0.002 **
+## Prop. Mediated   0.0709      -0.0687         0.35   0.326   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
