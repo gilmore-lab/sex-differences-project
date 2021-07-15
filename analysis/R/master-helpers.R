@@ -1,6 +1,6 @@
 # R Markdown reports -----------------------------------------------------------------------------------
 
-list_full_fns_in_path <- function(df_path = "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
+list_full_fns_in_path <- function(df_path = "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data/") {
   
   assertthat::is.string(df_path)
   assertthat::is.dir(df_path)
@@ -9,7 +9,7 @@ list_full_fns_in_path <- function(df_path = "~/Box/Project_Sex_difference_on_Mot
   fns
 }
 
-extract_ids_from_fns <- function(df_path = "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data") {
+extract_ids_from_fns <- function(df_path = "~/Box/Project_Sex_difference_on_Motion_Perception/data/raw_data/contrast_sensitivity_task_data/") {
   
   assertthat::is.string(df_path)
   assertthat::is.dir(df_path)

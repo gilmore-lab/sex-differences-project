@@ -156,7 +156,7 @@ df2$Motion_duration_Threshold[a[['Motion_duration_Threshold']]] <- NA
 ```
 I excluded three outliers in `Motion_duration_Threshold` and two outliers in `Contrast_Sensitivity_Threshold`.
 
-Futher exclude two male "outliers" of motion duration threshold
+Further exclude two male "outliers" of motion duration threshold
 ```{r}
 df3.m <- df2 %>% filter(Sex=="Males")
 df3.f <- df2 %>% filter(Sex=="Females")
