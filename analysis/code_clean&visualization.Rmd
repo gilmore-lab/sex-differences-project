@@ -186,13 +186,46 @@ length(unique(qua$participant))
 # miss one 385
 ```
 
+# delete the items with 99 
+```{r}
+which( qua ==99, arr.ind=T )
+which( qua[,161:220] ==99, arr.ind=T )
+which( qua[,161:220] ==98, arr.ind=T )
+which( qua[,161:220] ==88, arr.ind=T )
+which( qua$Flag_MRT ==1, arr.ind=T ) # Flag individuals with more than 40 responses (i.e., who did not follow directions).# 3 participants
+
+# replace 99 with NA
+qua[,161:220] <- na_if(qua[,161:220], 99)
+```
+# calculate hobby_mean and m/f hobby
+```{r}
+hobby_temp<-qua[,c(161:220)] 
+qua$hobby_mean<-rowMeans(hobby_temp,na.rm=T)
+qua$fem<-rowMeans(hobby_temp[,c(3,8,9,10,14,15,19,20,21,37,43,45,50,53,54,55,56,59,60)],na.rm=T)
+qua$mas<-rowMeans(hobby_temp[,c(1,6,11,17,18,22,23,24,25,28,31,33,34,35,39,41,42,44,48,57,58)],na.rm=T)
+qua$femscale<-qua$fem-qua$hobby_mean
+qua$masscale<-qua$mas-qua$hobby_mean
+```
+
+# calculate alpha
+```{r}
+feshob<-data.frame(hobby_temp[,c(3,8,9,10,14,15,19,20,21,37,43,45,50,53,54,55,56,59,60)])
+psych::alpha(feshob)
+mashob<-data.frame(hobby_temp[,c(1,6,11,17,18,22,23,24,25,28,31,33,34,35,39,41,42,44,48,57,58)])
+psych::alpha(mashob)
+```
 > We will exclude final scores of spatial ability, hobbies, and verbal ability data which are zero.
 
 ```{r}
 which(qua$advoc_num_cor==0)
 which(qua$MRT_cor==0)
-which(qua$hobfem==0)
-which(qua$hobmas==0)
+which(qua$fem==0)
+which(qua$mas==0)
+
+which(qua$advoc_num_cor>36)
+which(qua$MRT_cor>40)
+which(qua$fem>5)
+which(qua$mas>5)
 ```
 > We will exclude the run of visual perception tasks with less than 50% accuracy (guess rate).
 
@@ -339,6 +372,8 @@ which(df$color_vision2_3 != 4)  #92
 #df$colorvision <- rowSums(df[, 'color_vision1_4':'color_vision_2_3'], na.rm = TRUE)
 ```
 
+
+
 ```{r}
 # save data
 var <-
@@ -364,8 +399,8 @@ var <-
     "advoc_num_cor",
     "MRT_cor",
     "MRT_cor_both",
-    "hobfem",
-    "hobmas",
+    "fem",
+    "mas",
     "hobby_mean",
     "femscale",
     "masscale"
@@ -403,22 +438,13 @@ colnames(df1) <-
 # write.csv(df1,
 #           file.path(params$output_path, "data_output_Oct2020.csv"),
 #           row.names = FALSE)
-
+df1$mf<-df1$masscale-df1$femscale
 output_fn <- paste0('combined_', format.Date(Sys.Date()), '.csv')
 write.csv(df1,
           file.path(params$output_path, output_fn),
           row.names = FALSE)
 ```
 
-```{r}
-df1$m<-df1$masscale-df1$femscale
-```
 
-# calculate alpha
-```{r}
-feshob<-data.frame(hobby[,c(4,9,10,15,16,20,21,22,38,44,46,51,54,56,57,60,61),])
-psych::alpha(feshob)
-mashob<-data.frame(hobby[,c(2,7,12,18,19,23,24,25,29,32,34,35,36,42,43,45,49,58,59)])
-psych::alpha(mashob)
-```
+
 
