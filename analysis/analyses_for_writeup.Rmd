@@ -13,7 +13,7 @@ output:
 params:
   data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   hobby_data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data"
-  csv_fn: "combined_2021-03-12.csv"
+  csv_fn: "combined_2021-04-30.csv"
   outlier_sd_thresh: 3.0
 ---
 
@@ -35,6 +35,7 @@ library(pwr)
 # library(mixtools)
 # library(mediation)
 library("gridExtra")
+library(viridis)
 ```
 
 # Import and clean
@@ -62,12 +63,6 @@ all four runs of 114 and 338 motion thresholds was deleted because they are less
 all four runs of 111 contrast sensitivity thresholds was deleted because they are less than 68% accuracy.
 Half missing data: 371 (motion), 395 (motion)
 
-# ```{r}
-# df1 <- df1 %>%
-#   dplyr::filter(., !is.na(motion_dur_thr),
-#                 !is.na(contrast_thr))
-# ```
-
 # These leaves us with $n=$ `r dim(df1)[1]` cases.
 
 ## Exclude outliers
@@ -88,7 +83,7 @@ FindOutliers <- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh))
   print(result)
 }
 
-outliers <- lapply(df1, FindOutliers)
+outliers <- lapply(df1[12:27], FindOutliers)
 outliers
 ```
 
@@ -102,6 +97,14 @@ df1 %>%
   aes(y = motion_dur_thr, x = Sex) +
   geom_violin() +
   ggtitle('Motion threshold by sex: All participants')
+
+df1 %>% 
+  ggplot(.) +
+  aes(y = motion_dur_thr_mean, x = Sex) +
+  geom_violin() +
+  ggtitle('Motion threshold by sex: All participants')
+
+cor.test(df1$motion_dur_thr, df1$motion_dur_thr_mean)
 ```
 
 Excluding outliers.
@@ -124,6 +127,14 @@ df1 %>%
   aes(y = contrast_thr, x = Sex) +
   geom_violin() +
   ggtitle('Contrast threshold by sex: All participants')
+
+df1 %>% 
+  ggplot(.) +
+  aes(y = contrast_thr_mean, x = Sex) +
+  geom_violin() +
+  ggtitle('Contrast threshold by sex: All participants')
+
+cor.test(df1$contrast_thr, df1$contrast_thr_mean)
 ```
 
 Excluding outliers
@@ -138,18 +149,77 @@ df1[-outliers[['contrast_thr']],] %>%
 df1$contrast_thr[outliers[['contrast_thr']]]
 ```
 
+```{r}
+df1 %>%
+  ggplot(.) +
+  aes(y = femscale, x = Sex) +
+  geom_violin() +
+  ggtitle('Female hobby by sex: Outliers excluded')
+
+df1[-outliers[['femscale']],] %>%
+  ggplot(.) +
+  aes(y = femscale, x = Sex) +
+  geom_violin() +
+  ggtitle('Female hobby by sex: Outliers excluded')
+
+df1$femscale[outliers[['femscale']]]
+```
+# Analysis
+## get n, mean and sd
+```{r}
+table(df1.f$Age)
+table(df1.m$Age)
+
+table(df1.f$School_year)
+table(df1.m$School_year)
+
+table(df1.f$Handedness)
+table(df1.m$Handedness)
+
+df1.f[grep("Hispanic/Latino", df1.f$Race),]
+df1.m[grep("Hispanic/Latino", df1.m$Race),]
+
+# race
+table( df1.f$Race)
+df1.f[grep("Black/African", df1.f$Race),]
+
+table( df1.m$Race)
+df1.m[grep("Black/African", df1.m$Race),]
+```
+
+# demographic information
+```{r}
+chisq.test(df1$Sex, df1$Age)
+chisq.test(df1$Sex, df1$School_year)
+table(df1$Sex, df1$Handedness)
+chisq.test(df1$Sex, df1$Handedness)
+
+chisq.test(data.frame(hispanic=c(5,1),
+          non=c(96,29)))
+
+chisq.test(data.frame(asian=c(37,11),
+          cas=c(49,14),
+          afric=c(13,3),
+          Pacificislander=c(1,0),
+          no=c(1,2)))
+```
 Exclude the outliers and create a new data frame.
 
 ```{r}
 df2 <- df1
 df2$contrast_thr[outliers[['contrast_thr']]] <- NA
 df2$motion_dur_thr[outliers[['motion_dur_thr']]] <- NA
+df2$contrast_thr_mean[outliers[['contrast_thr_mean']]] <- NA
+df2$motion_dur_thr_mean[outliers[['motion_dur_thr_mean']]] <- NA
 
 df2<-df2 %>%
   dplyr::mutate(.,
                 log_contrast = log(contrast_thr),
                   log_motion =log(motion_dur_thr))
 # df2 <- df1[-c(outliers[['contrast_thr']], outliers[['motion_dur_thr']]),] # we cannot use this code, because there is overlap in the outliers of these two threshold. It will delete one good data.
+
+df2.f<-df2 %>% filter(Sex=="Females")
+df2.m<-df2 %>% filter(Sex=="Males")
 ```
 
 There were `r length(outliers[['motion_dur_thr']])` outliers in the motion duration threshold measure (cases `r outliers[['motion_dur_thr']]`), and `r length(outliers[['contrast_thr']])` outliers in the contrast threshold measure (cases `r outliers[['contrast_thr']]`).
@@ -193,31 +263,6 @@ shapiro_wilks_df %>%
 
 
 
-# Analysis
-## get n, mean and sd
-```{r}
-
-
-table(df1.f$Age)
-table(df1.m$Age)
-
-table(df1.f$School_year)
-table(df1.m$School_year)
-
-table(df1.f$Handedness)
-table(df1.m$Handedness)
-
-df1.f[grep("Hispanic/Latino", df1.f$Race),]
-df1.m[grep("Hispanic/Latino", df1.m$Race),]
-
-# race
-table( df1.f$Race)
-df1.f[grep("Black/African", df1.f$Race),]
-
-table( df1.m$Race)
-df1.m[grep("Black/African", df1.m$Race),]
-```
-
 
 ## Comparisons between sexes
 
@@ -228,15 +273,11 @@ Here is our pre-registered description of how we planned to compare sex differen
 
 ### get the mean and sd of each group
 ```{r}
-psych::describe(df1 %>% filter(Sex=="Males"))
-psych::describe(df1 %>% filter(Sex=="Females"))  
+var<-c("log_contrast","log_motion","mental_rot","vocab", "femscale","masscale","mf") 
 
-var<-c("Sex","log_motion","Log_contrast","vocab","mental_rot", "femscale","masscale") 
-df1$Sex<-factor(df1$Sex)
-na.omit(df1[,var]) %>% group_by(Sex) %>%
-  summarize(N=n(),
-               mean=mean(),
-               sd=sd())
+psych::describe(df2.f[,var])
+psych::describe(df2.m[,var])  
+
 df1.f<- df1 %>% filter(Sex=="Females")
 sd(df1.f$femscale, na.rm = TRUE)
 sd(df1.f$masscale, na.rm = TRUE)
@@ -270,7 +311,7 @@ Specifically, males had a mean duration threshold of `r mean(df2$motion_dur_thr[
 ```{r}
 t.test(
   log_contrast ~ Sex,
-  data = df1,
+  data = df2,
   var.equal = TRUE,
   alternative = "greater"
 ) #Hypothesized
@@ -284,7 +325,7 @@ Males detect the grating stimuli with lower contrast than females.
 ```{r}
 t.test(
   mental_rot ~ Sex,
-  data = df1,
+  data = df2,
   var.equal = TRUE,
   alternative = "less"
 ) #Hypothesized
@@ -292,7 +333,6 @@ t.test(
 
 Sex differences in mental rotation test were found. 
 Males had significantly more correct answers in the mental rotation task than females. 
-
 #### Supplemental
 
 A secondary, supplemental measure of mental rotation task performance is the number of trials in which both correct answers were reported.
@@ -300,21 +340,20 @@ A secondary, supplemental measure of mental rotation task performance is the num
 ```{r mental-rot-both}
 t.test(
   mental_rot_both ~ Sex,
-  data = df1,
+  data = df2,
   var.equal = TRUE,
   alternative = "less"
 ) #Hypothesized
 ```
 
 This comparison also shows higher performance in males.
-
 ### Vocabulary
 
 ```{r}
 advoc_total_t <-
   t.test(
     vocab ~ Sex,
-    data = df1,
+    data = df2,
     var.equal = TRUE,
     alternative = "less"
   )
@@ -331,7 +370,7 @@ A secondary measure of vocabulary performance taking the total number of correct
 advoc_total_t <-
   t.test(
     vocab_num ~ Sex,
-    data = df1,
+    data = df2,
     var.equal = TRUE,
     alternative = "less"
   )
@@ -345,14 +384,14 @@ This measure also shows no evidence of sex differences.
 ```{r}
 t.test(
   Feminine_hobbies ~ Sex,
-  data = df1,
+  data = df2,
   var.equal = TRUE,
   alternative = "greater"
 )
 
 t.test(
   femscale ~ Sex,
-  data = df1,
+  data = df2,
   var.equal = TRUE,
   alternative = "greater"
 )
@@ -365,31 +404,31 @@ We found that females had higher interest scores in female-typed hobbies than ma
 ```{r}
 t.test(
   Masculine_hobbies ~ Sex,
-  data = df1,
+  data = df2,
   var.equal = TRUE,
   alternative = "less"
 ) #Hypothesized
 
 t.test(
   masscale ~ Sex,
-  data = df1,
+  data = df2,
+  var.equal = TRUE,
+  alternative = "less"
+) #Hypothesized
+```
+
+### Masculine hobbies- feminine hobbies
+
+```{r}
+t.test(
+  mf ~ Sex,
+  data = df2,
   var.equal = TRUE,
   alternative = "less"
 ) #Hypothesized
 ```
 
 We found that males have higher interest scores in male-typed hobbies than females.
-
-### lda hobbies
-
-```{r}
-t.test(
-  Interests ~ Sex,
-  data = df1,
-  var.equal = TRUE,
-  alternative = "less"
-) #Hypothesized
-```
 
 ### Summary
 
@@ -412,10 +451,8 @@ df_corr <- df2 %>%
                 log_motion,
                 mental_rot,
                 vocab,
-           #      Masculine_hobbies,
-            #    Feminine_hobbies,
                 femscale,
-                masscale,m
+                masscale,mf
                )
 
 df_complete <- df_corr[stats::complete.cases(df_corr),]
@@ -451,16 +488,14 @@ corr$P
 ```
 
 ```{r}
-# Get some colors
-col <- colorRampPalette(c("blue", "white", "red"))(20)
-heatmap(x = corr$r, col = col, symm = TRUE)
-```
-
-```{r}
 df_complete_F <- df_complete %>%
   dplyr::filter(., Sex == 'Females') 
 df_complete_M <- df_complete %>%
   dplyr::filter(., Sex == 'Males') 
+
+df_complete_M2 <- df_complete_M %>%
+  dplyr::filter(., log_motion<=-2) 
+df_complete2<-rbind(df_complete_M2 ,df_complete_F )
 ```
 
 # get the one-tailed correlation
@@ -472,12 +507,23 @@ cor.test(df_complete_F$log_contrast, df_complete_F$femscale, method = "pearson",
 cor.test(df_complete_F$log_motion, df_complete_F$mental_rot, method = "pearson", alternative = "less")
 cor.test(df_complete_F$log_motion, df_complete_F$masscale, method = "pearson", alternative = "less")
 cor.test(df_complete_F$log_motion, df_complete_F$femscale, method = "pearson", alternative = "greater")
+
+cor.test(df_complete_F$log_motion, df_complete_F$log_contrast, method = "pearson", alternative = "greater")
 ```
+
+#### effect size
 ```{r}
-cor.test(df_complete_F$log_contrast, df_complete_F$Masculine_hobbies, method = "pearson", alternative = "less")
-cor.test(df_complete_F$log_contrast, df_complete_F$Feminine_hobbies, method = "pearson", alternative = "greater")
-cor.test(df_complete_F$log_motion, df_complete_F$Masculine_hobbies, method = "pearson", alternative = "less")
-cor.test(df_complete_F$log_motion, df_complete_F$Feminine_hobbies, method = "pearson", alternative = "greater")
+library(pwr)
+pwr.r.test(n=92, r = -0.25, sig.level = 0.05, power = NULL, alternative = "less")
+```
+
+#### supllment
+
+```{r}
+cor.test(df2.f$log_contrast, df2.f$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df2.f$log_contrast, df2.f$Feminine_hobbies, method = "pearson", alternative = "greater")
+cor.test(df2.f$log_motion, df2.f$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df2.f$log_motion, df2.f$Feminine_hobbies, method = "pearson", alternative = "greater")
 ```
 
 ### Males
@@ -488,12 +534,24 @@ cor.test(df_complete_M$log_contrast, df_complete_M$femscale, method = "pearson",
 cor.test(df_complete_M$log_motion, df_complete_M$mental_rot, method = "pearson", alternative = "less")
 cor.test(df_complete_M$log_motion, df_complete_M$masscale, method = "pearson", alternative = "less")
 cor.test(df_complete_M$log_motion, df_complete_M$femscale, method = "pearson", alternative = "greater")
+cor.test(df_complete_M$log_motion, df_complete_M$log_contrast, method = "pearson", alternative = "greater")
+```
+
+```{r}
+cor.test(df_complete_M2$log_contrast,df_complete_M2$mental_rot, method = "pearson", alternative = "less")
+cor.test(df_complete_M2$log_contrast, df_complete_M2$masscale, method = "pearson", alternative = "less")
+cor.test(df_complete_M2$log_contrast, df_complete_M2$femscale, method = "pearson", alternative = "greater")
+cor.test(df_complete_M2$log_motion, df_complete_M2$mental_rot, method = "pearson", alternative = "less")
+cor.test(df_complete_M2$log_motion, df_complete_M2$masscale, method = "pearson", alternative = "less")
+cor.test(df_complete_M2$log_motion, df_complete_M2$femscale, method = "pearson", alternative = "greater")
+
+cor.test(df_complete_M$log_motion, df_complete_M$log_contrast, method = "pearson", alternative = "greater")
 ```
 ```{r}
-cor.test(df_complete_M$log_contrast, df_complete_M$Masculine_hobbies, method = "pearson", alternative = "less")
-cor.test(df_complete_M$log_contrast, df_complete_M$Feminine_hobbies, method = "pearson", alternative = "greater")
-cor.test(df_complete_M$log_motion, df_complete_M$Masculine_hobbies, method = "pearson", alternative = "less")
-cor.test(df_complete_M$log_motion, df_complete_M$Feminine_hobbies, method = "pearson", alternative = "greater")
+cor.test(df2.m$log_contrast, df2.m$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df2.m$log_contrast, df2.m$Feminine_hobbies, method = "pearson", alternative = "greater")
+cor.test(df2.m$log_motion, df2.m$Masculine_hobbies, method = "pearson", alternative = "less")
+cor.test(df2.m$log_motion, df2.m$Feminine_hobbies, method = "pearson", alternative = "greater")
 ```
 
 ### Females
@@ -517,12 +575,6 @@ corr_F$r
 
 ```{r}
 corr_F$P
-```
-
-```{r}
-# Get some colors
-col <- colorRampPalette(c("blue", "white", "red"))(20)
-heatmap(x = corr_F$r, col = col, symm = TRUE)
 ```
 
 ### Males
@@ -549,37 +601,27 @@ corr_M$r
 corr_M$P
 ```
 
-```{r}
-# Get some colors
-col <- colorRampPalette(c("blue", "white", "red"))(20)
-heatmap(x = corr_M$r, col = col, symm = TRUE)
-```
 
 
-
-
-
-### Now we goes to the data which exluded two obvious outliers in motion duration in males.
-```{r}
-out.m<-lapply(df_complete_M[,2:3],FindOutliers)
-out.f<-lapply(df_complete_F[,2:3],FindOutliers)
-df_complete_M2 <- df_complete_M[-which(df_complete_M$log_motion>-2),]
-df_test<-rbind(df_complete_M2, df_complete_F)
-df_complete2 <- df_test[stats::complete.cases(df_test),]
-```
-### Overall for the outliers excluded datasets
-```{r}
-df_corr2 <- df_complete2 %>%
-  dplyr::select(., -Sex)
-
-corr_all <- Hmisc::rcorr(as.matrix(df_corr2), type = c("pearson"))
-```
 ### Females
 
 # Visualizations
 
 We create several functions to make our graphs have similar appearance.
-
+```{r ggplot-themes}
+# "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
+theme.custom <- theme(panel.background = element_rect(fill = "white", colour = "grey50"),
+                      plot.title = element_text(size=18, face="bold",hjust = 0.5),
+                      axis.title.x = element_text(size=18),
+                      axis.title.y = element_text(size=18),
+                      strip.text = element_text(size=18),
+                      axis.text = element_text(size=18),
+                      legend.position = "none",
+               #   legend.position = "topleft",
+                       legend.title = element_blank(),
+#  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                      legend.text=element_text(size=18))
+```
 ```{r}
 sex_diff_scatter <-
   function(df,
@@ -593,6 +635,7 @@ sex_diff_scatter <-
            any = NULL,
            x_lab = "X axis",
            y_lab = "Y axis",
+           leg="none",
            square_axis = TRUE) {
     
     require(tidyverse)
@@ -606,42 +649,44 @@ sex_diff_scatter <-
         x = !!x_var_s,
         y = !!y_var_s,
         group = Sex,
-        color = Sex
+        color = Sex,shape=Sex
       ) +
-      geom_point() +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = "lm", na.rm = TRUE) +
-      theme_classic2() +
-      theme(legend.position = "bottom",
-            legend.title = element_blank()) +
-      xlab(x_lab) +
-      ylab(y_lab) +
+      geom_point(size=4,alpha=0.82) +
+   #   xlab(x_var) +
+  #    ylab(y_var) +
+      stat_smooth(method = "lm",se=F, na.rm = TRUE) +
       annotate(
         "text",
         x = anx,
         y = any,
-        label = c(an_f, an_m),
-        color = c('red','darkturquoise' )
-      )
+        size=8,
+        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
+             hjust = 1
+      )+ 
+      xlab(x_lab) +
+      ylab(y_lab) +
+      theme.custom +
+      theme(legend.position = leg)+
+      scale_colour_grey(start=0,end=0.5)
+    
     
     if (square_axis)
     {
       p + coord_fixed()
     }
     
-    if (stringr::str_detect(x_var, 'hobbies')) {
-      p <- p + xlim(1, 5)
-    }
-    if (stringr::str_detect(y_var, 'hobbies')) {
-      p <- p + ylim(1, 5)
-    }
-    
+    # if (stringr::str_detect(x_var, 'scale')) {
+    #   p <- p + xlim(1, 5)
+    # }
+    # if (stringr::str_detect(y_var, 'scale')) {
+    #   p <- p + ylim(1, 5)
+    # }
+    # 
     # Reverse scale for threshold measures?
-    if (x_rev)
-      p <- p + scale_x_reverse()
-    if (y_rev)
-      p <- p + scale_y_reverse()
+    # if (x_rev)
+    #   p <- p + scale_x_reverse()
+    # if (y_rev)
+    #   p <- p + scale_y_reverse()
     
     p1 <- ggExtra::ggMarginal(
       p,
@@ -682,7 +727,7 @@ sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE) {
   df <- df %>%
     mutate(., stars = if_else(p_val < .005, "***",
                               if_else(p_val < .01, "**",
-                                      if_else(p_val < .05, "*", " ns"))))
+                                      if_else(p_val < .05, "*", ", ns"))))
     
   
   if (print_table) {
@@ -694,311 +739,246 @@ sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE) {
 }
 ```
 
-## Motion sensitivity & contrast sensitivity
 
+## Motion sensitivity & Mental rotation
 
-```{r motion-duration-contrast-sens}
-corr_df <- sex_diff_corr_summ("log_motion",
-                   "log_contrast", print_table = FALSE)
+```{r motion-duration-mental-rot}
+corr_df <- sex_diff_corr_summ("log_contrast", 
+                   "mental_rot", print_table = FALSE)
 
-sex_diff_scatter(
-  df_complete2,
-  "log_motion",
+p11<-sex_diff_scatter(
+  df_complete,
   "log_contrast",
-  x_rev = TRUE,
-  y_rev = TRUE,
-  # "r=0.22*",
-  # "r=0.54***",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-1.9,-2.04),
-  c(-1.4,-1.98),
-  "log(motion threshold)",
-  "log(contrast threshold)"
-)
-
-sex_diff_corr_summ("log_motion",
-                   "log_contrast")
+  "mental_rot",
+  x_rev = F,
+  y_rev = F,
+  "r = -0.25**",
+  "r = -0.24",
+  max(df_complete$log_contrast),
+  c(10, max(df_complete$mental_rot)),
+  "log(contrast threshold)",
+  "Mental rotation scores"
+) 
+p11
+ sex_diff_corr_summ("log_contrast", "mental_rot")
 ```
-
 ## Motion sensitivity & Mental rotation
 
 ```{r motion-duration-mental-rot}
 corr_df <- sex_diff_corr_summ("log_motion", 
                    "mental_rot", print_table = FALSE)
 
-sex_diff_scatter(
-  df_complete2,
+p12<-sex_diff_scatter(
+  df_complete,
   "log_motion",
   "mental_rot",
-  x_rev = TRUE,
+  x_rev = FALSE,
   y_rev = FALSE,
-  # "r = 0.31**",
-  paste0("r = ", format(cor_cst_mrt.f$estimate[[1]], digits = 2, nsmall = 2), "**"),
-  paste0("r = ", format(cor_cst_mrt.m$estimate[[1]], digits = 2, nsmall = 2), " ns"),
-  # "r = 0.09",
-  c(-1.8, -1.9),
-  c(30, 36),
+  "r = -0.29**",
+  "r = 0.12",
+  max(df_complete$log_motion),
+  c(10, max(df_complete$mental_rot)),
   "log(motion threshold)",
   "Mental rotation score"
 )
+p12
 
  sex_diff_corr_summ("log_motion", "mental_rot")
 ```
 
-## Motion sensitivity & vocabulary
-
-```{r motion-duration-vocab}
-corr_df <- sex_diff_corr_summ("log_motion", "vocab",
-                   print_table = FALSE)
-
-sex_diff_scatter(
-  df_complete2,
-  "log_motion",
-  "vocab",
-  x_rev = TRUE,
-  y_rev = FALSE,
-  # "r = 0.18",
-  # "r=0.22",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-2.25),
-  c(25, 23),
-  "log(motion threshold)",
-  "Vocabulary score"
-)
-sex_diff_corr_summ("log_motion", "vocab")
-```
 
 ## Motion sensitivity & Feminine hobbies
-
-```{r}
-corr_df <- sex_diff_corr_summ("log_motion", "Feminine_hobbies",
-                              print_table = FALSE)
-
-sex_diff_scatter(
-  df_complete2,
-  "log_motion",
-  "Feminine_hobbies",
-  x_rev = TRUE,
-  y_rev = FALSE,
-  # "r = 0.17*",
-  # "r = -0.01",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-2,-2.4),
-  c(4.5, 1.8),
-  "log(motion threshold)",
-  "Interest in feminine hobbies"
-)
-sex_diff_corr_summ("log_motion", "Feminine_hobbies")
-```
-```{r}
-corr_df <- sex_diff_corr_summ("log_motion", "femscale",
-                              print_table = FALSE)
-
-sex_diff_scatter(
-  df_complete2,
-  "log_motion",
-  "femscale",
-  x_rev = TRUE,
-  y_rev = FALSE,
-  # "r = 0.17*",
-  # "r = -0.01",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-2,-2.4),
-  c(1, -1),
-  "log(motion threshold)",
-  "Interest in feminine hobbies"
-)
-```
 
 ```{r}
 corr_df <- sex_diff_corr_summ("log_contrast", "femscale",
                               print_table = FALSE)
 
-sex_diff_scatter(
-  df_complete2,
+p31<-sex_diff_scatter(
+  df_complete,
   "log_contrast",
   "femscale",
-  x_rev = TRUE,
+  x_rev = FALSE,
   y_rev = FALSE,
-  # "r = 0.17*",
-  # "r = -0.01",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-2,-2.4),
-  c(1, -1),
+   "r = 0.25**",
+   "r = -0.07",
+ # paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+ # paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  max(df_complete$log_contrast),
+  c(min(df_complete$femscale), 1.4),
   "log(contrast threshold)",
-  "Interest in feminine hobbies"
+  "Feminine hobbies"
+) 
+p31
+```
+```{r}
+corr_df <- sex_diff_corr_summ("log_motion", "femscale",
+                              print_table = FALSE)
+
+p32<-sex_diff_scatter(
+  df_complete,
+  "log_motion",
+  "femscale",
+  x_rev = FALSE,
+  y_rev = FALSE,
+   "r = 0.22*",
+   "r = -0.10",
+  #paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  #paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  max(df_complete$log_motion),
+  c(min(df_complete$femscale), 1.4),
+  "log(motion threshold)",
+  "Feminine hobbies"
 )
+p32
 ```
 
 ```{r}
 corr_df <- sex_diff_corr_summ("log_motion", "masscale",
                               print_table = FALSE)
 
-sex_diff_scatter(
-  df_complete2,
+p22<-sex_diff_scatter(
+  df_complete,
   "log_motion",
   "masscale",
-  x_rev = TRUE,
+  x_rev = FALSE,
   y_rev = FALSE,
-  # "r = 0.17*",
-  # "r = -0.01",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-1.5,-2.4),
-  c(-1, 1),
+   "r = -0.06",
+   "r = 0.20",
+#  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+#  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+max(df_complete$log_motion),
+  c(-1.2, max(df_complete$masscale)),
   "log(motion threshold)",
-  "Interest in male_typed hobbies
-  "
+  "Masculine hobbies"
 )
+p22
 ```
 
+## Contrast sensitivity & masculine hobbies
 
-## Contrast sensitivity &  hobbies
-
-```{r}
-corr_df <- sex_diff_corr_summ("log_contrast", "Interests",
-                              print_table = FALSE)
-
-sex_diff_scatter(
-  df_complete2,
+```{r contrast-sens-m-hobbies}
+p21<-sex_diff_scatter(
+  df_complete,
   "log_contrast",
-  "Interests",
-  x_rev = TRUE,
+  "masscale",
+  x_rev = FALSE,
   y_rev = FALSE,
-  # "r = 0.17*",
-  # "r = -0.01",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-2,-1.5),
-  c(-3, 1.8),
+   "r = -0.12",
+   "r = 0.01",
+  #paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  #paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+ max(df_complete$log_contrast),
+  c(-1.2, max(df_complete$masscale)),
   "log(contrast threshold)",
-  "Daily activity Interests"
+  "Masculine hobbies"
 )
-sex_diff_corr_summ("log_contrast", "Interests")
+p21
 ```
-
-## Motion sensitivity &  hobbies
+```{r contrast-sens-m-hobbies}
+p00<-sex_diff_scatter(
+  df_complete,
+  "log_contrast",
+  "log_motion",
+  x_rev = FALSE,
+  y_rev = FALSE,
+   "r = -0.20*",
+   "r = 0.41**",
+  #paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  #paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+ max(df_complete$log_contrast),
+  c(min(df_complete$log_motion), -1.5),
+  "log(contrast threshold)",
+  "log(motion threshold)",
+ "bottom",
+           square_axis = FALSE
+)
+p00
+ggsave(
+  plot = p00,
+  filename = paste0("~/Box/Project_Sex_difference_on_Motion_Perception/plots/fig1b.png"),
+  units = "in",
+  height = 6,
+  width = 6,
+  dpi = 600
+)
+```
 
 ```{r}
-corr_df <- sex_diff_corr_summ("log_motion", "Interests",
-                              print_table = FALSE)
-
-sex_diff_scatter(
-  df_complete2,
-  "log_motion",
-  "Interests",
-  x_rev = TRUE,
-  y_rev = FALSE,
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-2,-2.4),
-  c(-3, 1.8),
-  "log(motion threshold)",
-  "Daily activity Interests"
+p = grid.arrange(ncol = 2, nrow = 3, p11, p12,p21,p22,p31,p32)
+ggsave(
+  plot = p,
+  filename = paste0("~/Box/Project_Sex_difference_on_Motion_Perception/plots/fig1x.png"),
+  units = "in",
+  height = 19,
+  width = 12,
+  dpi = 600
 )
-sex_diff_corr_summ("log_motion", "Interests")
 ```
-## Contrast sensitivity & mental rotation
 
-```{r contrast-sens-mental-rot}
-corr_df <- sex_diff_corr_summ("log_contrast", "mental_rot",
+## Motion sensitivity & vocabulary
+```{r motion-duration-vocab}
+corr_df <- sex_diff_corr_summ("log_contrast", "vocab",
                    print_table = FALSE)
 
-sex_diff_scatter(
-  df_complete2,
+p41<-sex_diff_scatter(
+  df_complete,
   "log_contrast",
-  "mental_rot",
-  x_rev = TRUE,
+  "vocab",
+  x_rev = FALSE,
   y_rev = FALSE,
-  # "r = -0.19*",
-  # "r = 0.12",
+  # "r = 0.18",
+  # "r=0.22",
   paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
   paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-1.5),
-  c(33, 35),
+  max(df_complete$log_contrast),
+  c(-5, max(df_complete$vocab)),
   "log(contrast threshold)",
-  "Mental rotation score"
+  "Vocabulary score",
+  "bottom",
+           square_axis = FALSE
 )
-sex_diff_corr_summ("log_contrast", "mental_rot")
+p41
 ```
+```{r motion-duration-vocab}
+corr_df <- sex_diff_corr_summ("log_motion", "vocab",
+                   print_table = FALSE)
 
-## Contrast sensitivity & masculine hobbies
-
-```{r contrast-sens-m-hobbies}
-corr_df <- sex_diff_corr_summ("log_contrast", "Masculine_hobbies",
-                              print_table = FALSE)
-
-sex_diff_scatter(
-  df_complete2,
-  "log_contrast",
-  "Masculine_hobbies",
-  x_rev = TRUE,
-  y_rev = FALSE,
-  # "r = -0.19*",
-  # "r = 0.26",
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-1.5),
-  c(1.5, 4.2),
-  "log(contrast threshold)",
-  "Interest in masculine hobbies"
-)
-sex_diff_corr_summ("log_contrast", "Masculine_hobbies")
-```
-
-## Contrast sensitivity & masculine hobbies
-
-```{r contrast-sens-m-hobbies}
-corr_df <- sex_diff_corr_summ("log_motion", "Masculine_hobbies",
-                              print_table = FALSE)
-
-sex_diff_scatter(
-  df_complete2,
+p42<-sex_diff_scatter(
+  df_complete,
   "log_motion",
-  "Masculine_hobbies",
-  x_rev = TRUE,
+  "vocab",
+  x_rev = FALSE,
   y_rev = FALSE,
-  # "r = -0.19*",
-  # "r = 0.26",
+  # "r = 0.18",
+  # "r=0.22",
   paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
   paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-  c(-1.5),
-  c(1.5, 4.2),
+  max(df_complete$log_motion),
+  c(-5, max(df_complete$vocab)),
   "log(motion threshold)",
-  "Interest in masculine hobbies"
+  "Vocabulary score",
+  "bottom",
+           square_axis = FALSE
 )
-sex_diff_corr_summ("log_motion", "Masculine_hobbies")
+p42
 ```
 
+```{r}
+p1 = grid.arrange(ncol = 2, nrow = 1, p41, p42)
+ggsave(
+  plot = p1,
+  filename = paste0("~/Box/Project_Sex_difference_on_Motion_Perception/plots/fig2x.png"),
+  units = "in",
+  height = 6,
+  width = 12,
+  dpi = 600
+)
+```
 ## Masculine and Feminine hobbies
-
-```{r m-hobbies-f-hobbies}
-corr_df <- sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies", print_table = FALSE)
-
-sex_diff_scatter(df_complete2, 
-                x_var = "Masculine_hobbies",
-                y_var = "Feminine_hobbies",
-                x_rev = FALSE,
-                y_rev = FALSE,
-  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
-  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
-                anx = 3,
-                any = c(1.9, 1.6),
-  "Interest in masculine hobbies",
-  "Interest in feminine hobbies")
-sex_diff_corr_summ("Masculine_hobbies", "Feminine_hobbies")
-```
-
-
 ```{r m-hobbies-f-hobbies}
 corr_df <- sex_diff_corr_summ("mental_rot", "femscale", print_table = FALSE)
 
-sex_diff_scatter(df_complete2, 
+sex_diff_scatter(df_complete, 
                 x_var = "mental_rot",
                 y_var = "femscale",
                 x_rev = FALSE,
@@ -1010,6 +990,155 @@ sex_diff_scatter(df_complete2,
   "mental rotation",
   "Interest in feminine hobbies")
 sex_diff_corr_summ("mental_rot", "Feminine_hobbies")
+```
+
+# delete two outliers in males
+## Motion sensitivity & Mental rotation
+
+```{r motion-duration-mental-rot}
+p11<-sex_diff_scatter(
+  df_complete2,
+  "log_contrast",
+  "mental_rot",
+  x_rev = F,
+  y_rev = F,
+  paste0("r = ", format(cor_cst_mrt.f$estimate[[1]], digits = 2, nsmall = 2), "**"),
+  "r = -0.14",
+   max(df_complete$log_contrast),
+  c(10, max(df_complete2$mental_rot)),
+  "log(contrast threshold)",
+  "Mental rotation scores"
+)
+p11
+ sex_diff_corr_summ("log_contrast", "mental_rot")
+```
+## Motion sensitivity & Mental rotation
+
+```{r motion-duration-mental-rot}
+corr_df <- sex_diff_corr_summ("log_motion", 
+                   "mental_rot", print_table = FALSE)
+
+p12<-sex_diff_scatter(
+  df_complete2,
+  "log_motion",
+  "mental_rot",
+  x_rev = FALSE,
+  y_rev = FALSE,
+  "r = -0.29**",
+  "r = 0.22",
+   max(df_complete$log_motion),
+  c(10, max(df_complete2$mental_rot)),
+  "log(motion threshold)",
+  "Mental rotation score"
+)
+p12
+
+ sex_diff_corr_summ("log_motion", "mental_rot")
+```
+
+
+## Motion sensitivity & Feminine hobbies
+
+```{r}
+corr_df <- sex_diff_corr_summ("log_contrast", "femscale",
+                              print_table = FALSE)
+
+p31<-sex_diff_scatter(
+  df_complete2,
+  "log_contrast",
+  "femscale",
+  x_rev = FALSE,
+  y_rev = FALSE,
+   "r = 0.25**",
+   "r = 0.03",
+ # paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+ # paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+   max(df_complete2$log_contrast),
+  c(min(df_complete2$femscale), max(df_complete2$femscale)),
+  "log(contrast threshold)",
+  "Feminine hobbies",
+  "bottom",
+           square_axis = FALSE
+)
+p31
+```
+```{r}
+corr_df <- sex_diff_corr_summ("log_motion", "femscale",
+                              print_table = FALSE)
+
+p32<-sex_diff_scatter(
+  df_complete2,
+  "log_motion",
+  "femscale",
+  x_rev = FALSE,
+  y_rev = FALSE,
+   "r = 0.22*",
+   "r = -0.14",
+  #paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  #paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  max(df_complete2$log_motion),
+  c(min(df_complete2$femscale), max(df_complete2$femscale)),
+  "log(motion threshold)",
+  "Feminine hobbies",
+  "bottom",
+           square_axis = FALSE
+)
+p32
+```
+
+```{r}
+corr_df <- sex_diff_corr_summ("log_motion", "masscale",
+                              print_table = FALSE)
+
+p22<-sex_diff_scatter(
+  df_complete2,
+  "log_motion",
+  "masscale",
+  x_rev = FALSE,
+  y_rev = FALSE,
+   "r = -0.06",
+   "r = 0.24",
+#  paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+#  paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  max(df_complete2$log_motion),
+  c(-1.2, max(df_complete2$masscale)),
+  "log(motion threshold)",
+  "Masculine hobbies"
+)
+p22
+```
+
+## Contrast sensitivity & masculine hobbies
+
+```{r contrast-sens-m-hobbies}
+p21<-sex_diff_scatter(
+  df_complete2,
+  "log_contrast",
+  "masscale",
+  x_rev = FALSE,
+  y_rev = FALSE,
+   "r = -0.12",
+   "r = -0.01",
+  #paste0("r = ", format(corr_df$cor_coef[3], digits = 2, nsmall = 2), corr_df$stars[3]),
+  #paste0("r = ", format(corr_df$cor_coef[2], digits = 2, nsmall = 2), corr_df$stars[2]),
+  max(df_complete2$log_contrast),
+  c(-1.2, max(df_complete2$masscale)),
+  "log(contrast threshold)",
+  "Masculine hobbies"
+)
+p21
+```
+
+```{r}
+p3 = grid.arrange(ncol = 2, nrow = 3, p11, p12,p21,p22,p31,p32)
+ggsave(
+  plot = p3,
+  filename = paste0("~/Box/Project_Sex_difference_on_Motion_Perception/plots/fig3x.png"),
+  units = "in",
+  height = 19,
+  width = 12,
+  dpi = 600
+)
 ```
 
 # Mediation analysis
@@ -1471,4 +1600,29 @@ df_corr_m <- df_complete_M %>%
   dplyr::select(., -Sex)
 
 corr_M <- Hmisc::rcorr(as.matrix(df_corr_m), type = c("pearson"))
+```
+
+### Now we goes to the data which exluded two obvious outliers in motion duration in males.
+```{r}
+out.m<-lapply(df_complete_M[,3:4],FindOutliers)
+out.f<-lapply(df_complete_F[,3:4],FindOutliers)
+df_complete_M2 <- df_complete_M[-which(df_complete_M$log_motion>-2),]
+df_test<-rbind(df_complete_M2, df_complete_F)
+df_complete2 <- df_test[stats::complete.cases(df_test),]
+```
+### Overall for the outliers excluded datasets
+```{r}
+df_corr2 <- df_complete2 %>%
+  dplyr::select(., -Sex)
+
+corr_all <- Hmisc::rcorr(as.matrix(df_corr2), type = c("pearson"))
+
+df_corr_F <- df_complete_F %>%
+  dplyr::select(., -Sex)
+
+corr_F <- Hmisc::rcorr(as.matrix(df_corr_F), type = c("pearson"))
+df_corr_M <- df_complete_M2 %>%
+  dplyr::select(., -Sex)
+
+corr_M <- Hmisc::rcorr(as.matrix(df_corr_M), type = c("pearson"))
 ```
