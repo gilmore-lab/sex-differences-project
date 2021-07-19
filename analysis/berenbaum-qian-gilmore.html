@@ -12,7 +12,7 @@
 <meta name="author" content="Yiming Qian &amp; Rick Gilmore" />
 
 
-<title>Analyses in Berenbaum, Qian, &amp; Gilmore</title>
+<title>Analyses for Berenbaum, Qian, &amp; Gilmore</title>
 
 <script src="berenbaum-qian-gilmore_files/header-attrs-2.9/header-attrs.js"></script>
 <script src="berenbaum-qian-gilmore_files/jquery-1.11.3/jquery.min.js"></script>
@@ -64,7 +64,6 @@ if (window.hljs) {
 
 
 
-<link rel="stylesheet" href="report.css" type="text/css" />
 
 
 
@@ -255,9 +254,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Analyses in Berenbaum, Qian, &amp; Gilmore</h1>
+<h1 class="title toc-ignore">Analyses for Berenbaum, Qian, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-07-16 09:07:24</h4>
+<h4 class="date">2021-07-19 09:30:58</h4>
 
 </div>
 
@@ -289,8 +288,10 @@ div.tocify {
 </div>
 <div id="preregistered-analyses" class="section level1">
 <h1>Preregistered analyses</h1>
-<div id="visual-perception-thresholds" class="section level2">
-<h2>Visual perception thresholds</h2>
+<div id="individual-measures" class="section level2">
+<h2>Individual measures</h2>
+<div id="visual-perception-thresholds" class="section level3">
+<h3>Visual perception thresholds</h3>
 <blockquote>
 <p>An average threshold for each participant will be calculated across 4 runs for each visual perception task. If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.</p>
 </blockquote>
@@ -318,8 +319,8 @@ div.tocify {
 <blockquote>
 <p>To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at alpha=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study.</p>
 </blockquote>
-<div id="contrast-thresholds" class="section level3">
-<h3>Contrast thresholds</h3>
+<div id="contrast-thresholds" class="section level4">
+<h4>Contrast thresholds</h4>
 <pre class="r"><code>df1 %&gt;%
   ggplot() +
   aes(Sex, log_contrast) +
@@ -355,8 +356,8 @@ cst_tt</code></pre>
 <pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="img/unnamed-chunk-4-1.png" width="2100" style="display: block; margin: auto;" /></p>
 </div>
-<div id="motion-duration-thresholds" class="section level3">
-<h3>Motion duration thresholds</h3>
+<div id="motion-duration-thresholds" class="section level4">
+<h4>Motion duration thresholds</h4>
 <pre class="r"><code>df1 %&gt;%
   ggplot() +
   aes(Sex, log_motion) +
@@ -383,7 +384,7 @@ mdt_tt</code></pre>
 ## sample estimates:
 ## mean in group Females   mean in group Males 
 ##             -2.270497             -2.454955</code></pre>
-<p>Median log(motion duration) thresholds are smaller in females than males. This means that females had larger motion duration thresholds or were less sensitive to motion.</p>
+<p>Median log(motion duration) thresholds are larger in females than males. This means that females were less sensitive to motion.</p>
 <p>This can be seen in a plot in the original threshold units.</p>
 <pre class="r"><code>df1 %&gt;%
   ggplot() +
@@ -393,8 +394,8 @@ mdt_tt</code></pre>
 <p><img src="img/unnamed-chunk-7-1.png" width="2100" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="spatial-ability" class="section level2">
-<h2>Spatial ability</h2>
+<div id="spatial-ability" class="section level3">
+<h3>Spatial ability</h3>
 <p>Our measure of spatial ability is performance on a mental rotation task.</p>
 <pre class="r"><code>df1 %&gt;%
   ggplot() +
@@ -424,8 +425,8 @@ mr_tt</code></pre>
 ##              26.20792              29.66667</code></pre>
 <p>Females had fewer correct trials than males.</p>
 </div>
-<div id="verbal-ability" class="section level2">
-<h2>Verbal ability</h2>
+<div id="verbal-ability" class="section level3">
+<h3>Verbal ability</h3>
 <p>We predicted no sex difference in verbal ability as measured by vocabulary size.</p>
 <pre class="r"><code>df1 %&gt;%
   ggplot() +
@@ -455,9 +456,10 @@ vocab_tt</code></pre>
 ##              9.165842              9.916667</code></pre>
 <p>We find no statistically significant difference in vocabulary scores.</p>
 </div>
-<div id="male-typed-hobbies" class="section level2">
-<h2>Male-typed hobbies</h2>
-<p>Our preregistered plan describes testing for sex differences in male-typed hobbies. We have chosen not to describe the hobbies data in this report.</p>
+<div id="male-typed-hobbies" class="section level3">
+<h3>Male-typed hobbies</h3>
+<p>Our preregistered plan described testing for sex differences in male-typed hobbies. We have chosen not to describe the hobbies data in this report.</p>
+</div>
 </div>
 <div id="correlations-among-measures" class="section level2">
 <h2>Correlations among measures</h2>
@@ -527,7 +529,7 @@ vocab_tt</code></pre>
 ## sample estimates:
 ##        cor 
 ## -0.3166253</code></pre>
-<p>Log(motion duration) thresholds (negatively) correlate with mental rotation scores in females. This means that lower thresholds or higher sensitivity is associated with better performance in the mental rotation task.</p>
+<p>Log(motion duration) thresholds (negatively) correlate with mental rotation scores in females. This means that lower thresholds (higher sensitivity) is associated with better performance in the mental rotation task.</p>
 <pre class="r"><code>cor.test(
   df1_M$log_motion,
   df1_M$mental_rot,
@@ -545,11 +547,10 @@ vocab_tt</code></pre>
 ## sample estimates:
 ##       cor 
 ## 0.1203345</code></pre>
-<p>Motion duration thresholds do not correlate with mental rotation scores in males. The sign and magnitude</p>
+<p>Motion duration thresholds do not correlate with mental rotation scores in males.</p>
 </div>
-</div>
-<div id="contrast-thresholds-and-motion-thresholds" class="section level2">
-<h2>Contrast thresholds and motion thresholds</h2>
+<div id="contrast-thresholds-and-motion-thresholds" class="section level3">
+<h3>Contrast thresholds and motion thresholds</h3>
 <pre class="r"><code>cor.test(
   df1_F$log_contrast,
   df1_F$log_motion,
@@ -587,8 +588,10 @@ vocab_tt</code></pre>
 ## 0.4069684</code></pre>
 <p>The vision measures correlate in males.</p>
 </div>
+</div>
 <div id="visualizations" class="section level2">
 <h2>Visualizations</h2>
+<p>The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.</p>
 <pre class="r"><code>sex_diff_scatter &lt;-
   function(df,
            x_var,
@@ -602,7 +605,8 @@ vocab_tt</code></pre>
            x_lab = &quot;X axis&quot;,
            y_lab = &quot;Y axis&quot;,
            square_axis = TRUE,
-           margin_type = &quot;boxplot&quot;) {
+           margin_type = &quot;boxplot&quot;,
+           show_corr_vals = FALSE) {
     require(tidyverse)
     require(ggExtra)
     
@@ -624,14 +628,17 @@ vocab_tt</code></pre>
       theme(legend.position = &quot;bottom&quot;,
             legend.title = element_blank()) +
       xlab(x_lab) +
-      ylab(y_lab) +
-      annotate(
+      ylab(y_lab)
+
+    if (show_corr_vals) {
+      p + annotate(
         &quot;text&quot;,
         x = anx,
         y = any,
         label = c(an_f, an_m),
         color = c(&#39;red&#39;, &#39;darkturquoise&#39;)
       )
+    }
     
     if (square_axis)
     {
@@ -676,7 +683,8 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;
 <pre class="r"><code>sex_diff_corr_summ &lt;- function(x_var, y_var, print_table = TRUE, 
                                corr_all_df = corr_all,
                                corr_M_df = corr_M,
-                               corr_F_df = corr_F) {
+                               corr_F_df = corr_F,
+                               show_combined = FALSE) {
   require(tidyverse) # for %&gt;%
   
   corr_all_df &lt;- tibble::tibble(
@@ -699,15 +707,19 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;
     pop = &quot;Females&quot;
   )
   
-  df &lt;- rbind(corr_all_df, males_df, females_df)
+  if (show_combined) {
+    df &lt;- rbind(corr_all_df, males_df, females_df)
+  } else {
+    df &lt;- rbind(males_df, females_df)
+  }
   
+  # Add stars for significance levels
   df &lt;- df %&gt;%
     mutate(., stars = if_else(p_val &lt; .005, &quot;***&quot;,
                               if_else(
                                 p_val &lt; .01, &quot;**&quot;,
                                 if_else(p_val &lt; .05, &quot;*&quot;, &quot; ns&quot;)
                               )))
-  
   
   if (print_table) {
     kableExtra::kable(df, format = &#39;html&#39;) %&gt;%
@@ -716,9 +728,8 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;
     df
   }
 }</code></pre>
-</div>
-<div id="contrast-sensitivity-mental-rotation" class="section level2">
-<h2>Contrast sensitivity &amp; mental rotation</h2>
+<div id="contrast-sensitivity-mental-rotation" class="section level3">
+<h3>Contrast sensitivity &amp; mental rotation</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;mental_rot&quot;,
                               corr_all,
                               corr_M_df = corr_M,
@@ -774,23 +785,6 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
--0.3102798
-</td>
-<td style="text-align:right;">
-0.0003455
-</td>
-<td style="text-align:right;">
-129
-</td>
-<td style="text-align:left;">
-Both
-</td>
-<td style="text-align:left;">
-***
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
 -0.2444586
 </td>
 <td style="text-align:right;">
@@ -826,8 +820,8 @@ Females
 </tbody>
 </table>
 </div>
-<div id="motion-sensitivity-mental-rotation" class="section level2">
-<h2>Motion sensitivity &amp; mental rotation</h2>
+<div id="motion-sensitivity-mental-rotation" class="section level3">
+<h3>Motion sensitivity &amp; mental rotation</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_motion&quot;,
                               &quot;mental_rot&quot;, print_table = FALSE)
 
@@ -880,23 +874,6 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
--0.2619590
-</td>
-<td style="text-align:right;">
-0.0029292
-</td>
-<td style="text-align:right;">
-127
-</td>
-<td style="text-align:left;">
-Both
-</td>
-<td style="text-align:left;">
-***
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
 0.1203345
 </td>
 <td style="text-align:right;">
@@ -932,8 +909,8 @@ Females
 </tbody>
 </table>
 </div>
-<div id="motion-sensitivity-contrast-sensitivity" class="section level2">
-<h2>Motion sensitivity &amp; contrast sensitivity</h2>
+<div id="motion-sensitivity-contrast-sensitivity" class="section level3">
+<h3>Motion sensitivity &amp; contrast sensitivity</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_motion&quot;,
                               &quot;log_contrast&quot;, print_table = FALSE)
 
@@ -989,23 +966,6 @@ stars
 <tbody>
 <tr>
 <td style="text-align:right;">
-0.2469585
-</td>
-<td style="text-align:right;">
-0.0053069
-</td>
-<td style="text-align:right;">
-126
-</td>
-<td style="text-align:left;">
-Both
-</td>
-<td style="text-align:left;">
-**
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
 0.4069684
 </td>
 <td style="text-align:right;">
@@ -1043,17 +1003,17 @@ ns
 </ul>
 </div>
 </div>
+</div>
 <div id="non-pregistered-analyses" class="section level1">
 <h1>Non-pregistered analyses</h1>
-</div>
-<div id="does-vision-account-for-mental-rotation" class="section level1">
-<h1>Does vision account for mental rotation?</h1>
+<div id="does-vision-account-for-mental-rotation" class="section level2">
+<h2>Does vision account for mental rotation?</h2>
 <p>There are two approaches to answering this question. One looks for sex differences in the residuals of the models <code>mental rotation ~ contrast</code> and <code>mental rotation ~ motion</code>. The other models <code>mental rotation ~ contrast + sex + contrast:sex</code> and determines whether adding the <code>sex</code> term provides a better fit relative to <code>mental rotation ~ contrast</code> alone.</p>
-<div id="residuals-based-approach" class="section level2">
-<h2>Residuals-based approach</h2>
+<div id="residuals-based-approach" class="section level3">
+<h3>Residuals-based approach</h3>
 <p>We’ll take evaluate the first approach using residuals.</p>
-<div id="contrast" class="section level3">
-<h3>Contrast</h3>
+<div id="contrast" class="section level4">
+<h4>Contrast</h4>
 <p>Focus on the log contrast sensitivity threshold data.</p>
 <pre class="r"><code># Select relevant data from data frame.
 df_mr_log_contr &lt;- df1 %&gt;%
@@ -1161,8 +1121,8 @@ summary(lm_mr_resids_sex)</code></pre>
 ##            -0.5827762             1.9231615</code></pre>
 <p>So, including contrast sensitivity reduces, but does not eliminate, a statistically significant difference in mental rotation scores by sex favoring men.</p>
 </div>
-<div id="motion" class="section level3">
-<h3>Motion</h3>
+<div id="motion" class="section level4">
+<h4>Motion</h4>
 <pre class="r"><code># Select relevant data from data frame.
 df_mr_log_motion &lt;- df1 %&gt;%
   dplyr::select(., Sex, log_motion, mental_rot) %&gt;%
@@ -1243,8 +1203,8 @@ summary(lm_mr_resids_sex)</code></pre>
 <p>So, including motion eliminates a statistically significant difference in mental rotation scores by sex favoring men.</p>
 </div>
 </div>
-<div id="combining-vision-measures" class="section level2">
-<h2>Combining vision measures</h2>
+<div id="model-based-approach" class="section level3">
+<h3>Model-based approach</h3>
 <p>Let’s see whether combining the vision measures can do even better in accounting for mental rotation.</p>
 <pre class="r"><code>df_mr_contr_motion &lt;- df1 %&gt;%
   dplyr::select(., Sex, log_contrast, log_motion, mental_rot) %&gt;%
@@ -1331,7 +1291,8 @@ summary(lm_mr_contr_motion_no_sex)</code></pre>
 ##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
 ## 1    122 4123.5                           
 ## 2    121 4047.5  1    76.009 2.2723 0.1343</code></pre>
-<p>So, the RSS down a bit, but not significantly. All things being equal, we’d choose the simpler model for parsimony reasons.</p>
+<p>So, the RSS drops a bit, but not significantly. All things being equal, we’d choose the simpler model for parsimony reasons.</p>
+<p>Here’s a model with sex alone.</p>
 <pre class="r"><code>lm_mr_only_sex &lt;- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
 summary(lm_mr_only_sex)</code></pre>
 <pre><code>## 
@@ -1352,7 +1313,7 @@ summary(lm_mr_only_sex)</code></pre>
 ## Residual standard error: 5.996 on 123 degrees of freedom
 ## Multiple R-squared:  0.0531, Adjusted R-squared:  0.0454 
 ## F-statistic: 6.898 on 1 and 123 DF,  p-value: 0.009727</code></pre>
-<p>Comparing models.</p>
+<p>Comparing this to one with vision but not sex.</p>
 <pre class="r"><code>anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -1363,8 +1324,316 @@ summary(lm_mr_only_sex)</code></pre>
 ## 2    122 4123.5  1    299.31 8.8557 0.003524 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The model with the smaller RSS is the one with the vision variables.</p>
+<p>The model with the smaller RSS is the one with the vision variables included.</p>
 <p>We conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.</p>
+</div>
+</div>
+<div id="do-outliers-account-for-results" class="section level2">
+<h2>Do outliers account for results?</h2>
+<p>The scatterplots indicate that despite the log transformation, there are some individual participants who had especially high thresholds for contrast and motion duration.</p>
+<p>Do our results hold when we trim the data to focus on those individuals whose data are within 3 standard deviations of the mean log threshold?</p>
+<p>We define a helper function to detect outliers.</p>
+<pre class="r"><code>FindOutliers &lt;- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh)) {
+  sd = sd(data, na.rm = T)
+  mean = mean(data, na.rm = T)
+  # we identify extreme outliers
+  extreme.threshold.upper = (sd * sd_thresh) + mean
+  extreme.threshold.lower = -(sd * sd_thresh) + mean
+  result &lt;-
+    which(data &gt; extreme.threshold.upper |
+            data &lt; extreme.threshold.lower)
+  print(result)
+}
+
+all_outliers &lt;- lapply(df1, FindOutliers)</code></pre>
+<pre><code>## integer(0)</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in mean.default(data, na.rm = T): argument is not numeric or logical:
+## returning NA</code></pre>
+<pre><code>## integer(0)</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## integer(0)
+## [1]  19  45 119
+## integer(0)</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## integer(0)
+## integer(0)
+## integer(0)
+## [1] 28 48 94
+## integer(0)
+## [1] 30 36 69
+## [1] 115 118
+## [1] 115
+## [1] 109 115
+## [1]   9 131
+## [1]   9 104 125
+## [1] 104 125
+## integer(0)
+## integer(0)
+## integer(0)
+## integer(0)
+## integer(0)
+## integer(0)
+## [1] 37
+## [1] 37 45
+## [1] 37 41
+## integer(0)
+## [1] 115 118</code></pre>
+<div id="visual-perception-thresholds-1" class="section level3">
+<h3>Visual perception thresholds</h3>
+<div id="contrast-thresholds-1" class="section level4">
+<h4>Contrast thresholds</h4>
+<p>We detect outliers in contrast threshold.</p>
+<pre class="r"><code>all_outliers$log_contrast</code></pre>
+<pre><code>## integer(0)</code></pre>
+<p>No contrast thresholds exceed the criterion.</p>
+</div>
+<div id="motion-duration-thresholds-1" class="section level4">
+<h4>Motion duration thresholds</h4>
+<pre class="r"><code>all_outliers$log_motion</code></pre>
+<pre><code>## [1] 115 118</code></pre>
+<p>Two cases exceed the criterion for motion.</p>
+<p>Create a new trimmed data frame.</p>
+<pre class="r"><code>df_trimmed &lt;- df1[-all_outliers[[&#39;log_motion&#39;]],]</code></pre>
+<pre class="r"><code>xtabs(~ Sex, df_trimmed)</code></pre>
+<pre><code>## Sex
+## Females   Males 
+##     100      30</code></pre>
+<pre class="r"><code>df_trimmed %&gt;%
+  ggplot() +
+  aes(Sex, log_motion) +
+  geom_boxplot()</code></pre>
+<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="img/unnamed-chunk-46-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>We then test for a difference in means.</p>
+<pre class="r"><code>mdt_tt &lt;-
+  t.test(
+    log_motion ~ Sex,
+    data = df_trimmed,
+    var.equal = TRUE,
+    alternative = &quot;greater&quot;
+  ) # Hypothesized
+mdt_tt</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  log_motion by Sex
+## t = 3.7359, df = 124, p-value = 0.000142
+## alternative hypothesis: true difference in means between group Females and group Males is greater than 0
+## 95 percent confidence interval:
+##  0.089656      Inf
+## sample estimates:
+## mean in group Females   mean in group Males 
+##             -2.293820             -2.454955</code></pre>
+<p>Females still have larger motion duration threshold than males.</p>
+</div>
+</div>
+<div id="mental-rotation" class="section level3">
+<h3>Mental rotation</h3>
+<pre class="r"><code>all_outliers$mental_rot</code></pre>
+<pre><code>## integer(0)</code></pre>
+<p>There were no outliers in mental rotation.</p>
+</div>
+<div id="vocabulary" class="section level3">
+<h3>Vocabulary</h3>
+<pre class="r"><code>all_outliers$vocab</code></pre>
+<pre><code>## integer(0)</code></pre>
+</div>
+</div>
+<div id="correlations-among-measures-1" class="section level2">
+<h2>Correlations among measures</h2>
+<p>Since trimming outliers only affected the motion threshold data, we focus on that measure.</p>
+<pre class="r"><code>df1_F &lt;- df_trimmed %&gt;%
+  dplyr::filter(., Sex == &quot;Females&quot;)
+
+df1_M &lt;- df_trimmed %&gt;%
+  dplyr::filter(., Sex == &quot;Males&quot;)</code></pre>
+<div id="motion-thresholds-and-mental-rotation-1" class="section level3">
+<h3>Motion thresholds and mental rotation</h3>
+<pre class="r"><code>cor.test(
+  df1_F$log_motion,
+  df1_F$mental_rot,
+  method = &quot;pearson&quot;,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  df1_F$log_motion and df1_F$mental_rot
+## t = -3.0141, df = 93, p-value = 0.001661
+## alternative hypothesis: true correlation is less than 0
+## 95 percent confidence interval:
+##  -1.0000000 -0.1353437
+## sample estimates:
+##        cor 
+## -0.2983134</code></pre>
+<p>Log(motion duration) thresholds (negatively) correlate with mental rotation scores in females, even after trimming.</p>
+<pre class="r"><code>cor.test(
+  df1_M$log_motion,
+  df1_M$mental_rot,
+  method = &quot;pearson&quot;,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  df1_M$log_motion and df1_M$mental_rot
+## t = 0.64141, df = 28, p-value = 0.7368
+## alternative hypothesis: true correlation is less than 0
+## 95 percent confidence interval:
+##  -1.0000000  0.4115473
+## sample estimates:
+##       cor 
+## 0.1203345</code></pre>
+<p>Motion duration thresholds do not correlate with mental rotation scores in males.</p>
+</div>
+<div id="contrast-thresholds-and-motion-thresholds-1" class="section level3">
+<h3>Contrast thresholds and motion thresholds</h3>
+<pre class="r"><code>cor.test(
+  df1_F$log_contrast,
+  df1_F$log_motion,
+  method = &quot;pearson&quot;,
+  alternative = &quot;greater&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  df1_F$log_contrast and df1_F$log_motion
+## t = 2.0919, df = 92, p-value = 0.0196
+## alternative hypothesis: true correlation is greater than 0
+## 95 percent confidence interval:
+##  0.0439443 1.0000000
+## sample estimates:
+##       cor 
+## 0.2130843</code></pre>
+<p>The vision measures now correlate in females.</p>
+<pre class="r"><code>cor.test(
+  df1_M$log_contrast,
+  df1_M$log_motion,
+  method = &quot;pearson&quot;,
+  alternative = &quot;greater&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  df1_M$log_contrast and df1_M$log_motion
+## t = 2.3575, df = 28, p-value = 0.01281
+## alternative hypothesis: true correlation is greater than 0
+## 95 percent confidence interval:
+##  0.1149104 1.0000000
+## sample estimates:
+##       cor 
+## 0.4069684</code></pre>
+<p>The vision measures still correlate in males.</p>
+</div>
+<div id="model-based-approach-1" class="section level3">
+<h3>Model-based approach</h3>
+<p>Do the trimmed data show the stronger relationship between vision and mental rotation than sex and mental rotation?</p>
+<pre class="r"><code>df_mr_contr_motion &lt;- df_trimmed %&gt;%
+  dplyr::select(., Sex, log_contrast, log_motion, mental_rot) %&gt;%
+  dplyr::filter(., !is.na(Sex),
+                !is.na(log_contrast),
+                !is.na(log_motion),
+                !is.na(mental_rot))</code></pre>
+<p>Vision plus sex.</p>
+<pre class="r"><code>lm_mr_contr_motion_no_interactions &lt;- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_interactions)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -12.5919  -3.8332  -0.3085   3.7997  12.6954 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)     5.378      7.273   0.739   0.4611  
+## log_contrast   -7.946      3.327  -2.388   0.0185 *
+## log_motion     -3.166      2.621  -1.208   0.2296  
+## SexMales        1.991      1.299   1.532   0.1281  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.818 on 119 degrees of freedom
+## Multiple R-squared:  0.1176, Adjusted R-squared:  0.09533 
+## F-statistic: 5.285 on 3 and 119 DF,  p-value: 0.001863</code></pre>
+<p>Vision alone.</p>
+<pre class="r"><code>lm_mr_contr_motion_no_sex &lt;- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -13.2482  -4.0821  -0.3296   3.3382  14.2608 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)     2.128      6.996   0.304   0.7615  
+## log_contrast   -8.624      3.316  -2.601   0.0105 *
+## log_motion     -4.253      2.537  -1.676   0.0963 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.85 on 120 degrees of freedom
+## Multiple R-squared:  0.1002, Adjusted R-squared:  0.08517 
+## F-statistic: 6.679 on 2 and 120 DF,  p-value: 0.001777</code></pre>
+<p>Compare models.</p>
+<pre class="r"><code>anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: mental_rot ~ log_contrast + log_motion
+## Model 2: mental_rot ~ log_contrast + log_motion + Sex
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1    120 4107.4                           
+## 2    119 4027.9  1    79.464 2.3477 0.1281</code></pre>
+<p>So, the RSS drops a bit, but not significantly. All things being equal, we’d choose the simpler model for parsimony reasons.</p>
+<p>Here’s a model with sex alone.</p>
+<pre class="r"><code>lm_mr_only_sex &lt;- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
+summary(lm_mr_only_sex)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ Sex, data = df_mr_contr_motion)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.6667  -3.6667   0.3333   3.4946  13.4946 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  26.5054     0.6209  42.690   &lt;2e-16 ***
+## SexMales      3.1613     1.2572   2.515   0.0132 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.988 on 121 degrees of freedom
+## Multiple R-squared:  0.04966,    Adjusted R-squared:  0.04181 
+## F-statistic: 6.323 on 1 and 121 DF,  p-value: 0.01323</code></pre>
+<p>Comparing this to one with vision but not sex.</p>
+<pre class="r"><code>anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: mental_rot ~ Sex
+## Model 2: mental_rot ~ log_contrast + log_motion
+##   Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+## 1    121 4337.9                              
+## 2    120 4107.4  1    230.55 6.7356 0.01063 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The model with the smaller RSS is the one with the vision variables included.</p>
+<p>We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.</p>
+</div>
 </div>
 </div>
 
