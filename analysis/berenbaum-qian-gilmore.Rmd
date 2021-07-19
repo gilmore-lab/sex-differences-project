@@ -688,7 +688,7 @@ t.test(
 )
 ```
 
-So, including motion eliminates a statistically significant difference in mental rotation scores by sex favoring men.
+So, including motion reduces but does not eliminate a statistically significant difference in mental rotation scores by sex favoring men.
 
 ### Model-based approach
 
