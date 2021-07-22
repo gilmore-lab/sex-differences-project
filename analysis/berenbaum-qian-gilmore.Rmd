@@ -50,7 +50,7 @@ library(add2ggplot)
 Data from the set of tasks were merged and cleaned as described in `import-clean-raw-data.Rmd`.
 
 ```{r load}
-df1 <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
+sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
 
 # Preregistered analyses
@@ -66,14 +66,14 @@ In the analyses below, we use the median threshold across the four runs.
 The distribution of median thresholds is skewed, as indicated in the figures below:
 
 ```{r, contrast-hist}
-df1 %>%
+sex_diff_df %>%
   ggplot(.) +
-  aes(x =contrast_thr) +
+  aes(x = contrast_thr) +
   geom_histogram()
 ```
 
 ```{r, motion-hist}
-df1 %>%
+sex_diff_df %>%
   ggplot(.) +
   aes(x = motion_dur_thr) +
   geom_histogram()
@@ -82,7 +82,7 @@ df1 %>%
 So, we use a log transformation.
 
 ```{r}
-df1 <- df1 %>%
+sex_diff_df <- sex_diff_df %>%
   dplyr::mutate(.,
                 log_contrast = log(contrast_thr),
                 log_motion = log(motion_dur_thr))
@@ -93,7 +93,7 @@ df1 <- df1 %>%
 #### Contrast thresholds
 
 ```{r}
-df1 %>%
+sex_diff_df %>%
   ggplot() +
   aes(Sex, log_contrast) +
   geom_boxplot()
@@ -105,7 +105,7 @@ We then test for a difference in means.
 cst_tt <-
   t.test(
     log_contrast ~ Sex,
-    data = df1,
+    data = sex_diff_df,
     var.equal = TRUE,
     alternative = "greater"
   ) # Hypothesized
@@ -117,16 +117,41 @@ Median log(contrast) thresholds are lower in females than males. This means that
 This can be seen in a plot in the original threshold units.
 
 ```{r}
-df1 %>%
+sex_diff_df %>%
   ggplot() +
   aes(Sex, contrast_thr) +
   geom_boxplot()
 ```
 
+We use the `esvis` package to compute the Hedge's G effect size measure since the groups have unequal means.
+
+```{r contrast-eff-size}
+esvis::hedg_g(sex_diff_df, log_contrast ~ Sex)
+```
+
+In order to compute a confidence interval for the effect size, we use the `esci` package. We have already installed the package, so we set the following chunk to `eval=FALSE`.
+
+```{r, eval=FALSE}
+devtools::install_github("rcalinjageman/esci")
+```
+
+```{r}
+sex_diff_df$Sex.factor <- as.factor(sex_diff_df$Sex)
+
+es_log_contrast <- esci::estimateMeanDifference.default(sex_diff_df,
+                                     Sex.factor,
+                                     log_contrast,
+                                     paired = FALSE,
+                                     var.equal = TRUE,
+                                     conf.level = .95)
+es_log_contrast
+```
+
+
 #### Motion duration thresholds
 
 ```{r}
-df1 %>%
+sex_diff_df %>%
   ggplot() +
   aes(Sex, log_motion) +
   geom_boxplot()
@@ -138,7 +163,7 @@ We then test for a difference in means.
 mdt_tt <-
   t.test(
     log_motion ~ Sex,
-    data = df1,
+    data = sex_diff_df,
     var.equal = TRUE,
     alternative = "greater"
   ) # Hypothesized
@@ -150,10 +175,26 @@ Median log(motion duration) thresholds are larger in females than males. This me
 This can be seen in a plot in the original threshold units.
 
 ```{r}
-df1 %>%
+sex_diff_df %>%
   ggplot() +
   aes(Sex, motion_dur_thr) +
   geom_boxplot()
+```
+
+```{r motion-eff-size}
+esvis::hedg_g(sex_diff_df, log_motion ~ Sex)
+```
+
+Using `esci` to calculate a CI:
+
+```{r}
+es_log_motion <- esci::estimateMeanDifference.default(sex_diff_df,
+                                     Sex.factor,
+                                     log_motion,
+                                     paired = FALSE,
+                                     var.equal = TRUE,
+                                     conf.level = .95)
+es_log_motion
 ```
 
 ### Spatial ability
@@ -161,7 +202,7 @@ df1 %>%
 Our measure of spatial ability is performance on a mental rotation task.
 
 ```{r}
-df1 %>%
+sex_diff_df %>%
   ggplot() +
   aes(Sex, mental_rot) +
   geom_boxplot()
@@ -173,21 +214,37 @@ We test for a difference in means.
 mr_tt <-
   t.test(
     mental_rot ~ Sex,
-    data = df1,
+    data = sex_diff_df,
     var.equal = TRUE,
     alternative = "less"
   ) # Hypothesized
 mr_tt
 ```
 
-Females had fewer correct trials than males.
+Females had fewer correct trials than males. This is shown by the effect size.
+
+```{r mental-rot-eff-size}
+esvis::hedg_g(sex_diff_df, mental_rot ~ Sex)
+```
+
+Using `esci` to calculate CIs.
+
+```{r}
+es_mental_rot <- esci::estimateMeanDifference.default(sex_diff_df,
+                                     Sex.factor,
+                                     mental_rot,
+                                     paired = FALSE,
+                                     var.equal = TRUE,
+                                     conf.level = .95)
+es_mental_rot
+```
 
 ### Verbal ability
 
 We predicted no sex difference in verbal ability as measured by vocabulary size.
 
 ```{r}
-df1 %>%
+sex_diff_df %>%
   ggplot() +
   aes(Sex, vocab) +
   geom_boxplot()
@@ -199,7 +256,7 @@ We test for a difference in means.
 vocab_tt <-
   t.test(
     vocab ~ Sex,
-    data = df1,
+    data = sex_diff_df,
     var.equal = TRUE,
     alternative = "less"
   ) # Hypothesized
@@ -207,6 +264,23 @@ vocab_tt
 ```
 
 We find no statistically significant difference in vocabulary scores.
+
+This is also shown by the effect size.
+
+```{r vocab-eff-size}
+esvis::hedg_g(sex_diff_df, vocab ~ Sex)
+```
+
+
+```{r}
+es_vocab <- esci::estimateMeanDifference.default(sex_diff_df,
+                                     Sex.factor,
+                                     vocab,
+                                     paired = FALSE,
+                                     var.equal = TRUE,
+                                     conf.level = .95)
+es_vocab
+```
 
 ### Male-typed hobbies
 
@@ -219,12 +293,12 @@ Our preregistered plan described testing for sex differences in male-typed hobbi
 We create two data frames by participant sex.
 
 ```{r}
-df1_F <- df1 %>%
+sex_diff_df_F <- sex_diff_df %>%
   dplyr::filter(., Sex == "Females")
 ```
 
 ```{r}
-df1_M <- df1 %>%
+sex_diff_df_M <- sex_diff_df %>%
   dplyr::filter(., Sex == "Males")
 ```
 
@@ -232,8 +306,8 @@ df1_M <- df1 %>%
 
 ```{r}
 cor.test(
-  df1_F$log_contrast,
-  df1_F$mental_rot,
+  sex_diff_df_F$log_contrast,
+  sex_diff_df_F$mental_rot,
   method = "pearson",
   alternative = "less"
 )
@@ -243,8 +317,8 @@ Contrast thresholds (negatively) correlate with mental rotation scores in female
 
 ```{r}
 cor.test(
-  df1_M$log_contrast,
-  df1_M$mental_rot,
+  sex_diff_df_M$log_contrast,
+  sex_diff_df_M$mental_rot,
   method = "pearson",
   alternative = "less"
 )
@@ -256,8 +330,8 @@ Contrast thresholds do not correlate with mental rotation scores in males.
 
 ```{r}
 cor.test(
-  df1_F$log_motion,
-  df1_F$mental_rot,
+  sex_diff_df_F$log_motion,
+  sex_diff_df_F$mental_rot,
   method = "pearson",
   alternative = "less"
 )
@@ -267,8 +341,8 @@ Log(motion duration) thresholds (negatively) correlate with mental rotation scor
 
 ```{r}
 cor.test(
-  df1_M$log_motion,
-  df1_M$mental_rot,
+  sex_diff_df_M$log_motion,
+  sex_diff_df_M$mental_rot,
   method = "pearson",
   alternative = "less"
 )
@@ -280,8 +354,8 @@ Motion duration thresholds do not correlate with mental rotation scores in males
 
 ```{r}
 cor.test(
-  df1_F$log_contrast,
-  df1_F$log_motion,
+  sex_diff_df_F$log_contrast,
+  sex_diff_df_F$log_motion,
   method = "pearson",
   alternative = "greater"
 )
@@ -291,8 +365,8 @@ The vision measures do not correlate in females.
 
 ```{r}
 cor.test(
-  df1_M$log_contrast,
-  df1_M$log_motion,
+  sex_diff_df_M$log_contrast,
+  sex_diff_df_M$log_motion,
   method = "pearson",
   alternative = "greater"
 )
@@ -382,17 +456,17 @@ sex_diff_scatter <-
 Create matrices of correlation coefficients for subsequent plotting.
 
 ```{r}
-df_corr_F <- df1_F %>%
+df_corr_F <- sex_diff_df_F %>%
   dplyr::select(.,c(27, 28, 20))
 
 corr_F <- Hmisc::rcorr(as.matrix(df_corr_F), type = c("pearson"))
 
-df_corr_M <- df1_M %>%
+df_corr_M <- sex_diff_df_M %>%
   dplyr::select(., c(27, 28, 20))
 
 corr_M <- Hmisc::rcorr(as.matrix(df_corr_M), type = c("pearson"))
 
-df_corr_all <- df1 %>%
+df_corr_all <- sex_diff_df %>%
   dplyr::select(.,c(27, 28, 20))
 
 corr_all <- Hmisc::rcorr(as.matrix(df_corr_all), type = c("pearson"))
@@ -461,7 +535,7 @@ corr_df <- sex_diff_corr_summ("log_contrast", "mental_rot",
                               print_table = FALSE)
 
 sex_diff_scatter(
-  df1,
+  sex_diff_df,
   "log_contrast",
   "mental_rot",
   x_rev = TRUE,
@@ -491,7 +565,7 @@ corr_df <- sex_diff_corr_summ("log_motion",
                               "mental_rot", print_table = FALSE)
 
 sex_diff_scatter(
-  df1,
+  sex_diff_df,
   "log_motion",
   "mental_rot",
   x_rev = TRUE,
@@ -522,7 +596,7 @@ corr_df <- sex_diff_corr_summ("log_motion",
                               "log_contrast", print_table = FALSE)
 
 sex_diff_scatter(
-  df1,
+  sex_diff_df,
   "log_motion",
   "log_contrast",
   x_rev = TRUE,
@@ -567,7 +641,7 @@ Focus on the log contrast sensitivity threshold data.
 
 ```{r}
 # Select relevant data from data frame.
-df_mr_log_contr <- df1 %>%
+df_mr_log_contr <- sex_diff_df %>%
   dplyr::select(., Sex, log_contrast, mental_rot) %>%
   dplyr::filter(., !is.na(Sex),
                 !is.na(log_contrast),
@@ -589,7 +663,7 @@ df_mr_log_contr %>%
 ```{r}
 t.test(
   mental_rot ~ Sex,
-  data = df1,
+  data = sex_diff_df,
   var.equal = TRUE,
   alternative = "less"
 )
@@ -642,7 +716,7 @@ So, including contrast sensitivity reduces, but does not eliminate, a statistica
 
 ```{r}
 # Select relevant data from data frame.
-df_mr_log_motion <- df1 %>%
+df_mr_log_motion <- sex_diff_df %>%
   dplyr::select(., Sex, log_motion, mental_rot) %>%
   dplyr::filter(., !is.na(Sex),
                 !is.na(log_motion),
@@ -695,7 +769,7 @@ So, including motion reduces but does not eliminate a statistically significant 
 Let's see whether combining the vision measures can do even better in accounting for mental rotation.
 
 ```{r}
-df_mr_contr_motion <- df1 %>%
+df_mr_contr_motion <- sex_diff_df %>%
   dplyr::select(., Sex, log_contrast, log_motion, mental_rot) %>%
   dplyr::filter(., !is.na(Sex),
                 !is.na(log_contrast),
@@ -770,7 +844,7 @@ FindOutliers <- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh))
   print(result)
 }
 
-all_outliers <- lapply(df1, FindOutliers)
+#all_outliers <- lapply(sex_diff_df, FindOutliers)
 ```
 
 ### Visual perception thresholds
@@ -780,7 +854,7 @@ all_outliers <- lapply(df1, FindOutliers)
 We detect outliers in contrast threshold.
 
 ```{r}
-all_outliers$log_contrast
+FindOutliers(sex_diff_df$log_contrast)
 ```
 
 No contrast thresholds exceed the criterion.
@@ -788,7 +862,7 @@ No contrast thresholds exceed the criterion.
 #### Motion duration thresholds
 
 ```{r}
-all_outliers$log_motion
+FindOutliers(sex_diff_df$log_motion)
 ```
 
 Two cases exceed the criterion for motion.
@@ -796,15 +870,13 @@ Two cases exceed the criterion for motion.
 Create a new trimmed data frame.
 
 ```{r}
-df_trimmed <- df1[-all_outliers[['log_motion']],]
+df_trimmed <- sex_diff_df[-c(FindOutliers(sex_diff_df$log_motion)),]
 ```
-
 
 
 ```{r}
 xtabs(~ Sex, df_trimmed)
 ```
-
 
 
 ```{r}
@@ -831,7 +903,7 @@ Females still have larger motion duration threshold than males.
 ### Mental rotation
 
 ```{r}
-all_outliers$mental_rot
+FindOutliers(sex_diff_df$mental_rot)
 ```
 
 There were no outliers in mental rotation.
@@ -839,18 +911,20 @@ There were no outliers in mental rotation.
 ### Vocabulary
 
 ```{r}
-all_outliers$vocab
+FindOutliers(sex_diff_df$vocab)
 ```
+
+There were no outliers in vocabulary.
 
 ## Correlations among measures
 
 Since trimming outliers only affected the motion threshold data, we focus on that measure.
 
 ```{r}
-df1_F <- df_trimmed %>%
+sex_diff_df_F <- df_trimmed %>%
   dplyr::filter(., Sex == "Females")
 
-df1_M <- df_trimmed %>%
+sex_diff_df_M <- df_trimmed %>%
   dplyr::filter(., Sex == "Males")
 ```
 
@@ -858,8 +932,8 @@ df1_M <- df_trimmed %>%
 
 ```{r}
 cor.test(
-  df1_F$log_motion,
-  df1_F$mental_rot,
+  sex_diff_df_F$log_motion,
+  sex_diff_df_F$mental_rot,
   method = "pearson",
   alternative = "less"
 )
@@ -868,8 +942,8 @@ Log(motion duration) thresholds (negatively) correlate with mental rotation scor
 
 ```{r}
 cor.test(
-  df1_M$log_motion,
-  df1_M$mental_rot,
+  sex_diff_df_M$log_motion,
+  sex_diff_df_M$mental_rot,
   method = "pearson",
   alternative = "less"
 )
@@ -880,8 +954,8 @@ Motion duration thresholds do not correlate with mental rotation scores in males
 
 ```{r}
 cor.test(
-  df1_F$log_contrast,
-  df1_F$log_motion,
+  sex_diff_df_F$log_contrast,
+  sex_diff_df_F$log_motion,
   method = "pearson",
   alternative = "greater"
 )
@@ -890,8 +964,8 @@ The vision measures now correlate in females.
 
 ```{r}
 cor.test(
-  df1_M$log_contrast,
-  df1_M$log_motion,
+  sex_diff_df_M$log_contrast,
+  sex_diff_df_M$log_motion,
   method = "pearson",
   alternative = "greater"
 )
