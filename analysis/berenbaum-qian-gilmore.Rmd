@@ -739,11 +739,87 @@ sex_diff_corr_summ("log_contrast", "mental_rot")
 
 ### Motion sensitivity & mental rotation
 
-```{r motion-duration-mental-rot}
+```{r}
+sex_diff_scatter_2 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot",
+           show_corr_vals = FALSE) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex
+      ) +
+      geom_point() +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = "lm", na.rm = TRUE) +
+      theme_classic2() +
+      theme(legend.position = "bottom",
+            legend.title = element_blank()) +
+      xlab(x_lab) +
+      ylab(y_lab)
+
+    # if (show_corr_vals) {
+    #   p + annotate(
+    #     "text",
+    #     x = anx,
+    #     y = any,
+    #     label = c(an_f, an_m),
+    #     color = c('red', 'darkturquoise')
+    #   )
+    # }
+    # 
+    # if (square_axis)
+    # {
+    #   p + coord_fixed() + theme(asp.ratio = 1)
+    # }
+    # 
+    # if (stringr::str_detect(x_var, 'hobbies')) {
+    #   p <- p + xlim(1, 5)
+    # }
+    # if (stringr::str_detect(y_var, 'hobbies')) {
+    #   p <- p + ylim(1, 5)
+    # }
+    # 
+    # # Reverse scale for threshold measures?
+    # if (x_rev)
+    #   p <- p + scale_x_reverse()
+    # if (y_rev)
+    #   p <- p + scale_y_reverse()
+    # 
+    # p1 <- ggExtra::ggMarginal(p,
+    #                           type = margin_type,
+    #                           margins = "both",
+    #                           groupFill = TRUE)
+    p
+  }
+```
+
+
+```{r motion-duration-mental-rot-annotate-outliers}
 corr_df <- sex_diff_corr_summ("log_motion",
                               "mental_rot", print_table = FALSE)
 
-sex_diff_scatter(
+p_motion <- sex_diff_scatter_2(
   sex_diff_df,
   "log_motion",
   "mental_rot",
@@ -764,6 +840,45 @@ sex_diff_scatter(
   "log(motion threshold)",
   "Mental rotation score"
 )
+
+# p_motion <- sex_diff_scatter(
+#   sex_diff_df,
+#   "log_motion",
+#   "mental_rot",
+#   x_rev = FALSE,
+#   y_rev = FALSE,
+#   paste0(
+#     "r = ",
+#     format(corr_df$cor_coef[3], digits = 2, nsmall = 2),
+#     corr_df$stars[3]
+#   ),
+#   paste0(
+#     "r = ",
+#     format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
+#     corr_df$stars[2]
+#   ),
+#   c(-1.8,-1.9),
+#   c(30, 36),
+#   "log(motion threshold)",
+#   "Mental rotation score"
+# )
+
+p_aug <- p_motion +
+  ggplot2::annotate(
+    geom = "point",
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$mental_rot[c(115, 118)],
+    color = "black",
+    size = 4,
+    shape = 0
+  )
+
+p_aug <- ggExtra::ggMarginal(p_aug,
+                             type = "boxplot",
+                             margins = "both",
+                             groupFill = TRUE)
+
+p_aug
 
 sex_diff_corr_summ("log_motion", "mental_rot")
 ```

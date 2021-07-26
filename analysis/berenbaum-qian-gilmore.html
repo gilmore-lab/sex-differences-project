@@ -256,7 +256,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Berenbaum, Qian, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-07-26 08:58:58</h4>
+<h4 class="date">2021-07-26 14:39:27</h4>
 
 </div>
 
@@ -1053,10 +1053,82 @@ Females
 </div>
 <div id="motion-sensitivity-mental-rotation" class="section level3">
 <h3>Motion sensitivity &amp; mental rotation</h3>
+<pre class="r"><code>sex_diff_scatter_2 &lt;-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = &quot;&quot;,
+           an_m = &quot;&quot;,
+           anx = NULL,
+           any = NULL,
+           x_lab = &quot;X axis&quot;,
+           y_lab = &quot;Y axis&quot;,
+           square_axis = TRUE,
+           margin_type = &quot;boxplot&quot;,
+           show_corr_vals = FALSE) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s &lt;- sym(x_var)
+    y_var_s &lt;- sym(y_var)
+    
+    p &lt;- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex
+      ) +
+      geom_point() +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = &quot;lm&quot;, na.rm = TRUE) +
+      theme_classic2() +
+      theme(legend.position = &quot;bottom&quot;,
+            legend.title = element_blank()) +
+      xlab(x_lab) +
+      ylab(y_lab)
+
+    # if (show_corr_vals) {
+    #   p + annotate(
+    #     &quot;text&quot;,
+    #     x = anx,
+    #     y = any,
+    #     label = c(an_f, an_m),
+    #     color = c(&#39;red&#39;, &#39;darkturquoise&#39;)
+    #   )
+    # }
+    # 
+    # if (square_axis)
+    # {
+    #   p + coord_fixed() + theme(asp.ratio = 1)
+    # }
+    # 
+    # if (stringr::str_detect(x_var, &#39;hobbies&#39;)) {
+    #   p &lt;- p + xlim(1, 5)
+    # }
+    # if (stringr::str_detect(y_var, &#39;hobbies&#39;)) {
+    #   p &lt;- p + ylim(1, 5)
+    # }
+    # 
+    # # Reverse scale for threshold measures?
+    # if (x_rev)
+    #   p &lt;- p + scale_x_reverse()
+    # if (y_rev)
+    #   p &lt;- p + scale_y_reverse()
+    # 
+    # p1 &lt;- ggExtra::ggMarginal(p,
+    #                           type = margin_type,
+    #                           margins = &quot;both&quot;,
+    #                           groupFill = TRUE)
+    p
+  }</code></pre>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_motion&quot;,
                               &quot;mental_rot&quot;, print_table = FALSE)
 
-sex_diff_scatter(
+p_motion &lt;- sex_diff_scatter_2(
   sex_diff_df,
   &quot;log_motion&quot;,
   &quot;mental_rot&quot;,
@@ -1076,11 +1148,49 @@ sex_diff_scatter(
   c(30, 36),
   &quot;log(motion threshold)&quot;,
   &quot;Mental rotation score&quot;
-)</code></pre>
+)
+
+# p_motion &lt;- sex_diff_scatter(
+#   sex_diff_df,
+#   &quot;log_motion&quot;,
+#   &quot;mental_rot&quot;,
+#   x_rev = FALSE,
+#   y_rev = FALSE,
+#   paste0(
+#     &quot;r = &quot;,
+#     format(corr_df$cor_coef[3], digits = 2, nsmall = 2),
+#     corr_df$stars[3]
+#   ),
+#   paste0(
+#     &quot;r = &quot;,
+#     format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
+#     corr_df$stars[2]
+#   ),
+#   c(-1.8,-1.9),
+#   c(30, 36),
+#   &quot;log(motion threshold)&quot;,
+#   &quot;Mental rotation score&quot;
+# )
+
+p_aug &lt;- p_motion +
+  ggplot2::annotate(
+    geom = &quot;point&quot;,
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$mental_rot[c(115, 118)],
+    color = &quot;black&quot;,
+    size = 4,
+    shape = 0
+  )
+
+p_aug &lt;- ggExtra::ggMarginal(p_aug,
+                             type = &quot;boxplot&quot;,
+                             margins = &quot;both&quot;,
+                             groupFill = TRUE)</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/motion-duration-mental-rot-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p_aug</code></pre>
+<p><img src="img/motion-duration-mental-rot-annotate-outliers-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>sex_diff_corr_summ(&quot;log_motion&quot;, &quot;mental_rot&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -1260,7 +1370,7 @@ df_mr_log_contr &lt;- sex_diff_df %&gt;%
   geom_violin() +
   geom_point() +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-45-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-46-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>t.test(
   mental_rot ~ Sex,
   data = sex_diff_df,
@@ -1331,7 +1441,7 @@ summary(lm_mr_resids_sex)</code></pre>
   geom_violin() +
   geom_point() +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-49-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-50-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>Test for differences in means.</p>
 <pre class="r"><code>t.test(
   mr_resids ~ Sex,
@@ -1412,7 +1522,7 @@ summary(lm_mr_resids_sex)</code></pre>
   geom_violin() +
   geom_point() +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-54-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-55-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>Test for mean differences.</p>
 <pre class="r"><code>t.test(
   mr_resids ~ Sex,
@@ -1603,7 +1713,7 @@ summary(lm_mr_only_sex)</code></pre>
   aes(Sex, log_motion) +
   geom_boxplot()</code></pre>
 <pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="img/unnamed-chunk-68-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-69-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>We then test for a difference in means.</p>
 <pre class="r"><code>mdt_tt &lt;-
   t.test(
