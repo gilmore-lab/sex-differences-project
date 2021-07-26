@@ -93,6 +93,13 @@ sex_diff_df <- sex_diff_df %>%
 #### Contrast thresholds
 
 ```{r}
+df_contrast <- sex_diff_df %>%
+  dplyr::filter(., !is.na(log_contrast)) %>%
+  dplyr::select(., Sex, log_contrast)
+xtabs(~ Sex, df_contrast)
+```
+
+```{r}
 sex_diff_df %>%
   ggplot() +
   aes(Sex, log_contrast) +
@@ -112,7 +119,7 @@ cst_tt <-
 cst_tt
 ```
 
-Median log(contrast) thresholds are lower in females than males. This means that females had larger contrast thresholds or were less sensitive to contrast.
+Median log(contrast) thresholds are lower in women than men This means that women had larger contrast thresholds or were less sensitive to contrast.
 
 This can be seen in a plot in the original threshold units.
 
@@ -144,11 +151,20 @@ es_log_contrast <- esci::estimateMeanDifference.default(sex_diff_df,
                                      paired = FALSE,
                                      var.equal = TRUE,
                                      conf.level = .95)
-es_log_contrast
+#es_log_contrast
 ```
 
+`r es_log_contrast$formatted_d`
 
 #### Motion duration thresholds
+
+```{r}
+df_motion <- sex_diff_df %>%
+  dplyr::filter(., !is.na(log_motion)) %>%
+  dplyr::select(., Sex, log_motion)
+xtabs(~ Sex, df_motion)
+```
+
 
 ```{r}
 sex_diff_df %>%
@@ -170,7 +186,7 @@ mdt_tt <-
 mdt_tt
 ```
 
-Median log(motion duration) thresholds are larger in females than males. This means that females were less sensitive to motion.
+Median log(motion duration) thresholds are larger in women than men This means that women were less sensitive to motion.
 
 This can be seen in a plot in the original threshold units.
 
@@ -194,12 +210,22 @@ es_log_motion <- esci::estimateMeanDifference.default(sex_diff_df,
                                      paired = FALSE,
                                      var.equal = TRUE,
                                      conf.level = .95)
-es_log_motion
+#es_log_motion
 ```
+
+`r es_log_motion$formatted_d`
 
 ### Spatial ability
 
 Our measure of spatial ability is performance on a mental rotation task.
+
+```{r}
+df_mental_rot <- sex_diff_df %>%
+  dplyr::filter(., !is.na(mental_rot)) %>%
+  dplyr::select(., Sex, mental_rot)
+xtabs(~ Sex, df_mental_rot)
+```
+
 
 ```{r}
 sex_diff_df %>%
@@ -221,7 +247,7 @@ mr_tt <-
 mr_tt
 ```
 
-Females had fewer correct trials than males. This is shown by the effect size.
+Women had fewer correct trials than men. This is shown by the effect size.
 
 ```{r mental-rot-eff-size}
 esvis::hedg_g(sex_diff_df, mental_rot ~ Sex)
@@ -236,8 +262,59 @@ es_mental_rot <- esci::estimateMeanDifference.default(sex_diff_df,
                                      paired = FALSE,
                                      var.equal = TRUE,
                                      conf.level = .95)
-es_mental_rot
+#es_mental_rot
 ```
+
+`r es_mental_rot$formatted_d`.
+
+### Male-typed hobbies
+
+```{r}
+df_m_hobbies <- sex_diff_df %>%
+  dplyr::filter(., !is.na(Masculine_hobbies)) %>%
+  dplyr::select(., Sex, Masculine_hobbies)
+xtabs(~ Sex, df_m_hobbies)
+```
+
+
+```{r}
+sex_diff_df %>%
+  ggplot() +
+  aes(Sex, Masculine_hobbies) +
+  geom_boxplot()
+```
+
+We test for a difference in means.
+
+```{r}
+mr_tt <-
+  t.test(
+    Masculine_hobbies ~ Sex,
+    data = sex_diff_df,
+    var.equal = TRUE,
+    alternative = "less"
+  ) # Hypothesized
+mr_tt
+```
+
+
+```{r m-hobbies-eff-size}
+esvis::hedg_g(sex_diff_df, Masculine_hobbies ~ Sex)
+```
+
+Using `esci` to calculate CIs.
+
+```{r}
+es_m_hobbies <- esci::estimateMeanDifference.default(sex_diff_df,
+                                     Sex.factor,
+                                     Masculine_hobbies,
+                                     paired = FALSE,
+                                     var.equal = TRUE,
+                                     conf.level = .95)
+#es_m_hobbies
+```
+
+`r es_m_hobbies$formatted_d`.
 
 ### Verbal ability
 
@@ -246,7 +323,7 @@ We predicted no sex difference in verbal ability as measured by vocabulary size.
 ```{r}
 sex_diff_df %>%
   ggplot() +
-  aes(Sex, vocab) +
+  aes(Sex, Masculine_hobbies) +
   geom_boxplot()
 ```
 
@@ -279,12 +356,10 @@ es_vocab <- esci::estimateMeanDifference.default(sex_diff_df,
                                      paired = FALSE,
                                      var.equal = TRUE,
                                      conf.level = .95)
-es_vocab
+#es_vocab
 ```
 
-### Male-typed hobbies
-
-Our preregistered plan described testing for sex differences in male-typed hobbies. We have chosen not to describe the hobbies data in this report.
+`r es_m_hobbies$formatted_d`.
 
 ## Correlations among measures
 
@@ -304,7 +379,7 @@ sex_diff_df_M <- sex_diff_df %>%
 
 ### Contrast thresholds and mental rotation
 
-#### Females
+#### Women
 
 ```{r}
 cor.test(
@@ -315,7 +390,7 @@ cor.test(
 )
 ```
 
-Contrast thresholds (negatively) correlate with mental rotation scores in females. The negative correlation means that smaller log(contrast) values or higher contrast sensitivity is associated with better performance in the mental rotation task.
+Contrast thresholds (negatively) correlate with mental rotation scores in women The negative correlation means that smaller log(contrast) values or higher contrast sensitivity is associated with better performance in the mental rotation task.
 
 We can use `esci` to provide CIs for this estimate.
 
@@ -324,9 +399,9 @@ es_mental_rot_contrast <- esci::estimateCorrelation.default(sex_diff_df_F, log_c
 #es_mental_rot_contrast
 ```
 
-We estimate the correlation between mental_rotation and log contrast thresholds in females as follows: `r es_mental_rot_contrast$formatted_r`.
+We estimate the correlation between mental_rotation and log contrast thresholds in women as follows: `r es_mental_rot_contrast$formatted_r`.
 
-#### Males
+#### Men
 
 ```{r}
 cor.test(
@@ -337,7 +412,7 @@ cor.test(
 )
 ```
 
-Contrast thresholds do not significantly correlate with mental rotation scores in males. 
+Contrast thresholds do not significantly correlate with mental rotation scores in men. 
 
 We can use `esci` to provide CIs for this estimate.
 
@@ -346,11 +421,11 @@ es_mental_rot_contrast <- esci::estimateCorrelation.default(sex_diff_df_M, log_c
 #es_mental_rot_contrast
 ```
 
-We estimate the correlation between mental_rotation and log contrast thresholds in males as follows: `r es_mental_rot_contrast$formatted_r`.
+We estimate the correlation between mental_rotation and log contrast thresholds in men as follows: `r es_mental_rot_contrast$formatted_r`.
 
 ### Motion thresholds and mental rotation
 
-#### Females
+#### Women
 
 ```{r}
 cor.test(
@@ -361,7 +436,7 @@ cor.test(
 )
 ```
 
-Log(motion duration) thresholds (negatively) correlate with mental rotation scores in females. This means that lower thresholds (higher sensitivity) is associated with better performance in the mental rotation task.
+Log(motion duration) thresholds (negatively) correlate with mental rotation scores in women This means that lower thresholds (higher sensitivity) is associated with better performance in the mental rotation task.
 
 We can use `esci` to provide CIs for this estimate.
 
@@ -370,9 +445,9 @@ es_mental_rot_motion <- esci::estimateCorrelation.default(sex_diff_df_F, log_mot
 #es_mental_rot_motion
 ```
 
-We estimate the correlation between mental_rotateion and log motion thresholds in females as follows: `r es_mental_rot_motion$formatted_r`.
+We estimate the correlation between mental_rotateion and log motion thresholds in women as follows: `r es_mental_rot_motion$formatted_r`.
 
-#### Males
+#### Men
 
 ```{r}
 cor.test(
@@ -383,7 +458,7 @@ cor.test(
 )
 ```
 
-Motion duration thresholds do not correlate with mental rotation scores in males.
+Motion duration thresholds do not significantly correlate with mental rotation scores in men.
 
 We can use `esci` to provide CIs for this estimate.
 
@@ -392,11 +467,49 @@ es_mental_rot_motion <- esci::estimateCorrelation.default(sex_diff_df_M, log_mot
 #es_mental_rot_motion
 ```
 
-We estimate the correlation between mental_rotation and log motion thresholds in males as follows: `r es_mental_rot_motion$formatted_r`
+We estimate the correlation between mental_rotation and log motion thresholds in men as follows: `r es_mental_rot_motion$formatted_r`
+
+### Male-typed activities and mental rotation
+
+#### Women
+
+```{r}
+cor.test(
+  sex_diff_df_F$Masculine_hobbies,
+  sex_diff_df_F$mental_rot,
+  method = "pearson",
+  alternative = "less"
+)
+```
+
+```{r}
+es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, mental_rot)
+#es_mental_rot_motion
+```
+
+We estimate the correlation between mental rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
+
+#### Men
+
+```{r}
+cor.test(
+  sex_diff_df_M$Masculine_hobbies,
+  sex_diff_df_M$mental_rot,
+  method = "pearson",
+  alternative = "less"
+)
+```
+
+```{r}
+es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, mental_rot)
+#es_mental_rot_motion
+```
+
+We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
 
 ### Contrast thresholds and motion thresholds
 
-#### Females
+#### Women
 
 ```{r}
 cor.test(
@@ -407,7 +520,7 @@ cor.test(
 )
 ```
 
-The vision measures do not correlate in females.
+The vision measures do not correlate in women.
 
 We can use `esci` to provide CIs for this estimate.
 
@@ -416,9 +529,9 @@ es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_F, log_contr
 #es_contrast_motion
 ```
 
-We estimate the correlation between log contrast and log motion thresholds in females as follows: `r es_contrast_motion$formatted_r`.
+We estimate the correlation between log contrast and log motion thresholds in women as follows: `r es_contrast_motion$formatted_r`.
 
-#### Males
+#### Men
 
 ```{r}
 cor.test(
@@ -429,7 +542,7 @@ cor.test(
 )
 ```
 
-The vision measures correlate in males.
+The vision measures correlate in men.
 
 We can use `esci` to provide CIs for this estimate.
 
@@ -438,7 +551,7 @@ es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_M, log_contr
 #es_contrast_motion
 ```
 
-We estimate the correlation between log contrast and log motion thresholds in males as follows: `r es_contrast_motion$formatted_r`.
+We estimate the correlation between log contrast and log motion thresholds in men as follows: `r es_contrast_motion$formatted_r`.
 
 ## Visualizations
 
@@ -604,7 +717,7 @@ sex_diff_scatter(
   sex_diff_df,
   "log_contrast",
   "mental_rot",
-  x_rev = TRUE,
+  x_rev = FALSE,
   y_rev = FALSE,
   paste0(
     "r = ",
@@ -634,7 +747,7 @@ sex_diff_scatter(
   sex_diff_df,
   "log_motion",
   "mental_rot",
-  x_rev = TRUE,
+  x_rev = FALSE,
   y_rev = FALSE,
   paste0(
     "r = ",
@@ -665,8 +778,8 @@ sex_diff_scatter(
   sex_diff_df,
   "log_motion",
   "log_contrast",
-  x_rev = TRUE,
-  y_rev = TRUE,
+  x_rev = FALSE,
+  y_rev = FALSE,
   # "r=0.22*",
   # "r=0.54***",
   paste0(
@@ -735,7 +848,7 @@ t.test(
 )
 ```
 
-Mental rotation scores differ between males and females.
+Mental rotation scores differ between men and women.
 
 Fit `mental_rot ~ log_contrast`.
 
@@ -966,7 +1079,7 @@ mdt_tt <-
 mdt_tt
 ```
 
-Females still have larger motion duration threshold than males.
+Women still have larger motion duration threshold than men.
 
 ### Mental rotation
 
@@ -1007,7 +1120,7 @@ cor.test(
 )
 ```
 
-Log(motion duration) thresholds (negatively) correlate with mental rotation scores in females, even after trimming. 
+Log(motion duration) thresholds (negatively) correlate with mental rotation scores in women, even after trimming. 
 
 ```{r}
 cor.test(
@@ -1018,11 +1131,11 @@ cor.test(
 )
 ```
 
-Motion duration thresholds do not correlate with mental rotation scores in males.
+Motion duration thresholds do not correlate with mental rotation scores in men.
 
 ### Contrast thresholds and motion thresholds
 
-#### Females
+#### Women
 
 ```{r}
 cor.test(
@@ -1033,16 +1146,16 @@ cor.test(
 )
 ```
 
-The vision measures now correlate in females.
+The vision measures now correlate in women
 
 ```{r}
 es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_F, log_contrast, log_motion)
 #es_contrast_motion
 ```
 
-We find that a correlation between log contrast and log motion thresholds in females is as follows: `r es_contrast_motion$formatted_r`.
+We find that a correlation between log contrast and log motion thresholds in women is as follows: `r es_contrast_motion$formatted_r`.
 
-#### Males
+#### Men
 
 ```{r}
 cor.test(
@@ -1053,7 +1166,7 @@ cor.test(
 )
 ```
 
-The vision measures still correlate in males.
+The vision measures still correlate in men.
 
 ### Model-based approach
 
