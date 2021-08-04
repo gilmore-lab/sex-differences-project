@@ -256,7 +256,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Berenbaum, Qian, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-07-26 14:39:27</h4>
+<h4 class="date">2021-08-04 09:31:06</h4>
 
 </div>
 
@@ -561,17 +561,17 @@ mr_tt</code></pre>
     vocab ~ Sex,
     data = sex_diff_df,
     var.equal = TRUE,
-    alternative = &quot;less&quot;
+    alternative = &quot;two.sided&quot;
   ) # Hypothesized
 vocab_tt</code></pre>
 <pre><code>## 
 ##  Two Sample t-test
 ## 
 ## data:  vocab by Sex
-## t = -0.74845, df = 129, p-value = 0.2278
-## alternative hypothesis: true difference in means between group Females and group Males is less than 0
+## t = -0.74845, df = 129, p-value = 0.4556
+## alternative hypothesis: true difference in means between group Females and group Males is not equal to 0
 ## 95 percent confidence interval:
-##       -Inf 0.9111823
+##  -2.735626  1.233976
 ## sample estimates:
 ## mean in group Females   mean in group Males 
 ##              9.165842              9.916667</code></pre>
@@ -713,60 +713,111 @@ vocab_tt</code></pre>
 <p>We estimate the correlation between mental_rotation and log motion thresholds in men as follows: r = 0.12 95% CI [-0.25, 0.46]</p>
 </div>
 </div>
-<div id="male-typed-activities-and-mental-rotation" class="section level3">
-<h3>Male-typed activities and mental rotation</h3>
+<div id="contrast-thresholds-and-male-typed-activities" class="section level3">
+<h3>Contrast thresholds and male-typed activities</h3>
 <div id="women-2" class="section level4">
 <h4>Women</h4>
 <pre class="r"><code>cor.test(
   sex_diff_df_F$Masculine_hobbies,
-  sex_diff_df_F$mental_rot,
+  sex_diff_df_F$log_contrast,
   method = &quot;pearson&quot;,
   alternative = &quot;less&quot;
 )</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s product-moment correlation
 ## 
-## data:  sex_diff_df_F$Masculine_hobbies and sex_diff_df_F$mental_rot
-## t = -0.68096, df = 99, p-value = 0.2487
+## data:  sex_diff_df_F$Masculine_hobbies and sex_diff_df_F$log_contrast
+## t = -1.991, df = 97, p-value = 0.02464
 ## alternative hypothesis: true correlation is less than 0
 ## 95 percent confidence interval:
-##  -1.00000000  0.09745922
+##  -1.00000000 -0.03291784
 ## sample estimates:
-##         cor 
-## -0.06827935</code></pre>
-<pre class="r"><code>es_mental_rot_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, mental_rot)</code></pre>
+##        cor 
+## -0.1981507</code></pre>
+<pre class="r"><code>es_contrast_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_contrast)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_mental_rot_motion</code></pre>
-<p>We estimate the correlation between mental rotation and interest in male-typed activities in women as follows: r = -0.07 95% CI [-0.26, 0.13]</p>
+<p>We estimate the correlation between log contrast and interest in male-typed activities in women as follows: r = -0.20 95% CI [-0.38, -0.00]</p>
 </div>
 <div id="men-2" class="section level4">
 <h4>Men</h4>
 <pre class="r"><code>cor.test(
   sex_diff_df_M$Masculine_hobbies,
-  sex_diff_df_M$mental_rot,
+  sex_diff_df_M$log_contrast,
   method = &quot;pearson&quot;,
   alternative = &quot;less&quot;
 )</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s product-moment correlation
 ## 
-## data:  sex_diff_df_M$Masculine_hobbies and sex_diff_df_M$mental_rot
-## t = -0.19244, df = 28, p-value = 0.4244
+## data:  sex_diff_df_M$Masculine_hobbies and sex_diff_df_M$log_contrast
+## t = 0.79998, df = 28, p-value = 0.7848
 ## alternative hypothesis: true correlation is less than 0
 ## 95 percent confidence interval:
-##  -1.0000000  0.2730825
+##  -1.0000000  0.4359053
 ## sample estimates:
-##         cor 
-## -0.03634446</code></pre>
-<pre class="r"><code>es_mental_rot_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, mental_rot)</code></pre>
+##       cor 
+## 0.1494835</code></pre>
+<pre class="r"><code>es_contrast_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, log_contrast)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_mental_rot_motion</code></pre>
-<p>We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: r = -0.04 95% CI [-0.39, 0.33]</p>
+<p>We estimate the correlation between mental_rotation and interest in male-typed activities in men as follows: r = 0.15 95% CI [-0.22, 0.48]</p>
+</div>
+</div>
+<div id="motion-thresholds-and-male-typed-activities" class="section level3">
+<h3>Motion thresholds and male-typed activities</h3>
+<div id="women-3" class="section level4">
+<h4>Women</h4>
+<pre class="r"><code>cor.test(
+  sex_diff_df_F$Masculine_hobbies,
+  sex_diff_df_F$log_motion,
+  method = &quot;pearson&quot;,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  sex_diff_df_F$Masculine_hobbies and sex_diff_df_F$log_motion
+## t = 0.23468, df = 95, p-value = 0.5925
+## alternative hypothesis: true correlation is less than 0
+## 95 percent confidence interval:
+##  -1.0000000  0.1913417
+## sample estimates:
+##        cor 
+## 0.02407113</code></pre>
+<pre class="r"><code>es_motion_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_motion)</code></pre>
+<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
+<pre class="r"><code>#es_mental_rot_motion</code></pre>
+<p>We estimate the correlation between log motion and interest in male-typed activities in women as follows: r = 0.02 95% CI [-0.18, 0.22]</p>
+</div>
+<div id="men-3" class="section level4">
+<h4>Men</h4>
+<pre class="r"><code>cor.test(
+  sex_diff_df_M$Masculine_hobbies,
+  sex_diff_df_M$log_motion,
+  method = &quot;pearson&quot;,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  sex_diff_df_M$Masculine_hobbies and sex_diff_df_M$log_motion
+## t = 0.82792, df = 28, p-value = 0.7926
+## alternative hypothesis: true correlation is less than 0
+## 95 percent confidence interval:
+##  -1.0000000  0.4401232
+## sample estimates:
+##       cor 
+## 0.1545821</code></pre>
+<pre class="r"><code>es_motion_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, log_motion)</code></pre>
+<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
+<pre class="r"><code>#es_mental_rot_motion</code></pre>
+<p>We estimate the correlation between mental_rotation and interest in male-typed activities in men as follows: r = 0.15 95% CI [-0.22, 0.49]</p>
 </div>
 </div>
 <div id="contrast-thresholds-and-motion-thresholds" class="section level3">
 <h3>Contrast thresholds and motion thresholds</h3>
-<div id="women-3" class="section level4">
+<div id="women-4" class="section level4">
 <h4>Women</h4>
 <pre class="r"><code>cor.test(
   sex_diff_df_F$log_contrast,
@@ -792,7 +843,7 @@ vocab_tt</code></pre>
 <pre class="r"><code>#es_contrast_motion</code></pre>
 <p>We estimate the correlation between log contrast and log motion thresholds in women as follows: r = 0.15 95% CI [-0.06, 0.34].</p>
 </div>
-<div id="men-3" class="section level4">
+<div id="men-4" class="section level4">
 <h4>Men</h4>
 <pre class="r"><code>cor.test(
   sex_diff_df_M$log_contrast,
@@ -817,6 +868,58 @@ vocab_tt</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_contrast_motion</code></pre>
 <p>We estimate the correlation between log contrast and log motion thresholds in men as follows: r = 0.41 95% CI [0.05, 0.67].</p>
+</div>
+</div>
+<div id="male-typed-activities-and-mental-rotation" class="section level3">
+<h3>Male-typed activities and mental rotation</h3>
+<p>We did not preregister this analysis.</p>
+<div id="women-5" class="section level4">
+<h4>Women</h4>
+<pre class="r"><code>cor.test(
+  sex_diff_df_F$Masculine_hobbies,
+  sex_diff_df_F$mental_rot,
+  method = &quot;pearson&quot;,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  sex_diff_df_F$Masculine_hobbies and sex_diff_df_F$mental_rot
+## t = -0.68096, df = 99, p-value = 0.2487
+## alternative hypothesis: true correlation is less than 0
+## 95 percent confidence interval:
+##  -1.00000000  0.09745922
+## sample estimates:
+##         cor 
+## -0.06827935</code></pre>
+<pre class="r"><code>es_mental_rot_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, mental_rot)</code></pre>
+<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
+<pre class="r"><code>#es_mental_rot_motion</code></pre>
+<p>We estimate the correlation between mental rotation and interest in male-typed activities in women as follows: r = -0.07 95% CI [-0.26, 0.13]</p>
+</div>
+<div id="men-5" class="section level4">
+<h4>Men</h4>
+<pre class="r"><code>cor.test(
+  sex_diff_df_M$Masculine_hobbies,
+  sex_diff_df_M$mental_rot,
+  method = &quot;pearson&quot;,
+  alternative = &quot;less&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  sex_diff_df_M$Masculine_hobbies and sex_diff_df_M$mental_rot
+## t = -0.19244, df = 28, p-value = 0.4244
+## alternative hypothesis: true correlation is less than 0
+## 95 percent confidence interval:
+##  -1.0000000  0.2730825
+## sample estimates:
+##         cor 
+## -0.03634446</code></pre>
+<pre class="r"><code>es_mental_rot_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, mental_rot)</code></pre>
+<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
+<pre class="r"><code>#es_mental_rot_motion</code></pre>
+<p>We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: r = -0.04 95% CI [-0.39, 0.33]</p>
 </div>
 </div>
 </div>
@@ -896,18 +999,22 @@ vocab_tt</code></pre>
     p1
   }</code></pre>
 <p>Create matrices of correlation coefficients for subsequent plotting.</p>
-<pre class="r"><code>df_corr_F &lt;- sex_diff_df_F %&gt;%
-  dplyr::select(.,c(27, 28, 20))
-
-corr_F &lt;- Hmisc::rcorr(as.matrix(df_corr_F), type = c(&quot;pearson&quot;))
+<pre class="r"><code>corr_vars &lt;- c(&#39;log_contrast&#39;, &#39;log_motion&#39;, &#39;mental_rot&#39;, &#39;Masculine_hobbies&#39;)
+df_corr_F &lt;- sex_diff_df_F %&gt;%
+  dplyr::select(., corr_vars)</code></pre>
+<pre><code>## Note: Using an external vector in selections is ambiguous.
+## ℹ Use `all_of(corr_vars)` instead of `corr_vars` to silence this message.
+## ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+## This message is displayed once per session.</code></pre>
+<pre class="r"><code>corr_F &lt;- Hmisc::rcorr(as.matrix(df_corr_F), type = c(&quot;pearson&quot;))
 
 df_corr_M &lt;- sex_diff_df_M %&gt;%
-  dplyr::select(., c(27, 28, 20))
+  dplyr::select(., corr_vars)
 
 corr_M &lt;- Hmisc::rcorr(as.matrix(df_corr_M), type = c(&quot;pearson&quot;))
 
 df_corr_all &lt;- sex_diff_df %&gt;%
-  dplyr::select(.,c(27, 28, 20))
+  dplyr::select(., corr_vars)
 
 corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;))</code></pre>
 <p>Create a helper function to generate and plot correlation coefficients.</p>
@@ -1250,6 +1357,99 @@ Females
 </tbody>
 </table>
 </div>
+<div id="contrast-sensitivity-male-typed-interests" class="section level3">
+<h3>Contrast sensitivity &amp; male-typed interests</h3>
+<pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;Masculine_hobbies&quot;,
+                              corr_all,
+                              corr_M_df = corr_M,
+                              corr_F_df = corr_F,
+                              print_table = FALSE)
+
+sex_diff_scatter(
+  sex_diff_df,
+  &quot;log_contrast&quot;,
+  &quot;Masculine_hobbies&quot;,
+  x_rev = FALSE,
+  y_rev = FALSE,
+  paste0(
+    &quot;r = &quot;,
+    format(corr_df$cor_coef[3], digits = 2, nsmall = 2),
+    corr_df$stars[3]
+  ),
+  paste0(
+    &quot;r = &quot;,
+    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
+    corr_df$stars[2]
+  ),
+  c(-1.5),
+  c(33, 35),
+  &quot;log(contrast threshold)&quot;,
+  &quot;Interest in male-typed activities&quot;
+)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/contrast-sens-male-hobbies-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;Masculine_hobbies&quot;)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+cor_coef
+</th>
+<th style="text-align:right;">
+p_val
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pop
+</th>
+<th style="text-align:left;">
+stars
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.1494835
+</td>
+<td style="text-align:right;">
+0.4304572
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+Males
+</td>
+<td style="text-align:left;">
+ns
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-0.1981507
+</td>
+<td style="text-align:right;">
+0.0492898
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:left;">
+Females
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
 <div id="motion-sensitivity-contrast-sensitivity" class="section level3">
 <h3>Motion sensitivity &amp; contrast sensitivity</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_motion&quot;,
@@ -1370,7 +1570,7 @@ df_mr_log_contr &lt;- sex_diff_df %&gt;%
   geom_violin() +
   geom_point() +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-46-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-54-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>t.test(
   mental_rot ~ Sex,
   data = sex_diff_df,
@@ -1441,7 +1641,7 @@ summary(lm_mr_resids_sex)</code></pre>
   geom_violin() +
   geom_point() +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-50-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-58-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>Test for differences in means.</p>
 <pre class="r"><code>t.test(
   mr_resids ~ Sex,
@@ -1522,7 +1722,7 @@ summary(lm_mr_resids_sex)</code></pre>
   geom_violin() +
   geom_point() +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-55-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-63-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>Test for mean differences.</p>
 <pre class="r"><code>t.test(
   mr_resids ~ Sex,
@@ -1713,7 +1913,7 @@ summary(lm_mr_only_sex)</code></pre>
   aes(Sex, log_motion) +
   geom_boxplot()</code></pre>
 <pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="img/unnamed-chunk-69-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-77-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>We then test for a difference in means.</p>
 <pre class="r"><code>mdt_tt &lt;-
   t.test(
@@ -1799,7 +1999,7 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 </div>
 <div id="contrast-thresholds-and-motion-thresholds-1" class="section level3">
 <h3>Contrast thresholds and motion thresholds</h3>
-<div id="women-4" class="section level4">
+<div id="women-6" class="section level4">
 <h4>Women</h4>
 <pre class="r"><code>cor.test(
   sex_diff_df_F$log_contrast,
@@ -1824,7 +2024,7 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 <pre class="r"><code>#es_contrast_motion</code></pre>
 <p>We find that a correlation between log contrast and log motion thresholds in women is as follows: r = 0.21 95% CI [0.01, 0.40].</p>
 </div>
-<div id="men-4" class="section level4">
+<div id="men-6" class="section level4">
 <h4>Men</h4>
 <pre class="r"><code>cor.test(
   sex_diff_df_M$log_contrast,

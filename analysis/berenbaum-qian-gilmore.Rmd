@@ -335,7 +335,7 @@ vocab_tt <-
     vocab ~ Sex,
     data = sex_diff_df,
     var.equal = TRUE,
-    alternative = "less"
+    alternative = "two.sided"
   ) # Hypothesized
 vocab_tt
 ```
@@ -469,43 +469,81 @@ es_mental_rot_motion <- esci::estimateCorrelation.default(sex_diff_df_M, log_mot
 
 We estimate the correlation between mental_rotation and log motion thresholds in men as follows: `r es_mental_rot_motion$formatted_r`
 
-### Male-typed activities and mental rotation
+### Contrast thresholds and male-typed activities
 
 #### Women
 
 ```{r}
 cor.test(
   sex_diff_df_F$Masculine_hobbies,
-  sex_diff_df_F$mental_rot,
+  sex_diff_df_F$log_contrast,
   method = "pearson",
   alternative = "less"
 )
 ```
 
 ```{r}
-es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, mental_rot)
+es_contrast_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_contrast)
 #es_mental_rot_motion
 ```
 
-We estimate the correlation between mental rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
+We estimate the correlation between log contrast and interest in male-typed activities in women as follows: `r es_contrast_m_hobbies$formatted_r`
 
 #### Men
 
 ```{r}
 cor.test(
   sex_diff_df_M$Masculine_hobbies,
-  sex_diff_df_M$mental_rot,
+  sex_diff_df_M$log_contrast,
   method = "pearson",
   alternative = "less"
 )
 ```
 
 ```{r}
-es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, mental_rot)
+es_contrast_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, log_contrast)
 #es_mental_rot_motion
 ```
 
-We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
+We estimate the correlation between mental_rotation and interest in male-typed activities in men as follows: `r es_contrast_m_hobbies$formatted_r`
+
+### Motion thresholds and male-typed activities
+
+#### Women
+
+```{r}
+cor.test(
+  sex_diff_df_F$Masculine_hobbies,
+  sex_diff_df_F$log_motion,
+  method = "pearson",
+  alternative = "less"
+)
+```
+
+```{r}
+es_motion_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_motion)
+#es_mental_rot_motion
+```
+
+We estimate the correlation between log motion and interest in male-typed activities in women as follows: `r es_motion_m_hobbies$formatted_r`
+
+#### Men
+
+```{r}
+cor.test(
+  sex_diff_df_M$Masculine_hobbies,
+  sex_diff_df_M$log_motion,
+  method = "pearson",
+  alternative = "less"
+)
+```
+
+```{r}
+es_motion_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, log_motion)
+#es_mental_rot_motion
+```
+
+We estimate the correlation between mental_rotation and interest in male-typed activities in men as follows: `r es_motion_m_hobbies$formatted_r`
 
 ### Contrast thresholds and motion thresholds
 
@@ -552,6 +590,47 @@ es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_M, log_contr
 ```
 
 We estimate the correlation between log contrast and log motion thresholds in men as follows: `r es_contrast_motion$formatted_r`.
+
+
+### Male-typed activities and mental rotation
+
+We did not preregister this analysis.
+
+#### Women
+
+```{r}
+cor.test(
+  sex_diff_df_F$Masculine_hobbies,
+  sex_diff_df_F$mental_rot,
+  method = "pearson",
+  alternative = "less"
+)
+```
+
+```{r}
+es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, mental_rot)
+#es_mental_rot_motion
+```
+
+We estimate the correlation between mental rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
+
+#### Men
+
+```{r}
+cor.test(
+  sex_diff_df_M$Masculine_hobbies,
+  sex_diff_df_M$mental_rot,
+  method = "pearson",
+  alternative = "less"
+)
+```
+
+```{r}
+es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, mental_rot)
+#es_mental_rot_motion
+```
+
+We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
 
 ## Visualizations
 
@@ -635,18 +714,19 @@ sex_diff_scatter <-
 Create matrices of correlation coefficients for subsequent plotting.
 
 ```{r}
+corr_vars <- c('log_contrast', 'log_motion', 'mental_rot', 'Masculine_hobbies')
 df_corr_F <- sex_diff_df_F %>%
-  dplyr::select(.,c(27, 28, 20))
+  dplyr::select(., corr_vars)
 
 corr_F <- Hmisc::rcorr(as.matrix(df_corr_F), type = c("pearson"))
 
 df_corr_M <- sex_diff_df_M %>%
-  dplyr::select(., c(27, 28, 20))
+  dplyr::select(., corr_vars)
 
 corr_M <- Hmisc::rcorr(as.matrix(df_corr_M), type = c("pearson"))
 
 df_corr_all <- sex_diff_df %>%
-  dplyr::select(.,c(27, 28, 20))
+  dplyr::select(., corr_vars)
 
 corr_all <- Hmisc::rcorr(as.matrix(df_corr_all), type = c("pearson"))
 ```
@@ -883,6 +963,39 @@ p_aug
 sex_diff_corr_summ("log_motion", "mental_rot")
 ```
 
+### Contrast sensitivity & male-typed interests
+
+```{r contrast-sens-male-hobbies}
+corr_df <- sex_diff_corr_summ("log_contrast", "Masculine_hobbies",
+                              corr_all,
+                              corr_M_df = corr_M,
+                              corr_F_df = corr_F,
+                              print_table = FALSE)
+
+sex_diff_scatter(
+  sex_diff_df,
+  "log_contrast",
+  "Masculine_hobbies",
+  x_rev = FALSE,
+  y_rev = FALSE,
+  paste0(
+    "r = ",
+    format(corr_df$cor_coef[3], digits = 2, nsmall = 2),
+    corr_df$stars[3]
+  ),
+  paste0(
+    "r = ",
+    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
+    corr_df$stars[2]
+  ),
+  c(-1.5),
+  c(33, 35),
+  "log(contrast threshold)",
+  "Interest in male-typed activities"
+)
+
+sex_diff_corr_summ("log_contrast", "Masculine_hobbies")
+```
 ### Motion sensitivity & contrast sensitivity
 
 ```{r motion-duration-contrast-sens}
@@ -1212,7 +1325,7 @@ FindOutliers(sex_diff_df$vocab)
 
 There were no outliers in vocabulary.
 
-## Correlations among measures
+### Correlations among measures
 
 Since trimming outliers only affected the motion threshold data, we focus on that measure.
 
@@ -1224,7 +1337,7 @@ sex_diff_df_M <- df_trimmed %>%
   dplyr::filter(., Sex == "Males")
 ```
 
-### Motion thresholds and mental rotation
+#### Motion thresholds and mental rotation
 
 ```{r}
 cor.test(
@@ -1248,9 +1361,9 @@ cor.test(
 
 Motion duration thresholds do not correlate with mental rotation scores in men.
 
-### Contrast thresholds and motion thresholds
+#### Contrast thresholds and motion thresholds
 
-#### Women
+##### Women
 
 ```{r}
 cor.test(
@@ -1270,7 +1383,7 @@ es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_F, log_contr
 
 We find that a correlation between log contrast and log motion thresholds in women is as follows: `r es_contrast_motion$formatted_r`.
 
-#### Men
+##### Men
 
 ```{r}
 cor.test(
