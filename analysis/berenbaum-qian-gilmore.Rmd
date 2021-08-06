@@ -289,11 +289,11 @@ We test for a difference in means.
 ```{r}
 mr_tt <-
   t.test(
-    Masculine_hobbies ~ Sex,
+    masscale ~ Sex,
     data = sex_diff_df,
     var.equal = TRUE,
     alternative = "less"
-  ) # Hypothesized
+  )   # Hypothesized
 mr_tt
 ```
 
@@ -307,7 +307,7 @@ Using `esci` to calculate CIs.
 ```{r}
 es_m_hobbies <- esci::estimateMeanDifference.default(sex_diff_df,
                                      Sex.factor,
-                                     Masculine_hobbies,
+                                     masscale,
                                      paired = FALSE,
                                      var.equal = TRUE,
                                      conf.level = .95)
@@ -361,6 +361,24 @@ es_vocab <- esci::estimateMeanDifference.default(sex_diff_df,
 
 `r es_m_hobbies$formatted_d`.
 
+#### get the mean and sd
+```{r}
+df_mental_rot %>% 
+  group_by(Sex) %>% 
+  summarise(mean=mean(mental_rot,na.rm=T),sd=sd(mental_rot,na.rm=T))%>% 
+  mutate_if(is.numeric, format, 2)
+
+sex_diff_df %>% 
+  group_by(Sex) %>% 
+  summarise(mean=mean(vocab,na.rm=T),sd=sd(vocab,na.rm=T))%>% 
+  mutate_if(is.numeric, format, 2)
+
+sex_diff_df %>% 
+  group_by(Sex) %>% 
+  summarise(mean=mean(masscale,na.rm=T),sd=sd(masscale,na.rm=T))%>% 
+  mutate_if(is.numeric, format, 2)
+```
+
 ## Correlations among measures
 
 > To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks times two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test.
@@ -368,13 +386,30 @@ es_vocab <- esci::estimateMeanDifference.default(sex_diff_df,
 We create two data frames by participant sex.
 
 ```{r}
-sex_diff_df_F <- sex_diff_df %>%
-  dplyr::filter(., Sex == "Females")
+sex_diff_df.f <- sex_diff_df %>%
+  dplyr::filter(., Sex == "Females") %>%
+  dplyr::select( 
+                log_contrast,
+                log_motion,
+                mental_rot,
+                vocab,
+                Masculine_hobbies,
+                masscale
+               )
+sex_diff_df_F <- sex_diff_df.f[stats::complete.cases(sex_diff_df.f),]
 ```
 
 ```{r}
 sex_diff_df_M <- sex_diff_df %>%
-  dplyr::filter(., Sex == "Males")
+  dplyr::filter(., Sex == "Males") %>%
+  dplyr::select( 
+                log_contrast,
+                log_motion,
+                mental_rot,
+                vocab,
+               Masculine_hobbies,
+                masscale
+               )
 ```
 
 ### Contrast thresholds and mental rotation
@@ -484,7 +519,7 @@ cor.test(
 
 ```{r}
 es_contrast_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_contrast)
-#es_mental_rot_motion
+#es_contrast_m_hobbies 
 ```
 
 We estimate the correlation between log contrast and interest in male-typed activities in women as follows: `r es_contrast_m_hobbies$formatted_r`
@@ -522,7 +557,7 @@ cor.test(
 
 ```{r}
 es_motion_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_motion)
-#es_mental_rot_motion
+#es_motion_m_hobbies
 ```
 
 We estimate the correlation between log motion and interest in male-typed activities in women as follows: `r es_motion_m_hobbies$formatted_r`
@@ -1203,6 +1238,7 @@ Drop sex.
 ```{r}
 lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)
+anova(lm_mr_contr_motion_no_sex)
 ```
 
 Compare models.
