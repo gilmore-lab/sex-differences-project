@@ -50,7 +50,8 @@ library(add2ggplot)
 Data from the set of tasks were merged and cleaned as described in `import-clean-raw-data.Rmd`.
 
 ```{r load}
-sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
+#sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
+sex_diff_df <- readr::read_csv("~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/data/processed_data/combined_2021-04-30.csv")
 ```
 
 # Preregistered analyses
@@ -668,7 +669,20 @@ es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masc
 We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
 
 ## Visualizations
-
+```{r ggplot-themes}
+# "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
+theme.custom <- theme(panel.background = element_rect(fill = "white", colour = "grey50"),
+                      plot.title = element_text(size=18, face="bold",hjust = 0.5),
+                      axis.title.x = element_text(size=18),
+                      axis.title.y = element_text(size=18),
+                      strip.text = element_text(size=18),
+                      axis.text = element_text(size=18),
+                      legend.position = "bottom",
+               #   legend.position = "topleft",
+                       legend.title = element_blank(),
+#  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                      legend.text=element_text(size=18))
+```
 The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.
 
 ```{r}
@@ -700,24 +714,24 @@ sex_diff_scatter <-
         group = Sex,
         color = Sex
       ) +
-      geom_point() +
+      geom_point(size=4) +
       xlab(x_var) +
       ylab(y_var) +
       stat_smooth(method = "lm", na.rm = TRUE) +
-      theme_classic2() +
-      theme(legend.position = "bottom",
-            legend.title = element_blank()) +
       xlab(x_lab) +
-      ylab(y_lab)
+      ylab(y_lab)+
+      theme.custom +
+      scale_colour_grey(start=0,end=0.5)
 
     if (show_corr_vals) {
-      p + annotate(
+      p +annotate(
         "text",
         x = anx,
         y = any,
-        label = c(an_f, an_m),
-        color = c('red', 'darkturquoise')
-      )
+        size=8,
+        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
+             hjust = 1
+      ) 
     }
     
     if (square_axis)
@@ -883,15 +897,14 @@ sex_diff_scatter_2 <-
         group = Sex,
         color = Sex
       ) +
-      geom_point() +
+      geom_point(size=4) +
       xlab(x_var) +
       ylab(y_var) +
       stat_smooth(method = "lm", na.rm = TRUE) +
-      theme_classic2() +
-      theme(legend.position = "bottom",
-            legend.title = element_blank()) +
+     theme.custom +
       xlab(x_lab) +
-      ylab(y_lab)
+      ylab(y_lab) +
+      scale_colour_grey(start=0,end=0.5)
 
     # if (show_corr_vals) {
     #   p + annotate(
@@ -984,7 +997,7 @@ p_aug <- p_motion +
     x = sex_diff_df$log_motion[c(115, 118)],
     y = sex_diff_df$mental_rot[c(115, 118)],
     color = "black",
-    size = 4,
+    size = 8,
     shape = 0
   )
 
@@ -1450,6 +1463,9 @@ Vision plus sex.
 ```{r}
 lm_mr_contr_motion_no_interactions <- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_interactions)
+car::Anova(lm_mr_contr_motion_no_interactions)
+confint(lm_mr_contr_motion_no_interactions)
+lsr::etaSquared(lm_mr_contr_motion_no_interactions)
 ```
 
 Vision alone.
@@ -1457,6 +1473,9 @@ Vision alone.
 ```{r}
 lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)
+car::Anova(lm_mr_contr_motion_no_sex)
+confint(lm_mr_contr_motion_no_sex)
+lsr::etaSquared(lm_mr_contr_motion_no_sex)
 ```
 
 Compare models.
