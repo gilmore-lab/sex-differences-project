@@ -387,7 +387,7 @@ sex_diff_df %>%
 We create two data frames by participant sex.
 
 ```{r}
-sex_diff_df.f <- sex_diff_df %>%
+sex_diff_df_F <- sex_diff_df %>%
   dplyr::filter(., Sex == "Females") %>%
   dplyr::select( 
                 log_contrast,
@@ -397,7 +397,6 @@ sex_diff_df.f <- sex_diff_df %>%
                 Masculine_hobbies,
                 masscale
                )
-sex_diff_df_F <- sex_diff_df.f[stats::complete.cases(sex_diff_df.f),]
 ```
 
 ```{r}
@@ -1534,7 +1533,107 @@ anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)
 The model with the smaller RSS is the one with the vision variables included.
 
 We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
+
+#### hobby items and contrast
 ```{r}
-rcorr()
+colnames(hobby_new)[2]<-"Participant"
+df<-merge(sex_diff_df, hobby_new[,c(2,3, 15,20,25,31,32,36,37,38,39,42,45,47,48,49,53,54,56,58,62,71,72)], by="Participant")
 ```
 
+```{r}
+df.f <- df %>%
+  dplyr::filter(., Sex.x == "Females") 
+df.m <- df %>%
+  dplyr::filter(., Sex.x == "Males") 
+```
+
+```{r}
+rcorr(as.matrix(df[,c(20,31:51)]))$P # only video game is significant
+rcorr(as.matrix(df.f[,c(20,31:51)]))$P # non
+rcorr(as.matrix(df.m[,c(20,31:51)]))$P
+```
+```{r}
+rcorr(as.matrix(df[,c(28,31:51)]))$P # electronic,basketball, video games, violent movies
+rcorr(as.matrix(df.f[,c(28,31:51)]))$P[,1] # electronic and basketball
+rcorr(as.matrix(df.f[,c(28,31:51)]))$r[,1]
+rcorr(as.matrix(df.m[,c(28,31:51)]))$P # fishing, basketball, TV sports
+```
+```{r}
+rcorr(as.matrix(df[,c(29,31:51)]))$P # electronic,basketball, video games, violent movies
+rcorr(as.matrix(df.f[,c(29,31:51)]))$P[,1] # electronic and basketball
+rcorr(as.matrix(df.f[,c(29,31:51)]))$r[,1]
+rcorr(as.matrix(df.m[,c(29,31:51)]))$P # fishing, basketball, TV sports
+```
+```{r}
+rcorr(as.matrix(df.f[,c(29,31:51)]))$P # computers, weight lifting
+```
+
+```{r}
+cor.test(
+  df.f$log_contrast,
+  df.f$playing_basketball,
+  method = "pearson",
+  alternative = "less"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, playing_basketball)
+#es_mental_mas_contrast
+```
+```{r}
+cor.test(
+  df.f$log_contrast,
+  df.f$electronics,
+  method = "pearson",
+  alternative = "less"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, electronics)
+#es_mental_mas_contrast
+```
+
+```{r}
+cor.test(
+  df.f$log_contrast,
+  df.f$surf,
+  method = "pearson",
+  alternative = "less"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, surf)
+#es_mental_mas_contrast
+```
+```{r}
+cor.test(
+  df.f$log_contrast,
+  df.f$Video_games,
+  method = "pearson",
+  alternative = "less"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, Video_games)
+#es_mental_mas_contrast
+```
+
+```{r}
+cor.test(
+  df.f$log_contrast,
+  df.f$violent_movies,
+  method = "pearson",
+  alternative = "less"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, violent_movies)
+#es_mental_mas_contrast
+```
+
+```{r}
+cor.test(
+  df.f$log_contrast,
+  df.f$drinking_with_friends,
+  method = "pearson",
+  alternative = "less"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, drinking_with_friends)
+#es_mental_mas_contrast
+```
