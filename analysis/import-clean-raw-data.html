@@ -178,7 +178,7 @@ pre code {
 
 <h1 class="title toc-ignore">Import, clean, and export data</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-07-15 12:23:33</h4>
+<h4 class="date">2021-08-19 11:22:18</h4>
 
 </div>
 
@@ -228,8 +228,13 @@ pre code {
 <li><a href="#race">Race</a></li>
 <li><a href="#color-vision">Color vision</a></li>
 </ul></li>
+<li><a href="#recode-gender-values">Recode <code>Gender</code> values</a></li>
 </ul></li>
-<li><a href="#export">Export</a></li>
+<li><a href="#export">Export</a>
+<ul>
+<li><a href="#merge-with-hobby-specific-ratings">Merge with hobby-specific ratings</a></li>
+<li><a href="#export-combined-file">Export combined file</a></li>
+</ul></li>
 </ul>
 </div>
 
@@ -696,6 +701,10 @@ df$race[df$race_7 == 1] &lt;- &quot;Prefer not to answer&quot;</code></pre>
 <pre class="r"><code>df$colorvision &lt;- NA</code></pre>
 </div>
 </div>
+<div id="recode-gender-values" class="section level2">
+<h2>Recode <code>Gender</code> values</h2>
+<pre class="r"><code>df$Gender &lt;- dplyr::recode(df$Gender, Females = &#39;Female&#39;, Males = &#39;Male&#39;)</code></pre>
+</div>
 </div>
 <div id="export" class="section level1">
 <h1>Export</h1>
@@ -761,11 +770,36 @@ colnames(df1) &lt;-
     &quot;femscale&quot;,
     &quot;masscale&quot;
   )</code></pre>
+<div id="merge-with-hobby-specific-ratings" class="section level2">
+<h2>Merge with hobby-specific ratings</h2>
+<pre class="r"><code>dfh &lt;- readr::read_csv(file.path(params$processed_data_path, params$hobbies_csv_fn))</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   Gender = col_character(),
+##   major = col_character(),
+##   race_5 = col_logical(),
+##   experimenter = col_character(),
+##   note = col_character(),
+##   race = col_character(),
+##   colorvision = col_logical()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<pre class="r"><code># Select Participant ID and individual hobby scores to join with other data
+dfh1 &lt;- dfh[,c(1, 167:226)]
+dfh1$Participant &lt;- as.character(dfh1$Participant)
+
+df1 &lt;- dplyr::left_join(df1, dfh1, by = &#39;Participant&#39;)</code></pre>
+</div>
+<div id="export-combined-file" class="section level2">
+<h2>Export combined file</h2>
 <p>Export the file as a CSV with a date-time stamp.</p>
 <pre class="r"><code>output_fn &lt;- paste0(&#39;combined_&#39;, format.Date(Sys.Date()), &#39;.csv&#39;)
 write.csv(df1,
           file.path(params$output_path, output_fn),
           row.names = FALSE)</code></pre>
+</div>
 </div>
 
 

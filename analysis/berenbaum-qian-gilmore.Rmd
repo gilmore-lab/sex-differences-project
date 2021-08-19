@@ -11,7 +11,7 @@ output:
     toc_float: true
 params:
   data_path: "csv"
-  csv_fn: "combined_2021-07-15.csv"
+  csv_fn: "combined_2021-08-19.csv"
   outlier_sd_thresh: 3.0
   plot_device: "png"
 ---
@@ -43,6 +43,7 @@ library(tidyverse)
 library(Hmisc)
 library(ggExtra)
 library(add2ggplot)
+library(gridExtra)
 ```
 
 # Import data
@@ -50,8 +51,8 @@ library(add2ggplot)
 Data from the set of tasks were merged and cleaned as described in `import-clean-raw-data.Rmd`.
 
 ```{r load}
-#sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
-sex_diff_df <- readr::read_csv("~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/data/processed_data/combined_2021-04-30.csv")
+sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
+# sex_diff_df <- readr::read_csv("~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/data/processed_data/combined_2021-04-30.csv")
 ```
 
 # Preregistered analyses
@@ -363,6 +364,7 @@ es_vocab <- esci::estimateMeanDifference.default(sex_diff_df,
 `r es_m_hobbies$formatted_d`.
 
 #### get the mean and sd
+
 ```{r}
 df_mental_rot %>% 
   group_by(Sex) %>% 
@@ -668,6 +670,7 @@ es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masc
 We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
 
 ## Visualizations
+
 ```{r ggplot-themes}
 # "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
 theme.custom <- theme(panel.background = element_rect(fill = "white", colour = "grey50"),
@@ -682,6 +685,7 @@ theme.custom <- theme(panel.background = element_rect(fill = "white", colour = "
 #  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                       legend.text=element_text(size=24))
 ```
+
 The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.
 
 ```{r}
@@ -1049,6 +1053,7 @@ p3
 
 sex_diff_corr_summ("log_contrast", "Masculine_hobbies")
 ```
+
 ### Motion sensitivity & contrast sensitivity
 
 ```{r motion-duration-contrast-sens}
@@ -1097,6 +1102,7 @@ p_aug2
 sex_diff_corr_summ("log_motion",
                    "log_contrast")
 ```
+
 ```{r}
 library("gridExtra")
 p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)
@@ -1109,6 +1115,7 @@ ggsave(
   dpi = 600
 )
 ```
+
 # Non-pregistered analyses
 
 ## Does vision account for mental rotation?
@@ -1534,7 +1541,18 @@ The model with the smaller RSS is the one with the vision variables included.
 
 We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
 
-#### hobby items and contrast
+
+## Do some male-typed hobbies better correlate with contrast sensitivity than others?
+
+Determine which hobbies are strongly and male-typed.
+
+```{r}
+# Yiming, please complete these...
+male_typed_hobbies <- c("Home electronics", "Playing basketball", 
+                        "Watching violent movies", "TV sports",
+                        "Weight lifting")
+```
+
 ```{r}
 colnames(hobby_new)[2]<-"Participant"
 df<-merge(sex_diff_df, hobby_new[,c(2,3, 15,20,25,31,32,36,37,38,39,42,45,47,48,49,53,54,56,58,62,71,72)], by="Participant")
@@ -1552,18 +1570,21 @@ rcorr(as.matrix(df[,c(20,31:51)]))$P # only video game is significant
 rcorr(as.matrix(df.f[,c(20,31:51)]))$P # non
 rcorr(as.matrix(df.m[,c(20,31:51)]))$P
 ```
+
 ```{r}
 rcorr(as.matrix(df[,c(28,31:51)]))$P # electronic,basketball, video games, violent movies
 rcorr(as.matrix(df.f[,c(28,31:51)]))$P[,1] # electronic and basketball
 rcorr(as.matrix(df.f[,c(28,31:51)]))$r[,1]
 rcorr(as.matrix(df.m[,c(28,31:51)]))$P # fishing, basketball, TV sports
 ```
+
 ```{r}
 rcorr(as.matrix(df[,c(29,31:51)]))$P # electronic,basketball, video games, violent movies
 rcorr(as.matrix(df.f[,c(29,31:51)]))$P[,1] # electronic and basketball
 rcorr(as.matrix(df.f[,c(29,31:51)]))$r[,1]
 rcorr(as.matrix(df.m[,c(29,31:51)]))$P # fishing, basketball, TV sports
 ```
+
 ```{r}
 rcorr(as.matrix(df.f[,c(29,31:51)]))$P # computers, weight lifting
 ```

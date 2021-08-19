@@ -12,7 +12,8 @@ params:
   contr_csv_fn: "contrast_output_Oct2020.csv"
   motion_csv_fn: "motion_output_Oct2020.csv"
   qualtrics_csv_fn: "qualtrics_output_10_14_2020.csv"
-  processed_data_path: "~/Box/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  hobbies_csv_fn: "sexdiff_data.csv"
+  processed_data_path: "~/OneDrive\ -\ The\ Pennsylvania\ State\ University//Project_Sex_difference_on_Motion_Perception/data/processed_data"
   output_path: "csv"
 ---
 
@@ -498,6 +499,12 @@ We defer to another time the task of cleaning the color vision variables.
 df$colorvision <- NA
 ```
 
+## Recode `Gender` values
+
+```{r}
+df$Gender <- dplyr::recode(df$Gender, Females = 'Female', Males = 'Male')
+```
+
 # Export
 
 Select data to export.
@@ -565,6 +572,21 @@ colnames(df1) <-
     "masscale"
   )
 ```
+
+## Merge with hobby-specific ratings
+
+```{r}
+dfh <- readr::read_csv(file.path(params$processed_data_path, params$hobbies_csv_fn))
+
+# Select Participant ID and individual hobby scores to join with other data
+dfh1 <- dfh[,c(1, 167:226)]
+dfh1$Participant <- as.character(dfh1$Participant)
+
+df1 <- dplyr::left_join(df1, dfh1, by = 'Participant')
+```
+
+
+## Export combined file
 
 Export the file as a CSV with a date-time stamp. 
 
