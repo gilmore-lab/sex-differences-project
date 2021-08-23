@@ -11,7 +11,7 @@ output:
     toc_float: true
 params:
   data_path: "csv"
-  csv_fn: "combined_2021-08-19.csv"
+  csv_fn: "combined_2021-08-23.csv"
   outlier_sd_thresh: 3.0
   plot_device: "png"
 ---
@@ -52,7 +52,6 @@ Data from the set of tasks were merged and cleaned as described in `import-clean
 
 ```{r load}
 sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
-# sex_diff_df <- readr::read_csv("~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/data/processed_data/combined_2021-04-30.csv")
 ```
 
 # Preregistered analyses
@@ -291,7 +290,7 @@ We test for a difference in means.
 ```{r}
 mr_tt <-
   t.test(
-    masscale ~ Sex,
+    Masculine_hobbies ~ Sex,
     data = sex_diff_df,
     var.equal = TRUE,
     alternative = "less"
@@ -309,7 +308,7 @@ Using `esci` to calculate CIs.
 ```{r}
 es_m_hobbies <- esci::estimateMeanDifference.default(sex_diff_df,
                                      Sex.factor,
-                                     masscale,
+                                     Masculine_hobbies,
                                      paired = FALSE,
                                      var.equal = TRUE,
                                      conf.level = .95)
@@ -378,7 +377,7 @@ sex_diff_df %>%
 
 sex_diff_df %>% 
   group_by(Sex) %>% 
-  summarise(mean=mean(masscale,na.rm=T),sd=sd(masscale,na.rm=T))%>% 
+  summarise(mean=mean(Masculine_hobbies,na.rm=T),sd=sd(Masculine_hobbies,na.rm=T))%>% 
   mutate_if(is.numeric, format, 2)
 ```
 
@@ -390,7 +389,7 @@ We create two data frames by participant sex.
 
 ```{r}
 sex_diff_df_F <- sex_diff_df %>%
-  dplyr::filter(., Sex == "Females") %>%
+  dplyr::filter(., Sex == "Female") %>%
   dplyr::select( 
                 log_contrast,
                 log_motion,
@@ -403,7 +402,7 @@ sex_diff_df_F <- sex_diff_df %>%
 
 ```{r}
 sex_diff_df_M <- sex_diff_df %>%
-  dplyr::filter(., Sex == "Males") %>%
+  dplyr::filter(., Sex == "Male") %>%
   dplyr::select( 
                 log_contrast,
                 log_motion,
@@ -539,7 +538,7 @@ cor.test(
 
 ```{r}
 es_contrast_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, log_contrast)
-#es_mental_rot_motion
+#es_contrast_m_hobbies
 ```
 
 We estimate the correlation between mental_rotation and interest in male-typed activities in men as follows: `r es_contrast_m_hobbies$formatted_r`
@@ -1418,10 +1417,10 @@ Since trimming outliers only affected the motion threshold data, we focus on tha
 
 ```{r}
 sex_diff_df_F <- df_trimmed %>%
-  dplyr::filter(., Sex == "Females")
+  dplyr::filter(., Sex == "Female")
 
 sex_diff_df_M <- df_trimmed %>%
-  dplyr::filter(., Sex == "Males")
+  dplyr::filter(., Sex == "Male")
 ```
 
 #### Motion thresholds and mental rotation
@@ -1545,112 +1544,101 @@ We still conclude that vision measures are a better predictor of individual diff
 ## Do some male-typed hobbies better correlate with contrast sensitivity than others?
 
 Determine which hobbies are strongly and male-typed.
+Golf
+Home eletronics
+Surfing
+Computers
+Video games
+Watching violent movies
+Going to car shows
+Fishing
+Poker
+Playing Basketball
+TV sports
+Football
+weight lifting
+Working on cars
+Drag racing
 
 ```{r}
-hobby_new <- readr::read_csv("~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/Hobby_SPSS/hobby.csv")
+var<-c("Participant","Sex","log_contrast","log_motion","Golf","Home electronics", "Surfing", "Computers","Video games","Watching violent movies","Going to car shows","Fishing","Poker","Playing basketball","TV sports","Football","Weight lifting","Working on cars","Drag racing","Masculine_hobbies")
+male_hobbies<-sex_diff_df[,var]
+male_hobbies_F <- male_hobbies %>% filter(Sex=="Female")
 ```
 
+#### calculate alpha
 ```{r}
-hobby_new$participant[1:23]<-c(119,110,121,123,125,127,320,112,114,129,324,116,131,118,133,120,330,135,122,124,137,139)
-colnames(hobby_new)[2]<-"Participant"
-df<-merge(sex_diff_df, hobby_new[,c(2,3, 15,20,25,31,32,36,37,38,39,42,45,47,48,49,53,54,56,58,62,71,72)], by="Participant")
+psych::alpha(male_hobbies[,-c(1:4,20)])
 ```
 
+### check data
 ```{r}
-df.f <- df %>%
-  dplyr::filter(., Sex == "Females") 
-df.m <- df %>%
-  dplyr::filter(., Sex == "Males") 
+FindOutliers(male_hobbies$Masculine_hobbies)
 ```
 
-#### Correlation of  male-typed hobbies and mental rotation
-```{r}
-#rcorr(as.matrix(df[,c(20,31:51)]))$P # only video game is significant
-rcorr(as.matrix(df.f[,c(20,31:51)]))$P[,1] # non
-#rcorr(as.matrix(df.m[,c(20,31:51)]))$P
-```
+
 #### Correlation of  male-typed hobbies and log contrast
 ```{r}
 #rcorr(as.matrix(df[,c(28,31:51)]))$P # electronic,basketball, video games, violent movies
-rcorr(as.matrix(df.f[,c(28,31:51)]))$P[,1] # electronic and basketball
-rcorr(as.matrix(df.f[,c(28,31:51)]))$r[,1]
+rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # electronic and basketball
+rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
 # rcorr(as.matrix(df.m[,c(28,31:51)]))$P # fishing, basketball, TV sports
 ```
 #### Correlation of  male-typed hobbies and log motion
 ```{r}
 #rcorr(as.matrix(df[,c(29,31:51)]))$P # electronics, surf, computer, video games, camping, weight lifting, work on cars, drag race
-rcorr(as.matrix(df.f[,c(29,31:51)]))$P[,1] # computer, camping, weight lifting
-rcorr(as.matrix(df.f[,c(29,31:51)]))$r[,1]
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
 #rcorr(as.matrix(df.m[,c(29,31:51)]))$P # fishing, basketball, TV sports
 ```
 
 #### get the CI for the male-type items which was found significant
+
 ```{r}
 cor.test(
-  df.f$log_contrast,
-  df.f$playing_basketball,
+  male_hobbies_F$log_contrast,
+  male_hobbies_F$"Playing basketball",
   method = "pearson",
   alternative = "less"
 )
 
-es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, playing_basketball)
-#es_mental_mas_contrast
-```
-```{r}
-cor.test(
-  df.f$log_contrast,
-  df.f$electronics,
-  method = "pearson",
-  alternative = "less"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, electronics)
+es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Playing basketball")
 #es_mental_mas_contrast
 ```
 
 ```{r}
 cor.test(
-  df.f$log_contrast,
-  df.f$surf,
+   male_hobbies_F$log_contrast,
+   male_hobbies_F$"Home electronics",
   method = "pearson",
   alternative = "less"
 )
 
-es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, surf)
-#es_mental_mas_contrast
-```
-```{r}
-cor.test(
-  df.f$log_contrast,
-  df.f$Video_games,
-  method = "pearson",
-  alternative = "less"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, Video_games)
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, "Home electronics")
 #es_mental_mas_contrast
 ```
 
 ```{r}
 cor.test(
-  df.f$log_contrast,
-  df.f$violent_movies,
+  male_hobbies_F$log_contrast,
+  male_hobbies_F$"Video games",
   method = "pearson",
   alternative = "less"
 )
 
-es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, violent_movies)
+es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Video games")
 #es_mental_mas_contrast
 ```
 
 ```{r}
 cor.test(
-  df.f$log_contrast,
-  df.f$drinking_with_friends,
+  male_hobbies_F$log_contrast,
+  male_hobbies_F$"Watching violent movies",
   method = "pearson",
   alternative = "less"
 )
 
-es_mental_mas_contrast <- esci::estimateCorrelation.default(df.f, log_contrast, drinking_with_friends)
+es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Watching violent movies")
 #es_mental_mas_contrast
 ```
+
