@@ -13,7 +13,7 @@ params:
   motion_csv_fn: "motion_output_Oct2020.csv"
   qualtrics_csv_fn: "qualtrics_output_10_14_2020.csv"
   hobbies_csv_fn: "sexdiff_data.csv"
-  processed_data_path: "~/OneDrive\ -\ The\ Pennsylvania\ State\ University//Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  processed_data_path: "~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   output_path: "csv"
 ---
 
@@ -503,6 +503,17 @@ df$colorvision <- NA
 
 ```{r}
 df$Gender <- dplyr::recode(df$Gender, Females = 'Female', Males = 'Male')
+```
+
+### correct hobby scores
+
+```{r}
+hobby_temp<-df %>% select(h1:h60)
+df$hobby_mean<-rowMeans(hobby_temp,na.rm=T)
+df$hobfem<-rowMeans(hobby_temp[,c(3,8,9,10,14,15,16,19,20,21,26,30,37,43,49,50,53,54,55,56,59,60)],na.rm=T)
+df$hobmas<-rowMeans(hobby_temp[,c(1,6,11,17,18,23,25,31,34,35,39,41,44,48,57)],na.rm=T)
+df$femscale<-df$hobfem-df$hobby_mean
+df$masscale<-df$hobmas-df$hobby_mean
 ```
 
 # Export

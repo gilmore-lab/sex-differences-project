@@ -178,7 +178,7 @@ pre code {
 
 <h1 class="title toc-ignore">Import, clean, and export data</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-08-19 11:22:18</h4>
+<h4 class="date">2021-08-23 14:51:50</h4>
 
 </div>
 
@@ -228,7 +228,10 @@ pre code {
 <li><a href="#race">Race</a></li>
 <li><a href="#color-vision">Color vision</a></li>
 </ul></li>
-<li><a href="#recode-gender-values">Recode <code>Gender</code> values</a></li>
+<li><a href="#recode-gender-values">Recode <code>Gender</code> values</a>
+<ul>
+<li><a href="#correct-hobby-scores">correct hobby scores</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#export">Export</a>
 <ul>
@@ -256,7 +259,7 @@ pre code {
 cst &lt;-
   readr::read_csv(file.path(params$processed_data_path, params$contr_csv_fn))</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────
 ## cols(
 ##   Participant = col_double(),
 ##   Gender = col_character(),
@@ -306,7 +309,7 @@ cst &lt;-
 <pre class="r"><code>mdt &lt;-
   readr::read_csv(file.path(params$processed_data_path, params$motion_csv_fn))</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────
 ## cols(
 ##   Participant = col_double(),
 ##   Gender = col_character(),
@@ -356,7 +359,7 @@ cst &lt;-
 <pre class="r"><code>qua_raw &lt;-
   readr::read_csv(file.path(params$processed_data_path, params$qualtrics_csv_fn)) </code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────
 ## cols(
 ##   .default = col_double(),
 ##   StartDate = col_character(),
@@ -615,7 +618,8 @@ cst$threshold[which(cst$threshold &gt; 1)]</code></pre>
 <pre class="r"><code>which(mdt$percent_correct &lt; 0.68) # 85  86  87  88 325 326 327 328 480 504 505</code></pre>
 <pre><code>##  [1]  85  86  87  88 325 326 327 328 480 504 505</code></pre>
 <pre class="r"><code>mdt$Participant[which(mdt$percent_correct&lt;0.68)] # &quot;114&quot; &quot;114&quot; &quot;114&quot; &quot;114&quot; &quot;383&quot; &quot;383&quot; &quot;383&quot; &quot;383&quot; &quot;422&quot; &quot;428&quot; &quot;428&quot;</code></pre>
-<pre><code>##  [1] &quot;114&quot; &quot;114&quot; &quot;114&quot; &quot;114&quot; &quot;383&quot; &quot;383&quot; &quot;383&quot; &quot;383&quot; &quot;422&quot; &quot;428&quot; &quot;428&quot;</code></pre>
+<pre><code>##  [1] &quot;114&quot; &quot;114&quot; &quot;114&quot; &quot;114&quot; &quot;383&quot; &quot;383&quot; &quot;383&quot; &quot;383&quot;
+##  [9] &quot;422&quot; &quot;428&quot; &quot;428&quot;</code></pre>
 <p>Excluding these runs:</p>
 <pre class="r"><code>mdt &lt;- mdt %&gt;% filter(percent_correct &gt;= 0.68)</code></pre>
 </div>
@@ -704,6 +708,15 @@ df$race[df$race_7 == 1] &lt;- &quot;Prefer not to answer&quot;</code></pre>
 <div id="recode-gender-values" class="section level2">
 <h2>Recode <code>Gender</code> values</h2>
 <pre class="r"><code>df$Gender &lt;- dplyr::recode(df$Gender, Females = &#39;Female&#39;, Males = &#39;Male&#39;)</code></pre>
+<div id="correct-hobby-scores" class="section level3">
+<h3>correct hobby scores</h3>
+<pre class="r"><code>hobby_temp&lt;-df %&gt;% select(h1:h60)
+df$hobby_mean&lt;-rowMeans(hobby_temp,na.rm=T)
+df$hobfem&lt;-rowMeans(hobby_temp[,c(3,8,9,10,14,15,16,19,20,21,26,30,37,43,49,50,53,54,55,56,59,60)],na.rm=T)
+df$hobmas&lt;-rowMeans(hobby_temp[,c(1,6,11,17,18,23,25,31,34,35,39,41,44,48,57)],na.rm=T)
+df$femscale&lt;-df$hobfem-df$hobby_mean
+df$masscale&lt;-df$hobmas-df$hobby_mean</code></pre>
+</div>
 </div>
 </div>
 <div id="export" class="section level1">
@@ -774,7 +787,7 @@ colnames(df1) &lt;-
 <h2>Merge with hobby-specific ratings</h2>
 <pre class="r"><code>dfh &lt;- readr::read_csv(file.path(params$processed_data_path, params$hobbies_csv_fn))</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────
 ## cols(
 ##   .default = col_double(),
 ##   Gender = col_character(),
