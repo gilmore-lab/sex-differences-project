@@ -1636,7 +1636,7 @@ cor.test(
 )
 
 es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Playing basketball")
-#es_mental_mas_contrast
+es_mental_mas_contrast$formatted_r
 ```
 
 ##### Home electronics and Contrast Sensitivity
@@ -1650,7 +1650,7 @@ cor.test(
 )
 
 es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, "Home electronics")
-#es_mental_mas_contrast
+es_mental_mas_contrast$formatted_r
 ```
 
 ##### Weightlifting and Motion Duration
@@ -1664,4 +1664,19 @@ cor.test(
 )
 
 es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Weight lifting")
+es_mental_mas_contrast$formatted_r
+```
+
+##### Computers and Motion Duration
+
+```{r}
+cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$"Computers",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
+es_mental_mas_contrast$formatted_r
 ```
