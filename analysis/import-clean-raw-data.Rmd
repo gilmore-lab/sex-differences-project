@@ -515,20 +515,18 @@ df$schoolyear <- factor(df$schoolyear, labels = c("1st", "2nd", "3rd", "4th"),
 ```{r, clean-race}
 
 df$race <- NA
-
-df$race[df$race_1 == 1] <- "Asian"
-
-df$race[df$race_2 == 1] <- "Black"
-
-df$race[df$race_3 == 1] <- "White"
-
-df$race[df$race_4 == 1] <- "Hispanic/Latino"
-
-df$race[df$race_5 == 1] <- "Native American"
-
-df$race[df$race_6 == 1] <- "Pacific Islander"
-
-df$race[df$race_7 == 1] <- "Prefer not to answer"
+df$race[which(df$race_1 == 1)] <- "Asian"
+df$race[which(df$race_2 == 1)] <-
+  paste(df$race, "Black/African", sep = ",")
+df$race[which(df$race_3 == 1)] <- paste(df$race, "Caucasian", sep = ",")
+df$race[which(df$race_4 == 1)] <-
+  paste(df$race, "Hispanic/Latino", sep = ",")
+df$race[which(df$race_5 == 1)] <-
+  paste(df$race, "Native American", sep = ",")
+df$race[which(df$race_6 == 1)] <-
+  paste(df$race, "Pacific Islander", sep = ",")
+df$race[which(df$race_7 == 1)] <-
+  paste(df$race, "Prefer not to answer", sep = ",")
 ```
 
 ### Handedness
