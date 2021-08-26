@@ -13,7 +13,7 @@ params:
   motion_csv_fn: "motion_output_Oct2020.csv"
   qualtrics_csv_fn: "qualtrics_output_10_14_2020.csv"
   hobbies_csv_fn: "sexdiff_data.csv"
-  processed_data_path: "~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  processed_data_path: "~/OneDrive - The Pennsylvania State University/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   output_path: "csv"
 ---
 
@@ -318,7 +318,9 @@ length(unique(qua_raw$participant))
 qua$Participant<-as.character(qua$participant)
 ```
 
-## Gender
+## Sex
+
+`What sex were you assigned at birth, on your original birth certificate?`
 
 ### Contrast sensitivity
 
@@ -404,6 +406,8 @@ mdt <- mdt %>% filter(percent_correct >= 0.68)
 
 ## Other task variables
 
+### Exclusions
+
 We had preregistered the following exclusion criteria:
 
 > We will exclude final scores of spatial ability, hobbies, and verbal ability data which are zero.
@@ -470,6 +474,33 @@ df <-
 
 ## Clean other variables from Qualtrics
 
+### Age
+
+`Please enter your age in years.`
+
+'18-19'
+'20-21'
+'22-23'
+'older than 23'
+
+```{r}
+df$age <- factor(df$age, labels = c("18-19", "20-21", "22-23", ">23"))
+```
+
+### School year
+
+`What is your current year in school?`
+
+'Freshman'
+'Sophomore'
+'Junior'
+'Senior'
+'5th year or later'
+
+```{r}
+df$schoolyear <- factor(df$schoolyear, labels = c("Freshman", "Sophomore", "Junior", "Senior"))
+```
+
 ### Race
 
 ```{r, clean-race}
@@ -491,6 +522,47 @@ df$race[df$race_6 == 1] <- "Pacific Islander"
 df$race[df$race_7 == 1] <- "Prefer not to answer"
 ```
 
+### Handedness
+
+`What is your preferred hand to press the arrow keys?`
+
+```{r}
+df$handedness <- factor(df$handedness, labels = c("left", "right", "either"))
+```
+
+### Visual acuity
+
+10/80,10/63,10/50,10/40,10/32,10/25,10/20,10/16,10/12.5,10/10,10/8
+
+These are equivalent to:
+
+20/160
+20/125
+20/100
+20/80
+20/65
+20/50
+20/40
+20/32
+20/25
+20/20
+20/16
+
+```{r}
+# Scores range from 18-21; but is 21 10/8 (20/16) or 10/10 (20/20)
+df$acuity <- factor(df$acuity, labels = c("20/40", "20/32", "20/25", "20/20"))
+```
+
+### Stereo
+
+The levels are in arcmin:
+
+800, 400, 200, 140, 100, 80, 60, 50, 40
+
+```{r}
+df$stereo <- factor(df$stereo, labels = c(800, 400, 140, 100, 80, 60, 50, 40))
+```
+
 ### Color vision
 
 We defer to another time the task of cleaning the color vision variables.
@@ -505,7 +577,7 @@ df$colorvision <- NA
 df$Gender <- dplyr::recode(df$Gender, Females = 'Female', Males = 'Male')
 ```
 
-### correct hobby scores
+### Correct hobby scores
 
 ```{r}
 hobby_temp<-df %>% select(h1:h60)
@@ -595,7 +667,6 @@ dfh1$Participant <- as.character(dfh1$Participant)
 
 df1 <- dplyr::left_join(df1, dfh1, by = 'Participant')
 ```
-
 
 ## Export combined file
 
