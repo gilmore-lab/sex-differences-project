@@ -178,7 +178,7 @@ pre code {
 
 <h1 class="title toc-ignore">Import, clean, and export data</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-08-23 14:51:50</h4>
+<h4 class="date">2021-08-26 10:38:34</h4>
 
 </div>
 
@@ -202,7 +202,7 @@ pre code {
 <li><a href="#motion-duration">Motion duration</a></li>
 <li><a href="#qualtrics">Qualtrics</a></li>
 </ul></li>
-<li><a href="#gender">Gender</a>
+<li><a href="#sex">Sex</a>
 <ul>
 <li><a href="#contrast-sensitivity-1">Contrast sensitivity</a></li>
 <li><a href="#motion-duration-1">Motion duration</a></li>
@@ -215,6 +215,7 @@ pre code {
 </ul></li>
 <li><a href="#other-task-variables">Other task variables</a>
 <ul>
+<li><a href="#exclusions">Exclusions</a></li>
 <li><a href="#visual-acuity">Visual acuity</a></li>
 </ul></li>
 <li><a href="#compute-threshold-summary-statistics">Compute threshold summary statistics</a>
@@ -223,14 +224,20 @@ pre code {
 <li><a href="#motion-duration-3">Motion duration</a></li>
 </ul></li>
 <li><a href="#merge-prior-to-further-cleaning">Merge prior to further cleaning</a></li>
-<li><a href="#clean-other-variables-from-qualtrics">Clean other variables from Qualtrics</a>
+<li><a href="#clean-other-variables-from-qualtrics">Clean other variables from Qualtrics</a></li>
+<li><a href="#glasses">Glasses</a>
 <ul>
+<li><a href="#age">Age</a></li>
+<li><a href="#school-year">School year</a></li>
 <li><a href="#race">Race</a></li>
+<li><a href="#handedness">Handedness</a></li>
+<li><a href="#visual-acuity-1">Visual acuity</a></li>
+<li><a href="#stereo">Stereo</a></li>
 <li><a href="#color-vision">Color vision</a></li>
 </ul></li>
 <li><a href="#recode-gender-values">Recode <code>Gender</code> values</a>
 <ul>
-<li><a href="#correct-hobby-scores">correct hobby scores</a></li>
+<li><a href="#correct-hobby-scores">Correct hobby scores</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#export">Export</a>
@@ -259,7 +266,7 @@ pre code {
 cst &lt;-
   readr::read_csv(file.path(params$processed_data_path, params$contr_csv_fn))</code></pre>
 <pre><code>## 
-## ── Column specification ─────────────────────────────────
+## ── Column specification ───────────────────────────────
 ## cols(
 ##   Participant = col_double(),
 ##   Gender = col_character(),
@@ -309,7 +316,7 @@ cst &lt;-
 <pre class="r"><code>mdt &lt;-
   readr::read_csv(file.path(params$processed_data_path, params$motion_csv_fn))</code></pre>
 <pre><code>## 
-## ── Column specification ─────────────────────────────────
+## ── Column specification ───────────────────────────────
 ## cols(
 ##   Participant = col_double(),
 ##   Gender = col_character(),
@@ -359,7 +366,7 @@ cst &lt;-
 <pre class="r"><code>qua_raw &lt;-
   readr::read_csv(file.path(params$processed_data_path, params$qualtrics_csv_fn)) </code></pre>
 <pre><code>## 
-## ── Column specification ─────────────────────────────────
+## ── Column specification ───────────────────────────────
 ## cols(
 ##   .default = col_double(),
 ##   StartDate = col_character(),
@@ -557,8 +564,9 @@ length(unique(qua$participant))</code></pre>
 <pre class="r"><code>qua$Participant&lt;-as.character(qua$participant)</code></pre>
 </div>
 </div>
-<div id="gender" class="section level2">
-<h2>Gender</h2>
+<div id="sex" class="section level2">
+<h2>Sex</h2>
+<p><code>What sex were you assigned at birth, on your original birth certificate?</code></p>
 <div id="contrast-sensitivity-1" class="section level3">
 <h3>Contrast sensitivity</h3>
 <pre class="r"><code># NA&#39;s were all female
@@ -626,6 +634,8 @@ cst$threshold[which(cst$threshold &gt; 1)]</code></pre>
 </div>
 <div id="other-task-variables" class="section level2">
 <h2>Other task variables</h2>
+<div id="exclusions" class="section level3">
+<h3>Exclusions</h3>
 <p>We had preregistered the following exclusion criteria:</p>
 <blockquote>
 <p>We will exclude final scores of spatial ability, hobbies, and verbal ability data which are zero.</p>
@@ -639,6 +649,7 @@ cst$threshold[which(cst$threshold &gt; 1)]</code></pre>
 <pre class="r"><code>which(qua$hobmas==0)</code></pre>
 <pre><code>## integer(0)</code></pre>
 <p>No participants had zero scores on <code>MRT_cor</code>, the mental rotation measure, <code>advoc_num_cor</code>, the vocabulary measure, or on <code>hobfem</code> or <code>hobmas</code>, the hobby measures.</p>
+</div>
 <div id="visual-acuity" class="section level3">
 <h3>Visual acuity</h3>
 <blockquote>
@@ -681,6 +692,24 @@ cst$threshold[which(cst$threshold &gt; 1)]</code></pre>
 </div>
 <div id="clean-other-variables-from-qualtrics" class="section level2">
 <h2>Clean other variables from Qualtrics</h2>
+</div>
+<div id="glasses" class="section level2">
+<h2>Glasses</h2>
+<p><code>Wear glasses or contacts?</code></p>
+<pre class="r"><code>df$glasses &lt;- factor(df$glasses, labels = c(&quot;glasses/contacts&quot;, &quot;none&quot;))</code></pre>
+<div id="age" class="section level3">
+<h3>Age</h3>
+<p><code>Please enter your age in years.</code></p>
+<p>‘18-19’ ‘20-21’ ‘22-23’ ‘older than 23’</p>
+<pre class="r"><code>df$age &lt;- factor(df$age, labels = c(&quot;18-19&quot;, &quot;20-21&quot;, &quot;22-23&quot;, &quot;23+&quot;))</code></pre>
+</div>
+<div id="school-year" class="section level3">
+<h3>School year</h3>
+<p><code>What is your current year in school?</code></p>
+<p>‘Freshman’ ‘Sophomore’ ‘Junior’ ‘Senior’ ‘5th year or later’</p>
+<pre class="r"><code>df$schoolyear &lt;- factor(df$schoolyear, labels = c(&quot;1st&quot;, &quot;2nd&quot;, &quot;3rd&quot;, &quot;4th&quot;),
+                        ordered = TRUE)</code></pre>
+</div>
 <div id="race" class="section level3">
 <h3>Race</h3>
 <pre class="r"><code>df$race &lt;- NA
@@ -699,6 +728,25 @@ df$race[df$race_6 == 1] &lt;- &quot;Pacific Islander&quot;
 
 df$race[df$race_7 == 1] &lt;- &quot;Prefer not to answer&quot;</code></pre>
 </div>
+<div id="handedness" class="section level3">
+<h3>Handedness</h3>
+<p><code>What is your preferred hand to press the arrow keys?</code></p>
+<pre class="r"><code>df$handedness &lt;- factor(df$handedness, labels = c(&quot;left&quot;, &quot;right&quot;, &quot;either&quot;))</code></pre>
+</div>
+<div id="visual-acuity-1" class="section level3">
+<h3>Visual acuity</h3>
+<p>10/80,10/63,10/50,10/40,10/32,10/25,10/20,10/16,10/12.5,10/10,10/8</p>
+<p>These are equivalent to:</p>
+<p>20/160 20/125 20/100 20/80 20/65 20/50 20/40 20/32 20/25 20/20 20/16</p>
+<pre class="r"><code># Scores range from 18-21; but is 21 10/8 (20/16) or 10/10 (20/20)
+df$acuity &lt;- factor(df$acuity, labels = c(&quot;20/32&quot;, &quot;20/25&quot;, &quot;20/20&quot;, &quot;20/16&quot;))</code></pre>
+</div>
+<div id="stereo" class="section level3">
+<h3>Stereo</h3>
+<p>The levels are in arcmin:</p>
+<p>800, 400, 200, 140, 100, 80, 60, 50, 40</p>
+<pre class="r"><code>df$stereo &lt;- factor(df$stereo, labels = c(800, 400, 140, 100, 80, 60, 50, 40))</code></pre>
+</div>
 <div id="color-vision" class="section level3">
 <h3>Color vision</h3>
 <p>We defer to another time the task of cleaning the color vision variables.</p>
@@ -709,7 +757,7 @@ df$race[df$race_7 == 1] &lt;- &quot;Prefer not to answer&quot;</code></pre>
 <h2>Recode <code>Gender</code> values</h2>
 <pre class="r"><code>df$Gender &lt;- dplyr::recode(df$Gender, Females = &#39;Female&#39;, Males = &#39;Male&#39;)</code></pre>
 <div id="correct-hobby-scores" class="section level3">
-<h3>correct hobby scores</h3>
+<h3>Correct hobby scores</h3>
 <pre class="r"><code>hobby_temp&lt;-df %&gt;% select(h1:h60)
 df$hobby_mean&lt;-rowMeans(hobby_temp,na.rm=T)
 df$hobfem&lt;-rowMeans(hobby_temp[,c(3,8,9,10,14,15,16,19,20,21,26,30,37,43,49,50,53,54,55,56,59,60)],na.rm=T)
@@ -766,7 +814,7 @@ colnames(df1) &lt;-
     &quot;Glasses&quot;,
     &quot;Acuity&quot;,
     &quot;Color_vision&quot;,
-    &quot;Stereo&quot;,
+    &quot;Stereo_amin&quot;,
     &quot;motion_dur_thr&quot;,
     &quot;motion_dur_thr_mean&quot;,
     &quot;motion_dur_thr_sd&quot;,
@@ -787,7 +835,7 @@ colnames(df1) &lt;-
 <h2>Merge with hobby-specific ratings</h2>
 <pre class="r"><code>dfh &lt;- readr::read_csv(file.path(params$processed_data_path, params$hobbies_csv_fn))</code></pre>
 <pre><code>## 
-## ── Column specification ─────────────────────────────────
+## ── Column specification ───────────────────────────────
 ## cols(
 ##   .default = col_double(),
 ##   Gender = col_character(),
