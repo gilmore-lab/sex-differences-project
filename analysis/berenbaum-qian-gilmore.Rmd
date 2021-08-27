@@ -11,7 +11,7 @@ output:
     toc_float: true
 params:
   data_path: "csv"
-  csv_fn: "combined_2021-08-23.csv"
+  csv_fn: "combined_2021-08-26.csv"
   outlier_sd_thresh: 3.0
   plot_device: "png"
 ---
@@ -47,6 +47,7 @@ library(gridExtra)
 ```
 
 
+
 # Import data
 
 Data from the set of tasks were merged and cleaned as described in `import-clean-raw-data.Rmd`.
@@ -54,6 +55,7 @@ Data from the set of tasks were merged and cleaned as described in `import-clean
 ```{r load}
 sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
+
 
 
 # Preregistered analyses
@@ -1118,6 +1120,7 @@ ggsave(
 ```
 
 
+
 # Non-pregistered analyses
 
 ## Does vision account for mental rotation?
@@ -1321,6 +1324,7 @@ We conclude that vision measures are a better predictor of individual difference
 
 
 
+
 ## Do outliers account for results?
 
 The scatterplots indicate that despite the log transformation, there are some individual participants who had especially high thresholds for contrast and motion duration.
@@ -1464,7 +1468,7 @@ cor.test(
 )
 ```
 
-The vision measures now correlate in women
+The vision measures now correlate in women.
 
 ```{r}
 es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_F, log_contrast, log_motion)
@@ -1544,9 +1548,10 @@ The model with the smaller RSS is the one with the vision variables included.
 
 We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
 
-## Do some male-typed hobbies better correlate with contrast sensitivity than others?
 
-Determine which hobbies are strongly and male-typed according to (CITE):
+## Does interest in specific male-typed hobbies correlate with vision?
+
+Determine which hobbies are strongly male-typed according to (CITE):
 
 - Golf
 - Home eletronics
@@ -1593,7 +1598,7 @@ male_hobbies_F <- male_hobbies %>%
   dplyr::filter(Sex == "Female")
 ```
 
-#### Calculate alpha
+### Calculate alpha
 
 ```{r}
 psych::alpha(male_hobbies[,-c(1:4,20)])
@@ -1605,27 +1610,18 @@ psych::alpha(male_hobbies[,-c(1:4,20)])
 FindOutliers(male_hobbies$Masculine_hobbies)
 ```
 
-#### Correlation of male-typed hobbies and log contrast
+No data are outliers.
+
+### Correlation between male-typed hobbies and log contrast
 
 ```{r}
-#rcorr(as.matrix(df[,c(28,31:51)]))$P # electronic,basketball, video games, violent movies
-rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # electronic and basketball
+rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball
 rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
-# rcorr(as.matrix(df.m[,c(28,31:51)]))$P # fishing, basketball, TV sports
 ```
 
-#### Correlation of male-typed hobbies and log motion
+`Playing basketball` and `Home electronics` substantial large negative correlations (in women) with log contrast thresholds.
 
-```{r}
-#rcorr(as.matrix(df[,c(29,31:51)]))$P # electronics, surf, computer, video games, camping, weight lifting, work on cars, drag race
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
-#rcorr(as.matrix(df.m[,c(29,31:51)]))$P # fishing, basketball, TV sports
-```
-
-#### CI for the male-type items with nonzero correlations
-
-##### Playing basketball and Contrast Sensitivity
+#### Playing basketball and Contrast Sensitivity
 
 ```{r}
 cor.test(
@@ -1639,7 +1635,7 @@ es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_
 es_mental_mas_contrast$formatted_r
 ```
 
-##### Home electronics and Contrast Sensitivity
+#### Home electronics and Contrast Sensitivity
 
 ```{r}
 cor.test(
@@ -1653,7 +1649,17 @@ es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log
 es_mental_mas_contrast$formatted_r
 ```
 
-##### Weightlifting and Motion Duration
+
+### Correlation between male-typed hobbies and log motion
+
+```{r}
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
+```
+
+`Weightlifing` and `Computers` shows substantial correlations with motion duration thresholds.
+
+#### Weightlifting and Motion Duration
 
 ```{r}
 cor.test(
@@ -1681,6 +1687,7 @@ es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log
 es_mental_mas_contrast$formatted_r
 ```
 
+<<<<<<< HEAD
 ### set function for scatterplot
 ```{r}
 sex_diff_scatter3 <-
@@ -1764,5 +1771,33 @@ sex_diff_scatter3(
   "log(motion threshold)",
   "Computers"
 )
+=======
+
+
+## Do men and women differ in other ways?
+
+### Age
+
+```{r, age}
+xtabs(~ Sex + Age, df_trimmed)
+```
+
+### School_year
+
+```{r, school_year}
+xtabs(~ Sex + School_year, df_trimmed)
+```
+
+### Visual acuity
+
+```{r, acuity}
+xtabs(~ Sex + Acuity, df_trimmed)
+```
+
+### Stereo acuity
+
+```{r, stereo}
+xtabs(~ Sex + Stereo_amin, df_trimmed)
+>>>>>>> 11488e57d5cb64f5d3e68ab9abf4bfd893910f29
 ```
 
