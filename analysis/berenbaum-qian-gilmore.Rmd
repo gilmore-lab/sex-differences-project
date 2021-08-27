@@ -1680,3 +1680,89 @@ cor.test(
 es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
 es_mental_mas_contrast$formatted_r
 ```
+
+### set function for scatterplot
+```{r}
+sex_diff_scatter3 <-
+  function(df,
+           x_var,
+           y_var,
+           x_lab = "X axis",
+           y_lab = "Y axis"
+           ) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s
+      ) +
+      geom_point(size=4) +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = "lm", na.rm = TRUE) +
+      xlab(x_lab) +
+      ylab(y_lab)+
+      theme.custom +
+      ylim(1, 5) 
+p
+  }
+```
+
+#### get scatterplot for contrast sensitivity and playing basketball
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_contrast",
+  "Playing basketball",
+  "log(contrast threshold)",
+  "Playing basketball"
+)
+```
+#### get scatterplot for contrast sensitivity and electronics
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_contrast",
+  "Home electronics",
+  "log(contrast threshold)",
+  "Home electronics"
+)
+```
+#### get scatterplot for motion sensitivity and weight lifting
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+#### get scatterplot for motion sensitivity and weight lifting, after excluding outliers
+```{r}
+male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
+sex_diff_scatter3(
+  male_hobbies_Fex,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+
+#### get scatterplot for motion sensitivity and weight lifting
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Computers",
+  "log(motion threshold)",
+  "Computers"
+)
+```
+
