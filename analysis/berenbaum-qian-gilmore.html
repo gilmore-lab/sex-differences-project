@@ -14,7 +14,7 @@
 
 <title>Analyses for Berenbaum, Qian, &amp; Gilmore</title>
 
-<script src="berenbaum-qian-gilmore_files/header-attrs-2.9/header-attrs.js"></script>
+<script src="berenbaum-qian-gilmore_files/header-attrs-2.8/header-attrs.js"></script>
 <script src="berenbaum-qian-gilmore_files/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="berenbaum-qian-gilmore_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -256,7 +256,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Berenbaum, Qian, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-08-23 15:19:00</h4>
+<h4 class="date">2021-08-27 11:31:05</h4>
 
 </div>
 
@@ -348,7 +348,7 @@ cst_tt</code></pre>
 ## 
 ## data:  log_contrast by Sex
 ## t = 2.4867, df = 128, p-value = 0.00709
-## alternative hypothesis: true difference in means between group Female and group Male is greater than 0
+## alternative hypothesis: true difference in means is greater than 0
 ## 95 percent confidence interval:
 ##  0.02900351        Inf
 ## sample estimates:
@@ -364,7 +364,7 @@ cst_tt</code></pre>
 <p><img src="img/unnamed-chunk-5-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>We use the <code>esvis</code> package to compute the Hedge’s G effect size measure since the groups have unequal means.</p>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, log_contrast ~ Sex)</code></pre>
-<pre><code>## # A tibble: 2 × 4
+<pre><code>## # A tibble: 2 x 4
 ##   Sex_ref Sex_foc  coh_d hedg_g
 ##   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Female  Male     0.518  0.515
@@ -411,7 +411,7 @@ mdt_tt</code></pre>
 ## 
 ## data:  log_motion by Sex
 ## t = 3.509, df = 126, p-value = 0.0003122
-## alternative hypothesis: true difference in means between group Female and group Male is greater than 0
+## alternative hypothesis: true difference in means is greater than 0
 ## 95 percent confidence interval:
 ##  0.09735106        Inf
 ## sample estimates:
@@ -426,7 +426,7 @@ mdt_tt</code></pre>
 <pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="img/unnamed-chunk-11-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, log_motion ~ Sex)</code></pre>
-<pre><code>## # A tibble: 2 × 4
+<pre><code>## # A tibble: 2 x 4
 ##   Sex_ref Sex_foc  coh_d hedg_g
 ##   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Female  Male     0.732  0.728
@@ -472,7 +472,7 @@ mr_tt</code></pre>
 ## 
 ## data:  mental_rot by Sex
 ## t = -2.7478, df = 129, p-value = 0.003429
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
+## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
 ##       -Inf -1.373374
 ## sample estimates:
@@ -480,7 +480,7 @@ mr_tt</code></pre>
 ##             26.20792             29.66667</code></pre>
 <p>Women had fewer correct trials than men. This is shown by the effect size.</p>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, mental_rot ~ Sex)</code></pre>
-<pre><code>## # A tibble: 2 × 4
+<pre><code>## # A tibble: 2 x 4
 ##   Sex_ref Sex_foc  coh_d hedg_g
 ##   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Female  Male    -0.571 -0.568
@@ -524,14 +524,14 @@ mr_tt</code></pre>
 ## 
 ## data:  Masculine_hobbies by Sex
 ## t = -7.5758, df = 129, p-value = 3.046e-12
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
+## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
 ##        -Inf -0.6126882
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##             2.840264             3.624444</code></pre>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, Masculine_hobbies ~ Sex)</code></pre>
-<pre><code>## # A tibble: 2 × 4
+<pre><code>## # A tibble: 2 x 4
 ##   Sex_ref Sex_foc coh_d hedg_g
 ##   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Female  Male    -1.58  -1.57
@@ -569,7 +569,7 @@ vocab_tt</code></pre>
 ## 
 ## data:  vocab by Sex
 ## t = -0.74845, df = 129, p-value = 0.4556
-## alternative hypothesis: true difference in means between group Female and group Male is not equal to 0
+## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  -2.735626  1.233976
 ## sample estimates:
@@ -578,7 +578,7 @@ vocab_tt</code></pre>
 <p>We find no statistically significant difference in vocabulary scores.</p>
 <p>This is also shown by the effect size.</p>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, vocab ~ Sex)</code></pre>
-<pre><code>## # A tibble: 2 × 4
+<pre><code>## # A tibble: 2 x 4
 ##   Sex_ref Sex_foc  coh_d hedg_g
 ##   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Female  Male    -0.156 -0.155
@@ -597,7 +597,7 @@ vocab_tt</code></pre>
   group_by(Sex) %&gt;% 
   summarise(mean=mean(mental_rot,na.rm=T),sd=sd(mental_rot,na.rm=T))%&gt;% 
   mutate_if(is.numeric, format, 2)</code></pre>
-<pre><code>## # A tibble: 2 × 3
+<pre><code>## # A tibble: 2 x 3
 ##   Sex    mean     sd      
 ##   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;   
 ## 1 Female 26.20792 6.003860
@@ -606,7 +606,7 @@ vocab_tt</code></pre>
   group_by(Sex) %&gt;% 
   summarise(mean=mean(vocab,na.rm=T),sd=sd(vocab,na.rm=T))%&gt;% 
   mutate_if(is.numeric, format, 2)</code></pre>
-<pre><code>## # A tibble: 2 × 3
+<pre><code>## # A tibble: 2 x 3
 ##   Sex    mean     sd      
 ##   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;   
 ## 1 Female 9.165842 4.636173
@@ -615,7 +615,7 @@ vocab_tt</code></pre>
   group_by(Sex) %&gt;% 
   summarise(mean=mean(Masculine_hobbies,na.rm=T),sd=sd(Masculine_hobbies,na.rm=T))%&gt;% 
   mutate_if(is.numeric, format, 2)</code></pre>
-<pre><code>## # A tibble: 2 × 3
+<pre><code>## # A tibble: 2 x 3
 ##   Sex    mean     sd       
 ##   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;    
 ## 1 Female 2.840264 0.5008508
@@ -1670,7 +1670,7 @@ df_mr_log_contr &lt;- sex_diff_df %&gt;%
 ## 
 ## data:  mental_rot by Sex
 ## t = -2.7478, df = 129, p-value = 0.003429
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
+## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
 ##       -Inf -1.373374
 ## sample estimates:
@@ -1742,7 +1742,7 @@ summary(lm_mr_resids_sex)</code></pre>
 ## 
 ## data:  mr_resids by Sex
 ## t = -2.0567, df = 127, p-value = 0.02088
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
+## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
 ##        -Inf -0.4871209
 ## sample estimates:
@@ -1823,7 +1823,7 @@ summary(lm_mr_resids_sex)</code></pre>
 ## 
 ## data:  mr_resids by Sex
 ## t = -1.7837, df = 125, p-value = 0.03845
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
+## alternative hypothesis: true difference in means is less than 0
 ## 95 percent confidence interval:
 ##        -Inf -0.1547076
 ## sample estimates:
@@ -2026,7 +2026,7 @@ mdt_tt</code></pre>
 ## 
 ## data:  log_motion by Sex
 ## t = 3.7359, df = 124, p-value = 0.000142
-## alternative hypothesis: true difference in means between group Female and group Male is greater than 0
+## alternative hypothesis: true difference in means is greater than 0
 ## 95 percent confidence interval:
 ##  0.089656      Inf
 ## sample estimates:
@@ -2503,7 +2503,8 @@ rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lif
 ## -0.2717843</code></pre>
 <pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, &quot;Playing basketball&quot;)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>#es_mental_mas_contrast</code></pre>
+<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
+<pre><code>## [1] &quot;r = -0.27 95% CI [-0.45, -0.08]&quot;</code></pre>
 </div>
 <div id="home-electronics-and-contrast-sensitivity" class="section level5">
 <h5>Home electronics and Contrast Sensitivity</h5>
@@ -2526,7 +2527,8 @@ rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lif
 ## -0.222572</code></pre>
 <pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, &quot;Home electronics&quot;)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>#es_mental_mas_contrast</code></pre>
+<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
+<pre><code>## [1] &quot;r = -0.22 95% CI [-0.40, -0.03]&quot;</code></pre>
 </div>
 <div id="weightlifting-and-motion-duration" class="section level5">
 <h5>Weightlifting and Motion Duration</h5>
@@ -2549,7 +2551,121 @@ rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lif
 ## 0.3152802</code></pre>
 <pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default( male_hobbies_F, log_motion, &quot;Weight lifting&quot;)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
+<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
+<pre><code>## [1] &quot;r = 0.32 95% CI [0.12, 0.48]&quot;</code></pre>
 </div>
+<div id="computers-and-motion-duration" class="section level5">
+<h5>Computers and Motion Duration</h5>
+<pre class="r"><code>cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$&quot;Computers&quot;,
+  method = &quot;pearson&quot;,
+  alternative = &quot;two.sided&quot;
+)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  male_hobbies_F$log_motion and male_hobbies_F$Computers
+## t = -2.4325, df = 95, p-value = 0.01687
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.42124004 -0.04485878
+## sample estimates:
+##        cor 
+## -0.2421377</code></pre>
+<pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default( male_hobbies_F, log_motion, &quot;Computers&quot;)</code></pre>
+<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
+<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
+<pre><code>## [1] &quot;r = -0.24 95% CI [-0.42, -0.04]&quot;</code></pre>
+</div>
+</div>
+</div>
+<div id="set-function-for-scatterplot" class="section level3">
+<h3>set function for scatterplot</h3>
+<pre class="r"><code>sex_diff_scatter3 &lt;-
+  function(df,
+           x_var,
+           y_var,
+           x_lab = &quot;X axis&quot;,
+           y_lab = &quot;Y axis&quot;
+           ) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s &lt;- sym(x_var)
+    y_var_s &lt;- sym(y_var)
+    
+    p &lt;- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s
+      ) +
+      geom_point(size=4) +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = &quot;lm&quot;, na.rm = TRUE) +
+      xlab(x_lab) +
+      ylab(y_lab)+
+      theme.custom +
+      ylim(1, 5) 
+p
+  }</code></pre>
+<div id="get-scatterplot-for-contrast-sensitivity-and-playing-basketball" class="section level4">
+<h4>get scatterplot for contrast sensitivity and playing basketball</h4>
+<pre class="r"><code>sex_diff_scatter3(
+  male_hobbies_F,
+  &quot;log_contrast&quot;,
+  &quot;Playing basketball&quot;,
+  &quot;log(contrast threshold)&quot;,
+  &quot;Playing basketball&quot;
+)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-105-1.png" width="2100" style="display: block; margin: auto;" /> #### get scatterplot for contrast sensitivity and electronics</p>
+<pre class="r"><code>sex_diff_scatter3(
+  male_hobbies_F,
+  &quot;log_contrast&quot;,
+  &quot;Home electronics&quot;,
+  &quot;log(contrast threshold)&quot;,
+  &quot;Home electronics&quot;
+)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-106-1.png" width="2100" style="display: block; margin: auto;" /> #### get scatterplot for motion sensitivity and weight lifting</p>
+<pre class="r"><code>sex_diff_scatter3(
+  male_hobbies_F,
+  &quot;log_motion&quot;,
+  &quot;Weight lifting&quot;,
+  &quot;log(motion threshold)&quot;,
+  &quot;Weight lifting&quot;
+)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-107-1.png" width="2100" style="display: block; margin: auto;" /> #### get scatterplot for motion sensitivity and weight lifting, after excluding outliers</p>
+<pre class="r"><code>male_hobbies_Fex&lt;-male_hobbies_F[-which(male_hobbies_F$log_motion &gt; -1),]
+sex_diff_scatter3(
+  male_hobbies_Fex,
+  &quot;log_motion&quot;,
+  &quot;Weight lifting&quot;,
+  &quot;log(motion threshold)&quot;,
+  &quot;Weight lifting&quot;
+)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-108-1.png" width="2100" style="display: block; margin: auto;" /></p>
+</div>
+<div id="get-scatterplot-for-motion-sensitivity-and-weight-lifting" class="section level4">
+<h4>get scatterplot for motion sensitivity and weight lifting</h4>
+<pre class="r"><code>sex_diff_scatter3(
+  male_hobbies_F,
+  &quot;log_motion&quot;,
+  &quot;Computers&quot;,
+  &quot;log(motion threshold)&quot;,
+  &quot;Computers&quot;
+)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-109-1.png" width="2100" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -2598,9 +2714,6 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
