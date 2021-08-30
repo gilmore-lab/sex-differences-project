@@ -1771,14 +1771,13 @@ sex_diff_scatter3(
   "log(motion threshold)",
   "Computers"
 )
-=======
-
+```
 
 ## Do men and women differ in other ways?
 
 ### Age
 
-```{r, age}
+```{r,age}
 xtabs(~ Sex + Age, df_trimmed)
 ```
 
@@ -1798,6 +1797,26 @@ xtabs(~ Sex + Acuity, df_trimmed)
 
 ```{r, stereo}
 xtabs(~ Sex + Stereo_amin, df_trimmed)
->>>>>>> 11488e57d5cb64f5d3e68ab9abf4bfd893910f29
+
 ```
 
+#### get scatterplot for stereo and contrast
+```{r}
+sex_diff_scatter3(
+  df_trimmed,
+  "log_contrast",
+  "Stereo_amin",
+  "log(contrast threshold)",
+  "Stereo acuity"
+)
+```
+
+```{r}
+sex_diff_scatter3(
+  df_trimmed,
+  "log_motion",
+  "Stereo_amin",
+  "log(motion threshold)",
+  "Stereo acuity"
+)
+```
