@@ -57,7 +57,6 @@ sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn))
 ```
 
 
-
 # Preregistered analyses
 
 ## Individual measures
@@ -677,16 +676,15 @@ We estimate the correlation between mental_rotation and interest in male-typed a
 ```{r ggplot-themes}
 # "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
 theme.custom <- theme(panel.background = element_rect(fill = "white", colour = "grey50"),
-                      plot.title = element_text(size=24, face="bold",hjust = 0.5),
-                      axis.title.x = element_text(size=24),
-                      axis.title.y = element_text(size=24),
-                      strip.text = element_text(size=24),
-                      axis.text = element_text(size=24),
+                      plot.title = element_text(size=12, face="bold",hjust = 0.5),
+                      axis.title.x = element_text(size=10),
+                      axis.title.y = element_text(size=10),
+                      strip.text = element_text(size=9),
+                      axis.text = element_text(size=9),
                       legend.position = "bottom",
-               #   legend.position = "topleft",
                        legend.title = element_blank(),
 #  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                      legend.text=element_text(size=24))
+                      legend.text=element_text(size=9))
 ```
 
 The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.
@@ -732,7 +730,7 @@ sex_diff_scatter <-
         "text",
         x = anx,
         y = any,
-        size=8,
+        size=6,
         label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
              hjust = 1
       ) 
@@ -912,7 +910,7 @@ sex_diff_scatter_2 <-
         "text",
         x = anx,
         y = any,
-        size=8,
+        size=6,
         label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
              hjust = 1
       )
@@ -1005,8 +1003,8 @@ p_motion <- sex_diff_scatter_2(
 p_aug <- p_motion +
   ggplot2::annotate(
     geom = "point",
-    x = sex_diff_df$log_motion[c(125, 128)],
-    y = sex_diff_df$mental_rot[c(125, 128)],
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$mental_rot[c(115, 118)],
     color = "black",
     size = 8,
     shape = 0
@@ -1040,7 +1038,7 @@ p3<-sex_diff_scatter(
   paste0(
     "r = ",
     format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    corr_df$stars[2]
+    "*"
   ),
   paste0(
     "r = ",
@@ -1088,8 +1086,8 @@ p_vision<-sex_diff_scatter_2(
 p_aug2 <- p_vision +
   ggplot2::annotate(
     geom = "point",
-    x = sex_diff_df$log_motion[c(125, 128)],
-    y = sex_diff_df$log_contrast[c(125, 128)],
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$log_contrast[c(115, 118)],
     color = "black",
     size = 8,
     shape = 0
@@ -1111,7 +1109,7 @@ library("gridExtra")
 p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)
 ggsave(
   plot = p,
-  filename = paste0("~/Desktop/fig1.png"),
+  filename = paste0("~/Desktop/fig2.png"),
   units = "in",
   height = 12,
   width = 12,
@@ -1687,7 +1685,6 @@ es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log
 es_mental_mas_contrast$formatted_r
 ```
 
-<<<<<<< HEAD
 ### set function for scatterplot
 ```{r}
 sex_diff_scatter3 <-
@@ -1808,7 +1805,7 @@ sex_diff_scatter3(
   "Stereo_amin",
   "log(contrast threshold)",
   "Stereo acuity"
-)
+) +ylim(40, 800)
 ```
 
 ```{r}
@@ -1818,5 +1815,5 @@ sex_diff_scatter3(
   "Stereo_amin",
   "log(motion threshold)",
   "Stereo acuity"
-)
+)+ylim(40, 800)
 ```
