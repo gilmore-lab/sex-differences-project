@@ -11,7 +11,7 @@ output:
     toc_float: true
 params:
   data_path: "csv"
-  csv_fn: "sex-differences-data.csv"
+  csv_fn: "qian-berenbaum-gilmore-data.csv"
   outlier_sd_thresh: 3.0
   plot_device: "png"
 ---
@@ -46,8 +46,6 @@ library(add2ggplot)
 library(gridExtra)
 ```
 
-
-
 # Import data
 
 Data from the set of tasks were merged and cleaned as described in `import-clean-raw-data.Rmd`.
@@ -56,10 +54,6 @@ Data from the set of tasks were merged and cleaned as described in `import-clean
 sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
 
-<<<<<<< HEAD:analysis/qian-berenbaum-gilmore.Rmd
-=======
-
->>>>>>> d61e73efe3a25494a62811c752288680ccecf0d1:analysis/berenbaum-qian-gilmore.Rmd
 # Preregistered analyses
 
 ## Individual measures
@@ -368,19 +362,29 @@ es_vocab <- esci::estimateMeanDifference.default(sex_diff_df,
 
 `r es_m_hobbies$formatted_d`.
 
-#### get the mean and sd
+#### Get group means and SDs
+
+Mental rotation
 
 ```{r}
 df_mental_rot %>% 
   group_by(Sex) %>% 
   summarise(mean=mean(mental_rot,na.rm=T),sd=sd(mental_rot,na.rm=T))%>% 
   mutate_if(is.numeric, format, 2)
+```
 
+Vocabulary
+
+```{r}
 sex_diff_df %>% 
   group_by(Sex) %>% 
   summarise(mean=mean(vocab,na.rm=T),sd=sd(vocab,na.rm=T))%>% 
   mutate_if(is.numeric, format, 2)
+```
 
+Interest in male-typed hobbies
+
+```{r}
 sex_diff_df %>% 
   group_by(Sex) %>% 
   summarise(mean=mean(Masculine_hobbies,na.rm=T),sd=sd(Masculine_hobbies,na.rm=T))%>% 
@@ -1106,24 +1110,32 @@ Full model.
 ```{r}
 lm_mr_contr_motion_full <- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_full)
+car::Anova(lm_mr_contr_motion_full)
+confint(lm_mr_contr_motion_full)
+lsr::etaSquared(lm_mr_contr_motion_full)
 ```
 
-Drop interactions.
+Drop interactions, but keep log_contrast, log_motion, and Sex.
 
 ```{r}
 lm_mr_contr_motion_no_interactions <- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_interactions)
+car::Anova(lm_mr_contr_motion_no_interactions)
+confint(lm_mr_contr_motion_no_interactions)
+lsr::etaSquared(lm_mr_contr_motion_no_interactions)
 ```
 
-Drop sex.
+Drop Sex.
 
 ```{r}
 lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)
-anova(lm_mr_contr_motion_no_sex)
+car::Anova(lm_mr_contr_motion_no_sex)
+confint(lm_mr_contr_motion_no_sex)
+lsr::etaSquared(lm_mr_contr_motion_no_sex)
 ```
 
-Compare models.
+Compare vision-only model with vision + Sex.
 
 ```{r}
 anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)
@@ -1136,6 +1148,9 @@ Here's a model with sex alone.
 ```{r}
 lm_mr_only_sex <- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
 summary(lm_mr_only_sex)
+car::Anova(lm_mr_only_sex)
+confint(lm_mr_only_sex)
+lsr::etaSquared(lm_mr_only_sex)
 ```
 
 Comparing this to one with vision but not sex.
@@ -1147,6 +1162,40 @@ anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)
 The model with the smaller RSS is the one with the vision variables included.
 
 We conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
+
+Finally, for completeness, we try one more model that includes the `Sex:log_motion` interaction indicated in the full model with interactions above.
+
+```{r}
+lm_mr_contr_motion_motion_sex_int <- lm(mental_rot ~ log_contrast + log_motion + log_motion:Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_motion_sex_int)
+car::Anova(lm_mr_contr_motion_motion_sex_int)
+confint(lm_mr_contr_motion_motion_sex_int)
+lsr::etaSquared(lm_mr_contr_motion_motion_sex_int)
+```
+
+And we compare this to the model with vision measures alone but not `Sex`.
+
+```{r}
+anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_motion_sex_int)
+```
+
+So, the best fitting model to predict mental rotation is the one *without* the `log_motion:Sex` interaction but *with* the vision measures.
+
+Do we need `log_motion`?
+
+```{r}
+lm_mr_contr <- lm(mental_rot ~ log_contrast, data = df_mr_contr_motion)
+summary(lm_mr_contr)
+car::Anova(lm_mr_contr)
+confint(lm_mr_contr)
+lsr::etaSquared(lm_mr_contr)
+```
+
+```{r}
+anova(lm_mr_contr, lm_mr_contr_motion_no_sex)
+```
+
+So, the best-fitting model overall is still the one with `log_contrast` and `log_motion` but not `Sex` or `Sex:log_motion`.
 
 ## Do outliers account for results?
 
@@ -1313,7 +1362,7 @@ The vision measures still correlate in men.
 
 ### Model-based approach
 
-Do the trimmed data show a stronger relationship between vision and mental rotation than sex and mental rotation?
+Do the *trimmed data* show a stronger relationship between vision and mental rotation than sex and mental rotation?
 
 ```{r}
 df_mr_contr_motion <- df_trimmed %>%
@@ -1369,233 +1418,6 @@ The model with the smaller RSS is the one with the vision variables included.
 
 We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
 
-<<<<<<< HEAD:analysis/qian-berenbaum-gilmore.Rmd
-=======
-
-## Does interest in specific male-typed hobbies correlate with vision?
-
-Determine which hobbies are strongly male-typed according to (CITE):
-
-- Golf
-- Home eletronics
-- Surfing
-- Computers
-- Video games
-- Watching violent movies
-- Going to car shows
-- Fishing
-- Poker
-- Playing Basketball
-- TV sports
-- Football
-- Weight lifting
-- Working on cars
-- Drag racing
-
-```{r}
-var <-
-  c(
-    "Participant",
-    "Sex",
-    "log_contrast",
-    "log_motion",
-    "Golf",
-    "Home electronics",
-    "Surfing",
-    "Computers",
-    "Video games",
-    "Watching violent movies",
-    "Going to car shows",
-    "Fishing",
-    "Poker",
-    "Playing basketball",
-    "TV sports",
-    "Football",
-    "Weight lifting",
-    "Working on cars",
-    "Drag racing",
-    "Masculine_hobbies"
-  )
-male_hobbies <- sex_diff_df[, var]
-male_hobbies_F <- male_hobbies %>% 
-  dplyr::filter(Sex == "Female")
-```
-
-### Calculate alpha
-
-```{r}
-psych::alpha(male_hobbies[,-c(1:4,20)])
-```
-
-### Check data for outliers
-
-```{r}
-FindOutliers(male_hobbies$Masculine_hobbies)
-```
-
-No data are outliers.
-
-### Correlation between male-typed hobbies and log contrast
-
-```{r}
-rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball
-rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
-```
-
-`Playing basketball` and `Home electronics` substantial large negative correlations (in women) with log contrast thresholds.
-
-#### Playing basketball and Contrast Sensitivity
-
-```{r}
-cor.test(
-  male_hobbies_F$log_contrast,
-  male_hobbies_F$"Playing basketball",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Playing basketball")
-es_mental_mas_contrast$formatted_r
-```
-
-#### Home electronics and Contrast Sensitivity
-
-```{r}
-cor.test(
-   male_hobbies_F$log_contrast,
-   male_hobbies_F$"Home electronics",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, "Home electronics")
-es_mental_mas_contrast$formatted_r
-```
-
-
-### Correlation between male-typed hobbies and log motion
-
-```{r}
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
-```
-
-`Weightlifing` and `Computers` shows substantial correlations with motion duration thresholds.
-
-#### Weightlifting and Motion Duration
-
-```{r}
-cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$"Weight lifting",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Weight lifting")
-es_mental_mas_contrast$formatted_r
-```
-
-##### Computers and Motion Duration
-
-```{r}
-cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$"Computers",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
-es_mental_mas_contrast$formatted_r
-```
-
-### set function for scatterplot
-```{r}
-sex_diff_scatter3 <-
-  function(df,
-           x_var,
-           y_var,
-           x_lab = "X axis",
-           y_lab = "Y axis"
-           ) {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s <- sym(x_var)
-    y_var_s <- sym(y_var)
-    
-    p <- ggplot(df) +
-      aes(
-        x = !!x_var_s,
-        y = !!y_var_s
-      ) +
-      geom_point(size=4) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = "lm", na.rm = TRUE) +
-      xlab(x_lab) +
-      ylab(y_lab)+
-      theme.custom +
-      ylim(1, 5) 
-p
-  }
-```
-
-#### get scatterplot for contrast sensitivity and playing basketball
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_contrast",
-  "Playing basketball",
-  "log(contrast threshold)",
-  "Playing basketball"
-)
-```
-#### get scatterplot for contrast sensitivity and electronics
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_contrast",
-  "Home electronics",
-  "log(contrast threshold)",
-  "Home electronics"
-)
-```
-#### get scatterplot for motion sensitivity and weight lifting
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_motion",
-  "Weight lifting",
-  "log(motion threshold)",
-  "Weight lifting"
-)
-```
-#### get scatterplot for motion sensitivity and weight lifting, after excluding outliers
-```{r}
-male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
-sex_diff_scatter3(
-  male_hobbies_Fex,
-  "log_motion",
-  "Weight lifting",
-  "log(motion threshold)",
-  "Weight lifting"
-)
-```
-
-#### get scatterplot for motion sensitivity and weight lifting
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_motion",
-  "Computers",
-  "log(motion threshold)",
-  "Computers"
-)
-```
-
->>>>>>> d61e73efe3a25494a62811c752288680ccecf0d1:analysis/berenbaum-qian-gilmore.Rmd
 ## Do men and women differ in other ways?
 
 The samples do not appear substantially different in other measures.
@@ -1622,29 +1444,4 @@ xtabs(~ Sex + Acuity, df_trimmed)
 
 ```{r, stereo}
 xtabs(~ Sex + Stereo_amin, df_trimmed)
-
 ```
-<<<<<<< HEAD:analysis/qian-berenbaum-gilmore.Rmd
-=======
-
-#### get scatterplot for stereo and contrast
-```{r}
-sex_diff_scatter3(
-  df_trimmed,
-  "log_contrast",
-  "Stereo_amin",
-  "log(contrast threshold)",
-  "Stereo acuity"
-) +ylim(40, 800)
-```
-
-```{r}
-sex_diff_scatter3(
-  df_trimmed,
-  "log_motion",
-  "Stereo_amin",
-  "log(motion threshold)",
-  "Stereo acuity"
-)+ylim(40, 800)
-```
->>>>>>> d61e73efe3a25494a62811c752288680ccecf0d1:analysis/berenbaum-qian-gilmore.Rmd

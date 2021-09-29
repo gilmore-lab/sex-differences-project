@@ -256,7 +256,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-09-29 11:41:54</h4>
+<h4 class="date">2021-09-29 13:44:36</h4>
 
 </div>
 
@@ -596,8 +596,9 @@ vocab_tt</code></pre>
                                      conf.level = .95)
 #es_vocab</code></pre>
 <p>d_unbiased = -1.57 95% CI [-2.05, -1.14].</p>
-<div id="get-the-mean-and-sd" class="section level4">
-<h4>get the mean and sd</h4>
+<div id="get-group-means-and-sds" class="section level4">
+<h4>Get group means and SDs</h4>
+<p>Mental rotation</p>
 <pre class="r"><code>df_mental_rot %&gt;% 
   group_by(Sex) %&gt;% 
   summarise(mean=mean(mental_rot,na.rm=T),sd=sd(mental_rot,na.rm=T))%&gt;% 
@@ -607,6 +608,7 @@ vocab_tt</code></pre>
 ##   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;   
 ## 1 Female 26.20792 6.003860
 ## 2 Male   29.66667 6.221949</code></pre>
+<p>Vocabulary</p>
 <pre class="r"><code>sex_diff_df %&gt;% 
   group_by(Sex) %&gt;% 
   summarise(mean=mean(vocab,na.rm=T),sd=sd(vocab,na.rm=T))%&gt;% 
@@ -616,6 +618,7 @@ vocab_tt</code></pre>
 ##   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;   
 ## 1 Female 9.165842 4.636173
 ## 2 Male   9.916667 5.424376</code></pre>
+<p>Interest in male-typed hobbies</p>
 <pre class="r"><code>sex_diff_df %&gt;% 
   group_by(Sex) %&gt;% 
   summarise(mean=mean(Masculine_hobbies,na.rm=T),sd=sd(Masculine_hobbies,na.rm=T))%&gt;% 
@@ -926,16 +929,15 @@ vocab_tt</code></pre>
 <h2>Visualizations</h2>
 <pre class="r"><code># &quot;The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). &quot;
 theme.custom &lt;- theme(panel.background = element_rect(fill = &quot;white&quot;, colour = &quot;grey50&quot;),
-                      plot.title = element_text(size=24, face=&quot;bold&quot;,hjust = 0.5),
-                      axis.title.x = element_text(size=24),
-                      axis.title.y = element_text(size=24),
-                      strip.text = element_text(size=24),
-                      axis.text = element_text(size=24),
+                      plot.title = element_text(size=12, face=&quot;bold&quot;,hjust = 0.5),
+                      axis.title.x = element_text(size=10),
+                      axis.title.y = element_text(size=10),
+                      strip.text = element_text(size=9),
+                      axis.text = element_text(size=9),
                       legend.position = &quot;bottom&quot;,
-               #   legend.position = &quot;topleft&quot;,
                        legend.title = element_blank(),
 #  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                      legend.text=element_text(size=24))</code></pre>
+                      legend.text=element_text(size=9))</code></pre>
 <p>The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.</p>
 <pre class="r"><code>sex_diff_scatter &lt;-
   function(df,
@@ -977,7 +979,7 @@ theme.custom &lt;- theme(panel.background = element_rect(fill = &quot;white&quot
         &quot;text&quot;,
         x = anx,
         y = any,
-        size=8,
+        size=6,
         label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
              hjust = 1
       ) 
@@ -1208,7 +1210,7 @@ Females
         &quot;text&quot;,
         x = anx,
         y = any,
-        size=8,
+        size=6,
         label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
              hjust = 1
       )
@@ -1297,8 +1299,8 @@ p_motion &lt;- sex_diff_scatter_2(
 p_aug &lt;- p_motion +
   ggplot2::annotate(
     geom = &quot;point&quot;,
-    x = sex_diff_df$log_motion[c(125, 128)],
-    y = sex_diff_df$mental_rot[c(125, 128)],
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$mental_rot[c(115, 118)],
     color = &quot;black&quot;,
     size = 8,
     shape = 0
@@ -1389,7 +1391,7 @@ p3&lt;-sex_diff_scatter(
   paste0(
     &quot;r = &quot;,
     format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    corr_df$stars[2]
+    &quot;*&quot;
   ),
   paste0(
     &quot;r = &quot;,
@@ -1495,8 +1497,8 @@ p_vision&lt;-sex_diff_scatter_2(
 p_aug2 &lt;- p_vision +
   ggplot2::annotate(
     geom = &quot;point&quot;,
-    x = sex_diff_df$log_motion[c(125, 128)],
-    y = sex_diff_df$log_contrast[c(125, 128)],
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$log_contrast[c(115, 118)],
     color = &quot;black&quot;,
     size = 8,
     shape = 0
@@ -1509,7 +1511,6 @@ p_aug2 &lt;- ggExtra::ggMarginal(p_aug2,
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>p_aug2</code></pre>
 <p><img src="img/motion-duration-contrast-sens-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>sex_diff_corr_summ(&quot;log_motion&quot;,
@@ -1574,10 +1575,10 @@ ns
 </ul>
 <pre class="r"><code>library(&quot;gridExtra&quot;)
 p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)</code></pre>
-<p><img src="img/unnamed-chunk-50-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-52-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p,
-  filename = paste0(&quot;~/Desktop/fig1.png&quot;),
+  filename = paste0(&quot;~/Desktop/fig2.png&quot;),
   units = &quot;in&quot;,
   height = 12,
   width = 12,
@@ -1626,7 +1627,41 @@ summary(lm_mr_contr_motion_full)</code></pre>
 ## Residual standard error: 5.682 on 117 degrees of freedom
 ## Multiple R-squared:  0.1913, Adjusted R-squared:  0.143 
 ## F-statistic: 3.955 on 7 and 117 DF,  p-value: 0.0006531</code></pre>
-<p>Drop interactions.</p>
+<pre class="r"><code>car::Anova(lm_mr_contr_motion_full)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: mental_rot
+##                             Sum Sq  Df F value   Pr(&gt;F)   
+## log_contrast                 214.7   1  6.6513 0.011148 * 
+## log_motion                   113.5   1  3.5173 0.063223 . 
+## Sex                           96.7   1  2.9941 0.086205 . 
+## log_contrast:log_motion       34.6   1  1.0709 0.302880   
+## log_contrast:Sex              23.9   1  0.7403 0.391322   
+## log_motion:Sex               222.9   1  6.9053 0.009746 **
+## log_contrast:log_motion:Sex   19.7   1  0.6110 0.435983   
+## Residuals                   3777.1 117                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>confint(lm_mr_contr_motion_full)</code></pre>
+<pre><code>##                                      2.5 %    97.5 %
+## (Intercept)                     -141.79397  93.20481
+## log_contrast                     -88.08265  47.22010
+## log_motion                       -69.36066  35.20288
+## SexMale                         -252.52312 139.05713
+## log_contrast:log_motion          -36.00901  24.02970
+## log_contrast:SexMale            -167.24730  61.70843
+## log_motion:SexMale              -112.47290  68.11721
+## log_contrast:log_motion:SexMale  -72.64318  31.52737</code></pre>
+<pre class="r"><code>lsr::etaSquared(lm_mr_contr_motion_full)</code></pre>
+<pre><code>##                                  eta.sq eta.sq.part
+## log_contrast                0.045970898 0.053790602
+## log_motion                  0.024310297 0.029185210
+## Sex                         0.020693990 0.024952058
+## log_contrast:log_motion     0.007401522 0.009069853
+## log_contrast:Sex            0.005116695 0.006287621
+## log_motion:Sex              0.047726746 0.055730622
+## log_contrast:log_motion:Sex 0.004223110 0.005195250</code></pre>
+<p>Drop interactions, but keep log_contrast, log_motion, and Sex.</p>
 <pre class="r"><code>lm_mr_contr_motion_no_interactions &lt;- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_interactions)</code></pre>
 <pre><code>## 
@@ -1649,7 +1684,29 @@ summary(lm_mr_contr_motion_no_interactions)</code></pre>
 ## Residual standard error: 5.784 on 121 degrees of freedom
 ## Multiple R-squared:  0.1335, Adjusted R-squared:  0.112 
 ## F-statistic: 6.212 on 3 and 121 DF,  p-value: 0.0005839</code></pre>
-<p>Drop sex.</p>
+<pre class="r"><code>car::Anova(lm_mr_contr_motion_no_interactions)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: mental_rot
+##              Sum Sq  Df F value  Pr(&gt;F)  
+## log_contrast  186.9   1  5.5867 0.01969 *
+## log_motion    117.5   1  3.5116 0.06335 .
+## Sex            76.0   1  2.2723 0.13431  
+## Residuals    4047.5 121                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>confint(lm_mr_contr_motion_no_interactions)</code></pre>
+<pre><code>##                    2.5 %     97.5 %
+## (Intercept)   -9.2364411 17.2841105
+## log_contrast -14.1785891 -1.2530378
+## log_motion    -8.0423841  0.2208782
+## SexMale       -0.6065113  4.4777305</code></pre>
+<pre class="r"><code>lsr::etaSquared(lm_mr_contr_motion_no_interactions)</code></pre>
+<pre><code>##                  eta.sq eta.sq.part
+## log_contrast 0.04000894  0.04413307
+## log_motion   0.02514835  0.02820296
+## Sex          0.01627327  0.01843335</code></pre>
+<p>Drop Sex.</p>
 <pre class="r"><code>lm_mr_contr_motion_no_sex &lt;- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)</code></pre>
 <pre><code>## 
@@ -1671,17 +1728,26 @@ summary(lm_mr_contr_motion_no_sex)</code></pre>
 ## Residual standard error: 5.814 on 122 degrees of freedom
 ## Multiple R-squared:  0.1172, Adjusted R-squared:  0.1027 
 ## F-statistic: 8.097 on 2 and 122 DF,  p-value: 0.000499</code></pre>
-<pre class="r"><code>anova(lm_mr_contr_motion_no_sex)</code></pre>
-<pre><code>## Analysis of Variance Table
+<pre class="r"><code>car::Anova(lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: mental_rot
-##               Df Sum Sq Mean Sq F value   Pr(&gt;F)   
-## log_contrast   1  363.4  363.36 10.7507 0.001359 **
-## log_motion     1  184.0  183.98  5.4433 0.021281 * 
-## Residuals    122 4123.5   33.80                    
+##              Sum Sq  Df F value  Pr(&gt;F)  
+## log_contrast  230.6   1  6.8234 0.01013 *
+## log_motion    184.0   1  5.4433 0.02128 *
+## Residuals    4123.5 122                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Compare models.</p>
+<pre class="r"><code>confint(lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>##                   2.5 %     97.5 %
+## (Intercept)  -11.554100 14.0899548
+## log_contrast -14.889265 -2.0511391
+## log_motion    -8.737419 -0.7161637</code></pre>
+<pre class="r"><code>lsr::etaSquared(lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>##                  eta.sq eta.sq.part
+## log_contrast 0.04937532  0.05296689
+## log_motion   0.03938889  0.04271161</code></pre>
+<p>Compare vision-only model with vision + Sex.</p>
 <pre class="r"><code>anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -1712,6 +1778,22 @@ summary(lm_mr_only_sex)</code></pre>
 ## Residual standard error: 5.996 on 123 degrees of freedom
 ## Multiple R-squared:  0.0531, Adjusted R-squared:  0.0454 
 ## F-statistic: 6.898 on 1 and 123 DF,  p-value: 0.009727</code></pre>
+<pre class="r"><code>car::Anova(lm_mr_only_sex)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: mental_rot
+##           Sum Sq  Df F value   Pr(&gt;F)   
+## Sex        248.0   1  6.8978 0.009727 **
+## Residuals 4422.8 123                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>confint(lm_mr_only_sex)</code></pre>
+<pre><code>##                  2.5 %    97.5 %
+## (Intercept) 25.1506239 27.586218
+## SexMale      0.8124275  5.784064</code></pre>
+<pre class="r"><code>lsr::etaSquared(lm_mr_only_sex)</code></pre>
+<pre><code>##         eta.sq eta.sq.part
+## Sex 0.05310184  0.05310184</code></pre>
 <p>Comparing this to one with vision but not sex.</p>
 <pre class="r"><code>anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)</code></pre>
 <pre><code>## Analysis of Variance Table
@@ -1725,6 +1807,110 @@ summary(lm_mr_only_sex)</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The model with the smaller RSS is the one with the vision variables included.</p>
 <p>We conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.</p>
+<p>Finally, for completeness, we try one more model that includes the <code>Sex:log_motion</code> interaction indicated in the full model with interactions above.</p>
+<pre class="r"><code>lm_mr_contr_motion_motion_sex_int &lt;- lm(mental_rot ~ log_contrast + log_motion + log_motion:Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_motion_sex_int)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast + log_motion + log_motion:Sex, 
+##     data = df_mr_contr_motion)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -12.7345  -4.0959  -0.2491   3.7532  13.3294 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)          3.9332     6.8137   0.577   0.5648  
+## log_contrast        -7.8198     3.2782  -2.385   0.0186 *
+## log_motion          -3.9040     2.1285  -1.834   0.0691 .
+## log_motion:SexMale  -0.6570     0.5318  -1.235   0.2191  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.801 on 121 degrees of freedom
+## Multiple R-squared:  0.1282, Adjusted R-squared:  0.1066 
+## F-statistic:  5.93 on 3 and 121 DF,  p-value: 0.000828</code></pre>
+<pre class="r"><code>car::Anova(lm_mr_contr_motion_motion_sex_int)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: mental_rot
+##                Sum Sq  Df F value  Pr(&gt;F)  
+## log_contrast    191.5   1  5.6902 0.01861 *
+## log_motion      184.0   1  5.4668 0.02102 *
+## log_motion:Sex   51.4   1  1.5263 0.21907  
+## Residuals      4072.1 121                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>confint(lm_mr_contr_motion_motion_sex_int)</code></pre>
+<pre><code>##                         2.5 %     97.5 %
+## (Intercept)         -9.556314 17.4227917
+## log_contrast       -14.309855 -1.3298114
+## log_motion          -8.117936  0.3099020
+## log_motion:SexMale  -1.709946  0.3958637</code></pre>
+<pre class="r"><code>lsr::etaSquared(lm_mr_contr_motion_motion_sex_int)</code></pre>
+<pre><code>##                    eta.sq eta.sq.part
+## log_contrast   0.04099876  0.04491447
+## log_motion     0.03938889  0.04322708
+## log_motion:Sex 0.01099702  0.01245674</code></pre>
+<p>And we compare this to the model with vision measures alone but not <code>Sex</code>.</p>
+<pre class="r"><code>anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_motion_sex_int)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: mental_rot ~ log_contrast + log_motion
+## Model 2: mental_rot ~ log_contrast + log_motion + log_motion:Sex
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1    122 4123.5                           
+## 2    121 4072.1  1    51.365 1.5263 0.2191</code></pre>
+<p>So, the best fitting model to predict mental rotation is the one <em>without</em> the <code>log_motion:Sex</code> interaction but <em>with</em> the vision measures.</p>
+<p>Do we need <code>log_motion</code>?</p>
+<pre class="r"><code>lm_mr_contr &lt;- lm(mental_rot ~ log_contrast, data = df_mr_contr_motion)
+summary(lm_mr_contr)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast, data = df_mr_contr_motion)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -12.6860  -3.4567  -0.4136   3.5635  12.7461 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)     8.958      5.676   1.578  0.11707   
+## log_contrast  -10.312      3.201  -3.221  0.00163 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.918 on 123 degrees of freedom
+## Multiple R-squared:  0.07779,    Adjusted R-squared:  0.0703 
+## F-statistic: 10.38 on 1 and 123 DF,  p-value: 0.001634</code></pre>
+<pre class="r"><code>car::Anova(lm_mr_contr)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: mental_rot
+##              Sum Sq  Df F value   Pr(&gt;F)   
+## log_contrast  363.4   1  10.376 0.001634 **
+## Residuals    4307.4 123                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>confint(lm_mr_contr)</code></pre>
+<pre><code>##                  2.5 %    97.5 %
+## (Intercept)   -2.27685 20.192154
+## log_contrast -16.64890 -3.975179</code></pre>
+<pre class="r"><code>lsr::etaSquared(lm_mr_contr)</code></pre>
+<pre><code>##                  eta.sq eta.sq.part
+## log_contrast 0.07779428  0.07779428</code></pre>
+<pre class="r"><code>anova(lm_mr_contr, lm_mr_contr_motion_no_sex)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: mental_rot ~ log_contrast
+## Model 2: mental_rot ~ log_contrast + log_motion
+##   Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+## 1    123 4307.4                              
+## 2    122 4123.5  1    183.98 5.4433 0.02128 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>So, the best-fitting model overall is still the one with <code>log_contrast</code> and <code>log_motion</code> but not <code>Sex</code> or <code>Sex:log_motion</code>.</p>
 </div>
 </div>
 <div id="do-outliers-account-for-results" class="section level2">
@@ -1771,7 +1957,7 @@ summary(lm_mr_only_sex)</code></pre>
   aes(Sex, log_motion) +
   geom_boxplot()</code></pre>
 <pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="img/unnamed-chunk-63-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-69-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>We then test for a difference in means.</p>
 <pre class="r"><code>mdt_tt &lt;-
   t.test(
@@ -1906,7 +2092,7 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 </div>
 <div id="model-based-approach-1" class="section level3">
 <h3>Model-based approach</h3>
-<p>Do the trimmed data show a stronger relationship between vision and mental rotation than sex and mental rotation?</p>
+<p>Do the <em>trimmed data</em> show a stronger relationship between vision and mental rotation than sex and mental rotation?</p>
 <pre class="r"><code>df_mr_contr_motion &lt;- df_trimmed %&gt;%
   dplyr::select(., Sex, log_contrast, log_motion, mental_rot) %&gt;%
   dplyr::filter(., !is.na(Sex),
