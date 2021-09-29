@@ -13,7 +13,7 @@ params:
   motion_csv_fn: "motion_output_Oct2020.csv"
   qualtrics_csv_fn: "qualtrics_output_10_14_2020.csv"
   hobbies_csv_fn: "sexdiff_data.csv"
-  processed_data_path: "~/OneDrive - The Pennsylvania State University/Project_Sex_difference_on_Motion_Perception/data/processed_data"
+  processed_data_path: "~/OneDrive - The Pennsylvania State University/Box Migration Data/Project_Sex_difference_on_Motion_Perception/data/processed_data"
   output_path: "csv"
 ---
 
@@ -514,7 +514,7 @@ df$schoolyear <- factor(df$schoolyear, labels = c("1st", "2nd", "3rd", "4th"),
 
 ```{r, clean-race}
 
-df$race <- NA
+df$race <- ""
 df$race[which(df$race_1 == 1)] <- "Asian"
 df$race[which(df$race_2 == 1)] <-
   paste(df$race, "Black/African", sep = ",")

@@ -56,6 +56,10 @@ Data from the set of tasks were merged and cleaned as described in `import-clean
 sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
 
+<<<<<<< HEAD:analysis/qian-berenbaum-gilmore.Rmd
+=======
+
+>>>>>>> d61e73efe3a25494a62811c752288680ccecf0d1:analysis/berenbaum-qian-gilmore.Rmd
 # Preregistered analyses
 
 ## Individual measures
@@ -634,16 +638,15 @@ We estimate the correlation between log contrast and log motion thresholds in me
 ```{r ggplot-themes}
 # "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
 theme.custom <- theme(panel.background = element_rect(fill = "white", colour = "grey50"),
-                      plot.title = element_text(size=24, face="bold",hjust = 0.5),
-                      axis.title.x = element_text(size=24),
-                      axis.title.y = element_text(size=24),
-                      strip.text = element_text(size=24),
-                      axis.text = element_text(size=24),
+                      plot.title = element_text(size=12, face="bold",hjust = 0.5),
+                      axis.title.x = element_text(size=10),
+                      axis.title.y = element_text(size=10),
+                      strip.text = element_text(size=9),
+                      axis.text = element_text(size=9),
                       legend.position = "bottom",
-               #   legend.position = "topleft",
                        legend.title = element_blank(),
 #  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                      legend.text=element_text(size=24))
+                      legend.text=element_text(size=9))
 ```
 
 The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.
@@ -689,7 +692,7 @@ sex_diff_scatter <-
         "text",
         x = anx,
         y = any,
-        size=8,
+        size=6,
         label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
              hjust = 1
       ) 
@@ -869,7 +872,7 @@ sex_diff_scatter_2 <-
         "text",
         x = anx,
         y = any,
-        size=8,
+        size=6,
         label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
              hjust = 1
       )
@@ -962,8 +965,8 @@ p_motion <- sex_diff_scatter_2(
 p_aug <- p_motion +
   ggplot2::annotate(
     geom = "point",
-    x = sex_diff_df$log_motion[c(125, 128)],
-    y = sex_diff_df$mental_rot[c(125, 128)],
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$mental_rot[c(115, 118)],
     color = "black",
     size = 8,
     shape = 0
@@ -997,7 +1000,7 @@ p3<-sex_diff_scatter(
   paste0(
     "r = ",
     format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    corr_df$stars[2]
+    "*"
   ),
   paste0(
     "r = ",
@@ -1045,8 +1048,8 @@ p_vision<-sex_diff_scatter_2(
 p_aug2 <- p_vision +
   ggplot2::annotate(
     geom = "point",
-    x = sex_diff_df$log_motion[c(125, 128)],
-    y = sex_diff_df$log_contrast[c(125, 128)],
+    x = sex_diff_df$log_motion[c(115, 118)],
+    y = sex_diff_df$log_contrast[c(115, 118)],
     color = "black",
     size = 8,
     shape = 0
@@ -1068,7 +1071,7 @@ library("gridExtra")
 p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)
 ggsave(
   plot = p,
-  filename = paste0("~/Desktop/fig1.png"),
+  filename = paste0("~/Desktop/fig2.png"),
   units = "in",
   height = 12,
   width = 12,
@@ -1366,6 +1369,233 @@ The model with the smaller RSS is the one with the vision variables included.
 
 We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
 
+<<<<<<< HEAD:analysis/qian-berenbaum-gilmore.Rmd
+=======
+
+## Does interest in specific male-typed hobbies correlate with vision?
+
+Determine which hobbies are strongly male-typed according to (CITE):
+
+- Golf
+- Home eletronics
+- Surfing
+- Computers
+- Video games
+- Watching violent movies
+- Going to car shows
+- Fishing
+- Poker
+- Playing Basketball
+- TV sports
+- Football
+- Weight lifting
+- Working on cars
+- Drag racing
+
+```{r}
+var <-
+  c(
+    "Participant",
+    "Sex",
+    "log_contrast",
+    "log_motion",
+    "Golf",
+    "Home electronics",
+    "Surfing",
+    "Computers",
+    "Video games",
+    "Watching violent movies",
+    "Going to car shows",
+    "Fishing",
+    "Poker",
+    "Playing basketball",
+    "TV sports",
+    "Football",
+    "Weight lifting",
+    "Working on cars",
+    "Drag racing",
+    "Masculine_hobbies"
+  )
+male_hobbies <- sex_diff_df[, var]
+male_hobbies_F <- male_hobbies %>% 
+  dplyr::filter(Sex == "Female")
+```
+
+### Calculate alpha
+
+```{r}
+psych::alpha(male_hobbies[,-c(1:4,20)])
+```
+
+### Check data for outliers
+
+```{r}
+FindOutliers(male_hobbies$Masculine_hobbies)
+```
+
+No data are outliers.
+
+### Correlation between male-typed hobbies and log contrast
+
+```{r}
+rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball
+rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
+```
+
+`Playing basketball` and `Home electronics` substantial large negative correlations (in women) with log contrast thresholds.
+
+#### Playing basketball and Contrast Sensitivity
+
+```{r}
+cor.test(
+  male_hobbies_F$log_contrast,
+  male_hobbies_F$"Playing basketball",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Playing basketball")
+es_mental_mas_contrast$formatted_r
+```
+
+#### Home electronics and Contrast Sensitivity
+
+```{r}
+cor.test(
+   male_hobbies_F$log_contrast,
+   male_hobbies_F$"Home electronics",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, "Home electronics")
+es_mental_mas_contrast$formatted_r
+```
+
+
+### Correlation between male-typed hobbies and log motion
+
+```{r}
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
+```
+
+`Weightlifing` and `Computers` shows substantial correlations with motion duration thresholds.
+
+#### Weightlifting and Motion Duration
+
+```{r}
+cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$"Weight lifting",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Weight lifting")
+es_mental_mas_contrast$formatted_r
+```
+
+##### Computers and Motion Duration
+
+```{r}
+cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$"Computers",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
+es_mental_mas_contrast$formatted_r
+```
+
+### set function for scatterplot
+```{r}
+sex_diff_scatter3 <-
+  function(df,
+           x_var,
+           y_var,
+           x_lab = "X axis",
+           y_lab = "Y axis"
+           ) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s
+      ) +
+      geom_point(size=4) +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = "lm", na.rm = TRUE) +
+      xlab(x_lab) +
+      ylab(y_lab)+
+      theme.custom +
+      ylim(1, 5) 
+p
+  }
+```
+
+#### get scatterplot for contrast sensitivity and playing basketball
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_contrast",
+  "Playing basketball",
+  "log(contrast threshold)",
+  "Playing basketball"
+)
+```
+#### get scatterplot for contrast sensitivity and electronics
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_contrast",
+  "Home electronics",
+  "log(contrast threshold)",
+  "Home electronics"
+)
+```
+#### get scatterplot for motion sensitivity and weight lifting
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+#### get scatterplot for motion sensitivity and weight lifting, after excluding outliers
+```{r}
+male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
+sex_diff_scatter3(
+  male_hobbies_Fex,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+
+#### get scatterplot for motion sensitivity and weight lifting
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Computers",
+  "log(motion threshold)",
+  "Computers"
+)
+```
+
+>>>>>>> d61e73efe3a25494a62811c752288680ccecf0d1:analysis/berenbaum-qian-gilmore.Rmd
 ## Do men and women differ in other ways?
 
 The samples do not appear substantially different in other measures.
@@ -1394,3 +1624,27 @@ xtabs(~ Sex + Acuity, df_trimmed)
 xtabs(~ Sex + Stereo_amin, df_trimmed)
 
 ```
+<<<<<<< HEAD:analysis/qian-berenbaum-gilmore.Rmd
+=======
+
+#### get scatterplot for stereo and contrast
+```{r}
+sex_diff_scatter3(
+  df_trimmed,
+  "log_contrast",
+  "Stereo_amin",
+  "log(contrast threshold)",
+  "Stereo acuity"
+) +ylim(40, 800)
+```
+
+```{r}
+sex_diff_scatter3(
+  df_trimmed,
+  "log_motion",
+  "Stereo_amin",
+  "log(motion threshold)",
+  "Stereo acuity"
+)+ylim(40, 800)
+```
+>>>>>>> d61e73efe3a25494a62811c752288680ccecf0d1:analysis/berenbaum-qian-gilmore.Rmd
