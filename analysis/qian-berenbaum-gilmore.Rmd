@@ -1,5 +1,5 @@
 ---
-title: "Analyses for Berenbaum, Qian, & Gilmore"
+title: "Analyses for Qian, Berenbaum, & Gilmore"
 author: "Yiming Qian & Rick Gilmore"
 date: "`r Sys.time()`"
 output: 
@@ -11,7 +11,7 @@ output:
     toc_float: true
 params:
   data_path: "csv"
-  csv_fn: "combined_2021-08-26.csv"
+  csv_fn: "sex-differences-data.csv"
   outlier_sd_thresh: 3.0
   plot_device: "png"
 ---
@@ -55,8 +55,6 @@ Data from the set of tasks were merged and cleaned as described in `import-clean
 ```{r load}
 sex_diff_df <- readr::read_csv(file.path(params$data_path, params$csv_fn)) 
 ```
-
-
 
 # Preregistered analyses
 
@@ -389,7 +387,7 @@ sex_diff_df %>%
 
 > To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks times two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test.
 
-We create two data frames by participant sex.
+We create two data frames, one for males and another for females.
 
 ```{r}
 sex_diff_df_F <- sex_diff_df %>%
@@ -430,7 +428,7 @@ cor.test(
 )
 ```
 
-Contrast thresholds (negatively) correlate with mental rotation scores in women The negative correlation means that smaller log(contrast) values or higher contrast sensitivity is associated with better performance in the mental rotation task.
+Contrast thresholds (negatively) correlate with mental rotation scores in women. The negative correlation means that smaller log(contrast) values or higher contrast sensitivity is associated with better performance in the mental rotation task.
 
 We can use `esci` to provide CIs for this estimate.
 
@@ -631,47 +629,6 @@ es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_M, log_contr
 
 We estimate the correlation between log contrast and log motion thresholds in men as follows: `r es_contrast_motion$formatted_r`.
 
-
-### Male-typed activities and mental rotation
-
-We did not preregister this analysis.
-
-#### Women
-
-```{r}
-cor.test(
-  sex_diff_df_F$Masculine_hobbies,
-  sex_diff_df_F$mental_rot,
-  method = "pearson",
-  alternative = "less"
-)
-```
-
-```{r}
-es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, mental_rot)
-#es_mental_rot_motion
-```
-
-We estimate the correlation between mental rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
-
-#### Men
-
-```{r}
-cor.test(
-  sex_diff_df_M$Masculine_hobbies,
-  sex_diff_df_M$mental_rot,
-  method = "pearson",
-  alternative = "less"
-)
-```
-
-```{r}
-es_mental_rot_m_hobbies <- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, mental_rot)
-#es_mental_rot_motion
-```
-
-We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: `r es_mental_rot_m_hobbies$formatted_r`
-
 ## Visualizations
 
 ```{r ggplot-themes}
@@ -836,7 +793,7 @@ sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE,
 }
 ```
 
-### Contrast sensitivity & mental rotation
+### Contrast & mental rotation
 
 ```{r contrast-sens-mental-rot}
 corr_df <- sex_diff_corr_summ("log_contrast", "mental_rot",
@@ -870,7 +827,7 @@ p1
 sex_diff_corr_summ("log_contrast", "mental_rot")
 ```
 
-### Motion sensitivity & mental rotation
+### Motion & mental rotation
 
 ```{r}
 sex_diff_scatter_2 <-
@@ -1022,7 +979,7 @@ p_aug
 sex_diff_corr_summ("log_motion", "mental_rot")
 ```
 
-### Contrast sensitivity & male-typed interests
+### Contrast & male-typed interests
 
 ```{r contrast-sens-male-hobbies}
 corr_df <- sex_diff_corr_summ("log_contrast", "Masculine_hobbies",
@@ -1057,7 +1014,7 @@ p3
 sex_diff_corr_summ("log_contrast", "Masculine_hobbies")
 ```
 
-### Motion sensitivity & contrast sensitivity
+### Motion & contrast
 
 ```{r motion-duration-contrast-sens}
 corr_df <- sex_diff_corr_summ("log_motion",
@@ -1119,152 +1076,18 @@ ggsave(
 )
 ```
 
-
-
 # Non-pregistered analyses
 
 ## Does vision account for mental rotation?
 
 There are two approaches to answering this question.
-One looks for sex differences in the residuals of the models `mental rotation ~ contrast` and `mental rotation ~ motion`.
-The other models `mental rotation ~ contrast + sex + contrast:sex` and determines whether adding the `sex` term provides a better fit relative to `mental rotation ~ contrast` alone. 
 
-### Residuals-based approach
+One models `mental rotation ~ contrast + sex + contrast:sex` and determines whether adding the `sex` term provides a better fit relative to `mental rotation ~ contrast` alone. 
+The other looks for sex differences in the residuals of the models `mental rotation ~ contrast` and `mental rotation ~ motion`.
 
-We'll take evaluate the first approach using residuals.
-
-#### Contrast
-
-Focus on the log contrast sensitivity threshold data.
-
-```{r}
-# Select relevant data from data frame.
-df_mr_log_contr <- sex_diff_df %>%
-  dplyr::select(., Sex, log_contrast, mental_rot) %>%
-  dplyr::filter(., !is.na(Sex),
-                !is.na(log_contrast),
-                !is.na(mental_rot))
-```
-
-Visualize mental rotation scores.
-
-```{r}
-df_mr_log_contr %>%
-  ggplot(.) +
-  aes(Sex, mental_rot, color = Sex, alpha = 0.3) +
-  geom_boxplot() +
-  geom_violin() +
-  geom_point() +
-  theme(legend.position = "none")
-```
-
-```{r}
-t.test(
-  mental_rot ~ Sex,
-  data = sex_diff_df,
-  var.equal = TRUE,
-  alternative = "less"
-)
-```
-
-Mental rotation scores differ between men and women.
-
-Fit `mental_rot ~ log_contrast`.
-
-```{r}
-lm_mr_log_contr <- lm(mental_rot ~ log_contrast, df_mr_log_contr)
-summary(lm_mr_log_contr)
-```
-
-Extract the residuals and fit `mr_resids ~ Sex`.
-
-```{r}
-resids <- resid(lm_mr_log_contr)
-df_mr_resids <- data.frame(mr_resids = resids, Sex = df_mr_log_contr$Sex)
-lm_mr_resids_sex <- lm(mr_resids ~ Sex, df_mr_resids)
-summary(lm_mr_resids_sex)
-```
-
-Plot to visualize.
-
-```{r}
-df_mr_resids %>%
-  ggplot(.) +
-  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
-  geom_boxplot() +
-  geom_violin() +
-  geom_point() +
-  theme(legend.position = "none")
-```
-
-Test for differences in means.
-
-```{r}
-t.test(
-  mr_resids ~ Sex,
-  data = df_mr_resids,
-  var.equal = TRUE,
-  alternative = "less"
-)
-```
-
-So, including contrast sensitivity reduces, but does not eliminate, a statistically significant difference in mental rotation scores by sex favoring men.
-
-#### Motion
-
-```{r}
-# Select relevant data from data frame.
-df_mr_log_motion <- sex_diff_df %>%
-  dplyr::select(., Sex, log_motion, mental_rot) %>%
-  dplyr::filter(., !is.na(Sex),
-                !is.na(log_motion),
-                !is.na(mental_rot))
-```
-
-Fit `mental_rot ~ log_cmotion`.
-
-```{r}
-lm_mr_log_motion <- lm(mental_rot ~ log_motion, df_mr_log_motion)
-summary(lm_mr_log_motion)
-```
-
-Extract the residuals and fit `mr_resids ~ Sex`.
-
-```{r}
-resids <- resid(lm_mr_log_motion)
-df_mr_resids <- data.frame(mr_resids = resids, Sex = df_mr_log_motion$Sex)
-lm_mr_resids_sex <- lm(mr_resids ~ Sex, df_mr_resids)
-summary(lm_mr_resids_sex)
-```
-
-Plot to visualize.
-
-```{r}
-df_mr_resids %>%
-  ggplot(.) +
-  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
-  geom_boxplot() +
-  geom_violin() +
-  geom_point() +
-  theme(legend.position = "none")
-```
-
-Test for mean differences.
-
-```{r}
-t.test(
-  mr_resids ~ Sex,
-  data = df_mr_resids,
-  var.equal = TRUE,
-  alternative = "less"
-)
-```
-
-So, including motion reduces but does not eliminate a statistically significant difference in mental rotation scores by sex favoring men.
+We take the model-based approach here.
 
 ### Model-based approach
-
-Let's see whether combining the vision measures can do even better in accounting for mental rotation.
 
 ```{r}
 df_mr_contr_motion <- sex_diff_df %>%
@@ -1303,7 +1126,7 @@ Compare models.
 anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)
 ```
 
-So, the RSS drops a bit, but not significantly. All things being equal, we'd choose the simpler model for parsimony reasons.
+So, the RSS drops a bit, but not significantly. All things being equal, we choose the simpler model for parsimony reasons.
 
 Here's a model with sex alone.
 
@@ -1321,9 +1144,6 @@ anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)
 The model with the smaller RSS is the one with the vision variables included.
 
 We conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
-
-
-
 
 ## Do outliers account for results?
 
@@ -1375,11 +1195,9 @@ Create a new trimmed data frame.
 df_trimmed <- sex_diff_df[-c(FindOutliers(sex_diff_df$log_motion)),]
 ```
 
-
 ```{r}
 xtabs(~ Sex, df_trimmed)
 ```
-
 
 ```{r}
 df_trimmed %>%
@@ -1529,7 +1347,7 @@ Compare models.
 anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)
 ```
 
-So, the RSS drops a bit, but not significantly. All things being equal, we'd choose the simpler model for parsimony reasons.
+So, the RSS drops a bit, but not significantly. All things being equal, we still choose the simpler model for parsimony reasons.
 
 Here's a model with sex alone.
 
@@ -1548,232 +1366,9 @@ The model with the smaller RSS is the one with the vision variables included.
 
 We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
 
-
-## Does interest in specific male-typed hobbies correlate with vision?
-
-Determine which hobbies are strongly male-typed according to (CITE):
-
-- Golf
-- Home eletronics
-- Surfing
-- Computers
-- Video games
-- Watching violent movies
-- Going to car shows
-- Fishing
-- Poker
-- Playing Basketball
-- TV sports
-- Football
-- Weight lifting
-- Working on cars
-- Drag racing
-
-```{r}
-var <-
-  c(
-    "Participant",
-    "Sex",
-    "log_contrast",
-    "log_motion",
-    "Golf",
-    "Home electronics",
-    "Surfing",
-    "Computers",
-    "Video games",
-    "Watching violent movies",
-    "Going to car shows",
-    "Fishing",
-    "Poker",
-    "Playing basketball",
-    "TV sports",
-    "Football",
-    "Weight lifting",
-    "Working on cars",
-    "Drag racing",
-    "Masculine_hobbies"
-  )
-male_hobbies <- sex_diff_df[, var]
-male_hobbies_F <- male_hobbies %>% 
-  dplyr::filter(Sex == "Female")
-```
-
-### Calculate alpha
-
-```{r}
-psych::alpha(male_hobbies[,-c(1:4,20)])
-```
-
-### Check data for outliers
-
-```{r}
-FindOutliers(male_hobbies$Masculine_hobbies)
-```
-
-No data are outliers.
-
-### Correlation between male-typed hobbies and log contrast
-
-```{r}
-rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball
-rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
-```
-
-`Playing basketball` and `Home electronics` substantial large negative correlations (in women) with log contrast thresholds.
-
-#### Playing basketball and Contrast Sensitivity
-
-```{r}
-cor.test(
-  male_hobbies_F$log_contrast,
-  male_hobbies_F$"Playing basketball",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Playing basketball")
-es_mental_mas_contrast$formatted_r
-```
-
-#### Home electronics and Contrast Sensitivity
-
-```{r}
-cor.test(
-   male_hobbies_F$log_contrast,
-   male_hobbies_F$"Home electronics",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, "Home electronics")
-es_mental_mas_contrast$formatted_r
-```
-
-
-### Correlation between male-typed hobbies and log motion
-
-```{r}
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
-```
-
-`Weightlifing` and `Computers` shows substantial correlations with motion duration thresholds.
-
-#### Weightlifting and Motion Duration
-
-```{r}
-cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$"Weight lifting",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Weight lifting")
-es_mental_mas_contrast$formatted_r
-```
-
-##### Computers and Motion Duration
-
-```{r}
-cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$"Computers",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
-es_mental_mas_contrast$formatted_r
-```
-
-<<<<<<< HEAD
-### set function for scatterplot
-```{r}
-sex_diff_scatter3 <-
-  function(df,
-           x_var,
-           y_var,
-           x_lab = "X axis",
-           y_lab = "Y axis"
-           ) {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s <- sym(x_var)
-    y_var_s <- sym(y_var)
-    
-    p <- ggplot(df) +
-      aes(
-        x = !!x_var_s,
-        y = !!y_var_s
-      ) +
-      geom_point(size=4) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = "lm", na.rm = TRUE) +
-      xlab(x_lab) +
-      ylab(y_lab)+
-      theme.custom +
-      ylim(1, 5) 
-p
-  }
-```
-
-#### get scatterplot for contrast sensitivity and playing basketball
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_contrast",
-  "Playing basketball",
-  "log(contrast threshold)",
-  "Playing basketball"
-)
-```
-#### get scatterplot for contrast sensitivity and electronics
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_contrast",
-  "Home electronics",
-  "log(contrast threshold)",
-  "Home electronics"
-)
-```
-#### get scatterplot for motion sensitivity and weight lifting
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_motion",
-  "Weight lifting",
-  "log(motion threshold)",
-  "Weight lifting"
-)
-```
-#### get scatterplot for motion sensitivity and weight lifting, after excluding outliers
-```{r}
-male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
-sex_diff_scatter3(
-  male_hobbies_Fex,
-  "log_motion",
-  "Weight lifting",
-  "log(motion threshold)",
-  "Weight lifting"
-)
-```
-
-#### get scatterplot for motion sensitivity and weight lifting
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_motion",
-  "Computers",
-  "log(motion threshold)",
-  "Computers"
-)
-```
-
 ## Do men and women differ in other ways?
+
+The samples do not appear substantially different in other measures.
 
 ### Age
 
@@ -1798,25 +1393,4 @@ xtabs(~ Sex + Acuity, df_trimmed)
 ```{r, stereo}
 xtabs(~ Sex + Stereo_amin, df_trimmed)
 
-```
-
-#### get scatterplot for stereo and contrast
-```{r}
-sex_diff_scatter3(
-  df_trimmed,
-  "log_contrast",
-  "Stereo_amin",
-  "log(contrast threshold)",
-  "Stereo acuity"
-)
-```
-
-```{r}
-sex_diff_scatter3(
-  df_trimmed,
-  "log_motion",
-  "Stereo_amin",
-  "log(motion threshold)",
-  "Stereo acuity"
-)
 ```

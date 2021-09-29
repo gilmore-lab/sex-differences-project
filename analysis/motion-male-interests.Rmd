@@ -1,0 +1,98 @@
+---
+title: "Log motion and male-typed interests"
+output: html_document
+---
+
+### Correlation between male-typed hobbies and log motion
+
+```{r}
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] 
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
+
+p_vals <- rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # home electronics and basketball
+r_vals <- rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
+interest <- names(male_hobbies_F)[-c(1:3)]
+
+motion_male_hobbies_df <- tibble::tibble(interest, p_vals, r_vals)
+motion_male_hobbies_df <- motion_male_hobbies_df[-c(1, 17),] # Drop log contrast and overall Masculine_hobbies
+
+motion_male_hobbies_df %>%
+  dplyr::arrange(., p_vals) %>%
+  knitr::kable(., format = 'html')
+```
+
+`Weightlifing` and `Computers` shows substantial correlations with motion duration thresholds.
+
+#### Weightlifting and Motion Duration
+
+```{r}
+cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$"Weight lifting",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Weight lifting")
+es_mental_mas_contrast$formatted_r
+```
+
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+
+Exclude outliers.
+
+```{r}
+male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
+sex_diff_scatter3(
+  male_hobbies_Fex,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+
+##### Computers and Motion Duration
+
+```{r}
+cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$"Computers",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
+es_mental_mas_contrast$formatted_r
+```
+
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Computers",
+  "log(motion threshold)",
+  "Computers"
+)
+```
+
+Exclude outliers.
+
+```{r}
+male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
+sex_diff_scatter3(
+  male_hobbies_Fex,
+  "log_motion",
+  "Computers",
+  "log(motion threshold)",
+  "Computers"
+)
+```

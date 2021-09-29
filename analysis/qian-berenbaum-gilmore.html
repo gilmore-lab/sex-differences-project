@@ -12,15 +12,15 @@
 <meta name="author" content="Yiming Qian &amp; Rick Gilmore" />
 
 
-<title>Analyses for Berenbaum, Qian, &amp; Gilmore</title>
+<title>Analyses for Qian, Berenbaum, &amp; Gilmore</title>
 
-<script src="berenbaum-qian-gilmore_files/header-attrs-2.9/header-attrs.js"></script>
-<script src="berenbaum-qian-gilmore_files/jquery-1.11.3/jquery.min.js"></script>
+<script src="qian-berenbaum-gilmore_files/header-attrs-2.9/header-attrs.js"></script>
+<script src="qian-berenbaum-gilmore_files/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="berenbaum-qian-gilmore_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
-<script src="berenbaum-qian-gilmore_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="berenbaum-qian-gilmore_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="berenbaum-qian-gilmore_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="qian-berenbaum-gilmore_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="qian-berenbaum-gilmore_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="qian-berenbaum-gilmore_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="qian-berenbaum-gilmore_files/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -30,15 +30,15 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="berenbaum-qian-gilmore_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="berenbaum-qian-gilmore_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="berenbaum-qian-gilmore_files/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="berenbaum-qian-gilmore_files/navigation-1.1/tabsets.js"></script>
-<script src="berenbaum-qian-gilmore_files/navigation-1.1/codefolding.js"></script>
-<link href="berenbaum-qian-gilmore_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="berenbaum-qian-gilmore_files/highlightjs-9.12.0/highlight.js"></script>
-<script src="berenbaum-qian-gilmore_files/kePrint-0.0.1/kePrint.js"></script>
-<link href="berenbaum-qian-gilmore_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="qian-berenbaum-gilmore_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="qian-berenbaum-gilmore_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="qian-berenbaum-gilmore_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="qian-berenbaum-gilmore_files/navigation-1.1/tabsets.js"></script>
+<script src="qian-berenbaum-gilmore_files/navigation-1.1/codefolding.js"></script>
+<link href="qian-berenbaum-gilmore_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="qian-berenbaum-gilmore_files/highlightjs-9.12.0/highlight.js"></script>
+<script src="qian-berenbaum-gilmore_files/kePrint-0.0.1/kePrint.js"></script>
+<link href="qian-berenbaum-gilmore_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -254,9 +254,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Analyses for Berenbaum, Qian, &amp; Gilmore</h1>
+<h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-08-31 10:55:54</h4>
+<h4 class="date">2021-09-29 11:41:54</h4>
 
 </div>
 
@@ -633,7 +633,7 @@ vocab_tt</code></pre>
 <blockquote>
 <p>To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks times two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test.</p>
 </blockquote>
-<p>We create two data frames by participant sex.</p>
+<p>We create two data frames, one for males and another for females.</p>
 <pre class="r"><code>sex_diff_df_F &lt;- sex_diff_df %&gt;%
   dplyr::filter(., Sex == &quot;Female&quot;) %&gt;%
   dplyr::select( 
@@ -675,7 +675,7 @@ vocab_tt</code></pre>
 ## sample estimates:
 ##        cor 
 ## -0.2838364</code></pre>
-<p>Contrast thresholds (negatively) correlate with mental rotation scores in women The negative correlation means that smaller log(contrast) values or higher contrast sensitivity is associated with better performance in the mental rotation task.</p>
+<p>Contrast thresholds (negatively) correlate with mental rotation scores in women. The negative correlation means that smaller log(contrast) values or higher contrast sensitivity is associated with better performance in the mental rotation task.</p>
 <p>We can use <code>esci</code> to provide CIs for this estimate.</p>
 <pre class="r"><code>es_mental_rot_contrast &lt;- esci::estimateCorrelation.default(sex_diff_df_F, log_contrast, mental_rot)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
@@ -921,58 +921,6 @@ vocab_tt</code></pre>
 <p>We estimate the correlation between log contrast and log motion thresholds in men as follows: r = 0.41 95% CI [0.05, 0.67].</p>
 </div>
 </div>
-<div id="male-typed-activities-and-mental-rotation" class="section level3">
-<h3>Male-typed activities and mental rotation</h3>
-<p>We did not preregister this analysis.</p>
-<div id="women-5" class="section level4">
-<h4>Women</h4>
-<pre class="r"><code>cor.test(
-  sex_diff_df_F$Masculine_hobbies,
-  sex_diff_df_F$mental_rot,
-  method = &quot;pearson&quot;,
-  alternative = &quot;less&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  sex_diff_df_F$Masculine_hobbies and sex_diff_df_F$mental_rot
-## t = -0.70919, df = 99, p-value = 0.2399
-## alternative hypothesis: true correlation is less than 0
-## 95 percent confidence interval:
-##  -1.0000000  0.0946548
-## sample estimates:
-##         cor 
-## -0.07109614</code></pre>
-<pre class="r"><code>es_mental_rot_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, mental_rot)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>#es_mental_rot_motion</code></pre>
-<p>We estimate the correlation between mental rotation and interest in male-typed activities in women as follows: r = -0.07 95% CI [-0.26, 0.13]</p>
-</div>
-<div id="men-5" class="section level4">
-<h4>Men</h4>
-<pre class="r"><code>cor.test(
-  sex_diff_df_M$Masculine_hobbies,
-  sex_diff_df_M$mental_rot,
-  method = &quot;pearson&quot;,
-  alternative = &quot;less&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  sex_diff_df_M$Masculine_hobbies and sex_diff_df_M$mental_rot
-## t = -0.49707, df = 28, p-value = 0.3115
-## alternative hypothesis: true correlation is less than 0
-## 95 percent confidence interval:
-##  -1.0000000  0.2191392
-## sample estimates:
-##         cor 
-## -0.09352636</code></pre>
-<pre class="r"><code>es_mental_rot_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, mental_rot)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>#es_mental_rot_motion</code></pre>
-<p>We estimate the correlation between mental_rotation and interest in male-typed activities in women as follows: r = -0.09 95% CI [-0.44, 0.28]</p>
-</div>
-</div>
 </div>
 <div id="visualizations" class="section level2">
 <h2>Visualizations</h2>
@@ -1126,8 +1074,8 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;
     df
   }
 }</code></pre>
-<div id="contrast-sensitivity-mental-rotation" class="section level3">
-<h3>Contrast sensitivity &amp; mental rotation</h3>
+<div id="contrast-mental-rotation" class="section level3">
+<h3>Contrast &amp; mental rotation</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;mental_rot&quot;,
                               corr_all,
                               corr_M_df = corr_M,
@@ -1219,8 +1167,8 @@ Females
 </tbody>
 </table>
 </div>
-<div id="motion-sensitivity-mental-rotation" class="section level3">
-<h3>Motion sensitivity &amp; mental rotation</h3>
+<div id="motion-mental-rotation" class="section level3">
+<h3>Motion &amp; mental rotation</h3>
 <pre class="r"><code>sex_diff_scatter_2 &lt;-
   function(df,
            x_var,
@@ -1424,8 +1372,8 @@ Females
 </tbody>
 </table>
 </div>
-<div id="contrast-sensitivity-male-typed-interests" class="section level3">
-<h3>Contrast sensitivity &amp; male-typed interests</h3>
+<div id="contrast-male-typed-interests" class="section level3">
+<h3>Contrast &amp; male-typed interests</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;Masculine_hobbies&quot;,
                               corr_all,
                               corr_M_df = corr_M,
@@ -1517,8 +1465,8 @@ ns
 </tbody>
 </table>
 </div>
-<div id="motion-sensitivity-contrast-sensitivity" class="section level3">
-<h3>Motion sensitivity &amp; contrast sensitivity</h3>
+<div id="motion-contrast" class="section level3">
+<h3>Motion &amp; contrast</h3>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_motion&quot;,
                               &quot;log_contrast&quot;, print_table = FALSE)
 
@@ -1626,7 +1574,7 @@ ns
 </ul>
 <pre class="r"><code>library(&quot;gridExtra&quot;)
 p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)</code></pre>
-<p><img src="img/unnamed-chunk-54-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-50-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p,
   filename = paste0(&quot;~/Desktop/fig1.png&quot;),
@@ -1642,204 +1590,11 @@ p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)</code></pre>
 <h1>Non-pregistered analyses</h1>
 <div id="does-vision-account-for-mental-rotation" class="section level2">
 <h2>Does vision account for mental rotation?</h2>
-<p>There are two approaches to answering this question. One looks for sex differences in the residuals of the models <code>mental rotation ~ contrast</code> and <code>mental rotation ~ motion</code>. The other models <code>mental rotation ~ contrast + sex + contrast:sex</code> and determines whether adding the <code>sex</code> term provides a better fit relative to <code>mental rotation ~ contrast</code> alone.</p>
-<div id="residuals-based-approach" class="section level3">
-<h3>Residuals-based approach</h3>
-<p>We’ll take evaluate the first approach using residuals.</p>
-<div id="contrast" class="section level4">
-<h4>Contrast</h4>
-<p>Focus on the log contrast sensitivity threshold data.</p>
-<pre class="r"><code># Select relevant data from data frame.
-df_mr_log_contr &lt;- sex_diff_df %&gt;%
-  dplyr::select(., Sex, log_contrast, mental_rot) %&gt;%
-  dplyr::filter(., !is.na(Sex),
-                !is.na(log_contrast),
-                !is.na(mental_rot))</code></pre>
-<p>Visualize mental rotation scores.</p>
-<pre class="r"><code>df_mr_log_contr %&gt;%
-  ggplot(.) +
-  aes(Sex, mental_rot, color = Sex, alpha = 0.3) +
-  geom_boxplot() +
-  geom_violin() +
-  geom_point() +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-56-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>t.test(
-  mental_rot ~ Sex,
-  data = sex_diff_df,
-  var.equal = TRUE,
-  alternative = &quot;less&quot;
-)</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  mental_rot by Sex
-## t = -2.7478, df = 129, p-value = 0.003429
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
-## 95 percent confidence interval:
-##       -Inf -1.373374
-## sample estimates:
-## mean in group Female   mean in group Male 
-##             26.20792             29.66667</code></pre>
-<p>Mental rotation scores differ between men and women.</p>
-<p>Fit <code>mental_rot ~ log_contrast</code>.</p>
-<pre class="r"><code>lm_mr_log_contr &lt;- lm(mental_rot ~ log_contrast, df_mr_log_contr)
-summary(lm_mr_log_contr)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = mental_rot ~ log_contrast, data = df_mr_log_contr)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -12.607  -4.304  -0.375   3.773  12.868 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)     7.021      5.459   1.286 0.200702    
-## log_contrast  -11.334      3.081  -3.678 0.000346 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 5.943 on 127 degrees of freedom
-## Multiple R-squared:  0.09627,    Adjusted R-squared:  0.08916 
-## F-statistic: 13.53 on 1 and 127 DF,  p-value: 0.0003455</code></pre>
-<p>Extract the residuals and fit <code>mr_resids ~ Sex</code>.</p>
-<pre class="r"><code>resids &lt;- resid(lm_mr_log_contr)
-df_mr_resids &lt;- data.frame(mr_resids = resids, Sex = df_mr_log_contr$Sex)
-lm_mr_resids_sex &lt;- lm(mr_resids ~ Sex, df_mr_resids)
-summary(lm_mr_resids_sex)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = mr_resids ~ Sex, data = df_mr_resids)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -12.8316  -4.1241  -0.3109   4.2295  13.4513 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)  -0.5828     0.5876  -0.992   0.3232  
-## SexMale       2.5059     1.2184   2.057   0.0418 *
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 5.846 on 127 degrees of freedom
-## Multiple R-squared:  0.03223,    Adjusted R-squared:  0.02461 
-## F-statistic:  4.23 on 1 and 127 DF,  p-value: 0.04176</code></pre>
-<p>Plot to visualize.</p>
-<pre class="r"><code>df_mr_resids %&gt;%
-  ggplot(.) +
-  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
-  geom_boxplot() +
-  geom_violin() +
-  geom_point() +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-60-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<p>Test for differences in means.</p>
-<pre class="r"><code>t.test(
-  mr_resids ~ Sex,
-  data = df_mr_resids,
-  var.equal = TRUE,
-  alternative = &quot;less&quot;
-)</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  mr_resids by Sex
-## t = -2.0567, df = 127, p-value = 0.02088
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
-## 95 percent confidence interval:
-##        -Inf -0.4871209
-## sample estimates:
-## mean in group Female   mean in group Male 
-##           -0.5827762            1.9231615</code></pre>
-<p>So, including contrast sensitivity reduces, but does not eliminate, a statistically significant difference in mental rotation scores by sex favoring men.</p>
-</div>
-<div id="motion" class="section level4">
-<h4>Motion</h4>
-<pre class="r"><code># Select relevant data from data frame.
-df_mr_log_motion &lt;- sex_diff_df %&gt;%
-  dplyr::select(., Sex, log_motion, mental_rot) %&gt;%
-  dplyr::filter(., !is.na(Sex),
-                !is.na(log_motion),
-                !is.na(mental_rot))</code></pre>
-<p>Fit <code>mental_rot ~ log_cmotion</code>.</p>
-<pre class="r"><code>lm_mr_log_motion &lt;- lm(mental_rot ~ log_motion, df_mr_log_motion)
-summary(lm_mr_log_motion)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = mental_rot ~ log_motion, data = df_mr_log_motion)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -13.025  -3.912  -0.741   3.405  15.268 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)   13.087      4.663   2.806  0.00581 **
-## log_motion    -6.075      2.002  -3.035  0.00293 **
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 5.925 on 125 degrees of freedom
-## Multiple R-squared:  0.06862,    Adjusted R-squared:  0.06117 
-## F-statistic:  9.21 on 1 and 125 DF,  p-value: 0.002929</code></pre>
-<p>Extract the residuals and fit <code>mr_resids ~ Sex</code>.</p>
-<pre class="r"><code>resids &lt;- resid(lm_mr_log_motion)
-df_mr_resids &lt;- data.frame(mr_resids = resids, Sex = df_mr_log_motion$Sex)
-lm_mr_resids_sex &lt;- lm(mr_resids ~ Sex, df_mr_resids)
-summary(lm_mr_resids_sex)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = mr_resids ~ Sex, data = df_mr_resids)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -12.5096  -4.0476  -0.6484   3.8227  13.6024 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)  -0.5151     0.5941  -0.867   0.3876  
-## SexMale       2.1804     1.2224   1.784   0.0769 .
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 5.851 on 125 degrees of freedom
-## Multiple R-squared:  0.02482,    Adjusted R-squared:  0.01702 
-## F-statistic: 3.182 on 1 and 125 DF,  p-value: 0.0769</code></pre>
-<p>Plot to visualize.</p>
-<pre class="r"><code>df_mr_resids %&gt;%
-  ggplot(.) +
-  aes(Sex, mr_resids, color = Sex, alpha = 0.3) +
-  geom_boxplot() +
-  geom_violin() +
-  geom_point() +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="img/unnamed-chunk-65-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<p>Test for mean differences.</p>
-<pre class="r"><code>t.test(
-  mr_resids ~ Sex,
-  data = df_mr_resids,
-  var.equal = TRUE,
-  alternative = &quot;less&quot;
-)</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  mr_resids by Sex
-## t = -1.7837, df = 125, p-value = 0.03845
-## alternative hypothesis: true difference in means between group Female and group Male is less than 0
-## 95 percent confidence interval:
-##        -Inf -0.1547076
-## sample estimates:
-## mean in group Female   mean in group Male 
-##           -0.5150549            1.6653441</code></pre>
-<p>So, including motion reduces but does not eliminate a statistically significant difference in mental rotation scores by sex favoring men.</p>
-</div>
-</div>
+<p>There are two approaches to answering this question.</p>
+<p>One models <code>mental rotation ~ contrast + sex + contrast:sex</code> and determines whether adding the <code>sex</code> term provides a better fit relative to <code>mental rotation ~ contrast</code> alone. The other looks for sex differences in the residuals of the models <code>mental rotation ~ contrast</code> and <code>mental rotation ~ motion</code>.</p>
+<p>We take the model-based approach here.</p>
 <div id="model-based-approach" class="section level3">
 <h3>Model-based approach</h3>
-<p>Let’s see whether combining the vision measures can do even better in accounting for mental rotation.</p>
 <pre class="r"><code>df_mr_contr_motion &lt;- sex_diff_df %&gt;%
   dplyr::select(., Sex, log_contrast, log_motion, mental_rot) %&gt;%
   dplyr::filter(., !is.na(Sex),
@@ -1935,7 +1690,7 @@ summary(lm_mr_contr_motion_no_sex)</code></pre>
 ##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
 ## 1    122 4123.5                           
 ## 2    121 4047.5  1    76.009 2.2723 0.1343</code></pre>
-<p>So, the RSS drops a bit, but not significantly. All things being equal, we’d choose the simpler model for parsimony reasons.</p>
+<p>So, the RSS drops a bit, but not significantly. All things being equal, we choose the simpler model for parsimony reasons.</p>
 <p>Here’s a model with sex alone.</p>
 <pre class="r"><code>lm_mr_only_sex &lt;- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
 summary(lm_mr_only_sex)</code></pre>
@@ -2016,7 +1771,7 @@ summary(lm_mr_only_sex)</code></pre>
   aes(Sex, log_motion) +
   geom_boxplot()</code></pre>
 <pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="img/unnamed-chunk-79-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-63-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>We then test for a difference in means.</p>
 <pre class="r"><code>mdt_tt &lt;-
   t.test(
@@ -2101,7 +1856,7 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 </div>
 <div id="contrast-thresholds-and-motion-thresholds-1" class="section level4">
 <h4>Contrast thresholds and motion thresholds</h4>
-<div id="women-6" class="section level5">
+<div id="women-5" class="section level5">
 <h5>Women</h5>
 <pre class="r"><code>cor.test(
   sex_diff_df_F$log_contrast,
@@ -2126,7 +1881,7 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 <pre class="r"><code>#es_contrast_motion</code></pre>
 <p>We find that a correlation between log contrast and log motion thresholds in women is as follows: r = 0.21 95% CI [0.01, 0.40].</p>
 </div>
-<div id="men-6" class="section level5">
+<div id="men-5" class="section level5">
 <h5>Men</h5>
 <pre class="r"><code>cor.test(
   sex_diff_df_M$log_contrast,
@@ -2253,7 +2008,7 @@ summary(lm_mr_contr_motion_no_sex)</code></pre>
 ##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
 ## 1    120 4107.4                           
 ## 2    119 4027.9  1    79.464 2.3477 0.1281</code></pre>
-<p>So, the RSS drops a bit, but not significantly. All things being equal, we’d choose the simpler model for parsimony reasons.</p>
+<p>So, the RSS drops a bit, but not significantly. All things being equal, we still choose the simpler model for parsimony reasons.</p>
 <p>Here’s a model with sex alone.</p>
 <pre class="r"><code>lm_mr_only_sex &lt;- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
 summary(lm_mr_only_sex)</code></pre>
@@ -2290,437 +2045,9 @@ summary(lm_mr_only_sex)</code></pre>
 <p>We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.</p>
 </div>
 </div>
-<div id="does-interest-in-specific-male-typed-hobbies-correlate-with-vision" class="section level2">
-<h2>Does interest in specific male-typed hobbies correlate with vision?</h2>
-<p>Determine which hobbies are strongly male-typed according to (CITE):</p>
-<ul>
-<li>Golf</li>
-<li>Home eletronics</li>
-<li>Surfing</li>
-<li>Computers</li>
-<li>Video games</li>
-<li>Watching violent movies</li>
-<li>Going to car shows</li>
-<li>Fishing</li>
-<li>Poker</li>
-<li>Playing Basketball</li>
-<li>TV sports</li>
-<li>Football</li>
-<li>Weight lifting</li>
-<li>Working on cars</li>
-<li>Drag racing</li>
-</ul>
-<pre class="r"><code>var &lt;-
-  c(
-    &quot;Participant&quot;,
-    &quot;Sex&quot;,
-    &quot;log_contrast&quot;,
-    &quot;log_motion&quot;,
-    &quot;Golf&quot;,
-    &quot;Home electronics&quot;,
-    &quot;Surfing&quot;,
-    &quot;Computers&quot;,
-    &quot;Video games&quot;,
-    &quot;Watching violent movies&quot;,
-    &quot;Going to car shows&quot;,
-    &quot;Fishing&quot;,
-    &quot;Poker&quot;,
-    &quot;Playing basketball&quot;,
-    &quot;TV sports&quot;,
-    &quot;Football&quot;,
-    &quot;Weight lifting&quot;,
-    &quot;Working on cars&quot;,
-    &quot;Drag racing&quot;,
-    &quot;Masculine_hobbies&quot;
-  )
-male_hobbies &lt;- sex_diff_df[, var]
-male_hobbies_F &lt;- male_hobbies %&gt;% 
-  dplyr::filter(Sex == &quot;Female&quot;)</code></pre>
-<div id="calculate-alpha" class="section level3">
-<h3>Calculate alpha</h3>
-<pre class="r"><code>psych::alpha(male_hobbies[,-c(1:4,20)])</code></pre>
-<pre><code>## 
-## Reliability analysis   
-## Call: psych::alpha(x = male_hobbies[, -c(1:4, 20)])
-## 
-##   raw_alpha std.alpha G6(smc) average_r S/N   ase mean  sd median_r
-##       0.79       0.8    0.84      0.21 3.9 0.026    3 0.6      0.2
-## 
-##  lower alpha upper     95% confidence boundaries
-## 0.74 0.79 0.85 
-## 
-##  Reliability if an item is dropped:
-##                         raw_alpha std.alpha G6(smc) average_r S/N alpha se
-## Golf                         0.79      0.79    0.84      0.22 3.9    0.027
-## Home electronics             0.79      0.79    0.84      0.21 3.8    0.027
-## Surfing                      0.79      0.79    0.84      0.22 3.8    0.027
-## Computers                    0.79      0.79    0.83      0.21 3.8    0.027
-## Video games                  0.78      0.78    0.83      0.21 3.6    0.028
-## Watching violent movies      0.79      0.80    0.84      0.22 3.9    0.026
-## Going to car shows           0.77      0.77    0.82      0.19 3.3    0.030
-## Fishing                      0.79      0.79    0.84      0.21 3.7    0.027
-## Poker                        0.79      0.79    0.84      0.21 3.7    0.027
-## Playing basketball           0.77      0.78    0.83      0.20 3.5    0.029
-## TV sports                    0.78      0.79    0.83      0.21 3.7    0.028
-## Football                     0.78      0.78    0.83      0.21 3.6    0.028
-## Weight lifting               0.79      0.79    0.84      0.21 3.8    0.027
-## Working on cars              0.77      0.77    0.81      0.19 3.3    0.030
-## Drag racing                  0.78      0.78    0.83      0.20 3.5    0.028
-##                         var.r med.r
-## Golf                    0.024  0.22
-## Home electronics        0.022  0.22
-## Surfing                 0.023  0.21
-## Computers               0.021  0.21
-## Video games             0.020  0.20
-## Watching violent movies 0.022  0.21
-## Going to car shows      0.021  0.18
-## Fishing                 0.024  0.20
-## Poker                   0.024  0.20
-## Playing basketball      0.024  0.20
-## TV sports               0.021  0.20
-## Football                0.021  0.20
-## Weight lifting          0.023  0.20
-## Working on cars         0.021  0.18
-## Drag racing             0.023  0.20
-## 
-##  Item statistics 
-##                           n raw.r std.r r.cor r.drop mean   sd
-## Golf                    131  0.40  0.41  0.33   0.29  2.6 1.14
-## Home electronics        131  0.42  0.44  0.39   0.32  4.1 0.98
-## Surfing                 131  0.41  0.41  0.34   0.30  3.0 1.15
-## Computers               131  0.43  0.45  0.41   0.33  3.8 1.02
-## Video games             131  0.53  0.53  0.51   0.41  3.4 1.32
-## Watching violent movies 131  0.39  0.39  0.32   0.27  3.1 1.21
-## Going to car shows      131  0.69  0.70  0.69   0.62  2.3 1.11
-## Fishing                 131  0.47  0.47  0.40   0.36  2.9 1.14
-## Poker                   131  0.49  0.49  0.43   0.38  2.9 1.18
-## Playing basketball      131  0.62  0.60  0.56   0.51  3.1 1.34
-## TV sports               131  0.52  0.51  0.49   0.41  3.4 1.25
-## Football                131  0.55  0.53  0.51   0.44  3.6 1.23
-## Weight lifting          131  0.44  0.43  0.36   0.32  3.0 1.26
-## Working on cars         131  0.71  0.72  0.73   0.65  1.9 1.04
-## Drag racing             131  0.57  0.57  0.54   0.47  2.3 1.15
-## 
-## Non missing response frequency for each item
-##                            1    2    3    4    5 miss
-## Golf                    0.18 0.31 0.28 0.16 0.06 0.01
-## Home electronics        0.02 0.05 0.16 0.37 0.40 0.01
-## Surfing                 0.15 0.13 0.44 0.18 0.11 0.01
-## Computers               0.03 0.08 0.21 0.41 0.27 0.01
-## Video games             0.11 0.16 0.23 0.24 0.27 0.01
-## Watching violent movies 0.11 0.21 0.29 0.25 0.15 0.01
-## Going to car shows      0.28 0.37 0.21 0.10 0.05 0.01
-## Fishing                 0.16 0.20 0.32 0.27 0.05 0.01
-## Poker                   0.17 0.20 0.32 0.24 0.08 0.01
-## Playing basketball      0.17 0.18 0.26 0.21 0.18 0.01
-## TV sports               0.07 0.21 0.20 0.28 0.24 0.01
-## Football                0.08 0.11 0.21 0.31 0.29 0.01
-## Weight lifting          0.13 0.24 0.25 0.24 0.15 0.01
-## Working on cars         0.44 0.35 0.15 0.02 0.05 0.01
-## Drag racing             0.30 0.27 0.29 0.08 0.05 0.01</code></pre>
-</div>
-<div id="check-data-for-outliers" class="section level3">
-<h3>Check data for outliers</h3>
-<pre class="r"><code>FindOutliers(male_hobbies$Masculine_hobbies)</code></pre>
-<pre><code>## integer(0)</code></pre>
-<p>No data are outliers.</p>
-</div>
-<div id="correlation-between-male-typed-hobbies-and-log-contrast-threshold" class="section level3">
-<h3>Correlation between male-typed hobbies and log contrast threshold</h3>
-<pre class="r"><code>p_vals &lt;- rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball
-r_vals &lt;- rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
-interest &lt;- names(male_hobbies_F)[-c(1,2,4)]
-
-contrast_male_hobbies_df &lt;- tibble::tibble(interest, p_vals, r_vals)
-contrast_male_hobbies_df &lt;- contrast_male_hobbies_df[-c(1, 17),] # Drop log contrast and overall Masculine_hobbies
-
-contrast_male_hobbies_df %&gt;%
-  dplyr::arrange(., p_vals) %&gt;%
-  knitr::kable(., format = &#39;html&#39;)</code></pre>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-interest
-</th>
-<th style="text-align:right;">
-p_vals
-</th>
-<th style="text-align:right;">
-r_vals
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Playing basketball
-</td>
-<td style="text-align:right;">
-0.0065026
-</td>
-<td style="text-align:right;">
--0.2717843
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Home electronics
-</td>
-<td style="text-align:right;">
-0.0268087
-</td>
-<td style="text-align:right;">
--0.2225720
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Video games
-</td>
-<td style="text-align:right;">
-0.0642120
-</td>
-<td style="text-align:right;">
--0.1867348
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Surfing
-</td>
-<td style="text-align:right;">
-0.1012467
-</td>
-<td style="text-align:right;">
--0.1656733
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Watching violent movies
-</td>
-<td style="text-align:right;">
-0.1264270
-</td>
-<td style="text-align:right;">
--0.1546428
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Working on cars
-</td>
-<td style="text-align:right;">
-0.3380418
-</td>
-<td style="text-align:right;">
--0.0972938
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Fishing
-</td>
-<td style="text-align:right;">
-0.3432301
-</td>
-<td style="text-align:right;">
-0.0962588
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Computers
-</td>
-<td style="text-align:right;">
-0.4061313
-</td>
-<td style="text-align:right;">
--0.0844135
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Drag racing
-</td>
-<td style="text-align:right;">
-0.4463976
-</td>
-<td style="text-align:right;">
--0.0773951
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TV sports
-</td>
-<td style="text-align:right;">
-0.4513287
-</td>
-<td style="text-align:right;">
--0.0765608
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Golf
-</td>
-<td style="text-align:right;">
-0.5156707
-</td>
-<td style="text-align:right;">
-0.0660988
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Going to car shows
-</td>
-<td style="text-align:right;">
-0.5839063
-</td>
-<td style="text-align:right;">
-0.0557094
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Poker
-</td>
-<td style="text-align:right;">
-0.6256604
-</td>
-<td style="text-align:right;">
--0.0496302
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Football
-</td>
-<td style="text-align:right;">
-0.6554630
-</td>
-<td style="text-align:right;">
--0.0453968
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Weight lifting
-</td>
-<td style="text-align:right;">
-0.7337450
-</td>
-<td style="text-align:right;">
--0.0346155
-</td>
-</tr>
-</tbody>
-</table>
-<p><code>Playing basketball</code> and <code>Home electronics</code> show negative correlations (in women) with log contrast thresholds that exceed a conventional <span class="math inline">\(\alpha=0.05\)</span>.</p>
-<div id="playing-basketball-and-contrast-sensitivity" class="section level4">
-<h4>Playing basketball and contrast sensitivity</h4>
-<pre class="r"><code>cor.test(
-  male_hobbies_F$log_contrast,
-  male_hobbies_F$&quot;Playing basketball&quot;,
-  method = &quot;pearson&quot;,
-  alternative = &quot;two.sided&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  male_hobbies_F$log_contrast and male_hobbies_F$&quot;Playing basketball&quot;
-## t = -2.7815, df = 97, p-value = 0.006503
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  -0.44530403 -0.07858904
-## sample estimates:
-##        cor 
-## -0.2717843</code></pre>
-<pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, &quot;Playing basketball&quot;)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
-<pre><code>## [1] &quot;r = -0.27 95% CI [-0.45, -0.08]&quot;</code></pre>
-<pre class="r"><code># Helper function for scatterplots
-sex_diff_scatter3 &lt;-
-  function(df,
-           x_var,
-           y_var,
-           x_lab = &quot;X axis&quot;,
-           y_lab = &quot;Y axis&quot;
-           ) {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s &lt;- sym(x_var)
-    y_var_s &lt;- sym(y_var)
-    
-    p &lt;- ggplot(df) +
-      aes(
-        x = !!x_var_s,
-        y = !!y_var_s
-      ) +
-      geom_point(size=4) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = &quot;lm&quot;, na.rm = TRUE) +
-      xlab(x_lab) +
-      ylab(y_lab)+
-      theme.custom +
-      ylim(1, 5) 
-p
-  }</code></pre>
-<pre class="r"><code>sex_diff_scatter3(
-  male_hobbies_F,
-  &quot;log_contrast&quot;,
-  &quot;Playing basketball&quot;,
-  &quot;log(contrast threshold)&quot;,
-  &quot;Playing basketball&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-101-1.png" width="2100" style="display: block; margin: auto;" /></p>
-</div>
-<div id="home-electronics-and-contrast-sensitivity" class="section level4">
-<h4>Home electronics and contrast sensitivity</h4>
-<pre class="r"><code>cor.test(
-   male_hobbies_F$log_contrast,
-   male_hobbies_F$&quot;Home electronics&quot;,
-  method = &quot;pearson&quot;,
-  alternative = &quot;two.sided&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  male_hobbies_F$log_contrast and male_hobbies_F$&quot;Home electronics&quot;
-## t = -2.2485, df = 97, p-value = 0.02681
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  -0.40230708 -0.02631643
-## sample estimates:
-##       cor 
-## -0.222572</code></pre>
-<pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, &quot;Home electronics&quot;)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
-<pre><code>## [1] &quot;r = -0.22 95% CI [-0.40, -0.03]&quot;</code></pre>
-<pre class="r"><code>sex_diff_scatter3(
-  male_hobbies_F,
-  &quot;log_contrast&quot;,
-  &quot;Home electronics&quot;,
-  &quot;log(contrast threshold)&quot;,
-  &quot;Home electronics&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-103-1.png" width="2100" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-</div>
 <div id="do-men-and-women-differ-in-other-ways" class="section level2">
 <h2>Do men and women differ in other ways?</h2>
+<p>The samples do not appear substantially different in other measures.</p>
 <div id="age" class="section level3">
 <h3>Age</h3>
 <pre class="r"><code>xtabs(~ Sex + Age, df_trimmed)</code></pre>
@@ -2752,29 +2079,6 @@ p
 ## Sex      40 50 60 80 100 140 400 800
 ##   Female 84  5  3  2   2   2   0   1
 ##   Male   21  0  3  1   2   1   2   0</code></pre>
-<div id="get-scatterplot-for-stereo-and-contrast" class="section level4">
-<h4>get scatterplot for stereo and contrast</h4>
-<pre class="r"><code>sex_diff_scatter3(
-  df_trimmed,
-  &quot;log_contrast&quot;,
-  &quot;Stereo_amin&quot;,
-  &quot;log(contrast threshold)&quot;,
-  &quot;Stereo acuity&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 130 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-104-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>sex_diff_scatter3(
-  df_trimmed,
-  &quot;log_motion&quot;,
-  &quot;Stereo_amin&quot;,
-  &quot;log(motion threshold)&quot;,
-  &quot;Stereo acuity&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 130 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-105-1.png" width="2100" style="display: block; margin: auto;" /></p>
-</div>
 </div>
 </div>
 </div>
