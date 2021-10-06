@@ -1128,91 +1128,57 @@ anova(lm_mr_contr_motion_sex_full, lm_mr_contr_motion_motion_sex_int)
 
 We choose the simpler model for parsimony reasons and a reduction in RSS even though the fit does not improve to a substantial degree.
 
-Let's drop `Sex` because its effect is small.
+Let's drop `Sex`because its effect is small, and the `log_motion:Sex` interaction to see whether these improve the fit.
 
 ```{r}
-lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion + log_motion:Sex, data = df_mr_contr_motion)
+lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)
 car::Anova(lm_mr_contr_motion_no_sex)
 confint(lm_mr_contr_motion_no_sex)
 lsr::etaSquared(lm_mr_contr_motion_no_sex)
 ```
 
-Compare this to the fuller model.
+Compare this model to the fuller one.
 
 ```{r}
 anova(lm_mr_contr_motion_motion_sex_int, lm_mr_contr_motion_no_sex)
 ```
 
-The model without `Sex` fits better, and we note that the `log_motion:Sex` interaction is small. Let's test a model without that interaction
+So, the fit of the fuller model with `Sex` and the `log_motion:Sex` interaction included is better.
+
+Let's try dropping `log_motion` and the `Sex:log_motion` interaction.
 
 ```{r}
-lm_mr_contr_motion_no_interactions <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
-summary(lm_mr_contr_motion_no_interactions)
-car::Anova(lm_mr_contr_motion_no_interactions)
-confint(lm_mr_contr_motion_no_interactions)
-lsr::etaSquared(lm_mr_contr_motion_no_interactions)
+lm_mr_contr_no_motion_sex <- lm(mental_rot ~ log_contrast + Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_no_motion_sex)
+car::Anova(lm_mr_contr_no_motion_sex)
+confint(lm_mr_contr_no_motion_sex)
+lsr::etaSquared(lm_mr_contr_no_motion_sex)
 ```
 
-Compare this model to the fuller one.
+Compare this reduced model to the fuller one.
 
 ```{r}
-anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)
+anova(lm_mr_contr_motion_motion_sex_int, lm_mr_contr_no_motion_sex)
 ```
 
-The fit does not improve substantially, but we prefer the simpler model with a smaller RSS and fewer parameters.
+The full model still is a better fit.
 
-For completeness, let's compare this final model to two alternatives, one with sex alone.
-
-```{r}
-lm_mr_only_sex <- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
-summary(lm_mr_only_sex)
-car::Anova(lm_mr_only_sex)
-confint(lm_mr_only_sex)
-lsr::etaSquared(lm_mr_only_sex)
-```
-
-Comparing this to one with vision but not sex.
+Finally, let's drop the vision variables.
 
 ```{r}
-anova(lm_mr_contr_motion_no_interactions, lm_mr_only_sex)
-```
-
-The model with the smaller RSS is the one with the vision variables included. The RSS is smaller, and it fits better than a model with `Sex` alone.
-
-Let's also compare a model with `Sex` and the vision measures to one with only the vision measures.
-
-```{r}
-lm_mr_contr_motion_sex_no_int <- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
-summary(lm_mr_contr_motion_sex_no_int)
-car::Anova(lm_mr_contr_motion_sex_no_int)
-confint(lm_mr_contr_motion_sex_no_int)
-lsr::etaSquared(lm_mr_contr_motion_sex_no_int)
+lm_mr_no_vision_sex <- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
+summary(lm_mr_no_vision_sex)
+car::Anova(lm_mr_no_vision_sex)
+confint(lm_mr_no_vision_sex)
+lsr::etaSquared(lm_mr_no_vision_sex)
 ```
 
 ```{r}
-anova(lm_mr_contr_motion_sex_no_int, lm_mr_contr_motion_no_interactions)
+anova(lm_mr_contr_motion_motion_sex_int, lm_mr_no_vision_sex)
 ```
 
-The addition of `Sex` does not improve the fit of the model with vision measures alone.
-
-Do we need `log_motion`?
-
-```{r}
-lm_mr_contr_no_motion <- lm(mental_rot ~ log_contrast, data = df_mr_contr_motion)
-summary(lm_mr_contr_no_motion)
-car::Anova(lm_mr_contr_no_motion)
-confint(lm_mr_contr_no_motion)
-lsr::etaSquared(lm_mr_contr_no_motion)
-```
-
-```{r}
-anova(lm_mr_contr_motion_no_interactions, lm_mr_contr_no_motion)
-```
-
-Yes, we do. The more complex model with `log_motion` fits better.
-
-So, the best fitting and most parsimonious model includes both vision measures, but not sex.
+Again, the full model containing the vision measures and sex is the best-fitting.
 
 ## Do outliers account for results?
 
