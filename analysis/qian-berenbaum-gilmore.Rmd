@@ -1108,42 +1108,65 @@ df_mr_contr_motion <- sex_diff_df %>%
 Full model.
 
 ```{r}
-lm_mr_contr_motion_full <- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
-summary(lm_mr_contr_motion_full)
-car::Anova(lm_mr_contr_motion_full)
-confint(lm_mr_contr_motion_full)
-lsr::etaSquared(lm_mr_contr_motion_full)
+lm_mr_contr_motion_sex_full <- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_sex_full)
+car::Anova(lm_mr_contr_motion_sex_full)
+confint(lm_mr_contr_motion_sex_full)
+lsr::etaSquared(lm_mr_contr_motion_sex_full)
 ```
-
-Drop interactions, but keep log_contrast, log_motion, and Sex.
+Keep only components that meet a $p<.1$ criterion.
 
 ```{r}
-lm_mr_contr_motion_no_interactions <- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
-summary(lm_mr_contr_motion_no_interactions)
-car::Anova(lm_mr_contr_motion_no_interactions)
-confint(lm_mr_contr_motion_no_interactions)
-lsr::etaSquared(lm_mr_contr_motion_no_interactions)
+lm_mr_contr_motion_motion_sex_int <- lm(mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_motion_sex_int)
+car::Anova(lm_mr_contr_motion_motion_sex_int)
+confint(lm_mr_contr_motion_motion_sex_int)
+lsr::etaSquared(lm_mr_contr_motion_motion_sex_int)
 ```
 
-Drop Sex.
+Compare the fit of the reduced model to the fuller model.
 
 ```{r}
-lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
+anova(lm_mr_contr_motion_sex_full, lm_mr_contr_motion_motion_sex_int)
+```
+
+We choose the simpler model for parsimony reasons and a reduction in RSS even though the fit does not notably improve.
+
+Drop `Sex` because its effect is small.
+
+```{r}
+lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion + log_motion:Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)
 car::Anova(lm_mr_contr_motion_no_sex)
 confint(lm_mr_contr_motion_no_sex)
 lsr::etaSquared(lm_mr_contr_motion_no_sex)
 ```
 
-Compare vision-only model with vision + Sex.
+Compare to fuller model.
+
+```{r}
+anova(lm_mr_contr_motion_motion_sex_int, lm_mr_contr_motion_no_sex)
+```
+
+The model without `Sex` fits better, and we note that the `log_motion:Sex` interaction is small. Let's test a model without that interaction
+
+```{r}
+lm_mr_contr_motion_no_interactions <- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_interactions)
+car::Anova(lm_mr_contr_motion_no_interactions)
+confint(lm_mr_contr_motion_no_interactions)
+lsr::etaSquared(lm_mr_contr_motion_no_interactions)
+```
+
+Compare this model to the fuller one.
 
 ```{r}
 anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)
 ```
 
-So, the RSS drops a bit, but not significantly. All things being equal, we choose the simpler model for parsimony reasons.
+The fit does not improve substantially, but we prefer the simpler model with a smaller RSS and fewer parameters.
 
-Here's a model with sex alone.
+For completeness, let's compare this final model to two alternatives, one with sex alone.
 
 ```{r}
 lm_mr_only_sex <- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
@@ -1156,46 +1179,44 @@ lsr::etaSquared(lm_mr_only_sex)
 Comparing this to one with vision but not sex.
 
 ```{r}
-anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)
+anova(lm_mr_contr_motion_no_interactions, lm_mr_only_sex)
 ```
 
-The model with the smaller RSS is the one with the vision variables included.
+The model with the smaller RSS is the one with the vision variables included. The RSS is smaller, and it fits better than a model with `Sex` alone.
 
-We conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
-
-Finally, for completeness, we try one more model that includes the `Sex:log_motion` interaction indicated in the full model with interactions above.
+Let's also compare a model with `Sex` and the vision measures to one with only the vision measures.
 
 ```{r}
-lm_mr_contr_motion_motion_sex_int <- lm(mental_rot ~ log_contrast + log_motion + log_motion:Sex, data = df_mr_contr_motion)
-summary(lm_mr_contr_motion_motion_sex_int)
-car::Anova(lm_mr_contr_motion_motion_sex_int)
-confint(lm_mr_contr_motion_motion_sex_int)
-lsr::etaSquared(lm_mr_contr_motion_motion_sex_int)
+lm_mr_contr_motion_sex_no_int <- lm(mental_rot ~ log_contrast + log_motion + Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_sex_no_int)
+car::Anova(lm_mr_contr_motion_sex_no_int)
+confint(lm_mr_contr_motion_sex_no_int)
+lsr::etaSquared(lm_mr_contr_motion_sex_no_int)
 ```
-
-And we compare this to the model with vision measures alone but not `Sex`.
 
 ```{r}
-anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_motion_sex_int)
+anova(lm_mr_contr_motion_sex_no_int, lm_mr_contr_motion_no_interactions)
 ```
 
-So, the best fitting model to predict mental rotation is the one *without* the `log_motion:Sex` interaction but *with* the vision measures.
+The addition of `Sex` does not improve the fit of the model with vision measures alone.
 
 Do we need `log_motion`?
 
 ```{r}
-lm_mr_contr <- lm(mental_rot ~ log_contrast, data = df_mr_contr_motion)
-summary(lm_mr_contr)
-car::Anova(lm_mr_contr)
-confint(lm_mr_contr)
-lsr::etaSquared(lm_mr_contr)
+lm_mr_contr_no_motion <- lm(mental_rot ~ log_contrast, data = df_mr_contr_motion)
+summary(lm_mr_contr_no_motion)
+car::Anova(lm_mr_contr_no_motion)
+confint(lm_mr_contr_no_motion)
+lsr::etaSquared(lm_mr_contr_no_motion)
 ```
 
 ```{r}
-anova(lm_mr_contr, lm_mr_contr_motion_no_sex)
+anova(lm_mr_contr_motion_no_interactions, lm_mr_contr_no_motion)
 ```
 
-So, the best-fitting model overall is still the one with `log_contrast` and `log_motion` but not `Sex` or `Sex:log_motion`.
+Yes, we do. The more complex model with `log_motion` fits better.
+
+So, the best fitting and most parsimonious model includes both vision measures, but not sex.
 
 ## Do outliers account for results?
 
@@ -1396,27 +1417,26 @@ lsr::etaSquared(lm_mr_contr_motion_no_sex)
 Compare models.
 
 ```{r}
-anova(lm_mr_contr_motion_no_sex, lm_mr_contr_motion_no_interactions)
+anova(lm_mr_contr_motion_no_interactions, lm_mr_contr_motion_no_sex)
 ```
 
 So, the RSS drops a bit, but not significantly. All things being equal, we still choose the simpler model for parsimony reasons.
 
-Here's a model with sex alone.
-
 ```{r}
-lm_mr_only_sex <- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
-summary(lm_mr_only_sex)
+lm_mr_sex <- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
+summary(lm_mr_contr_motion_no_sex)
+car::Anova(lm_mr_contr_motion_no_sex)
+confint(lm_mr_contr_motion_no_sex)
+lsr::etaSquared(lm_mr_contr_motion_no_sex)
 ```
 
-Comparing this to one with vision but not sex.
-
 ```{r}
-anova(lm_mr_only_sex, lm_mr_contr_motion_no_sex)
+anova(lm_mr_contr_motion_no_sex, lm_mr_sex)
 ```
 
-The model with the smaller RSS is the one with the vision variables included.
+The more complex model with both vision measures fits better than one with sex alone.
 
-We still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
+Even excluding the two outliers in motion duration thresholds, we still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
 
 ## Do men and women differ in other ways?
 
