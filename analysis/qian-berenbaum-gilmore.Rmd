@@ -1087,12 +1087,7 @@ ggsave(
 
 ## Does vision account for mental rotation?
 
-There are two approaches to answering this question.
-
-One models `mental rotation ~ contrast + sex + contrast:sex` and determines whether adding the `sex` term provides a better fit relative to `mental rotation ~ contrast` alone. 
-The other looks for sex differences in the residuals of the models `mental rotation ~ contrast` and `mental rotation ~ motion`.
-
-We take the model-based approach here.
+One can model `mental rotation ~ contrast + motion + sex` and determines whether adding the `sex` term provides a better fit relative to `mental rotation ~ contrast` alone.
 
 ### Model-based approach
 
@@ -1105,7 +1100,7 @@ df_mr_contr_motion <- sex_diff_df %>%
                 !is.na(mental_rot))
 ```
 
-Full model.
+Let's fit a full model with all interactions.
 
 ```{r}
 lm_mr_contr_motion_sex_full <- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
@@ -1114,6 +1109,7 @@ car::Anova(lm_mr_contr_motion_sex_full)
 confint(lm_mr_contr_motion_sex_full)
 lsr::etaSquared(lm_mr_contr_motion_sex_full)
 ```
+
 Keep only components that meet a $p<.1$ criterion.
 
 ```{r}
@@ -1130,9 +1126,9 @@ Compare the fit of the reduced model to the fuller model.
 anova(lm_mr_contr_motion_sex_full, lm_mr_contr_motion_motion_sex_int)
 ```
 
-We choose the simpler model for parsimony reasons and a reduction in RSS even though the fit does not notably improve.
+We choose the simpler model for parsimony reasons and a reduction in RSS even though the fit does not improve to a substantial degree.
 
-Drop `Sex` because its effect is small.
+Let's drop `Sex` because its effect is small.
 
 ```{r}
 lm_mr_contr_motion_no_sex <- lm(mental_rot ~ log_contrast + log_motion + log_motion:Sex, data = df_mr_contr_motion)
@@ -1142,7 +1138,7 @@ confint(lm_mr_contr_motion_no_sex)
 lsr::etaSquared(lm_mr_contr_motion_no_sex)
 ```
 
-Compare to fuller model.
+Compare this to the fuller model.
 
 ```{r}
 anova(lm_mr_contr_motion_motion_sex_int, lm_mr_contr_motion_no_sex)
