@@ -1,0 +1,281 @@
+---
+title: "Relative Weight Analysis"
+output: html_document
+---
+
+# Background
+
+This analysis derives from work by LeBreton and code provided by him.
+
+# Setup
+
+```{r set-seed}
+set.seed(1234)
+n_boots <- 10000
+library(tidyverse) # For pipe '%>%'
+```
+
+# Import data
+
+```{r}
+df <- readr::read_csv(file.path("csv/mr-contr-motion-sex.csv"))
+
+# Requires all variables be numeric so we recode Sex with Female = 1, Male = 0.
+df <- df %>%
+  dplyr::mutate(., female = if_else(Sex == "Female", 1, 0)) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, female)
+```
+
+## Create Sex:log_motion variable
+
+```{r add-sex-motion-interaction}
+df <- df %>%
+  #dplyr::mutate(., female_motion = female * log_motion) %>%
+  #dplyr::select(., mental_rot, log_contrast, log_motion, female, female_motion) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, female)
+```
+
+## Grab variable names
+
+```{r}
+predictors <- names(df)[2:length(df)] 
+```
+
+# Verify data are not singular
+
+```{r data-singular}
+eigen(cor(df))
+```
+
+# Run conventional regression analyses
+
+```{r}
+fit1 <- lm(mental_rot ~ 1 + log_contrast + log_motion + female, data = df)
+summary(fit1)
+plot(fit1) # residual plots for OLS; use <Return> key to cycle through plots in console.
+```
+
+```{r}
+fit2 <- psych::corr.test(df)
+print(fit2)
+```
+
+# Load helper functions
+
+```{r define-helper-functions}
+# First up is the RWA function for a traditional multiple regression analysis
+multRegress <- function(mydata) {
+  numVar <<- NCOL(mydata)
+  Variables <<- names(mydata)[2:numVar]
+  
+  mydata <- cor(mydata, use = "pairwise.complete.obs")
+  RXX <- mydata[2:numVar, 2:numVar]
+  RXY <- mydata[2:numVar, 1]
+  
+  RXX.eigen <- eigen(RXX)
+  D <- diag(RXX.eigen$val)
+  delta <- sqrt(D)
+  
+  lambda <- RXX.eigen$vec %*% delta %*% t(RXX.eigen$vec)
+  lambdasq <- lambda ^ 2
+  beta <- solve(lambda) %*% RXY
+  rsquare <<- sum(beta ^ 2)
+  
+  RawWgt <- lambdasq %*% beta ^ 2
+  import <- (RawWgt / rsquare) * 100
+  
+  result <<-
+    data.frame(Variables,
+               Raw.RelWeight = RawWgt,
+               Rescaled.RelWeight = import)
+}
+
+# Next up, are functions for the bootstrapping options
+multBootstrap <- function(mydata, indices) {
+  mydata <- mydata[indices, ]
+  multWeights <- multRegress(mydata)
+  return(multWeights$Raw.RelWeight)
+}
+
+multBootrand <- function(mydata, indices) {
+  mydata <- mydata[indices, ]
+  multRWeights <- multRegress(mydata)
+  multReps <- multRWeights$Raw.RelWeight
+  randWeight <- multReps[length(multReps)]
+  randStat <- multReps[-(length(multReps))] - randWeight
+  return(randStat)
+}
+
+multBootcomp <- function(mydata, indices, pred_index = 1) {
+  mydata <- mydata[indices, ]
+  multCWeights <- multRegress(mydata)
+  multCeps <- multCWeights$Raw.RelWeight
+  comp2Stat <-
+    multCeps - multCeps[pred_index] # Need to change the number in brackets to reflect which predictor is focal
+  comp2Stat <-
+    comp2Stat[-pred_index] # # If 1st predictor, then [1], if the 3rd predictor, then [3]
+  predictors2 <<-
+    predictors[-pred_index] # Change number in all three lines (88:90) of code
+  return(comp2Stat)
+}
+
+mybootci <- function(x, FUN2 = multBootcomp) {
+  boot::boot.ci(multBoot,
+          conf = 0.95,
+          type = "bca",
+          index = x) # using bias corrected and accelerated CIs
+}
+
+runBoot <- function(num) {
+  INDEX <- 1:num
+  test <- lapply(INDEX, FUN = mybootci)
+  test2 <- t(sapply(test, '[[', i = 4)) #extracts confidence interval
+  CIresult <<-
+    data.frame(Variables,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}
+
+myRbootci <- function(x) {
+  boot::boot.ci(multRBoot,
+          conf = 0.95,
+          type = "bca",
+          index = x)
+}
+
+runRBoot <- function(num) {
+  INDEX <- 1:num
+  test <- lapply(INDEX, FUN = myRbootci)
+  test2 <- t(sapply(test, '[[', i = 4))
+  CIresult <<-
+    data.frame(predictors,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}
+
+myCbootci <- function(x) {
+  boot::boot.ci(multC2Boot,
+          conf = 0.95,
+          type = "bca",
+          index = x)
+}
+
+runCBoot <- function(num) {
+  INDEX <- 1:num
+  test <- lapply(INDEX, FUN = myCbootci)
+  test2 <- t(sapply(test, '[[', i = 4))
+  CIresult <<-
+    data.frame(predictors2,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}
+
+myGbootci <- function(x) {
+  boot::boot.ci(groupBoot,
+          conf = 0.95,
+          type = "bca",
+          index = x)
+}
+
+runGBoot <- function(num) {
+  INDEX <- 1:num
+  test <- lapply(INDEX, FUN = myGbootci)
+  test2 <- t(sapply(test, '[[', i = 4))
+  CIresult <<-
+    data.frame(predictors,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}
+```
+
+# Run the RWA
+
+```{r rwa-analysis}
+multRegress(df)
+(RW.Results <-
+    result) # create new objects that saves results of RW analysis.
+# using the () just tells R to print the results and create the object.
+
+(RSQ.Results <- rsquare)
+```
+
+# Run bootstrapping to estimate SEs
+
+```{r rwa-bootstrap}
+#Bootstrapped Confidence interval around the individual relative weights
+#Please be patient -- This can take a few minutes to run
+multBoot <-
+  boot::boot(df, multBootstrap, n_boots) # n_boots is the # of replications;
+# you can change to other values.
+multci <- boot::boot.ci(multBoot, conf = 0.95, type = "bca")
+runBoot(length(df[, 2:numVar]))
+CI.Results <- CIresult
+
+#Bootstrapped Confidence interval tests of Significance
+#Please be patient -- This can take a few minutes to run
+randVar <- rnorm(nrow(df[, 1]), 0, 1)
+randData <- cbind(df, randVar)
+multRBoot <- boot::boot(randData, multBootrand, n_boots)
+multRci <- boot::boot.ci(multRBoot, conf = 0.95, type = "bca")
+runRBoot(length(randData[, 2:(numVar - 1)]))
+CI.Significance <- CIresult
+```
+
+## Relative weights for full model
+
+```{r}
+#R-squared For the Model
+RSQ.Results
+
+#The Raw and Rescaled Weights
+RW.Results
+
+#BCa Confidence Intervals around the raw weights
+CI.Results
+
+#BCa Confidence Interval Tests of significance
+#If Zero is not included, Weight is Significant
+CI.Significance
+```
+
+## Comparing `log_contrast` to others
+
+```{r log-contrast-vs}
+multBootcomp_contrast <- function(mydata, indices) {
+  multBootcomp(mydata, indices, 1)
+}
+#Bootstrapped Confidence interval comparing 2 variables
+#Please be patient -- This can take a few minutes to run
+multC2Boot <- boot::boot(df, multBootcomp_contrast, n_boots)
+multC2ci <- boot::boot.ci(multC2Boot, conf = 0.95, type = "bca")
+runCBoot(numVar - 2)
+(CI.Predictor.Comparison <- CIresult)
+```
+
+## Comparing `log_motion` to others
+
+```{r log-motion-vs}
+multBootcomp_motion <- function(mydata, indices) {
+  multBootcomp(mydata, indices, 2)
+}
+#Bootstrapped Confidence interval comparing 2 variables
+#Please be patient -- This can take a few minutes to run
+multC2Boot <- boot::boot(df, multBootcomp_motion, n_boots)
+multC2ci <- boot::boot.ci(multC2Boot, conf = 0.95, type = "bca")
+runCBoot(numVar - 2)
+(CI.Predictor.Comparison <- CIresult)
+```
+
+## Comparing `female` to others
+
+```{r female-vs}
+multBootcomp_female <- function(mydata, indices) {
+  multBootcomp(mydata, indices, 3)
+}
+#Bootstrapped Confidence interval comparing 2 variables
+#Please be patient -- This can take a few minutes to run
+multC2Boot <- boot::boot(df, multBootcomp_female, n_boots)
+multC2ci <- boot::boot.ci(multC2Boot, conf = 0.95, type = "bca")
+runCBoot(numVar - 2)
+(CI.Predictor.Comparison <- CIresult)
+```

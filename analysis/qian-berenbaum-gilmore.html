@@ -256,7 +256,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-10-06 10:05:08</h4>
+<h4 class="date">2021-10-07 08:54:39</h4>
 
 </div>
 
@@ -1591,16 +1591,21 @@ p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)</code></pre>
 <h1>Non-pregistered analyses</h1>
 <div id="does-vision-account-for-mental-rotation" class="section level2">
 <h2>Does vision account for mental rotation?</h2>
-<p>One can model <code>mental rotation ~ contrast + motion + sex</code> and determines whether adding the <code>sex</code> term provides a better fit relative to <code>mental rotation ~ contrast</code> alone.</p>
+<p>One can model <code>mental rotation ~ contrast + motion + sex</code> and determine whether adding the <code>sex</code> term or its interactions provides a better fit than the vision measures.</p>
 <div id="model-based-approach" class="section level3">
 <h3>Model-based approach</h3>
 <pre class="r"><code>df_mr_contr_motion &lt;- sex_diff_df %&gt;%
-  dplyr::select(., Sex, log_contrast, log_motion, mental_rot) %&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, Sex, Masculine_hobbies) %&gt;%
   dplyr::filter(., !is.na(Sex),
                 !is.na(log_contrast),
                 !is.na(log_motion),
-                !is.na(mental_rot))</code></pre>
-<p>Let’s fit a full model with all interactions.</p>
+                !is.na(mental_rot))
+
+# Export for relative weight analysis (RWA)
+readr::write_csv(df_mr_contr_motion, file = file.path(params$data_path, &#39;mr-contr-motion-sex.csv&#39;))</code></pre>
+<div id="model-1-mental_rot-log_contrastlog_motionsex" class="section level4">
+<h4>Model 1: <code>mental_rot ~ log_contrast*log_motion*Sex</code></h4>
+<p>Let’s fit a full model with all interactions:</p>
 <pre class="r"><code>lm_mr_contr_motion_sex_full &lt;- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_sex_full)</code></pre>
 <pre><code>## 
@@ -1659,6 +1664,9 @@ summary(lm_mr_contr_motion_sex_full)</code></pre>
 ## log_contrast:Sex            0.005116695 0.006287621
 ## log_motion:Sex              0.047726746 0.055730622
 ## log_contrast:log_motion:Sex 0.004223110 0.005195250</code></pre>
+</div>
+<div id="model-2-mental_rot-log_contrast-log_motion-sex-log_motionsex" class="section level4">
+<h4>Model 2: <code>mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex</code></h4>
 <p>Keep only components that meet a <span class="math inline">\(p&lt;.1\)</span> criterion.</p>
 <pre class="r"><code>lm_mr_contr_motion_motion_sex_int &lt;- lm(mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_motion_sex_int)</code></pre>
@@ -1719,6 +1727,9 @@ summary(lm_mr_contr_motion_motion_sex_int)</code></pre>
 ## 1    117 3777.1                           
 ## 2    120 3865.0 -3    -87.92 0.9078 0.4396</code></pre>
 <p>We choose the simpler model for parsimony reasons and a reduction in RSS even though the fit does not improve to a substantial degree.</p>
+</div>
+<div id="model-3-mental_rot-log_contrast-log_motion" class="section level4">
+<h4>Model 3: <code>mental_rot ~ log_contrast + log_motion</code></h4>
 <p>Let’s drop <code>Sex</code>because its effect is small, and the <code>log_motion:Sex</code> interaction to see whether these improve the fit.</p>
 <pre class="r"><code>lm_mr_contr_motion_no_sex &lt;- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)</code></pre>
@@ -1772,6 +1783,9 @@ summary(lm_mr_contr_motion_no_sex)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>So, the fit of the fuller model with <code>Sex</code> and the <code>log_motion:Sex</code> interaction included is better.</p>
+</div>
+<div id="model-4-mental_rot-log_contrast-sex" class="section level4">
+<h4>Model 4: <code>mental_rot ~ log_contrast + Sex</code></h4>
 <p>Let’s try dropping <code>log_motion</code> and the <code>Sex:log_motion</code> interaction.</p>
 <pre class="r"><code>lm_mr_contr_no_motion_sex &lt;- lm(mental_rot ~ log_contrast + Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_no_motion_sex)</code></pre>
@@ -1825,6 +1839,9 @@ summary(lm_mr_contr_no_motion_sex)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The full model still is a better fit.</p>
+</div>
+<div id="model-5-mental_rot-sex" class="section level4">
+<h4>Model 5: <code>mental_rot ~ Sex</code></h4>
 <p>Finally, let’s drop the vision variables.</p>
 <pre class="r"><code>lm_mr_no_vision_sex &lt;- lm(mental_rot ~ Sex, data = df_mr_contr_motion)
 summary(lm_mr_no_vision_sex)</code></pre>
@@ -1873,6 +1890,7 @@ summary(lm_mr_no_vision_sex)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Again, the full model containing the vision measures and sex is the best-fitting.</p>
+</div>
 </div>
 </div>
 <div id="do-outliers-account-for-results" class="section level2">
