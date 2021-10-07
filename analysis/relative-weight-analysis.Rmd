@@ -20,19 +20,30 @@ library(tidyverse) # For pipe '%>%'
 ```{r}
 df <- readr::read_csv(file.path("csv/mr-contr-motion-sex.csv"))
 
-# Requires all variables be numeric so we recode Sex with Female = 1, Male = 0.
+# Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
 df <- df %>%
-  dplyr::mutate(., female = if_else(Sex == "Female", 1, 0)) %>%
-  dplyr::select(., mental_rot, log_contrast, log_motion, female)
+  dplyr::mutate(., male = if_else(Sex == "Male", 1, 0)) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male)
 ```
 
 ## Create Sex:log_motion variable
 
 ```{r add-sex-motion-interaction}
 df <- df %>%
-  #dplyr::mutate(., female_motion = female * log_motion) %>%
-  #dplyr::select(., mental_rot, log_contrast, log_motion, female, female_motion) %>%
-  dplyr::select(., mental_rot, log_contrast, log_motion, female)
+  dplyr::mutate(., male_motion = male * log_motion) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion)
+```
+
+Compute residuals of `male_motion ~ 1 + male + log_motion` in order to estimate relative weight properly.
+
+```{r}
+male_motion_lm <- lm(formula = male_motion ~ 1 + male + log_motion, data = df)
+
+male_motion_resid <- resid(male_motion_lm)
+
+df <- df %>%
+  dplyr::mutate(., male_motion_r = male_motion_resid) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion_r)
 ```
 
 ## Grab variable names
@@ -50,7 +61,7 @@ eigen(cor(df))
 # Run conventional regression analyses
 
 ```{r}
-fit1 <- lm(mental_rot ~ 1 + log_contrast + log_motion + female, data = df)
+fit1 <- lm(mental_rot ~ 1 + log_contrast + log_motion + male, data = df)
 summary(fit1)
 plot(fit1) # residual plots for OLS; use <Return> key to cycle through plots in console.
 ```
@@ -238,44 +249,3 @@ CI.Results
 CI.Significance
 ```
 
-## Comparing `log_contrast` to others
-
-```{r log-contrast-vs}
-multBootcomp_contrast <- function(mydata, indices) {
-  multBootcomp(mydata, indices, 1)
-}
-#Bootstrapped Confidence interval comparing 2 variables
-#Please be patient -- This can take a few minutes to run
-multC2Boot <- boot::boot(df, multBootcomp_contrast, n_boots)
-multC2ci <- boot::boot.ci(multC2Boot, conf = 0.95, type = "bca")
-runCBoot(numVar - 2)
-(CI.Predictor.Comparison <- CIresult)
-```
-
-## Comparing `log_motion` to others
-
-```{r log-motion-vs}
-multBootcomp_motion <- function(mydata, indices) {
-  multBootcomp(mydata, indices, 2)
-}
-#Bootstrapped Confidence interval comparing 2 variables
-#Please be patient -- This can take a few minutes to run
-multC2Boot <- boot::boot(df, multBootcomp_motion, n_boots)
-multC2ci <- boot::boot.ci(multC2Boot, conf = 0.95, type = "bca")
-runCBoot(numVar - 2)
-(CI.Predictor.Comparison <- CIresult)
-```
-
-## Comparing `female` to others
-
-```{r female-vs}
-multBootcomp_female <- function(mydata, indices) {
-  multBootcomp(mydata, indices, 3)
-}
-#Bootstrapped Confidence interval comparing 2 variables
-#Please be patient -- This can take a few minutes to run
-multC2Boot <- boot::boot(df, multBootcomp_female, n_boots)
-multC2ci <- boot::boot.ci(multC2Boot, conf = 0.95, type = "bca")
-runCBoot(numVar - 2)
-(CI.Predictor.Comparison <- CIresult)
-```
