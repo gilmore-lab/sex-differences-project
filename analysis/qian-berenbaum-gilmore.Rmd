@@ -1414,9 +1414,230 @@ The more complex model with both vision measures fits better than one with sex a
 
 Even excluding the two outliers in motion duration thresholds, we still conclude that vision measures are a better predictor of individual differences in mental rotation scores than sex.
 
-## Do men and women differ in other ways?
+## Does interest in specific male-typed hobbies correlate with vision?
 
-The samples do not appear substantially different in other measures.
+Determine which hobbies are strongly male-typed according to (CITE):
+
+- Golf
+- Home eletronics
+- Surfing
+- Computers
+- Video games
+- Watching violent movies
+- Going to car shows
+- Fishing
+- Poker
+- Playing Basketball
+- TV sports
+- Football
+- Weight lifting
+- Working on cars
+- Drag racing
+
+```{r}
+var <-
+  c(
+    "Participant",
+    "Sex",
+    "log_contrast",
+    "log_motion",
+    "Golf",
+    "Home electronics",
+    "Surfing",
+    "Computers",
+    "Video games",
+    "Watching violent movies",
+    "Going to car shows",
+    "Fishing",
+    "Poker",
+    "Playing basketball",
+    "TV sports",
+    "Football",
+    "Weight lifting",
+    "Working on cars",
+    "Drag racing",
+    "Masculine_hobbies"
+  )
+male_hobbies <- sex_diff_df[, var]
+male_hobbies_F <- male_hobbies %>% 
+  dplyr::filter(Sex == "Female")
+```
+
+### Calculate alpha
+
+```{r}
+psych::alpha(male_hobbies[,-c(1:4,20)])
+```
+
+### Check data for outliers
+
+```{r}
+FindOutliers(male_hobbies$Masculine_hobbies)
+```
+
+No data are outliers.
+
+### Correlation between male-typed hobbies and log contrast
+
+```{r}
+rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball
+rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
+```
+
+`Playing basketball` and `Home electronics` substantial large negative correlations (in women) with log contrast thresholds.
+
+#### Playing basketball and Contrast Sensitivity
+
+```{r}
+cor.test(
+  male_hobbies_F$log_contrast,
+  male_hobbies_F$"Playing basketball",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Playing basketball")
+es_mental_mas_contrast$formatted_r
+```
+
+#### Home electronics and Contrast Sensitivity
+
+```{r}
+cor.test(
+   male_hobbies_F$log_contrast,
+   male_hobbies_F$"Home electronics",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, "Home electronics")
+es_mental_mas_contrast$formatted_r
+```
+
+
+### Correlation between male-typed hobbies and log motion
+
+```{r}
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
+rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
+```
+
+`Weightlifing` and `Computers` shows substantial correlations with motion duration thresholds.
+
+#### Weightlifting and Motion Duration
+
+```{r}
+cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$"Weight lifting",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Weight lifting")
+es_mental_mas_contrast$formatted_r
+```
+
+##### Computers and Motion Duration
+
+```{r}
+cor.test(
+   male_hobbies_F$log_motion,
+   male_hobbies_F$"Computers",
+  method = "pearson",
+  alternative = "two.sided"
+)
+
+es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
+es_mental_mas_contrast$formatted_r
+```
+
+### set function for scatterplot
+```{r}
+sex_diff_scatter3 <-
+  function(df,
+           x_var,
+           y_var,
+           x_lab = "X axis",
+           y_lab = "Y axis"
+           ) {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s
+      ) +
+      geom_point(size=4) +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(method = "lm", na.rm = TRUE) +
+      xlab(x_lab) +
+      ylab(y_lab)+
+      theme.custom +
+      ylim(1, 5) 
+p
+  }
+```
+
+#### get scatterplot for contrast sensitivity and playing basketball
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_contrast",
+  "Playing basketball",
+  "log(contrast threshold)",
+  "Playing basketball"
+)
+```
+#### get scatterplot for contrast sensitivity and electronics
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_contrast",
+  "Home electronics",
+  "log(contrast threshold)",
+  "Home electronics"
+)
+```
+#### get scatterplot for motion sensitivity and weight lifting
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+#### get scatterplot for motion sensitivity and weight lifting, after excluding outliers
+```{r}
+male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
+sex_diff_scatter3(
+  male_hobbies_Fex,
+  "log_motion",
+  "Weight lifting",
+  "log(motion threshold)",
+  "Weight lifting"
+)
+```
+
+#### get scatterplot for motion sensitivity and weight lifting
+```{r}
+sex_diff_scatter3(
+  male_hobbies_F,
+  "log_motion",
+  "Computers",
+  "log(motion threshold)",
+  "Computers"
+)
+```
+
+## Do men and women differ in other ways?
 
 ### Age
 
@@ -1440,4 +1661,149 @@ xtabs(~ Sex + Acuity, df_trimmed)
 
 ```{r, stereo}
 xtabs(~ Sex + Stereo_amin, df_trimmed)
+
+```
+
+#### get scatterplot for stereo and contrast
+```{r}
+sex_diff_scatter3(
+  df_trimmed,
+  "log_contrast",
+  "Stereo_amin",
+  "log(contrast threshold)",
+  "Stereo acuity"
+) +ylim(40, 800)
+```
+
+```{r}
+sex_diff_scatter3(
+  df_trimmed,
+  "log_motion",
+  "Stereo_amin",
+  "log(motion threshold)",
+  "Stereo acuity"
+)+ylim(40, 800)
+```
+
+### factor analysis
+
+```{r}
+df_factor_f <- sex_diff_df %>%
+  filter(Sex=="Female") %>%
+  dplyr::select(., Acuity,Stereo_amin,log_contrast, log_motion, mental_rot,vocab,     "Golf",
+    "Home electronics",
+    "Surfing",
+    "Computers",
+    "Video games",
+    "Watching violent movies",
+    "Going to car shows",
+    "Fishing",
+    "Poker",
+    "Playing basketball",
+    "TV sports",
+    "Football",
+    "Weight lifting",
+    "Working on cars",
+    "Drag racing") %>%
+  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
+df_factor_f$Acuity<-as.numeric(factor(df_factor_f$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
+df_factor_f$Stereo_amin<-as.numeric(factor(df_factor_f$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
+```
+
+```{r}
+df_factor_m <- sex_diff_df %>%
+  filter(Sex=="Male") %>%
+  dplyr::select(., Acuity,Stereo_amin,log_contrast, log_motion, mental_rot,vocab,     "Golf",
+    "Home electronics",
+    "Surfing",
+    "Computers",
+    "Video games",
+    "Watching violent movies",
+    "Going to car shows",
+    "Fishing",
+    "Poker",
+    "Playing basketball",
+    "TV sports",
+    "Football",
+    "Weight lifting",
+    "Working on cars",
+    "Drag racing") %>%
+  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
+df_factor_m$Acuity<-as.numeric(factor(df_factor_m$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
+df_factor_m$Stereo_amin<-as.numeric(factor(df_factor_m$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
+```
+
+```{r}
+df.fa.m <- factanal(df_factor_m, factors = 2)
+df.fa.m
+```
+
+```{r}
+df.fa.f <- factanal(df_factor_f, factors = 2)
+df.fa.f
+```
+
+```{r}
+df_factor <- sex_diff_df %>%
+  dplyr::select(., Sex,Acuity,Stereo_amin,log_contrast, log_motion, mental_rot,vocab,     "Golf",
+    "Home electronics",
+    "Surfing",
+    "Computers",
+    "Video games",
+    "Watching violent movies",
+    "Going to car shows",
+    "Fishing",
+    "Poker",
+    "Playing basketball",
+    "TV sports",
+    "Football",
+    "Weight lifting",
+    "Working on cars",
+    "Drag racing") %>%
+  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
+df_factor$Sex<-as.numeric(factor(df_factor$Sex,levels=c("Male","Female"),labels=c(1,0)))
+df_factor$Acuity<-as.numeric(factor(df_factor$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
+df_factor$Stereo_amin<-as.numeric(factor(df_factor$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
+```
+
+
+```{r}
+df.fa <- factanal(df_factor, factors = 2)
+df.fa
+```
+
+```{r}
+df.fa3 <- factanal(df_factor, factors = 3)
+df.fa3
+```
+
+```{r}
+# varimax
+plot(df.fa$loadings[,1], 
+     df.fa$loadings[,2],
+     xlab = "Factor 1", 
+     ylab = "Factor 2", 
+     ylim = c(-1,1),
+     xlim = c(-1,1),
+     main = "Varimax rotation")
+
+text(df.fa$loadings[,1]-0.08, 
+     df.fa$loadings[,2]+0.08,
+      colnames(df_factor),
+      col="blue")
+abline(h = 0, v = 0)
+```
+
+
+```{r}
+df_factor_all <- sex_diff_df[,c(2,9,11,18,20,27:88)]  %>%
+  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
+df_factor_all$Sex<-as.numeric(factor(df_factor_all$Sex,levels=c("Male","Female"),labels=c(1,0)))
+df_factor_all$Acuity<-as.numeric(factor(df_factor_all$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
+df_factor_all$Stereo_amin<-as.numeric(factor(df_factor_all$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
+```
+
+```{r}
+df.fa2 <- factanal(df_factor_all, factors = 3)
+df.fa2
 ```
