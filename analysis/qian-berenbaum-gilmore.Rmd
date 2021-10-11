@@ -1807,3 +1807,69 @@ df_factor_all$Stereo_amin<-as.numeric(factor(df_factor_all$Stereo_amin,levels=c(
 df.fa2 <- factanal(df_factor_all, factors = 3)
 df.fa2
 ```
+
+## Check internal reliability of female-typed hobbies 
+
+Determine which hobbies are strongly female-typed according to (Lippa, 1992):
+
+Dancing
+going to art galleries
+going to church groups
+writing poetry
+trying new fashions
+aerobics
+travelling
+talking on phone with friends
+clothes shopping
+romance novels
+singing
+photography
+going to formal dress affairs
+cooking
+going to shows and plays
+knitting
+romance movies
+going out to dinner with friends
+going to museums
+house plants
+collecting stuffed animals
+collecting pictures of friends and family
+
+
+```{r}
+varf <-
+  c("Sex",
+    "Dancing",
+    "Going to art galleries",
+    "Going to church groups",
+    "Writing poetry",
+    "Trying new fashions",
+    "Aerobics",
+    "Travelling",
+    "Talking on phone with friends",
+    "Clothes shopping",
+    "Romance novels",
+    "Singing",
+    "Photography",
+    "Going to formal dress affairs",
+    "Cooking",
+    "Going to shows and plays",
+    "Knitting",
+    "Romance movies",
+    "Going out to dinner with friends",
+    "Going to museums",
+    "House plants",
+    "Collecting stuffed animals",
+    "Collecting pictures of friends and family"
+    
+  )
+female_hobbies <- sex_diff_df[, varf]
+female_hobbies_F <- female_hobbies %>% 
+  dplyr::filter(Sex == "Female")
+```
+
+### Calculate alpha
+
+```{r}
+psych::alpha(female_hobbies[,-1])
+```
