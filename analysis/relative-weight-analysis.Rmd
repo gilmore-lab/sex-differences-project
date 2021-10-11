@@ -1,11 +1,16 @@
 ---
-title: "Relative Weight Analysis"
-output: html_document
+title: "Relative Weight Analysis (RWA)"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
 ---
 
 # Background
 
-This analysis derives from work by LeBreton and code provided by him.
+This analysis derives from work by Tonidel, Lebreton and Johnson and code provided by Lebreton.
+
+Tonidandel, S., Lebreton, J. M., & Johnson, J. W. (2009). Determining the statistical significance of relative weights. *Psychological Methods, *14*(4), 387–399. https://doi.org/10.1037/a0017735
 
 # Setup
 
@@ -15,7 +20,7 @@ n_boots <- 10000
 library(tidyverse) # For pipe '%>%'
 ```
 
-# Import data
+# Import and clean data
 
 ```{r}
 df <- readr::read_csv(file.path("csv/mr-contr-motion-sex.csv"))
@@ -52,7 +57,7 @@ df <- df %>%
 predictors <- names(df)[2:length(df)] 
 ```
 
-# Verify data are not singular
+## Verify data are not singular
 
 ```{r data-singular}
 eigen(cor(df))
@@ -207,10 +212,10 @@ multRegress(df)
     result) # create new objects that saves results of RW analysis.
 # using the () just tells R to print the results and create the object.
 
-(RSQ.Results <- rsquare)
+RSQ.Results <- rsquare
 ```
 
-# Run bootstrapping to estimate SEs
+## Run bootstrapping to estimate SEs
 
 ```{r rwa-bootstrap}
 #Bootstrapped Confidence interval around the individual relative weights
@@ -249,3 +254,79 @@ CI.Results
 CI.Significance
 ```
 
+# Run the RWA on the trimmed data
+
+We deleted two female participants with very low motion duration thresholds. Here we examine whether that changes the relative weights.
+
+## Import and clean data
+
+```{r}
+df <- readr::read_csv(file.path("csv/mr-contr-motion-sex-trimmed.csv"))
+
+# Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
+df <- df %>%
+  dplyr::mutate(., male = if_else(Sex == "Male", 1, 0)) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male)
+
+df <- df %>%
+  dplyr::mutate(., male_motion = male * log_motion) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion)
+
+male_motion_lm <- lm(formula = male_motion ~ 1 + male + log_motion, data = df)
+
+male_motion_resid <- resid(male_motion_lm)
+
+df <- df %>%
+  dplyr::mutate(., male_motion_r = male_motion_resid) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion_r)
+```
+
+## Run the RWA
+
+```{r rwa-analysis-trimmed}
+multRegress(df)
+(RW.Results <-
+    result) # create new objects that saves results of RW analysis.
+# using the () just tells R to print the results and create the object.
+
+RSQ.Results <- rsquare
+```
+
+## Run bootstrapping to estimate SEs
+
+```{r rwa-bootstrap-trimmed}
+#Bootstrapped Confidence interval around the individual relative weights
+#Please be patient -- This can take a few minutes to run
+multBoot <-
+  boot::boot(df, multBootstrap, n_boots) # n_boots is the # of replications;
+# you can change to other values.
+multci <- boot::boot.ci(multBoot, conf = 0.95, type = "bca")
+runBoot(length(df[, 2:numVar]))
+CI.Results <- CIresult
+
+#Bootstrapped Confidence interval tests of Significance
+#Please be patient -- This can take a few minutes to run
+randVar <- rnorm(nrow(df[, 1]), 0, 1)
+randData <- cbind(df, randVar)
+multRBoot <- boot::boot(randData, multBootrand, n_boots)
+multRci <- boot::boot.ci(multRBoot, conf = 0.95, type = "bca")
+runRBoot(length(randData[, 2:(numVar - 1)]))
+CI.Significance <- CIresult
+```
+
+## Relative weights for full model (trimmed data)
+
+```{r results-trimmed}
+#R-squared For the Model
+RSQ.Results
+
+#The Raw and Rescaled Weights
+RW.Results
+
+#BCa Confidence Intervals around the raw weights
+CI.Results
+
+#BCa Confidence Interval Tests of significance
+#If Zero is not included, Weight is Significant
+CI.Significance
+```
