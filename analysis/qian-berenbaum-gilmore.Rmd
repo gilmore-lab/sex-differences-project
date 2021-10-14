@@ -1103,7 +1103,7 @@ df_mr_contr_motion <- sex_diff_df %>%
 readr::write_csv(df_mr_contr_motion, file = file.path(params$data_path, 'mr-contr-motion-sex.csv'))
 ```
 
-#### Model 1: `mental_rot ~ log_contrast*log_motion*Sex`
+#### Model 0: `mental_rot ~ log_contrast*log_motion*Sex`
 
 Let's fit a full model with all interactions:
 
@@ -1115,7 +1115,7 @@ confint(lm_mr_contr_motion_sex_full)
 lsr::etaSquared(lm_mr_contr_motion_sex_full)
 ```
 
-#### Model 2: `mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex`
+#### Model 1: `mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex`
 
 Keep only components that meet a $p<.1$ criterion.
 
@@ -1135,7 +1135,7 @@ anova(lm_mr_contr_motion_sex_full, lm_mr_contr_motion_motion_sex_int)
 
 We choose the simpler model for parsimony reasons and a reduction in RSS even though the fit does not improve to a substantial degree.
 
-#### Model 3: `mental_rot ~ log_contrast + log_motion`
+#### Model 2: `mental_rot ~ log_contrast + log_motion`
 
 Let's drop `Sex`because its effect is small, and the `log_motion:Sex` interaction to see whether these improve the fit.
 
@@ -1155,7 +1155,7 @@ anova(lm_mr_contr_motion_motion_sex_int, lm_mr_contr_motion_no_sex)
 
 So, the fit of the fuller model with `Sex` and the `log_motion:Sex` interaction included is better.
 
-#### Model 4: `mental_rot ~ log_contrast + Sex`
+#### Model 3: `mental_rot ~ log_contrast + Sex`
 
 Let's try dropping `log_motion` and the `Sex:log_motion` interaction.
 
@@ -1175,7 +1175,7 @@ anova(lm_mr_contr_motion_motion_sex_int, lm_mr_contr_no_motion_sex)
 
 The full model still is a better fit.
 
-#### Model 5: `mental_rot ~ Sex`
+#### Model 4: `mental_rot ~ Sex`
 
 Finally, let's drop the vision variables.
 
