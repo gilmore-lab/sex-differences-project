@@ -643,10 +643,10 @@ We estimate the correlation between log contrast and log motion thresholds in me
 # "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
 theme.custom <- theme_classic()+
    theme(  plot.title = element_text(size=12, face="bold",hjust = 0.5),
-                      axis.title.x = element_text(size=9),
-                      axis.title.y = element_text(size=9),
+                      axis.title.x = element_text(size=11),
+                      axis.title.y = element_text(size=11),
                       strip.text = element_text(size=9),
-                      axis.text = element_text(size=6),
+                      axis.text = element_text(size=7),
                       legend.position = "bottom",
                        legend.title = element_blank(),
 #  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
