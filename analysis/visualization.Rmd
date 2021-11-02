@@ -380,6 +380,68 @@ sex_diff_scatter_6 <-
     p
   }
 ```
+
+```{r}
+library(viridis)
+sex_diff_scatter_7 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        fill = Sex,
+        color = Sex,
+  #     linetype = Sex,
+        shape = Sex
+      ) +
+      geom_point(size=3  
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+       scale_fill_viridis()
+    scale_shape_manual(values = c(24, 21)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
+             hjust = 1)
+     
+    p
+  }
+```
 Create matrices of correlation coefficients for subsequent plotting.
 
 ```{r}
@@ -460,7 +522,7 @@ sex_diff_df$Sex<-factor(sex_diff_df$Sex, levels=c("Male","Female"))
 corr_df <- sex_diff_corr_summ("log_motion",
                               "log_contrast", print_table = FALSE)
 
-p_vision<-sex_diff_scatter_6(
+p_vision<-sex_diff_scatter_7(
   sex_diff_df,
   "log_motion",
   "log_contrast",
