@@ -74,10 +74,10 @@ sex_diff_df_M <- sex_diff_df %>%
 # "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
 theme.custom <- theme_classic()+
    theme(  plot.title = element_text(size=12, face="bold",hjust = 0.5),
-                      axis.title.x = element_text(size=13),
-                      axis.title.y = element_text(size=13),
+                      axis.title.x = element_text(size=15),
+                      axis.title.y = element_text(size=15),
                       strip.text = element_text(size=9),
-                      axis.text = element_text(size=11),
+                      axis.text = element_text(size=13),
                       legend.position = "bottom",
                        legend.title = element_blank(),
 #  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -303,8 +303,8 @@ sex_diff_scatter_5 <-
      theme.custom +
       xlab(x_lab) +
       ylab(y_lab) +
-      scale_fill_grey(start=0.4,end=0.5)+
-       scale_color_grey(start=0.1,end=0.6)+
+      scale_fill_grey(start=0.1,end=0.5)+
+       scale_color_grey(start=0,end=0.4)+
     scale_shape_manual(values = c(21, 24)) +
  #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
       annotate(
@@ -364,8 +364,8 @@ sex_diff_scatter_6 <-
      theme.custom +
       xlab(x_lab) +
       ylab(y_lab) +
-      scale_fill_grey(start=0.4,end=0.5)+
-       scale_color_grey(start=0.1,end=0.6)+
+      scale_fill_grey(start=0,end=0.5)+
+       scale_color_grey(start=0,end=0.5)+
     scale_shape_manual(values = c(24, 21)) +
 #   scale_color_brewer(direction = -1) +
  #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
@@ -427,7 +427,7 @@ sex_diff_scatter_7 <-
      theme.custom +
       xlab(x_lab) +
       ylab(y_lab) +
-       scale_fill_viridis()
+       scale_fill_viridis()+
     scale_shape_manual(values = c(24, 21)) +
 #   scale_color_brewer(direction = -1) +
  #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
@@ -436,13 +436,505 @@ sex_diff_scatter_7 <-
         x = anx,
         y = any,
         size=6,
-        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
+        label = c(an_f, an_m), 
              hjust = 1)
      
     p
   }
 ```
 Create matrices of correlation coefficients for subsequent plotting.
+
+```{r}
+library(viridis)
+sex_diff_scatter_8 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        fill = Sex,
+        color = Sex,
+  #     linetype = Sex,
+        shape = Sex
+      ) +
+      geom_point(size=3  
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+    scale_shape_manual(values = c(24, 21)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m),col=c("#F8766D","#00BFC4"),
+             hjust = 1)
+     
+    p
+  }
+```
+
+```{r}
+sex_diff_scatter_9 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex,
+        shape = Sex
+  #     linetype = Sex,
+        
+      ) +
+      geom_point(size=3
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      scale_color_manual(values=c("#5ec962", "#3b528b"))+
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+  scale_shape_manual(values = c(17, 16)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m),col=c("#5ec962", "#3b528b"),
+             hjust = 1)
+     
+    p
+  }
+```
+
+```{r}
+sex_diff_scatter_10 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex,
+        shape = Sex
+  #     linetype = Sex,
+        
+      ) +
+      geom_point(size=3
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      scale_color_manual(values=c("#ed7953", "#9c179e"))+
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+  scale_shape_manual(values = c(17, 16)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m),col=c("#ed7953", "#9c179e"),
+             hjust = 1)
+     
+    p
+  }
+```
+
+```{r}
+sex_diff_scatter_11 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex,
+        shape = Sex
+  #     linetype = Sex,
+        
+      ) +
+      geom_point(size=3
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      scale_color_manual(values=c("#0d0887", "#9c179e"))+
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+  scale_shape_manual(values = c(2, 1)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m), color=c("#0d0887", "#9c179e"),
+             hjust = 1)
+     
+    p
+  }
+```
+
+```{r}
+sex_diff_scatter_12 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex,
+        shape = Sex
+  #     linetype = Sex,
+        
+      ) +
+      geom_point(size=2
+           #      , position = position_jitter(width = 0.01, height = 0.01)
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      scale_color_manual(values=c("red", "blue"))+
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+  scale_shape_manual(values = c(17, 16)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m),col=c("red", "blue"),
+             hjust = 1)
+     
+    p
+  }
+```
+
+```{r}
+sex_diff_scatter_13 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex,
+        shape = Sex
+  #     linetype = Sex,
+        
+      ) +
+      geom_point(size=2
+           #      , position = position_jitter(width = 0.01, height = 0.01)
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      scale_color_manual(values=c("red", "green3"))+
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+  scale_shape_manual(values = c(17, 16)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m),col=c("red", "green3"),
+             hjust = 1)
+     
+    p
+  }
+```
+
+```{r}
+sex_diff_scatter_13 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex,
+        shape = Sex
+  #     linetype = Sex,
+        
+      ) +
+      geom_point(size=2
+           #      , position = position_jitter(width = 0.01, height = 0.01)
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      scale_color_manual(values=c("purple", "green3"))+
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+  scale_shape_manual(values = c(17, 16)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m),col=c("purple", "green3"),
+             hjust = 1)
+     
+    p
+  }
+```
+
+```{r}
+sex_diff_scatter_14 <-
+  function(df,
+           x_var,
+           y_var,
+           x_rev = FALSE,
+           y_rev = FALSE,
+           an_f = "",
+           an_m = "",
+           anx = NULL,
+           any = NULL,
+           x_lab = "X axis",
+           y_lab = "Y axis",
+           square_axis = TRUE,
+           margin_type = "boxplot") {
+    require(tidyverse)
+    require(ggExtra)
+    
+    x_var_s <- sym(x_var)
+    y_var_s <- sym(y_var)
+    
+    p <- ggplot(df) +
+      aes(
+        x = !!x_var_s,
+        y = !!y_var_s,
+        group = Sex,
+        color = Sex,
+        shape = Sex
+  #     linetype = Sex,
+        
+      ) +
+      geom_point(size=2
+           #      , position = position_jitter(width = 0.01, height = 0.01)
+           #      ,alpha=0.75
+            #     ,shape=21
+                 ) +
+      scale_color_manual(values=c("blue", "darkorange1"))+
+      xlab(x_var) +
+      ylab(y_var) +
+      stat_smooth(
+       # color="black",  
+        method = "lm", 
+                  se=FALSE,
+                  na.rm = TRUE) +
+     theme.custom +
+      xlab(x_lab) +
+      ylab(y_lab) +
+  scale_shape_manual(values = c(17, 16)) +
+#   scale_color_brewer(direction = -1) +
+ #   scale_fill_manual( values =alpha(c("black","white"),0.2)) +
+      annotate(
+        "text",
+        x = anx,
+        y = any,
+        size=6,
+        label = c(an_f, an_m),col=c("blue", "darkorange1"),
+             hjust = 1)
+     
+    p
+  }
+```
 
 ```{r}
 corr_vars <- c('log_contrast', 'log_motion', 'mental_rot', 'Masculine_hobbies')
@@ -522,7 +1014,7 @@ sex_diff_df$Sex<-factor(sex_diff_df$Sex, levels=c("Male","Female"))
 corr_df <- sex_diff_corr_summ("log_motion",
                               "log_contrast", print_table = FALSE)
 
-p_vision<-sex_diff_scatter_7(
+p_vision<-sex_diff_scatter_14(
   sex_diff_df,
   "log_motion",
   "log_contrast",
@@ -550,7 +1042,7 @@ p_aug2 <- p_vision +
     x = sex_diff_df$log_motion[c(115, 118)],
     y = sex_diff_df$log_contrast[c(115, 118)],
     color = "black",
-    size = 8,
+    size = 6,
     shape = 0
   )
 
@@ -562,11 +1054,13 @@ p_aug2 <- ggExtra::ggMarginal(p_aug2,
 p_aug2
 ```
 
+
+
 ```{r}
 library("gridExtra")
 ggsave(
   plot = p_aug2,
-  filename = paste0("C:/Users/yimin/OneDrive/Desktop/fig3_5.jpg"),
+  filename = paste0("C:/Users/yimin/OneDrive/Desktop/fig3_14.jpg"),
   units = "in",
   height = 6,
   width = 6,
