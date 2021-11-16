@@ -51,10 +51,11 @@ sex_diff_boxplot <- function(df = sex_diff_df,
       group = Sex,
       color = Sex
     ) +
-    geom_boxplot(outlier.shape = NA) +
+    geom_boxplot(outlier.shape = NA, color = "black") +
     geom_jitter(size = plot_point_size,
                 height = .1,
-                width = .1) +
+                width = .1,
+                alpha = 1/2) +
     scale_color_brewer(palette = our_color_palette) +
     theme.custom +
     ylab(axis_label) +
@@ -264,7 +265,7 @@ p_mental_rot_contrast <- sex_diff_scatter(
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-1.5),
+  c(-1.55),
   c(35, 38),
   "log(contrast threshold)",
   "Mental rotation score"
@@ -294,7 +295,7 @@ p_motion <- sex_diff_scatter(
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-1.5),
+  c(-1.55),
   c(35, 38),
   "log(motion threshold)",
   "Mental rotation score"
@@ -407,7 +408,7 @@ ggsave(
 ```{r}
 # Mental rotation and vision measures
 p_mental_rot_scatters <- p_mental_rot_contrast | p_mental_rot_motion
-p_mental_rot_scatters_annotated <- p_boxplots + plot_annotation(tag_levels = "A")
+p_mental_rot_scatters_annotated <- p_mental_rot_scatters + plot_annotation(tag_levels = "A")
 p_mental_rot_scatters_annotated
 
 ggsave(
@@ -433,7 +434,7 @@ ggsave(
 # Contrast thresholds and motion thresholds
 ggsave(
   plot = p_vision_aug,
-  filename = "paper_figs/fig-03-contrast-motion-alt.jpg",
+  filename = "paper_figs/fig-03-contrast-motion.jpg",
   units = "in",
   width = 3.4375,
   dpi = 600
@@ -441,7 +442,7 @@ ggsave(
 
 ggsave(
   plot = p_interests_contrast,
-  filename = "paper_figs/fig-S01-mental-rot-interests-alt.jpg",
+  filename = "paper_figs/fig-S01-mental-rot-interests.jpg",
   units = "in",
   width = 3.4375,
   dpi = 600  

@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-11-16 11:19:25</h4>
+<h4 class="date">2021-11-16 16:27:38</h4>
 
 </div>
 
@@ -976,7 +976,7 @@ theme.custom &lt;- theme_classic() +
 sex_diff_boxplot(sex_diff_df)</code></pre>
 <pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-84-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-83-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>p_hist_contrast &lt;- sex_diff_boxplot(y_var = &quot;log_contrast&quot;, axis_label = &quot;log(contrast)&quot;)
 
 p_hist_contrast</code></pre>
@@ -1303,7 +1303,7 @@ p_boxplots_annotated</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-86-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p_boxplots_annotated,
   filename = &quot;paper_figs/fig-01-boxplots.jpg&quot;,
@@ -1332,7 +1332,7 @@ p_mental_rot_scatters_annotated</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-88-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p_mental_rot_scatters_annotated,
   filename = &quot;paper_figs/fig-02-mental-rot-vision.jpg&quot;,
@@ -1355,7 +1355,7 @@ p = grid.arrange(ncol = 2, nrow = 1, p_mental_rot_contrast, p_mental_rot_motion)
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-89-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-88-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p,
   filename = &quot;paper_figs/fig-02-mental-rot-vision-alt.jpg&quot;,
@@ -1367,7 +1367,7 @@ p = grid.arrange(ncol = 2, nrow = 1, p_mental_rot_contrast, p_mental_rot_motion)
 <pre class="r"><code># Contrast thresholds and motion thresholds
 ggsave(
   plot = p_vision_aug,
-  filename = &quot;paper_figs/fig-03-contrast-motion-alt.jpg&quot;,
+  filename = &quot;paper_figs/fig-03-contrast-motion.jpg&quot;,
   units = &quot;in&quot;,
   width = 3.4375,
   dpi = 600
@@ -1377,7 +1377,7 @@ ggsave(
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(
   plot = p_interests_contrast,
-  filename = &quot;paper_figs/fig-S01-mental-rot-interests-alt.jpg&quot;,
+  filename = &quot;paper_figs/fig-S01-mental-rot-interests.jpg&quot;,
   units = &quot;in&quot;,
   width = 3.4375,
   dpi = 600  
@@ -2130,7 +2130,7 @@ summary(fit1)</code></pre>
 ## Multiple R-squared:  0.1335, Adjusted R-squared:  0.112 
 ## F-statistic: 6.212 on 3 and 121 DF,  p-value: 0.0005839</code></pre>
 <pre class="r"><code>plot(fit1) # residual plots for OLS; use &lt;Return&gt; key to cycle through plots in console.</code></pre>
-<p><img src="img/unnamed-chunk-93-1.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-2.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-3.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-4.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-92-1.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-2.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-3.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-4.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>fit2 &lt;- psych::corr.test(df)
 print(fit2)</code></pre>
 <pre><code>## Call:psych::corr.test(x = df)
@@ -2481,9 +2481,15 @@ CI.Significance</code></pre>
 </div>
 <div id="check-internal-reliability-of-interests" class="section level2">
 <h2>Check internal reliability of interests</h2>
-<p>Determine which hobbies are strongly female-typed according to (Lippa, 1991)</p>
-<p>Lippa, R. (1991). Some psychometric characteristics of gender diagnosticity measures: reliability, validity, consistency across domains, and relationship to the big five. Journal of Personality and Social Psychology, 61(6), 1000–1011. <a href="https://doi.org/10.1037//0022-3514.61.6.1000" class="uri">https://doi.org/10.1037//0022-3514.61.6.1000</a>.</p>
-<p>Dancing going to art galleries going to church groups writing poetry trying new fashions aerobics travelling talking on phone with friends clothes shopping romance novels singing photography going to formal dress affairs cooking going to shows and plays knitting romance movies going out to dinner with friends going to museums house plants collecting stuffed animals collecting pictures of friends and family</p>
+<p>This measure was taken from a subset of a measure of Gender Diagnosticity (Lippa &amp; Connelly, 1991). Lippa’s measure had participants rate degree of interest in 51 everyday activities (e.g., making a speech, cooking, and discussing politics), and 39 amusements and hobbies (e.g., fishing, jazz or rock concerts, and art galleries). Subjects rated their degree of preference on a 5-point scale: strongly dislike, (1) slightly dislike (2), neutral or indifferent (3), slightly like (4), and strongly like (5). The lists of activities and amusements came from those appearing in Part I of the Strong-Campbell Interest Inventory, Form T325 (Campbell &amp; Hansen, 1981). Our list of items collapses the two subsets of hobby types into one category, and eliminates those which were outdated or unpopular by the time Phase 4 testing began.</p>
+<p>Lippa, R., &amp; Connelly, S. (1990). Gender diagnosticity: A new Bayesian approach to gender-related individual differences. Journal of Personality and Social Psychology, 59(5), 1051–1065. <a href="https://doi.org/10.1037/0022-3514.59.5.1051" class="uri">https://doi.org/10.1037/0022-3514.59.5.1051</a></p>
+<p>Campbell, D. P., &amp; Hansen, J.-I. C. (1981). Manual for the SVIB-SCII: Strong-Campbell interest inventory, form T325 of the Strong vocational interest blank (Vol. 325). Stanford University Press.</p>
+<p>Activities showing strong patterns of endorsement or high ratings by female participants (Lippa &amp; Connelly, 1990).</p>
+<p>Dancing</br> going to art galleries</br> going to church groups</br> writing poetry</br> trying new fashions</br> aerobics</br> travelling</br> talking on phone with friends</br> clothes shopping</br> romance novels</br> singing</br> photography</br> going to formal dress affairs</br> cooking</br> going to shows and plays</br> knitting</br> romance movies</br> going out to dinner with friends</br> going to museums</br> house plants</br> collecting stuffed animals</br> collecting pictures of friends and family</p>
+<p>22 items</p>
+<p>Activities showing strong patterns of endorsement or high ratings by male participants:</p>
+<p>golf</br> home electronics</br> surfing</br> computers</br> video games</br> watching violent movies</br> going to car shows</br> fishing</br> poker</br> playing basketball</br> TV sports</br> football</br> weight lifting</br> working on cars</br> drag racing</br></p>
+<p>15 items</p>
 <pre class="r"><code>interest_vars &lt;- sex_diff_df[, 27:86]
 f_typed_interests &lt;-
   c(&quot;Dancing&quot;,
@@ -2510,10 +2516,407 @@ f_typed_interests &lt;-
     &quot;Collecting pictures of friends and family&quot;
   )
 f_interest_vars &lt;- interest_vars[, names(interest_vars) %in% f_typed_interests]
-alpha_female_type_interests &lt;- psych::alpha(f_interest_vars)
+psych::alpha(f_interest_vars)</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = f_interest_vars)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N   ase mean   sd median_r
+##        0.8       0.8    0.85      0.15 3.9 0.025  3.5 0.46     0.15
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.75 0.8 0.85 
+## 
+##  Reliability if an item is dropped:
+##                                           raw_alpha std.alpha G6(smc) average_r
+## Dancing                                        0.78      0.78    0.84      0.15
+## Going to art galleries                         0.78      0.78    0.83      0.15
+## Going to church groups                         0.80      0.80    0.86      0.16
+## Writing poetry                                 0.79      0.79    0.85      0.15
+## Trying new fashions                            0.78      0.78    0.84      0.15
+## Aerobics                                       0.79      0.79    0.85      0.15
+## Travelling                                     0.79      0.79    0.85      0.15
+## Talking on phone with friends                  0.79      0.79    0.85      0.15
+## Clothes shopping                               0.78      0.78    0.84      0.15
+## Romance novels                                 0.78      0.78    0.84      0.15
+## Singing                                        0.79      0.79    0.85      0.15
+## Photography                                    0.79      0.79    0.84      0.15
+## Going to formal dress affairs                  0.78      0.78    0.84      0.15
+## Cooking                                        0.80      0.80    0.86      0.16
+## Going to shows and plays                       0.79      0.79    0.85      0.15
+## Knitting                                       0.80      0.80    0.85      0.16
+## Romance movies                                 0.78      0.78    0.84      0.15
+## Going out to dinner with friends               0.79      0.79    0.85      0.15
+## Going to museums                               0.79      0.79    0.84      0.15
+## House plants                                   0.78      0.78    0.84      0.15
+## Collecting stuffed animals                     0.79      0.79    0.85      0.15
+## Collecting pictures of friends and family      0.79      0.79    0.84      0.15
+##                                           S/N alpha se var.r med.r
+## Dancing                                   3.6    0.027 0.017  0.15
+## Going to art galleries                    3.6    0.027 0.015  0.15
+## Going to church groups                    4.0    0.025 0.016  0.15
+## Writing poetry                            3.8    0.026 0.016  0.15
+## Trying new fashions                       3.6    0.027 0.015  0.14
+## Aerobics                                  3.8    0.026 0.017  0.15
+## Travelling                                3.7    0.026 0.016  0.15
+## Talking on phone with friends             3.8    0.026 0.017  0.15
+## Clothes shopping                          3.6    0.027 0.015  0.14
+## Romance novels                            3.6    0.027 0.016  0.14
+## Singing                                   3.7    0.026 0.016  0.15
+## Photography                               3.7    0.026 0.017  0.14
+## Going to formal dress affairs             3.6    0.027 0.015  0.15
+## Cooking                                   4.0    0.025 0.016  0.15
+## Going to shows and plays                  3.7    0.026 0.017  0.14
+## Knitting                                  4.0    0.025 0.015  0.15
+## Romance movies                            3.6    0.027 0.016  0.14
+## Going out to dinner with friends          3.8    0.026 0.017  0.15
+## Going to museums                          3.7    0.026 0.015  0.15
+## House plants                              3.6    0.027 0.017  0.14
+## Collecting stuffed animals                3.8    0.026 0.017  0.15
+## Collecting pictures of friends and family 3.7    0.026 0.016  0.14
+## 
+##  Item statistics 
+##                                             n raw.r std.r r.cor r.drop mean
+## Dancing                                   131  0.53  0.51  0.48   0.43  3.7
+## Going to art galleries                    131  0.55  0.53  0.54   0.46  3.3
+## Going to church groups                    131  0.23  0.23  0.15   0.13  2.3
+## Writing poetry                            131  0.44  0.41  0.36   0.33  2.2
+## Trying new fashions                       131  0.53  0.55  0.54   0.46  3.8
+## Aerobics                                  131  0.41  0.40  0.35   0.31  3.2
+## Travelling                                131  0.39  0.43  0.39   0.32  4.6
+## Talking on phone with friends             131  0.31  0.36  0.31   0.25  4.4
+## Clothes shopping                          131  0.52  0.54  0.53   0.43  4.1
+## Romance novels                            131  0.54  0.49  0.48   0.44  3.1
+## Singing                                   131  0.45  0.43  0.39   0.35  3.5
+## Photography                               131  0.40  0.44  0.40   0.33  3.9
+## Going to formal dress affairs             131  0.54  0.55  0.53   0.46  3.8
+## Cooking                                   131  0.25  0.26  0.18   0.15  4.0
+## Going to shows and plays                  131  0.45  0.45  0.40   0.35  3.6
+## Knitting                                  131  0.28  0.26  0.21   0.19  2.2
+## Romance movies                            131  0.51  0.51  0.50   0.42  3.8
+## Going out to dinner with friends          131  0.30  0.37  0.32   0.26  4.8
+## Going to museums                          131  0.47  0.46  0.46   0.37  3.5
+## House plants                              131  0.54  0.54  0.51   0.46  3.5
+## Collecting stuffed animals                131  0.41  0.39  0.35   0.31  2.4
+## Collecting pictures of friends and family 131  0.47  0.48  0.45   0.38  4.1
+##                                             sd
+## Dancing                                   1.21
+## Going to art galleries                    1.13
+## Going to church groups                    1.10
+## Writing poetry                            1.25
+## Trying new fashions                       0.94
+## Aerobics                                  1.10
+## Travelling                                0.76
+## Talking on phone with friends             0.67
+## Clothes shopping                          1.16
+## Romance novels                            1.30
+## Singing                                   1.20
+## Photography                               0.88
+## Going to formal dress affairs             1.07
+## Cooking                                   0.96
+## Going to shows and plays                  1.16
+## Knitting                                  1.00
+## Romance movies                            1.18
+## Going out to dinner with friends          0.46
+## Going to museums                          1.17
+## House plants                              1.17
+## Collecting stuffed animals                1.09
+## Collecting pictures of friends and family 1.07
+## 
+## Non missing response frequency for each item
+##                                              1    2    3    4    5 miss
+## Dancing                                   0.07 0.13 0.13 0.39 0.28 0.01
+## Going to art galleries                    0.07 0.20 0.24 0.37 0.13 0.01
+## Going to church groups                    0.27 0.30 0.27 0.12 0.03 0.01
+## Writing poetry                            0.43 0.18 0.21 0.13 0.05 0.01
+## Trying new fashions                       0.02 0.06 0.28 0.39 0.25 0.01
+## Aerobics                                  0.09 0.14 0.37 0.28 0.11 0.01
+## Travelling                                0.01 0.02 0.05 0.18 0.74 0.01
+## Talking on phone with friends             0.00 0.01 0.08 0.40 0.51 0.01
+## Clothes shopping                          0.05 0.08 0.08 0.27 0.53 0.01
+## Romance novels                            0.15 0.20 0.22 0.28 0.15 0.01
+## Singing                                   0.09 0.10 0.24 0.35 0.21 0.01
+## Photography                               0.00 0.07 0.24 0.43 0.26 0.01
+## Going to formal dress affairs             0.05 0.08 0.14 0.45 0.28 0.01
+## Cooking                                   0.02 0.06 0.12 0.45 0.34 0.01
+## Going to shows and plays                  0.08 0.08 0.26 0.35 0.24 0.01
+## Knitting                                  0.32 0.30 0.31 0.06 0.02 0.01
+## Romance movies                            0.05 0.12 0.16 0.31 0.36 0.01
+## Going out to dinner with friends          0.00 0.00 0.02 0.17 0.81 0.01
+## Going to museums                          0.06 0.15 0.21 0.36 0.23 0.01
+## House plants                              0.05 0.14 0.29 0.27 0.25 0.01
+## Collecting stuffed animals                0.24 0.31 0.26 0.18 0.02 0.01
+## Collecting pictures of friends and family 0.05 0.02 0.21 0.26 0.47 0.01</code></pre>
+<pre class="r"><code>m_typed_interests &lt;-
+  c(
+    &quot;Golf&quot;,
+    &quot;Home electronics&quot;,
+    &quot;Surfing&quot;,
+    &quot;Computers&quot;,
+    &quot;Video games&quot;,
+    &quot;Watching violent movies&quot;,
+    &quot;Going to car shows&quot;,
+    &quot;Fishing&quot;,
+    &quot;Poker&quot;,
+    &quot;Playing basketball&quot;,
+    &quot;TV sports&quot;,
+    &quot;Football&quot;,
+    &quot;Weight lifting&quot;,
+    &quot;Working on cars&quot;,
+    &quot;Drag racing&quot;
+  )
 
-# m_interest_vars &lt;- interest_vars[, !( names(interest_vars) %in% f_typed_interests )]
-# alpha_male_type_interests &lt;- psych::alpha(m_interest_vars)</code></pre>
+m_interest_vars &lt;- interest_vars[, !( names(interest_vars) %in% m_typed_interests )]
+psych::alpha(m_interest_vars)</code></pre>
+<pre><code>## Warning in psych::alpha(m_interest_vars): Some items were negatively correlated with the total scale and probably 
+## should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; option</code></pre>
+<pre><code>## Some items ( Drawing ) were negatively correlated with the total scale and 
+## probably should be reversed.  
+## To do this, run the function again with the &#39;check.keys=TRUE&#39; option</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = m_interest_vars)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N   ase mean   sd median_r
+##       0.58      0.84    0.92       0.1 5.1 0.053  3.5 0.47    0.095
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.47 0.58 0.68 
+## 
+##  Reliability if an item is dropped:
+##                                           raw_alpha std.alpha G6(smc) average_r
+## Painting                                       0.56      0.83    0.92      0.10
+## Dancing                                        0.57      0.83    0.92      0.10
+## Going to rock concerts                         0.56      0.83    0.92      0.10
+## Going to parties                               0.56      0.83    0.91      0.10
+## Going to amusement parks                       0.57      0.83    0.92      0.10
+## Going to art galleries                         0.56      0.83    0.91      0.10
+## Going to church groups                         0.57      0.84    0.92      0.10
+## Writing poetry                                 0.56      0.83    0.92      0.10
+## Volleyball                                     0.57      0.83    0.92      0.10
+## Entertaining others                            0.57      0.83    0.92      0.10
+## Trying new fashions                            0.56      0.83    0.91      0.10
+## Aerobics                                       0.56      0.83    0.92      0.10
+## Travelling                                     0.57      0.83    0.92      0.10
+## Talking on phone with friends                  0.57      0.83    0.92      0.10
+## Clothes shopping                               0.56      0.83    0.92      0.10
+## Romance novels                                 0.56      0.83    0.91      0.10
+## Reading science fiction                        0.57      0.84    0.92      0.10
+## Sailing                                        0.63      0.84    0.92      0.10
+## Singing                                        0.56      0.83    0.92      0.10
+## Swimming                                       0.57      0.83    0.92      0.10
+## Collecting stamps                              0.56      0.83    0.92      0.10
+## Collecting CDs                                 0.57      0.83    0.92      0.10
+## Photography                                    0.57      0.83    0.92      0.10
+## Drawing                                        0.71      0.84    0.92      0.11
+## Going out to drink with friends                0.57      0.83    0.92      0.10
+## Listening to religious music                   0.57      0.84    0.92      0.11
+## Going to formal dress affairs                  0.56      0.83    0.91      0.10
+## Going to night clubs                           0.56      0.83    0.91      0.10
+## Skiing                                         0.57      0.84    0.92      0.11
+## Camping                                        0.57      0.84    0.92      0.10
+## Cooking                                        0.58      0.84    0.92      0.10
+## Going to movies                                0.57      0.83    0.92      0.10
+## Playing a musical instrument                   0.57      0.84    0.92      0.10
+## Raising pets                                   0.57      0.83    0.92      0.10
+## Going to shows and plays                       0.57      0.83    0.92      0.10
+## Knitting                                       0.57      0.84    0.92      0.10
+## Going out on dates                             0.57      0.83    0.92      0.10
+## “Thriller” movies                              0.57      0.84    0.92      0.10
+## Romance movies                                 0.56      0.83    0.91      0.10
+## Going out to dinner with friends               0.57      0.83    0.92      0.10
+## Going to museums                               0.56      0.83    0.91      0.10
+## House plants                                   0.56      0.83    0.92      0.10
+## Collecting coins                               0.56      0.83    0.92      0.10
+## Collecting stuffed animals                     0.56      0.83    0.92      0.10
+## Collecting pictures of friends and family      0.56      0.83    0.92      0.10
+##                                           S/N alpha se var.r med.r
+## Painting                                  5.0    0.055 0.020 0.096
+## Dancing                                   4.9    0.054 0.020 0.095
+## Going to rock concerts                    5.0    0.055 0.020 0.094
+## Going to parties                          4.9    0.055 0.018 0.094
+## Going to amusement parks                  5.0    0.054 0.020 0.094
+## Going to art galleries                    4.9    0.055 0.019 0.093
+## Going to church groups                    5.2    0.054 0.020 0.099
+## Writing poetry                            4.9    0.056 0.020 0.095
+## Volleyball                                5.0    0.054 0.020 0.095
+## Entertaining others                       5.0    0.054 0.020 0.094
+## Trying new fashions                       5.0    0.055 0.019 0.093
+## Aerobics                                  5.0    0.054 0.020 0.094
+## Travelling                                5.0    0.054 0.020 0.095
+## Talking on phone with friends             5.0    0.054 0.020 0.094
+## Clothes shopping                          5.0    0.055 0.019 0.095
+## Romance novels                            4.9    0.056 0.020 0.094
+## Reading science fiction                   5.1    0.054 0.019 0.097
+## Sailing                                   5.1    0.050 0.020 0.097
+## Singing                                   5.0    0.054 0.020 0.094
+## Swimming                                  5.0    0.054 0.020 0.095
+## Collecting stamps                         5.0    0.055 0.019 0.097
+## Collecting CDs                            5.0    0.054 0.019 0.096
+## Photography                               5.0    0.054 0.020 0.094
+## Drawing                                   5.4    0.036 0.019 0.102
+## Going out to drink with friends           5.0    0.054 0.019 0.095
+## Listening to religious music              5.2    0.054 0.019 0.099
+## Going to formal dress affairs             4.9    0.055 0.019 0.094
+## Going to night clubs                      4.9    0.054 0.019 0.094
+## Skiing                                    5.2    0.054 0.020 0.100
+## Camping                                   5.1    0.054 0.020 0.096
+## Cooking                                   5.1    0.053 0.020 0.097
+## Going to movies                           5.0    0.054 0.020 0.096
+## Playing a musical instrument              5.2    0.053 0.019 0.097
+## Raising pets                              5.0    0.054 0.020 0.096
+## Going to shows and plays                  5.0    0.054 0.020 0.093
+## Knitting                                  5.1    0.054 0.020 0.097
+## Going out on dates                        5.0    0.054 0.020 0.095
+## “Thriller” movies                         5.1    0.054 0.020 0.097
+## Romance movies                            4.9    0.055 0.020 0.094
+## Going out to dinner with friends          5.0    0.054 0.020 0.094
+## Going to museums                          4.9    0.055 0.019 0.094
+## House plants                              4.9    0.055 0.020 0.092
+## Collecting coins                          5.0    0.055 0.019 0.095
+## Collecting stuffed animals                5.0    0.055 0.020 0.096
+## Collecting pictures of friends and family 5.0    0.055 0.020 0.095
+## 
+##  Item statistics 
+##                                             n raw.r  std.r  r.cor r.drop mean
+## Painting                                  131 0.331  0.324  0.310  0.288  3.8
+## Dancing                                   131 0.273  0.422  0.412  0.219  3.7
+## Going to rock concerts                    131 0.307  0.365  0.347  0.243  2.8
+## Going to parties                          131 0.405  0.480  0.482  0.355  4.1
+## Going to amusement parks                  131 0.256  0.390  0.374  0.219  4.3
+## Going to art galleries                    131 0.464  0.500  0.505  0.420  3.3
+## Going to church groups                    131 0.246  0.195  0.176  0.196  2.3
+## Writing poetry                            131 0.443  0.429  0.411  0.393  2.2
+## Volleyball                                131 0.268  0.310  0.288  0.214  3.4
+## Entertaining others                       131 0.328  0.416  0.400  0.289  4.0
+## Trying new fashions                       131 0.393  0.410  0.407  0.355  3.8
+## Aerobics                                  131 0.319  0.415  0.394  0.271  3.2
+## Travelling                                131 0.305  0.418  0.403  0.272  4.6
+## Talking on phone with friends             131 0.302  0.338  0.314  0.273  4.4
+## Clothes shopping                          131 0.359  0.409  0.403  0.310  4.1
+## Romance novels                            131 0.454  0.435  0.436  0.403  3.1
+## Reading science fiction                   131 0.253  0.237  0.221  0.192  2.8
+## Sailing                                   131 0.544  0.252  0.228  0.167  3.8
+## Singing                                   131 0.312  0.417  0.402  0.259  3.5
+## Swimming                                  131 0.176  0.343  0.321  0.127  3.8
+## Collecting stamps                         131 0.390  0.364  0.362  0.353  1.8
+## Collecting CDs                            131 0.322  0.384  0.380  0.278  2.0
+## Photography                               131 0.280  0.386  0.368  0.241  3.9
+## Drawing                                   131 0.313 -0.045 -0.083 -0.092  4.2
+## Going out to drink with friends           131 0.177  0.343  0.334  0.128  4.1
+## Listening to religious music              131 0.221  0.155  0.137  0.169  2.2
+## Going to formal dress affairs             131 0.387  0.481  0.478  0.342  3.8
+## Going to night clubs                      131 0.313  0.436  0.436  0.262  3.6
+## Skiing                                    131 0.135  0.148  0.114  0.074  3.3
+## Camping                                   131 0.213  0.291  0.271  0.154  3.0
+## Cooking                                   131 0.098  0.213  0.183  0.053  4.0
+## Going to movies                           131 0.307  0.359  0.341  0.270  4.2
+## Playing a musical instrument              131 0.135  0.190  0.168  0.078  3.2
+## Raising pets                              131 0.187  0.311  0.288  0.139  4.2
+## Going to shows and plays                  131 0.202  0.411  0.400  0.148  3.6
+## Knitting                                  131 0.271  0.273  0.252  0.227  2.2
+## Going out on dates                        131 0.276  0.364  0.349  0.238  4.1
+## “Thriller” movies                         131 0.179  0.281  0.258  0.120  3.7
+## Romance movies                            131 0.393  0.433  0.431  0.343  3.8
+## Going out to dinner with friends          131 0.220  0.350  0.328  0.198  4.8
+## Going to museums                          131 0.435  0.460  0.462  0.389  3.5
+## House plants                              131 0.418  0.462  0.452  0.371  3.5
+## Collecting coins                          131 0.364  0.398  0.391  0.323  2.0
+## Collecting stuffed animals                131 0.347  0.368  0.353  0.300  2.4
+## Collecting pictures of friends and family 131 0.376  0.414  0.399  0.331  4.1
+##                                             sd
+## Painting                                  1.00
+## Dancing                                   1.21
+## Going to rock concerts                    1.44
+## Going to parties                          1.21
+## Going to amusement parks                  0.83
+## Going to art galleries                    1.13
+## Going to church groups                    1.10
+## Writing poetry                            1.25
+## Volleyball                                1.19
+## Entertaining others                       0.89
+## Trying new fashions                       0.94
+## Aerobics                                  1.10
+## Travelling                                0.76
+## Talking on phone with friends             0.67
+## Clothes shopping                          1.16
+## Romance novels                            1.30
+## Reading science fiction                   1.35
+## Sailing                                   8.45
+## Singing                                   1.20
+## Swimming                                  1.06
+## Collecting stamps                         0.88
+## Collecting CDs                            1.00
+## Photography                               0.88
+## Drawing                                   8.42
+## Going out to drink with friends           1.06
+## Listening to religious music              1.14
+## Going to formal dress affairs             1.07
+## Going to night clubs                      1.18
+## Skiing                                    1.31
+## Camping                                   1.27
+## Cooking                                   0.96
+## Going to movies                           0.85
+## Playing a musical instrument              1.22
+## Raising pets                              1.04
+## Going to shows and plays                  1.16
+## Knitting                                  1.00
+## Going out on dates                        0.85
+## “Thriller” movies                         1.28
+## Romance movies                            1.18
+## Going out to dinner with friends          0.46
+## Going to museums                          1.17
+## House plants                              1.17
+## Collecting coins                          0.96
+## Collecting stuffed animals                1.09
+## Collecting pictures of friends and family 1.07
+## 
+## Non missing response frequency for each item
+##                                              1    2    3    4    5 miss
+## Painting                                  0.02 0.11 0.17 0.47 0.22 0.01
+## Dancing                                   0.07 0.13 0.13 0.39 0.28 0.01
+## Going to rock concerts                    0.25 0.20 0.18 0.21 0.17 0.01
+## Going to parties                          0.05 0.10 0.07 0.26 0.52 0.01
+## Going to amusement parks                  0.01 0.02 0.11 0.35 0.50 0.01
+## Going to art galleries                    0.07 0.20 0.24 0.37 0.13 0.01
+## Going to church groups                    0.27 0.30 0.27 0.12 0.03 0.01
+## Writing poetry                            0.43 0.18 0.21 0.13 0.05 0.01
+## Volleyball                                0.08 0.17 0.24 0.33 0.19 0.01
+## Entertaining others                       0.01 0.06 0.15 0.46 0.33 0.01
+## Trying new fashions                       0.02 0.06 0.28 0.39 0.25 0.01
+## Aerobics                                  0.09 0.14 0.37 0.28 0.11 0.01
+## Travelling                                0.01 0.02 0.05 0.18 0.74 0.01
+## Talking on phone with friends             0.00 0.01 0.08 0.40 0.51 0.01
+## Clothes shopping                          0.05 0.08 0.08 0.27 0.53 0.01
+## Romance novels                            0.15 0.20 0.22 0.28 0.15 0.01
+## Reading science fiction                   0.23 0.19 0.23 0.22 0.13 0.01
+## Singing                                   0.09 0.10 0.24 0.35 0.21 0.01
+## Swimming                                  0.03 0.09 0.21 0.37 0.30 0.01
+## Collecting stamps                         0.47 0.33 0.18 0.01 0.02 0.01
+## Collecting CDs                            0.41 0.26 0.27 0.05 0.02 0.01
+## Photography                               0.00 0.07 0.24 0.43 0.26 0.01
+## Going out to drink with friends           0.03 0.07 0.13 0.34 0.44 0.01
+## Listening to religious music              0.34 0.33 0.18 0.11 0.04 0.01
+## Going to formal dress affairs             0.05 0.08 0.14 0.45 0.28 0.01
+## Going to night clubs                      0.07 0.11 0.23 0.34 0.24 0.01
+## Skiing                                    0.12 0.13 0.30 0.21 0.24 0.01
+## Camping                                   0.15 0.19 0.25 0.27 0.13 0.01
+## Cooking                                   0.02 0.06 0.12 0.45 0.34 0.01
+## Going to movies                           0.00 0.05 0.11 0.40 0.43 0.01
+## Playing a musical instrument              0.09 0.21 0.27 0.25 0.17 0.01
+## Raising pets                              0.03 0.04 0.15 0.24 0.53 0.01
+## Going to shows and plays                  0.08 0.08 0.26 0.35 0.24 0.01
+## Knitting                                  0.32 0.30 0.31 0.06 0.02 0.01
+## Going out on dates                        0.00 0.05 0.17 0.40 0.38 0.01
+## “Thriller” movies                         0.08 0.13 0.13 0.31 0.36 0.01
+## Romance movies                            0.05 0.12 0.16 0.31 0.36 0.01
+## Going out to dinner with friends          0.00 0.00 0.02 0.17 0.81 0.01
+## Going to museums                          0.06 0.15 0.21 0.36 0.23 0.01
+## House plants                              0.05 0.14 0.29 0.27 0.25 0.01
+## Collecting coins                          0.40 0.30 0.24 0.05 0.01 0.01
+## Collecting stuffed animals                0.24 0.31 0.26 0.18 0.02 0.01
+## Collecting pictures of friends and family 0.05 0.02 0.21 0.26 0.47 0.01</code></pre>
 </div>
 </div>
 

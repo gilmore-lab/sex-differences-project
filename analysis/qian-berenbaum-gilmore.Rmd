@@ -985,7 +985,7 @@ This analysis derives from work by Tonidel, Lebreton and Johnson and code provid
 
 Tonidandel, S., Lebreton, J. M., & Johnson, J. W. (2009). Determining the statistical significance of relative weights. *Psychological Methods, *14*(4), 387–399. https://doi.org/10.1037/a0017735
 
-```{r, child='relative-weight-analysis.Rmd'}
+```{r, child='qian-berenbaum-gilmore-relative-weight-analysis.Rmd'}
 ```
 
 ## Do men and women differ in other ways?
@@ -1022,9 +1022,13 @@ xtabs(~ Sex + Stereo_amin, df_trimmed)
 
 ## Check internal reliability of interests
 
-Determine which hobbies are strongly female-typed according to (Lippa, 1991)
+This measure was taken from a subset of a measure of Gender Diagnosticity (Lippa & Connelly, 1991). Lippa’s measure had participants rate degree of interest in 51 everyday activities (e.g., making a speech, cooking, and discussing politics), and 39 amusements and hobbies (e.g., fishing, jazz or rock concerts, and art galleries). Subjects rated their degree of preference on a 5-point scale: strongly dislike, (1) slightly dislike (2), neutral or indifferent (3), slightly like (4), and strongly like (5). The lists of activities and amusements came from those appearing in Part I of the Strong-Campbell Interest Inventory, Form T325 (Campbell & Hansen, 1981). Our list of items collapses the two subsets of hobby types into one category, and eliminates those which were outdated or unpopular by the time Phase 4 testing began.
 
-Lippa, R. (1991). Some psychometric characteristics of gender diagnosticity measures: reliability, validity, consistency across domains, and relationship to the big five. Journal of Personality and Social Psychology, 61(6), 1000–1011. https://doi.org/10.1037//0022-3514.61.6.1000.
+Lippa, R., & Connelly, S. (1990). Gender diagnosticity: A new Bayesian approach to gender-related individual differences. Journal of Personality and Social Psychology, 59(5), 1051–1065. https://doi.org/10.1037/0022-3514.59.5.1051
+
+Campbell, D. P., & Hansen, J.-I. C. (1981). Manual for the SVIB-SCII: Strong-Campbell interest inventory, form T325 of the Strong vocational interest blank (Vol. 325). Stanford University Press.
+
+Activities showing strong patterns of endorsement or high ratings by female participants (Lippa & Connelly, 1990). 
 
 Dancing</br>
 going to art galleries</br>
@@ -1049,7 +1053,29 @@ house plants</br>
 collecting stuffed animals</br>
 collecting pictures of friends and family
 
-```{r}
+22 items
+
+Activities showing strong patterns of endorsement or high ratings by male participants:
+
+golf</br>
+home electronics</br>
+surfing</br>
+computers</br>
+video games</br>
+watching violent movies</br>
+going to car shows</br>
+fishing</br>
+poker</br>
+playing basketball</br>
+TV sports</br>
+football</br>
+weight lifting</br>
+working on cars</br>
+drag racing</br>
+
+15 items
+
+```{r, alpha_female_interests}
 interest_vars <- sex_diff_df[, 27:86]
 f_typed_interests <-
   c("Dancing",
@@ -1076,10 +1102,31 @@ f_typed_interests <-
     "Collecting pictures of friends and family"
   )
 f_interest_vars <- interest_vars[, names(interest_vars) %in% f_typed_interests]
-alpha_female_type_interests <- psych::alpha(f_interest_vars)
+psych::alpha(f_interest_vars)
+```
 
-# m_interest_vars <- interest_vars[, !( names(interest_vars) %in% f_typed_interests )]
-# alpha_male_type_interests <- psych::alpha(m_interest_vars)
+```{r alpha_male_interests}
+m_typed_interests <-
+  c(
+    "Golf",
+    "Home electronics",
+    "Surfing",
+    "Computers",
+    "Video games",
+    "Watching violent movies",
+    "Going to car shows",
+    "Fishing",
+    "Poker",
+    "Playing basketball",
+    "TV sports",
+    "Football",
+    "Weight lifting",
+    "Working on cars",
+    "Drag racing"
+  )
+
+m_interest_vars <- interest_vars[, !( names(interest_vars) %in% m_typed_interests )]
+psych::alpha(m_interest_vars)
 ```
 
 
