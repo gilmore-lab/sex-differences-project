@@ -905,12 +905,12 @@ sex_diff_scatter_14 <-
   #     linetype = Sex,
         
       ) +
-      geom_point(size=2
+      geom_point(size=1.5
            #      , position = position_jitter(width = 0.01, height = 0.01)
-           #      ,alpha=0.75
+           #       ,alpha=0.75
             #     ,shape=21
                  ) +
-      scale_color_manual(values=c("blue", "darkorange1"))+
+      scale_color_manual(values=c("blue3", "darkorange3"))+
       xlab(x_var) +
       ylab(y_var) +
       stat_smooth(
@@ -929,7 +929,7 @@ sex_diff_scatter_14 <-
         x = anx,
         y = any,
         size=6,
-        label = c(an_f, an_m),col=c("blue", "darkorange1"),
+        label = c(an_f, an_m),col=c("blue3", "darkorange3"),
              hjust = 1)
      
     p
@@ -1047,7 +1047,7 @@ p_aug2 <- p_vision +
   )
 
 p_aug2 <- ggExtra::ggMarginal(p_aug2,
-                             type = "boxplot",
+                             type = "histogram",
                              margins = "both",
                              groupFill = TRUE)
 
