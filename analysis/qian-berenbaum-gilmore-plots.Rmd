@@ -91,6 +91,11 @@ p_hist_interests <- sex_diff_boxplot(y_var = 'Masculine_hobbies', axis_label = "
 p_hist_interests
 ```
 
+```{r, vocab}
+p_hist_vocab <- sex_diff_boxplot(y_var = 'vocab', axis_label = "Vocabulary")
+
+p_hist_vocab
+```
 ### Scatterplots
 
 ```{r}
@@ -416,6 +421,14 @@ ggsave(
   filename = "paper_figs/fig-02-mental-rot-vision.jpg",
   units = "in",
   width = 6.875,
+  dpi = 600
+)
+
+ggsave(
+  plot = p_hist_vocab,
+  filename = "paper_figs/fig-S02-vocab.jpg",
+  units = "in",
+  width = 3.4375,
   dpi = 600
 )
 ```

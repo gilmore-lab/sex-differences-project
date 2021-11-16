@@ -1028,9 +1028,7 @@ Lippa, R., & Connelly, S. (1990). Gender diagnosticity: A new Bayesian approach 
 
 Campbell, D. P., & Hansen, J.-I. C. (1981). Manual for the SVIB-SCII: Strong-Campbell interest inventory, form T325 of the Strong vocational interest blank (Vol. 325). Stanford University Press.
 
-Activities showing strong patterns of endorsement or high ratings by female participants (Lippa & Connelly, 1990). 
-
-Dancing</br>
+dancing</br>
 going to art galleries</br>
 going to church groups</br>
 writing poetry</br>
@@ -1054,26 +1052,6 @@ collecting stuffed animals</br>
 collecting pictures of friends and family
 
 22 items
-
-Activities showing strong patterns of endorsement or high ratings by male participants:
-
-golf</br>
-home electronics</br>
-surfing</br>
-computers</br>
-video games</br>
-watching violent movies</br>
-going to car shows</br>
-fishing</br>
-poker</br>
-playing basketball</br>
-TV sports</br>
-football</br>
-weight lifting</br>
-working on cars</br>
-drag racing</br>
-
-15 items
 
 ```{r, alpha_female_interests}
 interest_vars <- sex_diff_df[, 27:86]
@@ -1105,6 +1083,26 @@ f_interest_vars <- interest_vars[, names(interest_vars) %in% f_typed_interests]
 psych::alpha(f_interest_vars)
 ```
 
+Activities showing strong patterns of endorsement or high ratings by male participants:
+
+golf</br>
+home electronics</br>
+surfing</br>
+computers</br>
+video games</br>
+watching violent movies</br>
+going to car shows</br>
+fishing</br>
+poker</br>
+playing basketball</br>
+TV sports</br>
+football</br>
+weight lifting</br>
+working on cars</br>
+drag racing</br>
+
+15 items
+
 ```{r alpha_male_interests}
 m_typed_interests <-
   c(
@@ -1129,56 +1127,4 @@ m_interest_vars <- interest_vars[, !( names(interest_vars) %in% m_typed_interest
 psych::alpha(m_interest_vars)
 ```
 
-Determine which hobbies are strongly male-typed according to (Lippa, 1991):
-
-- Golf
-- Home eletronics
-- Surfing
-- Computers
-- Video games
-- Watching violent movies
-- Going to car shows
-- Fishing
-- Poker
-- Playing Basketball
-- TV sports
-- Football
-- Weight lifting
-- Working on cars
-- Drag racing
-
-```{r}
-var <-
-  c(
-    "Participant",
-    "Sex",
-    "log_contrast",
-    "log_motion",
-    "Golf",
-    "Home electronics",
-    "Surfing",
-    "Computers",
-    "Video games",
-    "Watching violent movies",
-    "Going to car shows",
-    "Fishing",
-    "Poker",
-    "Playing basketball",
-    "TV sports",
-    "Football",
-    "Weight lifting",
-    "Working on cars",
-    "Drag racing",
-    "Masculine_hobbies"
-  )
-male_hobbies <- sex_diff_df[, var]
-male_hobbies_F <- male_hobbies %>% 
-  dplyr::filter(Sex == "Female")
-```
-
-### Calculate alpha
-
-```{r}
-psych::alpha(male_hobbies[,-c(1:4,20)])
-```
 

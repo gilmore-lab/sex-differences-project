@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-11-16 16:27:38</h4>
+<h4 class="date">2021-11-16 17:03:21</h4>
 
 </div>
 
@@ -961,10 +961,11 @@ theme.custom &lt;- theme_classic() +
       group = Sex,
       color = Sex
     ) +
-    geom_boxplot(outlier.shape = NA) +
+    geom_boxplot(outlier.shape = NA, color = &quot;black&quot;) +
     geom_jitter(size = plot_point_size,
                 height = .1,
-                width = .1) +
+                width = .1,
+                alpha = 1/2) +
     scale_color_brewer(palette = our_color_palette) +
     theme.custom +
     ylab(axis_label) +
@@ -1167,7 +1168,7 @@ p_mental_rot_contrast &lt;- sex_diff_scatter(
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-1.5),
+  c(-1.55),
   c(35, 38),
   &quot;log(contrast threshold)&quot;,
   &quot;Mental rotation score&quot;
@@ -1196,7 +1197,7 @@ p_motion &lt;- sex_diff_scatter(
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-1.5),
+  c(-1.55),
   c(35, 38),
   &quot;log(motion threshold)&quot;,
   &quot;Mental rotation score&quot;
@@ -1322,16 +1323,12 @@ p_boxplots_annotated</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code># Mental rotation and vision measures
 p_mental_rot_scatters &lt;- p_mental_rot_contrast | p_mental_rot_motion
-p_mental_rot_scatters_annotated &lt;- p_boxplots + plot_annotation(tag_levels = &quot;A&quot;)
+p_mental_rot_scatters_annotated &lt;- p_mental_rot_scatters + plot_annotation(tag_levels = &quot;A&quot;)
 p_mental_rot_scatters_annotated</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
 <p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p_mental_rot_scatters_annotated,
@@ -1340,15 +1337,11 @@ p_mental_rot_scatters_annotated</code></pre>
   width = 6.875,
   dpi = 600
 )</code></pre>
-<pre><code>## Saving 6.88 x 5 in image</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Saving 6.88 x 5 in image
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code># Mental rotation and vision measures
 p = grid.arrange(ncol = 2, nrow = 1, p_mental_rot_contrast, p_mental_rot_motion)</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
@@ -2484,12 +2477,8 @@ CI.Significance</code></pre>
 <p>This measure was taken from a subset of a measure of Gender Diagnosticity (Lippa &amp; Connelly, 1991). Lippa’s measure had participants rate degree of interest in 51 everyday activities (e.g., making a speech, cooking, and discussing politics), and 39 amusements and hobbies (e.g., fishing, jazz or rock concerts, and art galleries). Subjects rated their degree of preference on a 5-point scale: strongly dislike, (1) slightly dislike (2), neutral or indifferent (3), slightly like (4), and strongly like (5). The lists of activities and amusements came from those appearing in Part I of the Strong-Campbell Interest Inventory, Form T325 (Campbell &amp; Hansen, 1981). Our list of items collapses the two subsets of hobby types into one category, and eliminates those which were outdated or unpopular by the time Phase 4 testing began.</p>
 <p>Lippa, R., &amp; Connelly, S. (1990). Gender diagnosticity: A new Bayesian approach to gender-related individual differences. Journal of Personality and Social Psychology, 59(5), 1051–1065. <a href="https://doi.org/10.1037/0022-3514.59.5.1051" class="uri">https://doi.org/10.1037/0022-3514.59.5.1051</a></p>
 <p>Campbell, D. P., &amp; Hansen, J.-I. C. (1981). Manual for the SVIB-SCII: Strong-Campbell interest inventory, form T325 of the Strong vocational interest blank (Vol. 325). Stanford University Press.</p>
-<p>Activities showing strong patterns of endorsement or high ratings by female participants (Lippa &amp; Connelly, 1990).</p>
-<p>Dancing</br> going to art galleries</br> going to church groups</br> writing poetry</br> trying new fashions</br> aerobics</br> travelling</br> talking on phone with friends</br> clothes shopping</br> romance novels</br> singing</br> photography</br> going to formal dress affairs</br> cooking</br> going to shows and plays</br> knitting</br> romance movies</br> going out to dinner with friends</br> going to museums</br> house plants</br> collecting stuffed animals</br> collecting pictures of friends and family</p>
+<p>dancing</br> going to art galleries</br> going to church groups</br> writing poetry</br> trying new fashions</br> aerobics</br> travelling</br> talking on phone with friends</br> clothes shopping</br> romance novels</br> singing</br> photography</br> going to formal dress affairs</br> cooking</br> going to shows and plays</br> knitting</br> romance movies</br> going out to dinner with friends</br> going to museums</br> house plants</br> collecting stuffed animals</br> collecting pictures of friends and family</p>
 <p>22 items</p>
-<p>Activities showing strong patterns of endorsement or high ratings by male participants:</p>
-<p>golf</br> home electronics</br> surfing</br> computers</br> video games</br> watching violent movies</br> going to car shows</br> fishing</br> poker</br> playing basketball</br> TV sports</br> football</br> weight lifting</br> working on cars</br> drag racing</br></p>
-<p>15 items</p>
 <pre class="r"><code>interest_vars &lt;- sex_diff_df[, 27:86]
 f_typed_interests &lt;-
   c(&quot;Dancing&quot;,
@@ -2647,6 +2636,9 @@ psych::alpha(f_interest_vars)</code></pre>
 ## House plants                              0.05 0.14 0.29 0.27 0.25 0.01
 ## Collecting stuffed animals                0.24 0.31 0.26 0.18 0.02 0.01
 ## Collecting pictures of friends and family 0.05 0.02 0.21 0.26 0.47 0.01</code></pre>
+<p>Activities showing strong patterns of endorsement or high ratings by male participants:</p>
+<p>golf</br> home electronics</br> surfing</br> computers</br> video games</br> watching violent movies</br> going to car shows</br> fishing</br> poker</br> playing basketball</br> TV sports</br> football</br> weight lifting</br> working on cars</br> drag racing</br></p>
+<p>15 items</p>
 <pre class="r"><code>m_typed_interests &lt;-
   c(
     &quot;Golf&quot;,
