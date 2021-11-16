@@ -637,439 +637,9 @@ es_contrast_motion <- esci::estimateCorrelation.default(sex_diff_df_M, log_contr
 
 We estimate the correlation between log contrast and log motion thresholds in men as follows: `r es_contrast_motion$formatted_r`.
 
-## Visualizations
+# Visualizations
 
-```{r ggplot-themes}
-# "The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). "
-theme.custom <- theme_classic()+
-   theme(  plot.title = element_text(size=12, face="bold",hjust = 0.5),
-                      axis.title.x = element_text(size=11),
-                      axis.title.y = element_text(size=11),
-                      strip.text = element_text(size=9),
-                      axis.text = element_text(size=7),
-                      legend.position = "bottom",
-                       legend.title = element_blank(),
-#  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                      legend.text=element_text(size=8))
-```
-
-The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.
-
-```{r}
-sex_diff_scatter <-
-  function(df,
-           x_var,
-           y_var,
-           x_rev = FALSE,
-           y_rev = FALSE,
-           an_f = "",
-           an_m = "",
-           anx = NULL,
-           any = NULL,
-           x_lab = "X axis",
-           y_lab = "Y axis",
-           square_axis = TRUE,
-           margin_type = "boxplot"
-           ) {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s <- sym(x_var)
-    y_var_s <- sym(y_var)
-    
-    p <- ggplot(df) +
-     aes(
-        x = !!x_var_s,
-        y = !!y_var_s,
-        group = Sex,
-        fill = Sex,
-        linetype= Sex,
-      color = Sex) +
-    #    shape = Sex
-      geom_point( size=3,shape=21) +
- #     xlab(x_var) +
-#      ylab(y_var) +
-      stat_smooth(color="black",    method = "lm", 
-                  se=FALSE,
-                  na.rm = TRUE) +
-#      scale_shape(solid = FALSE) +
-      xlab(x_lab) +
-      ylab(y_lab)+
-      theme.custom +
-     scale_color_grey(start=0,end=0.5) +
-   scale_fill_manual(name="different fill", values =alpha(c("black","white"),1)) +
-     annotate(
-        "text",
-        x = anx,
-        y = any,
-        size=6,
-        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
-             hjust = 1
-      ) 
-    
-    if (square_axis)
-    {
-      p + coord_fixed() + theme(asp.ratio = 1)
-    }
-    
-    if (stringr::str_detect(x_var, 'hobbies')) {
-      p <- p + xlim(1, 5)
-    }
-    if (stringr::str_detect(y_var, 'hobbies')) {
-      p <- p + ylim(1, 5)
-    }
-    
-    # Reverse scale for threshold measures?
-    if (x_rev)
-      p <- p + scale_x_reverse()
-    if (y_rev)
-      p <- p + scale_y_reverse()
-    
-    p1 <- ggExtra::ggMarginal(p,
-                              type = margin_type,
-                              margins = "both",
-                           #   groupColour=TRUE,
-                              groupFill = TRUE
-                           )
-    p1
-  }
-```
-
-Create matrices of correlation coefficients for subsequent plotting.
-
-```{r}
-corr_vars <- c('log_contrast', 'log_motion', 'mental_rot', 'Masculine_hobbies')
-df_corr_F <- sex_diff_df_F %>%
-  dplyr::select(., corr_vars)
-
-corr_F <- Hmisc::rcorr(as.matrix(df_corr_F), type = c("pearson"))
-
-df_corr_M <- sex_diff_df_M %>%
-  dplyr::select(., corr_vars)
-
-corr_M <- Hmisc::rcorr(as.matrix(df_corr_M), type = c("pearson"))
-
-df_corr_all <- sex_diff_df %>%
-  dplyr::select(., corr_vars)
-
-corr_all <- Hmisc::rcorr(as.matrix(df_corr_all), type = c("pearson"))
-```
-
-Create a helper function to generate and plot correlation coefficients.
-
-```{r sex-diff-corr-sum-function}
-sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE, 
-                               corr_all_df = corr_all,
-                               corr_M_df = corr_M,
-                               corr_F_df = corr_F,
-                               show_combined = FALSE) {
-  require(tidyverse) # for %>%
-  
-  corr_all_df <- tibble::tibble(
-    cor_coef = corr_all_df$r[x_var, y_var],
-    p_val = corr_all_df$P[x_var, y_var],
-    n =  corr_all_df$n[x_var, y_var],
-    pop = "Both"
-  )
-  males_df <- tibble::tibble(
-    cor_coef = corr_M_df$r[x_var, y_var],
-    p_val = corr_M_df$P[x_var, y_var],
-    n =  corr_M_df$n[x_var, y_var],
-    pop = "Males"
-  )
-  
-  females_df <- tibble::tibble(
-    cor_coef = corr_F_df$r[x_var, y_var],
-    p_val = corr_F_df$P[x_var, y_var],
-    n =  corr_F_df$n[x_var, y_var],
-    pop = "Females"
-  )
-  
-  if (show_combined) {
-    df <- rbind(corr_all_df, males_df, females_df)
-  } else {
-    df <- rbind(males_df, females_df)
-  }
-  
-  # Add stars for significance levels
-  df <- df %>%
-    mutate(., stars = if_else(p_val < .005, "***",
-                              if_else(
-                                p_val < .01, "**",
-                                if_else(p_val < .05, "*", "")
-                              )))
-  
-  if (print_table) {
-    kableExtra::kable(df, format = 'html') %>%
-      kableExtra::kable_styling()
-  } else {
-    df
-  }
-}
-```
-
-### Contrast & mental rotation
-
-```{r contrast-sens-mental-rot}
-corr_df <- sex_diff_corr_summ("log_contrast", "mental_rot",
-                              corr_all,
-                              corr_M_df = corr_M,
-                              corr_F_df = corr_F,
-                              print_table = FALSE)
-
-p1<-sex_diff_scatter(
-  sex_diff_df,
-  "log_contrast",
-  "mental_rot",
-  x_rev = FALSE,
-  y_rev = FALSE,
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    corr_df$stars[2]
-  ),
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
-    corr_df$stars[1]
-  ),
-  c(-1.2),
-  c(12, 38),
-  "log(contrast threshold)",
-  "Mental rotation score"
-)
-p1
-sex_diff_corr_summ("log_contrast", "mental_rot")
-```
-
-### Motion & mental rotation
-
-```{r}
-sex_diff_scatter_2 <-
-  function(df,
-           x_var,
-           y_var,
-           x_rev = FALSE,
-           y_rev = FALSE,
-           an_f = "",
-           an_m = "",
-           anx = NULL,
-           any = NULL,
-           x_lab = "X axis",
-           y_lab = "Y axis",
-           square_axis = TRUE,
-           margin_type = "boxplot") {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s <- sym(x_var)
-    y_var_s <- sym(y_var)
-    
-    p <- ggplot(df) +
-      aes(
-        x = !!x_var_s,
-        y = !!y_var_s,
-        group = Sex,
-        fill = Sex,
-        linetype= Sex,
-        color = Sex
-      ) +
-      geom_point(size=3, shape=21) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(color="black",    method = "lm", 
-                  se=FALSE,
-                  na.rm = TRUE) +
-     theme.custom +
-      xlab(x_lab) +
-      ylab(y_lab) +
-      scale_colour_grey(start=0,end=0.5)+
-   scale_fill_manual(name="different fill", values =alpha(c("black","white"),1)) +
-      annotate(
-        "text",
-        x = anx,
-        y = any,
-        size=6,
-        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
-             hjust = 1)
-     
-    p
-  }
-```
-
-
-```{r motion-duration-mental-rot-annotate-outliers}
-corr_df <- sex_diff_corr_summ("log_motion",
-                              "mental_rot", print_table = FALSE)
-
-p_motion <- sex_diff_scatter_2(
-  sex_diff_df,
-  "log_motion",
-  "mental_rot",
-  x_rev = FALSE,
-  y_rev = FALSE,
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    corr_df$stars[2]
-  ),
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
-    corr_df$stars[1]
-  ),
-  c(-0.9),
-  c(12, 38),
-  "log(motion threshold)",
-  "Mental rotation score"
-)
-
-# p_motion <- sex_diff_scatter(
-#   sex_diff_df,
-#   "log_motion",
-#   "mental_rot",
-#   x_rev = FALSE,
-#   y_rev = FALSE,
-#   paste0(
-#     "r = ",
-#     format(corr_df$cor_coef[3], digits = 2, nsmall = 2),
-#     corr_df$stars[3]
-#   ),
-#   paste0(
-#     "r = ",
-#     format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-#     corr_df$stars[2]
-#   ),
-#   c(-1.8,-1.9),
-#   c(30, 36),
-#   "log(motion threshold)",
-#   "Mental rotation score"
-# )
-
-p_aug <- p_motion +
-  ggplot2::annotate(
-    geom = "point",
-    x = sex_diff_df$log_motion[c(115, 118)],
-    y = sex_diff_df$mental_rot[c(115, 118)],
-    color = "black",
-    size = 8,
-    shape = 0
-  )
-
-p_aug <- ggExtra::ggMarginal(p_aug,
-                             type = "boxplot",
-                             margins = "both",
-                             groupFill = TRUE)
-
-p_aug
-
-sex_diff_corr_summ("log_motion", "mental_rot")
-```
-
-### Contrast & male-typed interests
-
-```{r contrast-sens-male-hobbies}
-corr_df <- sex_diff_corr_summ("log_contrast", "Masculine_hobbies",
-                              corr_all,
-                              corr_M_df = corr_M,
-                              corr_F_df = corr_F,
-                              print_table = FALSE)
-
-p3<-sex_diff_scatter(
-  sex_diff_df,
-  "log_contrast",
-  "Masculine_hobbies",
-  x_rev = FALSE,
-  y_rev = FALSE,
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    "*"
-  ),
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
-    corr_df$stars[1]
-  ),
-  c(-1.2),
-  c(1.2, 4.8),
-  "log(contrast threshold)",
-  "Interest in male-typed activities"
-)
-p3
-
-sex_diff_corr_summ("log_contrast", "Masculine_hobbies")
-```
-
-### Motion & contrast
-
-```{r motion-duration-contrast-sens}
-corr_df <- sex_diff_corr_summ("log_motion",
-                              "log_contrast", print_table = FALSE)
-
-p_vision<-sex_diff_scatter_2(
-  sex_diff_df,
-  "log_motion",
-  "log_contrast",
-  x_rev = FALSE,
-  y_rev = FALSE,
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    corr_df$stars[2]
-  ),
-  paste0(
-    "r = ",
-    format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
-    corr_df$stars[1]
-  ),
-  c(-0.8),
-  c(-1.96,-1.3),
-  "log(motion threshold)",
-  "log(contrast threshold)"
-)
-
-p_aug2 <- p_vision +
-  ggplot2::annotate(
-    geom = "point",
-    x = sex_diff_df$log_motion[c(115, 118)],
-    y = sex_diff_df$log_contrast[c(115, 118)],
-    color = "black",
-    size = 8,
-    shape = 0
-  )
-
-p_aug2 <- ggExtra::ggMarginal(p_aug2,
-                             type = "boxplot",
-                             margins = "both",
-                             groupFill = TRUE)
-
-p_aug2
-
-sex_diff_corr_summ("log_motion",
-                   "log_contrast")
-```
-
-```{r}
-library("gridExtra")
-p = grid.arrange(ncol = 2, nrow = 1, p1, p_aug)
-ggsave(
-  plot = p,
-  filename = paste0("~/Desktop/fig2.jpg"),
-  units = "in",
-  height = 6,
-  width = 12,
-  dpi = 600
-)
-
-ggsave(
-  plot = p_aug2,
-  filename = paste0("~/Desktop/fig3.jpg"),
-  units = "in",
-  height = 6,
-  width = 6,
-  dpi = 600
-)
+```{r, child="qian-berenbaum-gilmore-plots.Rmd"}
 ```
 
 # Non-pregistered analyses
@@ -1181,10 +751,6 @@ anova(lm_mr_contr_motion_motion_sex_int, lm_mr_no_vision_sex)
 ```
 
 Again, the full model containing the vision measures and sex is the best-fitting.
-
-#### Relative Weight Analysis (RWA)
-
-We conducted a Relative Weight Analysis that is described in a separate file <relative-weight-analysis.html>.
 
 ## Do outliers account for results?
 
@@ -1413,227 +979,13 @@ anova(lm_mr_contr_motion_motion_sex_int, lm_mr_no_vision_sex)
 
 The fuller model with the vision variables remains the best-fitting one, even after trimming.
 
-## Does interest in specific male-typed hobbies correlate with vision?
+## Relative weight analysis
 
-Determine which hobbies are strongly male-typed according to (CITE):
+This analysis derives from work by Tonidel, Lebreton and Johnson and code provided by Lebreton.
 
-- Golf
-- Home eletronics
-- Surfing
-- Computers
-- Video games
-- Watching violent movies
-- Going to car shows
-- Fishing
-- Poker
-- Playing Basketball
-- TV sports
-- Football
-- Weight lifting
-- Working on cars
-- Drag racing
+Tonidandel, S., Lebreton, J. M., & Johnson, J. W. (2009). Determining the statistical significance of relative weights. *Psychological Methods, *14*(4), 387–399. https://doi.org/10.1037/a0017735
 
-```{r}
-var <-
-  c(
-    "Participant",
-    "Sex",
-    "log_contrast",
-    "log_motion",
-    "Golf",
-    "Home electronics",
-    "Surfing",
-    "Computers",
-    "Video games",
-    "Watching violent movies",
-    "Going to car shows",
-    "Fishing",
-    "Poker",
-    "Playing basketball",
-    "TV sports",
-    "Football",
-    "Weight lifting",
-    "Working on cars",
-    "Drag racing",
-    "Masculine_hobbies"
-  )
-male_hobbies <- sex_diff_df[, var]
-male_hobbies_F <- male_hobbies %>% 
-  dplyr::filter(Sex == "Female")
-```
-
-### Calculate alpha
-
-```{r}
-psych::alpha(male_hobbies[,-c(1:4,20)])
-```
-
-### Check data for outliers
-
-```{r}
-FindOutliers(male_hobbies$Masculine_hobbies)
-```
-
-No data are outliers.
-
-### Correlation between male-typed hobbies and log contrast
-
-```{r}
-rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball
-rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]
-```
-
-`Playing basketball` and `Home electronics` substantial large negative correlations (in women) with log contrast thresholds.
-
-#### Playing basketball and Contrast Sensitivity
-
-```{r}
-cor.test(
-  male_hobbies_F$log_contrast,
-  male_hobbies_F$"Playing basketball",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, "Playing basketball")
-es_mental_mas_contrast$formatted_r
-```
-
-#### Home electronics and Contrast Sensitivity
-
-```{r}
-cor.test(
-   male_hobbies_F$log_contrast,
-   male_hobbies_F$"Home electronics",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, "Home electronics")
-es_mental_mas_contrast$formatted_r
-```
-
-
-### Correlation between male-typed hobbies and log motion
-
-```{r}
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting
-rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]
-```
-
-`Weightlifing` and `Computers` shows substantial correlations with motion duration thresholds.
-
-#### Weightlifting and Motion Duration
-
-```{r}
-cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$"Weight lifting",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Weight lifting")
-es_mental_mas_contrast$formatted_r
-```
-
-##### Computers and Motion Duration
-
-```{r}
-cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$"Computers",
-  method = "pearson",
-  alternative = "two.sided"
-)
-
-es_mental_mas_contrast <- esci::estimateCorrelation.default( male_hobbies_F, log_motion, "Computers")
-es_mental_mas_contrast$formatted_r
-```
-
-### set function for scatterplot
-```{r}
-sex_diff_scatter3 <-
-  function(df,
-           x_var,
-           y_var,
-           x_lab = "X axis",
-           y_lab = "Y axis"
-           ) {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s <- sym(x_var)
-    y_var_s <- sym(y_var)
-    
-    p <- ggplot(df) +
-      aes(
-        x = !!x_var_s,
-        y = !!y_var_s
-      ) +
-      geom_point(size=4) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = "lm", na.rm = TRUE) +
-      xlab(x_lab) +
-      ylab(y_lab)+
-      theme.custom +
-      ylim(1, 5) 
-p
-  }
-```
-
-#### get scatterplot for contrast sensitivity and playing basketball
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_contrast",
-  "Playing basketball",
-  "log(contrast threshold)",
-  "Playing basketball"
-)
-```
-#### get scatterplot for contrast sensitivity and electronics
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_contrast",
-  "Home electronics",
-  "log(contrast threshold)",
-  "Home electronics"
-)
-```
-#### get scatterplot for motion sensitivity and weight lifting
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_motion",
-  "Weight lifting",
-  "log(motion threshold)",
-  "Weight lifting"
-)
-```
-#### get scatterplot for motion sensitivity and weight lifting, after excluding outliers
-```{r}
-male_hobbies_Fex<-male_hobbies_F[-which(male_hobbies_F$log_motion > -1),]
-sex_diff_scatter3(
-  male_hobbies_Fex,
-  "log_motion",
-  "Weight lifting",
-  "log(motion threshold)",
-  "Weight lifting"
-)
-```
-
-#### get scatterplot for motion sensitivity and weight lifting
-```{r}
-sex_diff_scatter3(
-  male_hobbies_F,
-  "log_motion",
-  "Computers",
-  "log(motion threshold)",
-  "Computers"
-)
+```{r, child='relative-weight-analysis.Rmd'}
 ```
 
 ## Do men and women differ in other ways?
@@ -1650,196 +1002,57 @@ xtabs(~ Sex + Age, df_trimmed)
 xtabs(~ Sex + School_year, df_trimmed)
 ```
 
-### Visual acuity
+### Acuity
 
-```{r, acuity}
+```{r, Acuity}
 xtabs(~ Sex + Acuity, df_trimmed)
+```
+
+### Glasses
+
+```{r, Glasses}
+xtabs(~ Sex + Glasses, df_trimmed)
 ```
 
 ### Stereo acuity
 
-```{r, stereo}
+```{r, Stereo}
 xtabs(~ Sex + Stereo_amin, df_trimmed)
-
-```
-<<<<<<< HEAD
-
-#### get scatterplot for stereo and contrast
-```{r}
-sex_diff_scatter3(
-  df_trimmed,
-  "log_contrast",
-  "Stereo_amin",
-  "log(contrast threshold)",
-  "Stereo acuity"
-) +ylim(40, 800)
 ```
 
-```{r}
-sex_diff_scatter3(
-  df_trimmed,
-  "log_motion",
-  "Stereo_amin",
-  "log(motion threshold)",
-  "Stereo acuity"
-)+ylim(40, 800)
-```
+## Check internal reliability of interests
 
-### factor analysis
+Determine which hobbies are strongly female-typed according to (Lippa, 1991)
 
-```{r}
-df_factor_f <- sex_diff_df %>%
-  filter(Sex=="Female") %>%
-  dplyr::select(., Acuity,Stereo_amin,log_contrast, log_motion, mental_rot,vocab,     "Golf",
-    "Home electronics",
-    "Surfing",
-    "Computers",
-    "Video games",
-    "Watching violent movies",
-    "Going to car shows",
-    "Fishing",
-    "Poker",
-    "Playing basketball",
-    "TV sports",
-    "Football",
-    "Weight lifting",
-    "Working on cars",
-    "Drag racing") %>%
-  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
-df_factor_f$Acuity<-as.numeric(factor(df_factor_f$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
-df_factor_f$Stereo_amin<-as.numeric(factor(df_factor_f$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
-```
+Lippa, R. (1991). Some psychometric characteristics of gender diagnosticity measures: reliability, validity, consistency across domains, and relationship to the big five. Journal of Personality and Social Psychology, 61(6), 1000–1011. https://doi.org/10.1037//0022-3514.61.6.1000.
 
-```{r}
-df_factor_m <- sex_diff_df %>%
-  filter(Sex=="Male") %>%
-  dplyr::select(., Acuity,Stereo_amin,log_contrast, log_motion, mental_rot,vocab,     "Golf",
-    "Home electronics",
-    "Surfing",
-    "Computers",
-    "Video games",
-    "Watching violent movies",
-    "Going to car shows",
-    "Fishing",
-    "Poker",
-    "Playing basketball",
-    "TV sports",
-    "Football",
-    "Weight lifting",
-    "Working on cars",
-    "Drag racing") %>%
-  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
-df_factor_m$Acuity<-as.numeric(factor(df_factor_m$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
-df_factor_m$Stereo_amin<-as.numeric(factor(df_factor_m$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
-```
-
-```{r}
-df.fa.m <- factanal(df_factor_m, factors = 2)
-df.fa.m
-```
-
-```{r}
-df.fa.f <- factanal(df_factor_f, factors = 2)
-df.fa.f
-```
-
-```{r}
-df_factor <- sex_diff_df %>%
-  dplyr::select(., Sex,Acuity,Stereo_amin,log_contrast, log_motion, mental_rot,vocab,     "Golf",
-    "Home electronics",
-    "Surfing",
-    "Computers",
-    "Video games",
-    "Watching violent movies",
-    "Going to car shows",
-    "Fishing",
-    "Poker",
-    "Playing basketball",
-    "TV sports",
-    "Football",
-    "Weight lifting",
-    "Working on cars",
-    "Drag racing") %>%
-  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
-df_factor$Sex<-as.numeric(factor(df_factor$Sex,levels=c("Male","Female"),labels=c(1,0)))
-df_factor$Acuity<-as.numeric(factor(df_factor$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
-df_factor$Stereo_amin<-as.numeric(factor(df_factor$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
-```
-
-
-```{r}
-df.fa <- factanal(df_factor, factors = 2)
-df.fa
-```
-
-```{r}
-df.fa3 <- factanal(df_factor, factors = 3)
-df.fa3
-```
-
-```{r}
-# varimax
-plot(df.fa$loadings[,1], 
-     df.fa$loadings[,2],
-     xlab = "Factor 1", 
-     ylab = "Factor 2", 
-     ylim = c(-1,1),
-     xlim = c(-1,1),
-     main = "Varimax rotation")
-
-text(df.fa$loadings[,1]-0.08, 
-     df.fa$loadings[,2]+0.08,
-      colnames(df_factor),
-      col="blue")
-abline(h = 0, v = 0)
-```
-
-
-```{r}
-df_factor_all <- sex_diff_df[,c(2,9,11,18,20,27:88)]  %>%
-  filter(!is.na(log_contrast),!is.na(log_motion),!is.na(Stereo_amin))
-df_factor_all$Sex<-as.numeric(factor(df_factor_all$Sex,levels=c("Male","Female"),labels=c(1,0)))
-df_factor_all$Acuity<-as.numeric(factor(df_factor_all$Acuity,levels=c("20/16","20/20","20/25","20/32"),labels=c(1,2,3,4)))
-df_factor_all$Stereo_amin<-as.numeric(factor(df_factor_all$Stereo_amin,levels=c("40","50","60","80","100","140","400","800"),labels=c(1,2,3,4,5,6,7,8)))
-```
-
-```{r}
-df.fa2 <- factanal(df_factor_all, factors = 3)
-df.fa2
-```
-
-## Check internal reliability of female-typed hobbies 
-
-Determine which hobbies are strongly female-typed according to (Lippa, 1992):
-
-Dancing
-going to art galleries
-going to church groups
-writing poetry
-trying new fashions
-aerobics
-travelling
-talking on phone with friends
-clothes shopping
-romance novels
-singing
-photography
-going to formal dress affairs
-cooking
-going to shows and plays
-knitting
-romance movies
-going out to dinner with friends
-going to museums
-house plants
-collecting stuffed animals
+Dancing</br>
+going to art galleries</br>
+going to church groups</br>
+writing poetry</br>
+trying new fashions</br>
+aerobics</br>
+travelling</br>
+talking on phone with friends</br>
+clothes shopping</br>
+romance novels</br>
+singing</br>
+photography</br>
+going to formal dress affairs</br>
+cooking</br>
+going to shows and plays</br>
+knitting</br>
+romance movies</br>
+going out to dinner with friends</br>
+going to museums</br>
+house plants</br>
+collecting stuffed animals</br>
 collecting pictures of friends and family
 
-
 ```{r}
-varf <-
-  c("Sex",
-    "Dancing",
+interest_vars <- sex_diff_df[, 27:86]
+f_typed_interests <-
+  c("Dancing",
     "Going to art galleries",
     "Going to church groups",
     "Writing poetry",
@@ -1861,17 +1074,12 @@ varf <-
     "House plants",
     "Collecting stuffed animals",
     "Collecting pictures of friends and family"
-    
   )
-female_hobbies <- sex_diff_df[, varf]
-female_hobbies_F <- female_hobbies %>% 
-  dplyr::filter(Sex == "Female")
+f_interest_vars <- interest_vars[, names(interest_vars) %in% f_typed_interests]
+alpha_female_type_interests <- psych::alpha(f_interest_vars)
+
+# m_interest_vars <- interest_vars[, !( names(interest_vars) %in% f_typed_interests )]
+# alpha_male_type_interests <- psych::alpha(m_interest_vars)
 ```
 
-### Calculate alpha
 
-```{r}
-psych::alpha(female_hobbies[,-1])
-```
-=======
->>>>>>> 4f2c0112020748ab2321798dec226007b29eae82

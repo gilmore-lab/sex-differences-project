@@ -6,13 +6,7 @@ output:
     toc_depth: 2
 ---
 
-# Background
-
-This analysis derives from work by Tonidel, Lebreton and Johnson and code provided by Lebreton.
-
-Tonidandel, S., Lebreton, J. M., & Johnson, J. W. (2009). Determining the statistical significance of relative weights. *Psychological Methods, *14*(4), 387–399. https://doi.org/10.1037/a0017735
-
-# Setup
+### Setup
 
 ```{r set-seed}
 set.seed(1234)
@@ -20,7 +14,7 @@ n_boots <- 10000
 library(tidyverse) # For pipe '%>%'
 ```
 
-# Import and clean data
+### Import and clean data
 
 ```{r}
 df <- readr::read_csv(file.path("csv/mr-contr-motion-sex.csv"))
@@ -31,7 +25,7 @@ df <- df %>%
   dplyr::select(., mental_rot, log_contrast, log_motion, male)
 ```
 
-## Create Sex:log_motion variable
+#### Create Sex:log_motion variable
 
 ```{r add-sex-motion-interaction}
 df <- df %>%
@@ -51,19 +45,19 @@ df <- df %>%
   dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion_r)
 ```
 
-## Grab variable names
+#### Grab variable names
 
 ```{r}
 predictors <- names(df)[2:length(df)] 
 ```
 
-## Verify data are not singular
+#### Verify data are not singular
 
 ```{r data-singular}
 eigen(cor(df))
 ```
 
-# Run conventional regression analyses
+### Run conventional regression analyses
 
 ```{r}
 fit1 <- lm(mental_rot ~ 1 + log_contrast + log_motion + male, data = df)
@@ -76,7 +70,7 @@ fit2 <- psych::corr.test(df)
 print(fit2)
 ```
 
-# Load helper functions
+#### Load helper functions
 
 ```{r define-helper-functions}
 # First up is the RWA function for a traditional multiple regression analysis
@@ -204,7 +198,7 @@ runGBoot <- function(num) {
 }
 ```
 
-# Run the RWA
+#### Run the RWA
 
 ```{r rwa-analysis}
 multRegress(df)
@@ -215,7 +209,7 @@ multRegress(df)
 RSQ.Results <- rsquare
 ```
 
-## Run bootstrapping to estimate SEs
+#### Run bootstrapping to estimate SEs
 
 ```{r rwa-bootstrap}
 #Bootstrapped Confidence interval around the individual relative weights
@@ -237,7 +231,7 @@ runRBoot(length(randData[, 2:(numVar - 1)]))
 CI.Significance <- CIresult
 ```
 
-## Relative weights for full model
+#### Relative weights for full model
 
 ```{r}
 #R-squared For the Model
@@ -254,11 +248,11 @@ CI.Results
 CI.Significance
 ```
 
-# Run the RWA on the trimmed data
+### Run the RWA on the trimmed data
 
 We deleted two female participants with very low motion duration thresholds. Here we examine whether that changes the relative weights.
 
-## Import and clean data
+#### Import and clean data
 
 ```{r}
 df <- readr::read_csv(file.path("csv/mr-contr-motion-sex-trimmed.csv"))
@@ -281,7 +275,7 @@ df <- df %>%
   dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion_r)
 ```
 
-## Run the RWA
+#### Run the RWA
 
 ```{r rwa-analysis-trimmed}
 multRegress(df)
@@ -292,7 +286,7 @@ multRegress(df)
 RSQ.Results <- rsquare
 ```
 
-## Run bootstrapping to estimate SEs
+#### Run bootstrapping to estimate SEs
 
 ```{r rwa-bootstrap-trimmed}
 #Bootstrapped Confidence interval around the individual relative weights
@@ -314,7 +308,7 @@ runRBoot(length(randData[, 2:(numVar - 1)]))
 CI.Significance <- CIresult
 ```
 
-## Relative weights for full model (trimmed data)
+#### Relative weights for full model (trimmed data)
 
 ```{r results-trimmed}
 #R-squared For the Model
