@@ -96,6 +96,44 @@ p_hist_vocab <- sex_diff_boxplot(y_var = 'vocab', axis_label = "Vocabulary")
 
 p_hist_vocab
 ```
+
+### Dotplot alternative
+
+```{r, eval = FALSE}
+sex_diff_dotplot <- function(df = sex_diff_df,
+                             x_var = "Sex",
+                             y_var = "log_contrast",
+                             axis_label = "log(contrast)") {
+  x_var_s <- sym(x_var)
+  y_var_s <- sym(y_var)
+  
+  p <- ggplot(df) +
+    aes(x = Sex,
+        y = !!y_var_s,) +
+    geom_boxplot(
+      inherit.aes = FALSE,
+      outlier.shape = NA,
+      aes(
+        x = Sex,
+        y = !!y_var_s
+      )
+    ) +
+  geom_dotplot(inherit.aes = FALSE, binaxis = "y", stackdir = "center",
+               aes(x = Sex,
+                   y = !!y_var_s,
+                   fill = Sex)) +
+  theme.custom +
+  ylab(axis_label) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_blank()) 
+p
+}
+
+pp <- sex_diff_dotplot() + scale_color_brewer(palette = our_color_palette)
+pp 
+```
+
+
 ### Scatterplots
 
 ```{r}
@@ -394,6 +432,7 @@ p_vision_aug <- p_vision +
 
 p_vision_aug
 ```
+
 ### Export
 
 ```{r}

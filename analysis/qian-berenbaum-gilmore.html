@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-11-16 17:03:21</h4>
+<h4 class="date">2021-11-17 10:33:02</h4>
 
 </div>
 
@@ -1002,6 +1002,46 @@ p_hist_interests</code></pre>
 <pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <p><img src="img/hist_interests-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p_hist_vocab &lt;- sex_diff_boxplot(y_var = &#39;vocab&#39;, axis_label = &quot;Vocabulary&quot;)
+
+p_hist_vocab</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/vocab-1.png" width="2100" style="display: block; margin: auto;" /></p>
+</div>
+<div id="dotplot-alternative" class="section level3">
+<h3>Dotplot alternative</h3>
+<pre class="r"><code>sex_diff_dotplot &lt;- function(df = sex_diff_df,
+                             x_var = &quot;Sex&quot;,
+                             y_var = &quot;log_contrast&quot;,
+                             axis_label = &quot;log(contrast)&quot;) {
+  x_var_s &lt;- sym(x_var)
+  y_var_s &lt;- sym(y_var)
+  
+  p &lt;- ggplot(df) +
+    aes(x = Sex,
+        y = !!y_var_s,) +
+    geom_boxplot(
+      inherit.aes = FALSE,
+      outlier.shape = NA,
+      aes(
+        x = Sex,
+        y = !!y_var_s
+      )
+    ) +
+  geom_dotplot(inherit.aes = FALSE, binaxis = &quot;y&quot;, stackdir = &quot;center&quot;,
+               aes(x = Sex,
+                   y = !!y_var_s,
+                   fill = Sex)) +
+  theme.custom +
+  ylab(axis_label) +
+  theme(legend.position = &quot;none&quot;) +
+  theme(axis.title.x = element_blank()) 
+p
+}
+
+pp &lt;- sex_diff_dotplot() + scale_color_brewer(palette = our_color_palette)
+pp </code></pre>
 </div>
 <div id="scatterplots" class="section level3">
 <h3>Scatterplots</h3>
@@ -1292,7 +1332,11 @@ p_vision_aug &lt;- p_vision +
 p_vision_aug</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/motion-duration-contrast-sens-1.png" width="2100" style="display: block; margin: auto;" /> ### Export</p>
+<p><img src="img/motion-duration-contrast-sens-1.png" width="2100" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="export" class="section level3">
+<h3>Export</h3>
 <pre class="r"><code>p_boxplots &lt;- p_hist_contrast + p_hist_motion + p_hist_mental_rot + p_hist_interests
 p_boxplots_annotated &lt;- p_boxplots + plot_annotation(tag_levels = &quot;A&quot;)
 p_boxplots_annotated</code></pre>
@@ -1304,7 +1348,7 @@ p_boxplots_annotated</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-86-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p_boxplots_annotated,
   filename = &quot;paper_figs/fig-01-boxplots.jpg&quot;,
@@ -1329,7 +1373,7 @@ p_mental_rot_scatters_annotated</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-88-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p_mental_rot_scatters_annotated,
   filename = &quot;paper_figs/fig-02-mental-rot-vision.jpg&quot;,
@@ -1342,13 +1386,23 @@ p_mental_rot_scatters_annotated</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(
+  plot = p_hist_vocab,
+  filename = &quot;paper_figs/fig-S02-vocab.jpg&quot;,
+  units = &quot;in&quot;,
+  width = 3.4375,
+  dpi = 600
+)</code></pre>
+<pre><code>## Saving 3.44 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code># Mental rotation and vision measures
 p = grid.arrange(ncol = 2, nrow = 1, p_mental_rot_contrast, p_mental_rot_motion)</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-88-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-89-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p,
   filename = &quot;paper_figs/fig-02-mental-rot-vision-alt.jpg&quot;,
@@ -1378,7 +1432,6 @@ ggsave(
 <pre><code>## Saving 3.44 x 5 in image
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -2123,7 +2176,7 @@ summary(fit1)</code></pre>
 ## Multiple R-squared:  0.1335, Adjusted R-squared:  0.112 
 ## F-statistic: 6.212 on 3 and 121 DF,  p-value: 0.0005839</code></pre>
 <pre class="r"><code>plot(fit1) # residual plots for OLS; use &lt;Return&gt; key to cycle through plots in console.</code></pre>
-<p><img src="img/unnamed-chunk-92-1.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-2.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-3.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-4.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-93-1.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-2.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-3.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-4.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>fit2 &lt;- psych::corr.test(df)
 print(fit2)</code></pre>
 <pre><code>## Call:psych::corr.test(x = df)
