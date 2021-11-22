@@ -1123,7 +1123,7 @@ m_typed_interests <-
     "Drag racing"
   )
 
-m_interest_vars <- interest_vars[, !( names(interest_vars) %in% m_typed_interests )]
+m_interest_vars <- interest_vars[, ( names(interest_vars) %in% m_typed_interests )]
 psych::alpha(m_interest_vars)
 ```
 

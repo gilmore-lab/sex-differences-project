@@ -16,6 +16,11 @@ library(patchwork)
 our_color_palette = "Dark2"
 our_colors <- RColorBrewer::brewer.pal(n = 3, name = our_color_palette)
 plot_point_size <- 0.75
+
+# Recode "female"/"male" as "women"/"men
+
+recoded_sex_diff_df <- sex_diff_df %>%
+  dplyr::mutate(., Sex = dplyr::recode(Sex, Female = "Women", Male = "Men"))
 ```
 
 ```{r ggplot-themes}
@@ -37,7 +42,7 @@ theme.custom <- theme_classic() +
 ### Histograms
 
 ```{r}
-sex_diff_boxplot <- function(df = sex_diff_df,
+sex_diff_boxplot <- function(df = recoded_sex_diff_df,
                              x_var = "Sex",
                              y_var = "log_contrast",
                              axis_label = "log(contrast)") {
@@ -64,7 +69,7 @@ sex_diff_boxplot <- function(df = sex_diff_df,
   p
 }
 
-sex_diff_boxplot(sex_diff_df)
+sex_diff_boxplot(recoded_sex_diff_df)
 ```
 
 
@@ -96,43 +101,6 @@ p_hist_vocab <- sex_diff_boxplot(y_var = 'vocab', axis_label = "Vocabulary")
 
 p_hist_vocab
 ```
-
-### Dotplot alternative
-
-```{r, eval = FALSE}
-sex_diff_dotplot <- function(df = sex_diff_df,
-                             x_var = "Sex",
-                             y_var = "log_contrast",
-                             axis_label = "log(contrast)") {
-  x_var_s <- sym(x_var)
-  y_var_s <- sym(y_var)
-  
-  p <- ggplot(df) +
-    aes(x = Sex,
-        y = !!y_var_s,) +
-    geom_boxplot(
-      inherit.aes = FALSE,
-      outlier.shape = NA,
-      aes(
-        x = Sex,
-        y = !!y_var_s
-      )
-    ) +
-  geom_dotplot(inherit.aes = FALSE, binaxis = "y", stackdir = "center",
-               aes(x = Sex,
-                   y = !!y_var_s,
-                   fill = Sex)) +
-  theme.custom +
-  ylab(axis_label) +
-  theme(legend.position = "none") +
-  theme(axis.title.x = element_blank()) 
-p
-}
-
-pp <- sex_diff_dotplot() + scale_color_brewer(palette = our_color_palette)
-pp 
-```
-
 
 ### Scatterplots
 
@@ -178,7 +146,7 @@ sex_diff_scatter <-
         y = any,
         size = 5,
         label = c(an_f, an_m),
-        color = our_colors[1:2],
+        color = our_colors[2:1],
         hjust = 0 # left-justified
       )
       
@@ -220,7 +188,7 @@ df_corr_M <- sex_diff_df_M %>%
 
 corr_M <- Hmisc::rcorr(as.matrix(df_corr_M), type = c("pearson"))
 
-df_corr_all <- sex_diff_df %>%
+df_corr_all <- recoded_sex_diff_df %>%
   dplyr::select(., corr_vars)
 
 corr_all <- Hmisc::rcorr(as.matrix(df_corr_all), type = c("pearson"))
@@ -265,11 +233,12 @@ sex_diff_corr_summ <- function(x_var, y_var, print_table = TRUE,
   
   # Add stars for significance levels
   df <- df %>%
-    mutate(., stars = if_else(p_val < .005, "***",
+    mutate(., stars = if_else(p_val < .001, "****",
+                              if_else(p_val < .005, "***",
                               if_else(
                                 p_val < .01, "**",
                                 if_else(p_val < .05, "*", "")
-                              )))
+                              ))))
   
   if (print_table) {
     kableExtra::kable(df, format = 'html') %>%
@@ -293,7 +262,7 @@ corr_df <- sex_diff_corr_summ(
 )
 
 p_mental_rot_contrast <- sex_diff_scatter(
-  sex_diff_df,
+  recoded_sex_diff_df,
   "log_contrast",
   "mental_rot",
   x_rev = FALSE,
@@ -316,6 +285,7 @@ p_mental_rot_contrast <- sex_diff_scatter(
 
 p_mental_rot_contrast
 ```
+
 #### Mental rotation and motion
 
 ```{r motion-duration-mental-rot-annotate-outliers}
@@ -323,7 +293,7 @@ corr_df <- sex_diff_corr_summ("log_motion",
                               "mental_rot", print_table = FALSE)
 
 p_motion <- sex_diff_scatter(
-  sex_diff_df,
+  recoded_sex_diff_df,
   "log_motion",
   "mental_rot",
   x_rev = FALSE,
@@ -347,8 +317,8 @@ p_motion <- sex_diff_scatter(
 p_mental_rot_motion <- p_motion +
   ggplot2::annotate(
     geom = "point",
-    x = sex_diff_df$log_motion[c(115, 118)],
-    y = sex_diff_df$mental_rot[c(115, 118)],
+    x = recoded_sex_diff_df$log_motion[c(115, 118)],
+    y = recoded_sex_diff_df$mental_rot[c(115, 118)],
     color = "black",
     size = 6,
     shape = 0
@@ -369,7 +339,7 @@ corr_df <- sex_diff_corr_summ(
 )
 
 p_interests_contrast <- sex_diff_scatter(
-  sex_diff_df,
+  recoded_sex_diff_df,
   "log_contrast",
   "Masculine_hobbies",
   x_rev = FALSE,
@@ -399,7 +369,7 @@ corr_df <- sex_diff_corr_summ("log_motion",
                               "log_contrast", print_table = FALSE)
 
 p_vision <- sex_diff_scatter(
-  sex_diff_df,
+  recoded_sex_diff_df,
   "log_motion",
   "log_contrast",
   x_rev = FALSE,
@@ -423,8 +393,8 @@ p_vision <- sex_diff_scatter(
 p_vision_aug <- p_vision +
   ggplot2::annotate(
     geom = "point",
-    x = sex_diff_df$log_motion[c(115, 118)],
-    y = sex_diff_df$log_contrast[c(115, 118)],
+    x = recoded_sex_diff_df$log_motion[c(115, 118)],
+    y = recoded_sex_diff_df$log_contrast[c(115, 118)],
     color = "black",
     size = 8,
     shape = 0
@@ -465,7 +435,7 @@ ggsave(
 
 ggsave(
   plot = p_hist_vocab,
-  filename = "paper_figs/fig-S02-vocab.jpg",
+  filename = "paper_figs/fig-S1-vocab.jpg",
   units = "in",
   width = 3.4375,
   dpi = 600
@@ -473,15 +443,15 @@ ggsave(
 ```
 
 ```{r}
-# Mental rotation and vision measures
-p = grid.arrange(ncol = 2, nrow = 1, p_mental_rot_contrast, p_mental_rot_motion)
-ggsave(
-  plot = p,
-  filename = "paper_figs/fig-02-mental-rot-vision-alt.jpg",
-  units = "in",
-  width = 6.875,
-  dpi = 600
-)
+# # Mental rotation and vision measures
+# p = grid.arrange(ncol = 2, nrow = 1, p_mental_rot_contrast, p_mental_rot_motion)
+# ggsave(
+#   plot = p,
+#   filename = "paper_figs/fig-02-mental-rot-vision-alt.jpg",
+#   units = "in",
+#   width = 6.875,
+#   dpi = 600
+# )
 
 # Contrast thresholds and motion thresholds
 ggsave(
@@ -494,7 +464,7 @@ ggsave(
 
 ggsave(
   plot = p_interests_contrast,
-  filename = "paper_figs/fig-S01-mental-rot-interests.jpg",
+  filename = "paper_figs/fig-S2-contrast-interests.jpg",
   units = "in",
   width = 3.4375,
   dpi = 600  
