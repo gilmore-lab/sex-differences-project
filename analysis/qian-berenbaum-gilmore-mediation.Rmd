@@ -1,0 +1,90 @@
+---
+title: "Mediation"
+author: "Rick Gilmore"
+date: "`r Sys.time()`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+### Purpose
+
+Run a mediation analysis on `log_contrast` and `log_motion` as predictors of `mental_rot`.
+
+This was helpful:
+
+https://towardsdatascience.com/doing-and-reporting-your-first-mediation-analysis-in-r-2fe423b92171
+
+### Setup
+
+```{r mediation-setup}
+set.seed(1234)
+library(mediation)
+```
+
+### Import and clean data
+
+```{r load-mediation-data}
+df <- readr::read_csv(file.path("csv/mr-contr-motion-sex.csv"))
+
+# Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
+df <- df %>%
+  dplyr::mutate(., male = if_else(Sex == "Male", 1, 0)) %>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male)
+```
+
+### Fit linear models
+
+#### Direct effect of sex (`male`) on `mental_rot`
+
+```{r}
+fit.sex_effect <- lm(male ~ mental_rot, df)
+summary(fit.sex_effect)
+```
+
+#### Effect of sex (`male`) on mediator (`log_motion`)
+
+```{r}
+fit.log_motion <- lm(log_motion ~ male, df)
+summary(fit.log_motion)
+```
+
+#### Effect of sex (`male`) on mediator (`log_contrast`)
+
+```{r}
+fit.log_contrast <- lm(log_contrast ~ male, df)
+summary(fit.log_contrast)
+```
+
+#### Effects of sex (`male`) and mediator (`log_motion`) on `mental_rot`
+
+```{r}
+fit.mental_rot_log_motion <- lm(mental_rot ~ log_motion + male, df)
+summary(fit.mental_rot_log_motion)
+```
+
+#### Effects of sex (`male`) and mediator (`log_contrast`) on `mental_rot`
+
+```{r}
+fit.mental_rot_log_contrast <- lm(mental_rot ~ log_contrast + male, df)
+summary(fit.mental_rot_log_contrast)
+```
+
+### Use `mediation` package to estimate direct, mediated effects
+
+#### log_motion` as mediator
+
+```{r}
+results_log_motion <- mediate(fit.log_motion, fit.mental_rot_log_motion, treat = 'male',
+                              mediator = 'log_motion', boot = T)
+summary(results_log_motion)
+```
+
+#### log_contrast` as mediator
+
+```{r}
+results_log_contrast <- mediate(fit.log_contrast, fit.mental_rot_log_contrast, treat = 'male',
+                              mediator = 'log_contrast', boot = T)
+summary(results_log_contrast)
+```

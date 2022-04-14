@@ -988,6 +988,7 @@ Tonidandel, S., Lebreton, J. M., & Johnson, J. W. (2009). Determining the statis
 ```{r, child='qian-berenbaum-gilmore-relative-weight-analysis.Rmd'}
 ```
 
+
 ## Do men and women differ in other ways?
 
 ### Age
@@ -1019,6 +1020,7 @@ xtabs(~ Sex + Glasses, df_trimmed)
 ```{r, Stereo}
 xtabs(~ Sex + Stereo_amin, df_trimmed)
 ```
+
 
 ## Check internal reliability of interests
 
@@ -1128,3 +1130,11 @@ psych::alpha(m_interest_vars)
 ```
 
 
+
+
+## Mediation analysis
+
+One of the reviewers asked whether we had done or considered a mediation analysis. We had not previously, but the following shows the results of a sequential analysis of sex as a predictor of mental rotation with log contrast thresholds as a mediator, and a second mediation analysis with log motion thresholds as a mediator.
+
+```{r, child='qian-berenbaum-gilmore-mediation.Rmd'}
+```
