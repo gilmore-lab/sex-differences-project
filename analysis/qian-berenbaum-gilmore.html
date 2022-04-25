@@ -259,7 +259,7 @@ div.tocify {
 <h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp;
 Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2022-04-14 17:00:16</h4>
+<h4 class="date">2022-04-25 09:07:49</h4>
 
 </div>
 
@@ -2950,11 +2950,12 @@ class="uri">https://towardsdatascience.com/doing-and-reporting-your-first-mediat
 <div id="setup-3" class="section level3">
 <h3>Setup</h3>
 <pre class="r"><code>set.seed(1234)
-library(mediation)</code></pre>
+library(mediation)
+library(tidyverse)</code></pre>
 </div>
 <div id="import-and-clean-data-2" class="section level3">
 <h3>Import and clean data</h3>
-<pre class="r"><code>df &lt;- readr::read_csv(file.path(&quot;csv/mr-contr-motion-sex.csv&quot;))</code></pre>
+<pre class="r"><code>sex_df &lt;- readr::read_csv(file.path(&quot;csv/mr-contr-motion-sex.csv&quot;))</code></pre>
 <pre><code>## Rows: 125 Columns: 5
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -2963,31 +2964,32 @@ library(mediation)</code></pre>
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code># Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
-df &lt;- df %&gt;%
-  dplyr::mutate(., male = if_else(Sex == &quot;Male&quot;, 1, 0)) %&gt;%
-  dplyr::select(., mental_rot, log_contrast, log_motion, male)</code></pre>
+<pre class="r"><code># Requires all variables be numeric and scaled so we recode Sex with with Female = 1
+df &lt;- sex_df %&gt;%
+  dplyr::mutate(., sex = if_else(Sex == &quot;Male&quot;, 0, 1),
+                mental_rot = (mental_rot-mean(mental_rot))/sd(mental_rot),
+                log_contrast = (log_contrast-mean(log_contrast))/sd(log_contrast),
+                log_motion = (log_motion-mean(log_motion)/sd(log_motion)))%&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, sex)</code></pre>
 </div>
 <div id="fit-linear-models" class="section level3">
 <h3>Fit linear models</h3>
-<div id="direct-effect-of-sex-male-on-mental_rot"
-class="section level4">
-<h4>Direct effect of sex (<code>male</code>) on
-<code>mental_rot</code></h4>
-<pre class="r"><code>fit.sex_effect &lt;- lm(male ~ mental_rot, df)
+<div id="direct-effect-of-sex-on-mental_rot" class="section level4">
+<h4>Direct effect of <code>sex</code> on <code>mental_rot</code></h4>
+<pre class="r"><code>fit.sex_effect &lt;- lm(sex ~ mental_rot, df)
 summary(fit.sex_effect)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = male ~ mental_rot, data = df)
+## lm(formula = sex ~ mental_rot, data = df)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -0.44672 -0.25352 -0.18912 -0.04422  0.90748 
+## -0.90748  0.04422  0.18912  0.25352  0.44672 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept) -0.19728    0.17066  -1.156  0.24994   
-## mental_rot   0.01610    0.00613   2.626  0.00973 **
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.76000    0.03747  20.282  &lt; 2e-16 ***
+## mental_rot  -0.09881    0.03762  -2.626  0.00973 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -2995,15 +2997,14 @@ summary(fit.sex_effect)</code></pre>
 ## Multiple R-squared:  0.0531, Adjusted R-squared:  0.0454 
 ## F-statistic: 6.898 on 1 and 123 DF,  p-value: 0.009727</code></pre>
 </div>
-<div id="effect-of-sex-male-on-mediator-log_motion"
-class="section level4">
-<h4>Effect of sex (<code>male</code>) on mediator
+<div id="effect-of-sex-on-mediator-log_motion" class="section level4">
+<h4>Effect of <code>sex</code> on mediator
 (<code>log_motion</code>)</h4>
-<pre class="r"><code>fit.log_motion &lt;- lm(log_motion ~ male, df)
+<pre class="r"><code>fit.log_motion &lt;- lm(log_motion ~ sex, df)
 summary(fit.log_motion)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = log_motion ~ male, data = df)
+## lm(formula = log_motion ~ sex, data = df)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
@@ -3011,8 +3012,8 @@ summary(fit.log_motion)</code></pre>
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -2.27034    0.02613 -86.898  &lt; 2e-16 ***
-## male        -0.18462    0.05333  -3.462 0.000739 ***
+## (Intercept)  6.25692    0.04649 134.579  &lt; 2e-16 ***
+## sex          0.18462    0.05333   3.462 0.000739 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3020,80 +3021,79 @@ summary(fit.log_motion)</code></pre>
 ## Multiple R-squared:  0.08878,    Adjusted R-squared:  0.08137 
 ## F-statistic: 11.98 on 1 and 123 DF,  p-value: 0.0007388</code></pre>
 </div>
-<div id="effect-of-sex-male-on-mediator-log_contrast"
-class="section level4">
-<h4>Effect of sex (<code>male</code>) on mediator
+<div id="effect-of-sex-on-mediator-log_contrast" class="section level4">
+<h4>Effect of <code>sex</code> on mediator
 (<code>log_contrast</code>)</h4>
-<pre class="r"><code>fit.log_contrast &lt;- lm(log_contrast ~ male, df)
+<pre class="r"><code>fit.log_contrast &lt;- lm(log_contrast ~ sex, df)
 summary(fit.log_contrast)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = log_contrast ~ male, data = df)
+## lm(formula = log_contrast ~ sex, data = df)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.22296 -0.10317 -0.05028  0.06810  0.52865 
+##     Min      1Q  Median      3Q     Max 
+## -1.3431 -0.6215 -0.3029  0.4102  3.1846 
 ## 
 ## Coefficients:
-##             Estimate Std. Error  t value Pr(&gt;|t|)    
-## (Intercept) -1.74523    0.01670 -104.488   &lt;2e-16 ***
-## male        -0.08303    0.03409   -2.435   0.0163 *  
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)  -0.3801     0.1790  -2.123   0.0358 *
+## sex           0.5002     0.2054   2.435   0.0163 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.1628 on 123 degrees of freedom
+## Residual standard error: 0.9807 on 123 degrees of freedom
 ## Multiple R-squared:  0.046,  Adjusted R-squared:  0.03824 
 ## F-statistic: 5.931 on 1 and 123 DF,  p-value: 0.01631</code></pre>
 </div>
-<div id="effects-of-sex-male-and-mediator-log_motion-on-mental_rot"
+<div id="effects-of-sex-and-mediator-log_motion-on-mental_rot"
 class="section level4">
-<h4>Effects of sex (<code>male</code>) and mediator
-(<code>log_motion</code>) on <code>mental_rot</code></h4>
-<pre class="r"><code>fit.mental_rot_log_motion &lt;- lm(mental_rot ~ log_motion + male, df)
+<h4>Effects of <code>sex</code> and mediator (<code>log_motion</code>)
+on <code>mental_rot</code></h4>
+<pre class="r"><code>fit.mental_rot_log_motion &lt;- lm(mental_rot ~ log_motion + sex, df)
 summary(fit.mental_rot_log_motion)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = mental_rot ~ log_motion + male, data = df)
+## lm(formula = mental_rot ~ log_motion + sex, data = df)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -12.2844  -3.9051  -0.4857   3.8510  12.7491 
+## -2.00157 -0.63628 -0.07914  0.62746  2.07727 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)   15.333      4.774   3.212  0.00169 **
-## log_motion    -4.861      2.086  -2.330  0.02144 * 
-## male           2.401      1.293   1.858  0.06564 . 
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)   5.3638     2.1338   2.514   0.0133 *
+## log_motion   -0.7920     0.3399  -2.330   0.0214 *
+## sex          -0.3912     0.2106  -1.858   0.0656 .
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 5.891 on 122 degrees of freedom
+## Residual standard error: 0.9599 on 122 degrees of freedom
 ## Multiple R-squared:  0.09345,    Adjusted R-squared:  0.07859 
 ## F-statistic: 6.288 on 2 and 122 DF,  p-value: 0.002518</code></pre>
 </div>
-<div id="effects-of-sex-male-and-mediator-log_contrast-on-mental_rot"
+<div id="effects-of-sex-and-mediator-log_contrast-on-mental_rot"
 class="section level4">
-<h4>Effects of sex (<code>male</code>) and mediator
-(<code>log_contrast</code>) on <code>mental_rot</code></h4>
-<pre class="r"><code>fit.mental_rot_log_contrast &lt;- lm(mental_rot ~ log_contrast + male, df)
+<h4>Effects of <code>sex</code> and mediator (<code>log_contrast</code>)
+on <code>mental_rot</code></h4>
+<pre class="r"><code>fit.mental_rot_log_contrast &lt;- lm(mental_rot ~ log_contrast + sex, df)
 summary(fit.mental_rot_log_contrast)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = mental_rot ~ log_contrast + male, data = df)
+## lm(formula = mental_rot ~ log_contrast + sex, data = df)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -12.5807  -3.9650  -0.3953   4.1979  13.3733 
+## -2.04985 -0.64603 -0.06441  0.68399  2.17899 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)    10.847      5.679   1.910   0.0585 . 
-## log_contrast   -8.894      3.236  -2.748   0.0069 **
-## male            2.560      1.253   2.043   0.0432 * 
+## (Intercept)   0.31698    0.17697   1.791   0.0757 . 
+## log_contrast -0.24056    0.08753  -2.748   0.0069 **
+## sex          -0.41708    0.20413  -2.043   0.0432 * 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 5.843 on 122 degrees of freedom
+## Residual standard error: 0.952 on 122 degrees of freedom
 ## Multiple R-squared:  0.1083, Adjusted R-squared:  0.09369 
 ## F-statistic: 7.409 on 2 and 122 DF,  p-value: 0.0009186</code></pre>
 </div>
@@ -3103,9 +3103,15 @@ class="section level3">
 <h3>Use <code>mediation</code> package to estimate direct, mediated
 effects</h3>
 <div id="log_motion-as-mediator" class="section level4">
-<h4>log_motion` as mediator</h4>
-<pre class="r"><code>results_log_motion &lt;- mediate(fit.log_motion, fit.mental_rot_log_motion, treat = &#39;male&#39;,
-                              mediator = &#39;log_motion&#39;, boot = T)</code></pre>
+<h4><code>log_motion</code> as mediator</h4>
+<pre class="r"><code>results_log_motion &lt;-
+  mediate(
+    fit.log_motion,
+    fit.mental_rot_log_motion,
+    treat = &#39;sex&#39;,
+    mediator = &#39;log_motion&#39;,
+    boot = T
+  )</code></pre>
 <pre><code>## Running nonparametric bootstrap</code></pre>
 <pre class="r"><code>summary(results_log_motion)</code></pre>
 <pre><code>## 
@@ -3114,9 +3120,9 @@ effects</h3>
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value  
-## ACME            0.89736      0.06202         2.06   0.030 *
-## ADE             2.40089     -0.33140         5.23   0.092 .
-## Total Effect    3.29825      0.86062         5.86   0.012 *
+## ACME           -0.14621     -0.33590        -0.01   0.030 *
+## ADE            -0.39119     -0.85196         0.05   0.092 .
+## Total Effect   -0.53740     -0.95466        -0.14   0.012 *
 ## Prop. Mediated  0.27207      0.00384         1.23   0.042 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
@@ -3125,10 +3131,18 @@ effects</h3>
 ## 
 ## 
 ## Simulations: 1000</code></pre>
+<p>Sex -&gt; mental_rot: -0.0988124</br> Sex -&gt; log_motion:
+0.1846153</br> log_motion -&gt; mental_rot: -0.7919776</p>
+<p><em>Direct effect</em></br> Sex -&gt; mental_rot: -0.3911895, <span
+class="math inline">\(p=\)</span> 0.092</br> 95% CI: -0.8519598,
+0.0539975</p>
+<p><em>Mediated effect</em></br> Sex -&gt; log_motion -&gt; mental_rot:
+-0.1462112, <span class="math inline">\(p=\)</span> 0.03</br> 95% CI:
+-0.3359006, -0.0101059</p>
 </div>
 <div id="log_contrast-as-mediator" class="section level4">
-<h4>log_contrast` as mediator</h4>
-<pre class="r"><code>results_log_contrast &lt;- mediate(fit.log_contrast, fit.mental_rot_log_contrast, treat = &#39;male&#39;,
+<h4><code>log_contrast</code> as mediator</h4>
+<pre class="r"><code>results_log_contrast &lt;- mediate(fit.log_contrast, fit.mental_rot_log_contrast, treat = &#39;sex&#39;,
                               mediator = &#39;log_contrast&#39;, boot = T)</code></pre>
 <pre><code>## Running nonparametric bootstrap</code></pre>
 <pre class="r"><code>summary(results_log_contrast)</code></pre>
@@ -3138,9 +3152,9 @@ effects</h3>
 ## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
 ## 
 ##                Estimate 95% CI Lower 95% CI Upper p-value   
-## ACME             0.7385       0.1423         1.46   0.012 * 
-## ADE              2.5598       0.0724         5.37   0.048 * 
-## Total Effect     3.2982       0.8121         6.02   0.008 **
+## ACME            -0.1203      -0.2383        -0.02   0.012 * 
+## ADE             -0.4171      -0.8754        -0.01   0.048 * 
+## Total Effect    -0.5374      -0.9809        -0.13   0.008 **
 ## Prop. Mediated   0.2239       0.0417         0.90   0.020 * 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
@@ -3149,6 +3163,14 @@ effects</h3>
 ## 
 ## 
 ## Simulations: 1000</code></pre>
+<p>Sex -&gt; mental_rot: -0.0988124</br> Sex -&gt; log_contrast:
+0.5001795</br> log_contrast -&gt; mental_rot: -0.2405582</p>
+<p><em>Direct effect</em></br> Sex -&gt; mental_rot: -0.4170784, <span
+class="math inline">\(p=\)</span> 0.048</br> 95% CI: -0.8754313,
+-0.0117965</p>
+<p><em>Mediated effect</em> Sex -&gt; log_contrast -&gt; mental_rot:
+-0.1203223, <span class="math inline">\(p=\)</span> 0.012</br> 95% CI:
+-0.2383342, -0.0231835</p>
 </div>
 </div>
 </div>

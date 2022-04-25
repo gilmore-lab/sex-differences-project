@@ -21,70 +21,106 @@ https://towardsdatascience.com/doing-and-reporting-your-first-mediation-analysis
 ```{r mediation-setup}
 set.seed(1234)
 library(mediation)
+library(tidyverse)
 ```
 
 ### Import and clean data
 
 ```{r load-mediation-data}
-df <- readr::read_csv(file.path("csv/mr-contr-motion-sex.csv"))
+sex_df <- readr::read_csv(file.path("csv/mr-contr-motion-sex.csv"))
 
-# Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
-df <- df %>%
-  dplyr::mutate(., male = if_else(Sex == "Male", 1, 0)) %>%
-  dplyr::select(., mental_rot, log_contrast, log_motion, male)
+# Requires all variables be numeric and scaled so we recode Sex with with Female = 1
+df <- sex_df %>%
+  dplyr::mutate(., sex = if_else(Sex == "Male", 0, 1),
+                mental_rot = (mental_rot-mean(mental_rot))/sd(mental_rot),
+                log_contrast = (log_contrast-mean(log_contrast))/sd(log_contrast),
+                log_motion = (log_motion-mean(log_motion)/sd(log_motion)))%>%
+  dplyr::select(., mental_rot, log_contrast, log_motion, sex)
 ```
 
 ### Fit linear models
 
-#### Direct effect of sex (`male`) on `mental_rot`
+#### Direct effect of `sex` on `mental_rot`
 
 ```{r}
-fit.sex_effect <- lm(male ~ mental_rot, df)
+fit.sex_effect <- lm(sex ~ mental_rot, df)
 summary(fit.sex_effect)
 ```
 
-#### Effect of sex (`male`) on mediator (`log_motion`)
+#### Effect of `sex` on mediator (`log_motion`)
 
 ```{r}
-fit.log_motion <- lm(log_motion ~ male, df)
+fit.log_motion <- lm(log_motion ~ sex, df)
 summary(fit.log_motion)
 ```
 
-#### Effect of sex (`male`) on mediator (`log_contrast`)
+#### Effect of `sex` on mediator (`log_contrast`)
 
 ```{r}
-fit.log_contrast <- lm(log_contrast ~ male, df)
+fit.log_contrast <- lm(log_contrast ~ sex, df)
 summary(fit.log_contrast)
 ```
 
-#### Effects of sex (`male`) and mediator (`log_motion`) on `mental_rot`
+#### Effects of `sex` and mediator (`log_motion`) on `mental_rot`
 
 ```{r}
-fit.mental_rot_log_motion <- lm(mental_rot ~ log_motion + male, df)
+fit.mental_rot_log_motion <- lm(mental_rot ~ log_motion + sex, df)
 summary(fit.mental_rot_log_motion)
 ```
 
-#### Effects of sex (`male`) and mediator (`log_contrast`) on `mental_rot`
+#### Effects of `sex` and mediator (`log_contrast`) on `mental_rot`
 
 ```{r}
-fit.mental_rot_log_contrast <- lm(mental_rot ~ log_contrast + male, df)
+fit.mental_rot_log_contrast <- lm(mental_rot ~ log_contrast + sex, df)
 summary(fit.mental_rot_log_contrast)
 ```
 
 ### Use `mediation` package to estimate direct, mediated effects
 
-#### log_motion` as mediator
+#### `log_motion` as mediator
 
 ```{r}
-results_log_motion <- mediate(fit.log_motion, fit.mental_rot_log_motion, treat = 'male',
-                              mediator = 'log_motion', boot = T)
+results_log_motion <-
+  mediate(
+    fit.log_motion,
+    fit.mental_rot_log_motion,
+    treat = 'sex',
+    mediator = 'log_motion',
+    boot = T
+  )
 summary(results_log_motion)
 ```
 
-#### log_contrast` as mediator
+Sex -> mental_rot: `r fit.sex_effect$coefficients[2]`</br>
+Sex -> log_motion: `r fit.log_motion$coefficients[2]`</br>
+log_motion -> mental_rot: `r fit.mental_rot_log_motion$coefficients[2]`
+
+*Direct effect*</br>
+Sex -> mental_rot: `r results_log_motion$z0`, $p=$ `r results_log_motion$z0.p`</br>
+95% CI: `r results_log_motion$z0.ci`
+
+*Mediated effect*</br>
+Sex -> log_motion -> mental_rot: `r results_log_motion$d0`, $p=$ `r results_log_motion$d0.p`</br>
+95% CI: `r results_log_motion$d0.ci`
+
+#### `log_contrast` as mediator
 
 ```{r}
-results_log_contrast <- mediate(fit.log_contrast, fit.mental_rot_log_contrast, treat = 'male',
+results_log_contrast <- mediate(fit.log_contrast, fit.mental_rot_log_contrast, treat = 'sex',
                               mediator = 'log_contrast', boot = T)
 summary(results_log_contrast)
 ```
+
+Sex -> mental_rot: `r fit.sex_effect$coefficients[2]`</br>
+Sex -> log_contrast: `r fit.log_contrast$coefficients[2]`</br>
+log_contrast -> mental_rot: `r fit.mental_rot_log_contrast$coefficients[2]`
+
+*Direct effect*</br>
+Sex -> mental_rot: `r results_log_contrast$z0`, $p=$ `r results_log_contrast$z0.p`</br>
+95% CI: `r results_log_contrast$z0.ci`
+
+*Mediated effect*
+Sex -> log_contrast -> mental_rot: `r results_log_contrast$d0`, $p=$ `r results_log_contrast$d0.p`</br>
+95% CI: `r results_log_contrast$d0.ci`
+
+
