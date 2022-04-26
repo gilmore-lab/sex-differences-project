@@ -14,7 +14,7 @@
 
 <title>Analyses for Qian, Berenbaum, &amp; Gilmore</title>
 
-<script src="qian-berenbaum-gilmore_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="qian-berenbaum-gilmore_files/header-attrs-2.13/header-attrs.js"></script>
 <script src="qian-berenbaum-gilmore_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="qian-berenbaum-gilmore_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -65,6 +65,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -85,6 +86,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -243,7 +247,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -252,17 +256,20 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
+<h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp;
+Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-11-22 13:33:12</h4>
+<h4 class="date">2022-04-25 09:07:49</h4>
 
 </div>
 
 
 <div id="purpose" class="section level1">
 <h1>Purpose</h1>
-<p>This document shows our analyses following a plan we preregistered here:</p>
-<p><a href="https://aspredicted.org/5iv9a.pdf" class="uri">https://aspredicted.org/5iv9a.pdf</a></p>
+<p>This document shows our analyses following a plan we preregistered
+here:</p>
+<p><a href="https://aspredicted.org/5iv9a.pdf"
+class="uri">https://aspredicted.org/5iv9a.pdf</a></p>
 <p>It also shows a series of analyses that were not preregistered.</p>
 </div>
 <div id="setup" class="section level1">
@@ -271,15 +278,16 @@ div.tocify {
 </div>
 <div id="import-data" class="section level1">
 <h1>Import data</h1>
-<p>Data from the set of tasks were merged and cleaned as described in <code>import-clean-raw-data.Rmd</code>.</p>
+<p>Data from the set of tasks were merged and cleaned as described in
+<code>import-clean-raw-data.Rmd</code>.</p>
 <pre class="r"><code>sex_diff_df &lt;- readr::read_csv(file.path(params$data_path, params$csv_fn)) </code></pre>
-<pre><code>## Rows: 132 Columns: 86</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+<pre><code>## Rows: 132 Columns: 86
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (8): Sex, Race, Age, School_year, Major, Handedness, Glasses, Acuity
 ## dbl (77): Participant, Stereo_amin, motion_dur_thr, motion_dur_thr_mean, mot...
-## lgl  (1): Color_vision</code></pre>
-<pre><code>## 
+## lgl  (1): Color_vision
+## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
@@ -290,10 +298,15 @@ div.tocify {
 <div id="visual-perception-thresholds" class="section level3">
 <h3>Visual perception thresholds</h3>
 <blockquote>
-<p>An average threshold for each participant will be calculated across 4 runs for each visual perception task. If necessary, we will transform the psychophysical thresholds to make the distributions symmetric and appropriate for parametric analyses.</p>
+<p>An average threshold for each participant will be calculated across 4
+runs for each visual perception task. If necessary, we will transform
+the psychophysical thresholds to make the distributions symmetric and
+appropriate for parametric analyses.</p>
 </blockquote>
-<p>In the analyses below, we use the median threshold across the four runs.</p>
-<p>The distribution of median thresholds is skewed, as indicated in the figures below:</p>
+<p>In the analyses below, we use the median threshold across the four
+runs.</p>
+<p>The distribution of median thresholds is skewed, as indicated in the
+figures below:</p>
 <pre class="r"><code>sex_diff_df %&gt;%
   ggplot(.) +
   aes(x = contrast_thr) +
@@ -314,7 +327,16 @@ div.tocify {
                 log_contrast = log(contrast_thr),
                 log_motion = log(motion_dur_thr))</code></pre>
 <blockquote>
-<p>To examine sex differences, one-tailed t tests will be conducted to compare men and women on 2 visual perception thresholds, spatial ability, and masculine hobbies. We will use verbal ability as our control variable. We set a family-wise Type I error rate at alpha=0.05. Because there are four dependent variables hypothesized to show sex differences, the critical p value for each sex comparison is 0.0125 after Bonferroni correction. Our goal is to obtain .8 power to detect a medium effect size of .5 (Cohen’s d) at the p value of .0125 in the one-tailed t tests. Unequal sample sizes of the two sexes may be collected in this study.</p>
+<p>To examine sex differences, one-tailed t tests will be conducted to
+compare men and women on 2 visual perception thresholds, spatial
+ability, and masculine hobbies. We will use verbal ability as our
+control variable. We set a family-wise Type I error rate at alpha=0.05.
+Because there are four dependent variables hypothesized to show sex
+differences, the critical p value for each sex comparison is 0.0125
+after Bonferroni correction. Our goal is to obtain .8 power to detect a
+medium effect size of .5 (Cohen’s d) at the p value of .0125 in the
+one-tailed t tests. Unequal sample sizes of the two sexes may be
+collected in this study.</p>
 </blockquote>
 <div id="contrast-thresholds" class="section level4">
 <h4>Contrast thresholds</h4>
@@ -351,7 +373,9 @@ cst_tt</code></pre>
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##            -1.741348            -1.828258</code></pre>
-<p>Median log(contrast) thresholds are lower in women than men This means that women had larger contrast thresholds or were less sensitive to contrast.</p>
+<p>Median log(contrast) thresholds are lower in women than men This
+means that women had larger contrast thresholds or were less sensitive
+to contrast.</p>
 <p>This can be seen in a plot in the original threshold units.</p>
 <pre class="r"><code>sex_diff_df %&gt;%
   ggplot() +
@@ -359,14 +383,17 @@ cst_tt</code></pre>
   geom_boxplot()</code></pre>
 <pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="img/unnamed-chunk-5-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<p>We use the <code>esvis</code> package to compute the Hedge’s G effect size measure since the groups have unequal means.</p>
+<p>We use the <code>esvis</code> package to compute the Hedge’s G effect
+size measure since the groups have unequal means.</p>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, log_contrast ~ Sex)</code></pre>
 <pre><code>## # A tibble: 2 × 4
 ##   Sex_ref Sex_foc  coh_d hedg_g
 ##   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Female  Male     0.518  0.515
 ## 2 Male    Female  -0.518 -0.515</code></pre>
-<p>In order to compute a confidence interval for the effect size, we use the <code>esci</code> package. We have already installed the package, so we set the following chunk to <code>eval=FALSE</code>.</p>
+<p>In order to compute a confidence interval for the effect size, we use
+the <code>esci</code> package. We have already installed the package, so
+we set the following chunk to <code>eval=FALSE</code>.</p>
 <pre class="r"><code>devtools::install_github(&quot;rcalinjageman/esci&quot;)</code></pre>
 <pre class="r"><code>sex_diff_df$Sex.factor &lt;- as.factor(sex_diff_df$Sex)
 
@@ -414,7 +441,8 @@ mdt_tt</code></pre>
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##            -2.270497            -2.454955</code></pre>
-<p>Median log(motion duration) thresholds are larger in women than men This means that women were less sensitive to motion.</p>
+<p>Median log(motion duration) thresholds are larger in women than men
+This means that women were less sensitive to motion.</p>
 <p>This can be seen in a plot in the original threshold units.</p>
 <pre class="r"><code>sex_diff_df %&gt;%
   ggplot() +
@@ -441,7 +469,8 @@ mdt_tt</code></pre>
 </div>
 <div id="spatial-ability" class="section level3">
 <h3>Spatial ability</h3>
-<p>Our measure of spatial ability is performance on a mental rotation task.</p>
+<p>Our measure of spatial ability is performance on a mental rotation
+task.</p>
 <pre class="r"><code>df_mental_rot &lt;- sex_diff_df %&gt;%
   dplyr::filter(., !is.na(mental_rot)) %&gt;%
   dplyr::select(., Sex, mental_rot)
@@ -475,7 +504,8 @@ mr_tt</code></pre>
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##             26.20792             29.66667</code></pre>
-<p>Women had fewer correct trials than men. This is shown by the effect size.</p>
+<p>Women had fewer correct trials than men. This is shown by the effect
+size.</p>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, mental_rot ~ Sex)</code></pre>
 <pre><code>## # A tibble: 2 × 4
 ##   Sex_ref Sex_foc  coh_d hedg_g
@@ -545,7 +575,8 @@ mr_tt</code></pre>
 </div>
 <div id="verbal-ability" class="section level3">
 <h3>Verbal ability</h3>
-<p>We predicted no sex difference in verbal ability as measured by vocabulary size.</p>
+<p>We predicted no sex difference in verbal ability as measured by
+vocabulary size.</p>
 <pre class="r"><code>sex_diff_df %&gt;%
   ggplot() +
   aes(Sex, Masculine_hobbies) +
@@ -572,7 +603,8 @@ vocab_tt</code></pre>
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##             9.165842             9.916667</code></pre>
-<p>We find no statistically significant difference in vocabulary scores.</p>
+<p>We find no statistically significant difference in vocabulary
+scores.</p>
 <p>This is also shown by the effect size.</p>
 <pre class="r"><code>esvis::hedg_g(sex_diff_df, vocab ~ Sex)</code></pre>
 <pre><code>## # A tibble: 2 × 4
@@ -626,7 +658,24 @@ vocab_tt</code></pre>
 <div id="correlations-among-measures" class="section level2">
 <h2>Correlations among measures</h2>
 <blockquote>
-<p>To examine how individual differences of visual perception measures are associated with other tasks, we will use correlations within sex. The lower visual perception threshold is, the higher perceptual sensitivity this individual has. In both sexes, we expect to find negative correlations between visual perception measures and spatial ability and masculine hobbies, but no significant correlation with verbal ability. There are four planned correlations (two visual perception tasks times two cognitive tasks) within sex, for a total of eight. This project is a novel study that has not to our knowledge been conducted previously. So we have consciously decided to maintain strict control of Type II error, in order to have enough statistical power to detect a small correlation effect sizes (r=0.20) within the constraints of sample size. This decision to maximize the power (.80) leads to a trade-off between Type I and Type II error. We plan to conduct eight separate one-tailed correlation tests with Type I error at 0.05 and no Bonferroni correction. With a critical p value of .05, around 150 participants are required for each group to detect an effect size of 0.20 at an obtained power of 0.8 with a one-tailed correlation test.</p>
+<p>To examine how individual differences of visual perception measures
+are associated with other tasks, we will use correlations within sex.
+The lower visual perception threshold is, the higher perceptual
+sensitivity this individual has. In both sexes, we expect to find
+negative correlations between visual perception measures and spatial
+ability and masculine hobbies, but no significant correlation with
+verbal ability. There are four planned correlations (two visual
+perception tasks times two cognitive tasks) within sex, for a total of
+eight. This project is a novel study that has not to our knowledge been
+conducted previously. So we have consciously decided to maintain strict
+control of Type II error, in order to have enough statistical power to
+detect a small correlation effect sizes (r=0.20) within the constraints
+of sample size. This decision to maximize the power (.80) leads to a
+trade-off between Type I and Type II error. We plan to conduct eight
+separate one-tailed correlation tests with Type I error at 0.05 and no
+Bonferroni correction. With a critical p value of .05, around 150
+participants are required for each group to detect an effect size of
+0.20 at an obtained power of 0.8 with a one-tailed correlation test.</p>
 </blockquote>
 <p>We create two data frames, one for males and another for females.</p>
 <pre class="r"><code>sex_diff_df_F &lt;- sex_diff_df %&gt;%
@@ -649,7 +698,8 @@ vocab_tt</code></pre>
                Masculine_hobbies,
                 masscale
                )</code></pre>
-<div id="contrast-thresholds-and-mental-rotation" class="section level3">
+<div id="contrast-thresholds-and-mental-rotation"
+class="section level3">
 <h3>Contrast thresholds and mental rotation</h3>
 <div id="women" class="section level4">
 <h4>Women</h4>
@@ -670,12 +720,16 @@ vocab_tt</code></pre>
 ## sample estimates:
 ##        cor 
 ## -0.2838364</code></pre>
-<p>Contrast thresholds (negatively) correlate with mental rotation scores in women. The negative correlation means that smaller log(contrast) values or higher contrast sensitivity is associated with better performance in the mental rotation task.</p>
+<p>Contrast thresholds (negatively) correlate with mental rotation
+scores in women. The negative correlation means that smaller
+log(contrast) values or higher contrast sensitivity is associated with
+better performance in the mental rotation task.</p>
 <p>We can use <code>esci</code> to provide CIs for this estimate.</p>
 <pre class="r"><code>es_mental_rot_contrast &lt;- esci::estimateCorrelation.default(sex_diff_df_F, log_contrast, mental_rot)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_mental_rot_contrast</code></pre>
-<p>We estimate the correlation between mental_rotation and log contrast thresholds in women as follows: r = -0.28 95% CI [-0.46, -0.09].</p>
+<p>We estimate the correlation between mental_rotation and log contrast
+thresholds in women as follows: r = -0.28 95% CI [-0.46, -0.09].</p>
 </div>
 <div id="men" class="section level4">
 <h4>Men</h4>
@@ -696,12 +750,14 @@ vocab_tt</code></pre>
 ## sample estimates:
 ##        cor 
 ## -0.2444586</code></pre>
-<p>Contrast thresholds do not significantly correlate with mental rotation scores in men.</p>
+<p>Contrast thresholds do not significantly correlate with mental
+rotation scores in men.</p>
 <p>We can use <code>esci</code> to provide CIs for this estimate.</p>
 <pre class="r"><code>es_mental_rot_contrast &lt;- esci::estimateCorrelation.default(sex_diff_df_M, log_contrast, mental_rot)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_mental_rot_contrast</code></pre>
-<p>We estimate the correlation between mental_rotation and log contrast thresholds in men as follows: r = -0.24 95% CI [-0.56, 0.13].</p>
+<p>We estimate the correlation between mental_rotation and log contrast
+thresholds in men as follows: r = -0.24 95% CI [-0.56, 0.13].</p>
 </div>
 </div>
 <div id="motion-thresholds-and-mental-rotation" class="section level3">
@@ -725,12 +781,16 @@ vocab_tt</code></pre>
 ## sample estimates:
 ##        cor 
 ## -0.3166253</code></pre>
-<p>Log(motion duration) thresholds (negatively) correlate with mental rotation scores in women This means that lower thresholds (higher sensitivity) is associated with better performance in the mental rotation task.</p>
+<p>Log(motion duration) thresholds (negatively) correlate with mental
+rotation scores in women This means that lower thresholds (higher
+sensitivity) is associated with better performance in the mental
+rotation task.</p>
 <p>We can use <code>esci</code> to provide CIs for this estimate.</p>
 <pre class="r"><code>es_mental_rot_motion &lt;- esci::estimateCorrelation.default(sex_diff_df_F, log_motion, mental_rot)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_mental_rot_motion</code></pre>
-<p>We estimate the correlation between mental_rotateion and log motion thresholds in women as follows: r = -0.32 95% CI [-0.49, -0.13].</p>
+<p>We estimate the correlation between mental_rotateion and log motion
+thresholds in women as follows: r = -0.32 95% CI [-0.49, -0.13].</p>
 </div>
 <div id="men-1" class="section level4">
 <h4>Men</h4>
@@ -751,15 +811,18 @@ vocab_tt</code></pre>
 ## sample estimates:
 ##       cor 
 ## 0.1203345</code></pre>
-<p>Motion duration thresholds do not significantly correlate with mental rotation scores in men.</p>
+<p>Motion duration thresholds do not significantly correlate with mental
+rotation scores in men.</p>
 <p>We can use <code>esci</code> to provide CIs for this estimate.</p>
 <pre class="r"><code>es_mental_rot_motion &lt;- esci::estimateCorrelation.default(sex_diff_df_M, log_motion, mental_rot)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_mental_rot_motion</code></pre>
-<p>We estimate the correlation between mental_rotation and log motion thresholds in men as follows: r = 0.12 95% CI [-0.25, 0.46]</p>
+<p>We estimate the correlation between mental_rotation and log motion
+thresholds in men as follows: r = 0.12 95% CI [-0.25, 0.46]</p>
 </div>
 </div>
-<div id="contrast-thresholds-and-male-typed-activities" class="section level3">
+<div id="contrast-thresholds-and-male-typed-activities"
+class="section level3">
 <h3>Contrast thresholds and male-typed activities</h3>
 <div id="women-2" class="section level4">
 <h4>Women</h4>
@@ -783,7 +846,9 @@ vocab_tt</code></pre>
 <pre class="r"><code>es_contrast_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_contrast)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_contrast_m_hobbies </code></pre>
-<p>We estimate the correlation between log contrast and interest in male-typed activities in women as follows: r = -0.19 95% CI [-0.38, 0.00]</p>
+<p>We estimate the correlation between log contrast and interest in
+male-typed activities in women as follows: r = -0.19 95% CI [-0.38,
+0.00]</p>
 </div>
 <div id="men-2" class="section level4">
 <h4>Men</h4>
@@ -807,10 +872,13 @@ vocab_tt</code></pre>
 <pre class="r"><code>es_contrast_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, log_contrast)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_contrast_m_hobbies</code></pre>
-<p>We estimate the correlation between mental_rotation and interest in male-typed activities in men as follows: r = 0.21 95% CI [-0.16, 0.53]</p>
+<p>We estimate the correlation between mental_rotation and interest in
+male-typed activities in men as follows: r = 0.21 95% CI [-0.16,
+0.53]</p>
 </div>
 </div>
-<div id="motion-thresholds-and-male-typed-activities" class="section level3">
+<div id="motion-thresholds-and-male-typed-activities"
+class="section level3">
 <h3>Motion thresholds and male-typed activities</h3>
 <div id="women-3" class="section level4">
 <h4>Women</h4>
@@ -834,7 +902,9 @@ vocab_tt</code></pre>
 <pre class="r"><code>es_motion_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_F, Masculine_hobbies, log_motion)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_motion_m_hobbies</code></pre>
-<p>We estimate the correlation between log motion and interest in male-typed activities in women as follows: r = 0.03 95% CI [-0.17, 0.23]</p>
+<p>We estimate the correlation between log motion and interest in
+male-typed activities in women as follows: r = 0.03 95% CI [-0.17,
+0.23]</p>
 </div>
 <div id="men-3" class="section level4">
 <h4>Men</h4>
@@ -858,10 +928,13 @@ vocab_tt</code></pre>
 <pre class="r"><code>es_motion_m_hobbies &lt;- esci::estimateCorrelation.default(sex_diff_df_M, Masculine_hobbies, log_motion)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_mental_rot_motion</code></pre>
-<p>We estimate the correlation between mental_rotation and interest in male-typed activities in men as follows: r = 0.07 95% CI [-0.29, 0.42]</p>
+<p>We estimate the correlation between mental_rotation and interest in
+male-typed activities in men as follows: r = 0.07 95% CI [-0.29,
+0.42]</p>
 </div>
 </div>
-<div id="contrast-thresholds-and-motion-thresholds" class="section level3">
+<div id="contrast-thresholds-and-motion-thresholds"
+class="section level3">
 <h3>Contrast thresholds and motion thresholds</h3>
 <div id="women-4" class="section level4">
 <h4>Women</h4>
@@ -887,7 +960,8 @@ vocab_tt</code></pre>
 <pre class="r"><code>es_contrast_motion &lt;- esci::estimateCorrelation.default(sex_diff_df_F, log_contrast, log_motion)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_contrast_motion</code></pre>
-<p>We estimate the correlation between log contrast and log motion thresholds in women as follows: r = 0.15 95% CI [-0.06, 0.34].</p>
+<p>We estimate the correlation between log contrast and log motion
+thresholds in women as follows: r = 0.15 95% CI [-0.06, 0.34].</p>
 </div>
 <div id="men-4" class="section level4">
 <h4>Men</h4>
@@ -913,7 +987,8 @@ vocab_tt</code></pre>
 <pre class="r"><code>es_contrast_motion &lt;- esci::estimateCorrelation.default(sex_diff_df_M, log_contrast, log_motion)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_contrast_motion</code></pre>
-<p>We estimate the correlation between log contrast and log motion thresholds in men as follows: r = 0.41 95% CI [0.05, 0.67].</p>
+<p>We estimate the correlation between log contrast and log motion
+thresholds in men as follows: r = 0.41 95% CI [0.05, 0.67].</p>
 </div>
 </div>
 </div>
@@ -982,7 +1057,7 @@ theme.custom &lt;- theme_classic() +
 sex_diff_boxplot(recoded_sex_diff_df)</code></pre>
 <pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-83-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-84-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>p_hist_contrast &lt;- sex_diff_boxplot(y_var = &quot;log_contrast&quot;, axis_label = &quot;log(contrast)&quot;)
 
 p_hist_contrast</code></pre>
@@ -1083,7 +1158,8 @@ p_hist_vocab</code></pre>
     
     p
   }</code></pre>
-<p>Create matrices of correlation coefficients for subsequent plotting.</p>
+<p>Create matrices of correlation coefficients for subsequent
+plotting.</p>
 <pre class="r"><code>corr_vars &lt;- c(&#39;log_contrast&#39;, &#39;log_motion&#39;, &#39;mental_rot&#39;, &#39;Masculine_hobbies&#39;)
 df_corr_F &lt;- sex_diff_df_F %&gt;%
   dplyr::select(., corr_vars)</code></pre>
@@ -1102,7 +1178,8 @@ df_corr_all &lt;- recoded_sex_diff_df %&gt;%
   dplyr::select(., corr_vars)
 
 corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;))</code></pre>
-<p>Create a helper function to generate and plot correlation coefficients.</p>
+<p>Create a helper function to generate and plot correlation
+coefficients.</p>
 <pre class="r"><code>sex_diff_corr_summ &lt;- function(x_var, y_var, print_table = TRUE, 
                                corr_all_df = corr_all,
                                corr_M_df = corr_M,
@@ -1231,7 +1308,8 @@ p_mental_rot_motion &lt;- p_motion +
 p_mental_rot_motion</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/motion-duration-mental-rot-annotate-outliers-1.png" width="2100" style="display: block; margin: auto;" /> #### Male-typed interests and contrast</p>
+<p><img src="img/motion-duration-mental-rot-annotate-outliers-1.png" width="2100" style="display: block; margin: auto;" />
+#### Male-typed interests and contrast</p>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(
   &quot;log_contrast&quot;,
   &quot;Masculine_hobbies&quot;,
@@ -1323,7 +1401,7 @@ p_boxplots_annotated</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-86-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p_boxplots_annotated,
   filename = &quot;paper_figs/fig-01-boxplots.jpg&quot;,
@@ -1348,7 +1426,7 @@ p_mental_rot_scatters_annotated</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-88-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
   plot = p_mental_rot_scatters_annotated,
   filename = &quot;paper_figs/fig-02-mental-rot-vision.jpg&quot;,
@@ -1407,9 +1485,12 @@ ggsave(
 </div>
 <div id="non-pregistered-analyses" class="section level1">
 <h1>Non-pregistered analyses</h1>
-<div id="does-vision-account-for-mental-rotation" class="section level2">
+<div id="does-vision-account-for-mental-rotation"
+class="section level2">
 <h2>Does vision account for mental rotation?</h2>
-<p>One can model <code>mental rotation ~ contrast + motion + sex</code> and determine whether adding the <code>sex</code> term or its interactions provides a better fit than the vision measures.</p>
+<p>One can model <code>mental rotation ~ contrast + motion + sex</code>
+and determine whether adding the <code>sex</code> term or its
+interactions provides a better fit than the vision measures.</p>
 <div id="model-based-approach" class="section level3">
 <h3>Model-based approach</h3>
 <pre class="r"><code>df_mr_contr_motion &lt;- sex_diff_df %&gt;%
@@ -1421,7 +1502,8 @@ ggsave(
 
 # Export for relative weight analysis (RWA)
 readr::write_csv(df_mr_contr_motion, file = file.path(params$data_path, &#39;mr-contr-motion-sex.csv&#39;))</code></pre>
-<div id="model-0-mental_rot-log_contrastlog_motionsex" class="section level4">
+<div id="model-0-mental_rot-log_contrastlog_motionsex"
+class="section level4">
 <h4>Model 0: <code>mental_rot ~ log_contrast*log_motion*Sex</code></h4>
 <p>Let’s fit a full model with all interactions:</p>
 <pre class="r"><code>lm_mr_contr_motion_sex_full &lt;- lm(mental_rot ~ log_contrast*log_motion*Sex, data = df_mr_contr_motion)
@@ -1483,9 +1565,12 @@ summary(lm_mr_contr_motion_sex_full)</code></pre>
 ## log_motion:Sex              0.047726746 0.055730622
 ## log_contrast:log_motion:Sex 0.004223110 0.005195250</code></pre>
 </div>
-<div id="model-1-mental_rot-log_contrast-log_motion-sex-log_motionsex" class="section level4">
-<h4>Model 1: <code>mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex</code></h4>
-<p>Keep only components that meet a <span class="math inline">\(p&lt;.1\)</span> criterion.</p>
+<div id="model-1-mental_rot-log_contrast-log_motion-sex-log_motionsex"
+class="section level4">
+<h4>Model 1: <code>mental_rot ~ log_contrast + log_motion + Sex +
+log_motion:Sex</code></h4>
+<p>Keep only components that meet a <span
+class="math inline">\(p&lt;.1\)</span> criterion.</p>
 <pre class="r"><code>lm_mr_contr_motion_motion_sex_int &lt;- lm(mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_motion_sex_int)</code></pre>
 <pre><code>## 
@@ -1544,11 +1629,15 @@ summary(lm_mr_contr_motion_motion_sex_int)</code></pre>
 ##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
 ## 1    117 3777.1                           
 ## 2    120 3865.0 -3    -87.92 0.9078 0.4396</code></pre>
-<p>We choose the simpler model for parsimony reasons and a reduction in RSS even though the fit does not improve to a substantial degree.</p>
+<p>We choose the simpler model for parsimony reasons and a reduction in
+RSS even though the fit does not improve to a substantial degree.</p>
 </div>
-<div id="model-2-mental_rot-log_contrast-log_motion" class="section level4">
+<div id="model-2-mental_rot-log_contrast-log_motion"
+class="section level4">
 <h4>Model 2: <code>mental_rot ~ log_contrast + log_motion</code></h4>
-<p>Let’s drop <code>Sex</code>because its effect is small, and the <code>log_motion:Sex</code> interaction to see whether these improve the fit.</p>
+<p>Let’s drop <code>Sex</code>because its effect is small, and the
+<code>log_motion:Sex</code> interaction to see whether these improve the
+fit.</p>
 <pre class="r"><code>lm_mr_contr_motion_no_sex &lt;- lm(mental_rot ~ log_contrast + log_motion, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_no_sex)</code></pre>
 <pre><code>## 
@@ -1600,11 +1689,13 @@ summary(lm_mr_contr_motion_no_sex)</code></pre>
 ## 2    122 4123.5 -2   -258.47 4.0125 0.02057 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>So, the fit of the fuller model with <code>Sex</code> and the <code>log_motion:Sex</code> interaction included is better.</p>
+<p>So, the fit of the fuller model with <code>Sex</code> and the
+<code>log_motion:Sex</code> interaction included is better.</p>
 </div>
 <div id="model-3-mental_rot-log_contrast-sex" class="section level4">
 <h4>Model 3: <code>mental_rot ~ log_contrast + Sex</code></h4>
-<p>Let’s try dropping <code>log_motion</code> and the <code>Sex:log_motion</code> interaction.</p>
+<p>Let’s try dropping <code>log_motion</code> and the
+<code>Sex:log_motion</code> interaction.</p>
 <pre class="r"><code>lm_mr_contr_no_motion_sex &lt;- lm(mental_rot ~ log_contrast + Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_no_motion_sex)</code></pre>
 <pre><code>## 
@@ -1707,14 +1798,19 @@ summary(lm_mr_no_vision_sex)</code></pre>
 ## 2    123 4422.8 -3   -557.78 5.7727 0.001011 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Again, the full model containing the vision measures and sex is the best-fitting.</p>
+<p>Again, the full model containing the vision measures and sex is the
+best-fitting.</p>
 </div>
 </div>
 </div>
 <div id="do-outliers-account-for-results" class="section level2">
 <h2>Do outliers account for results?</h2>
-<p>The scatterplots indicate that despite the log transformation, there are some individual participants who had especially high thresholds for contrast and motion duration.</p>
-<p>Do our results hold when we trim the data to focus on those individuals whose data are within 3 standard deviations of the mean log threshold?</p>
+<p>The scatterplots indicate that despite the log transformation, there
+are some individual participants who had especially high thresholds for
+contrast and motion duration.</p>
+<p>Do our results hold when we trim the data to focus on those
+individuals whose data are within 3 standard deviations of the mean log
+threshold?</p>
 <p>We define a helper function to detect outliers.</p>
 <pre class="r"><code>FindOutliers &lt;- function(data, sd_thresh = as.numeric(params$outlier_sd_thresh)) {
   sd = sd(data, na.rm = T)
@@ -1793,13 +1889,15 @@ mdt_tt</code></pre>
 </div>
 <div id="correlations-among-measures-1" class="section level3">
 <h3>Correlations among measures</h3>
-<p>Since trimming outliers only affected the motion threshold data, we focus on that measure.</p>
+<p>Since trimming outliers only affected the motion threshold data, we
+focus on that measure.</p>
 <pre class="r"><code>sex_diff_df_F &lt;- df_trimmed %&gt;%
   dplyr::filter(., Sex == &quot;Female&quot;)
 
 sex_diff_df_M &lt;- df_trimmed %&gt;%
   dplyr::filter(., Sex == &quot;Male&quot;)</code></pre>
-<div id="motion-thresholds-and-mental-rotation-1" class="section level4">
+<div id="motion-thresholds-and-mental-rotation-1"
+class="section level4">
 <h4>Motion thresholds and mental rotation</h4>
 <pre class="r"><code>cor.test(
   sex_diff_df_F$log_motion,
@@ -1818,7 +1916,8 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 ## sample estimates:
 ##        cor 
 ## -0.2983134</code></pre>
-<p>Log(motion duration) thresholds (negatively) correlate with mental rotation scores in women, even after trimming.</p>
+<p>Log(motion duration) thresholds (negatively) correlate with mental
+rotation scores in women, even after trimming.</p>
 <pre class="r"><code>cor.test(
   sex_diff_df_M$log_motion,
   sex_diff_df_M$mental_rot,
@@ -1836,9 +1935,11 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 ## sample estimates:
 ##       cor 
 ## 0.1203345</code></pre>
-<p>Motion duration thresholds do not correlate with mental rotation scores in men.</p>
+<p>Motion duration thresholds do not correlate with mental rotation
+scores in men.</p>
 </div>
-<div id="contrast-thresholds-and-motion-thresholds-1" class="section level4">
+<div id="contrast-thresholds-and-motion-thresholds-1"
+class="section level4">
 <h4>Contrast thresholds and motion thresholds</h4>
 <div id="women-5" class="section level5">
 <h5>Women</h5>
@@ -1863,7 +1964,8 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 <pre class="r"><code>es_contrast_motion &lt;- esci::estimateCorrelation.default(sex_diff_df_F, log_contrast, log_motion)</code></pre>
 <pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
 <pre class="r"><code>#es_contrast_motion</code></pre>
-<p>We find that a correlation between log contrast and log motion thresholds in women is as follows: r = 0.21 95% CI [0.01, 0.40].</p>
+<p>We find that a correlation between log contrast and log motion
+thresholds in women is as follows: r = 0.21 95% CI [0.01, 0.40].</p>
 </div>
 <div id="men-5" class="section level5">
 <h5>Men</h5>
@@ -1890,7 +1992,8 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 </div>
 <div id="modeling-mental-rotation" class="section level3">
 <h3>Modeling mental rotation</h3>
-<p>Do the <em>trimmed data</em> show a stronger relationship between vision and mental rotation than sex and mental rotation?</p>
+<p>Do the <em>trimmed data</em> show a stronger relationship between
+vision and mental rotation than sex and mental rotation?</p>
 <pre class="r"><code>df_mr_contr_motion &lt;- df_trimmed %&gt;%
   dplyr::select(., Sex, log_contrast, log_motion, mental_rot) %&gt;%
   dplyr::filter(., !is.na(Sex),
@@ -1900,8 +2003,10 @@ sex_diff_df_M &lt;- df_trimmed %&gt;%
 
 # Export for relative weight analysis (RWA)
 readr::write_csv(df_mr_contr_motion, file = file.path(params$data_path, &#39;mr-contr-motion-sex-trimmed.csv&#39;))</code></pre>
-<div id="model-2-mental_rot-log_contrast-log_motion-sex-log_motionsex" class="section level4">
-<h4>Model 2: <code>mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex</code></h4>
+<div id="model-2-mental_rot-log_contrast-log_motion-sex-log_motionsex"
+class="section level4">
+<h4>Model 2: <code>mental_rot ~ log_contrast + log_motion + Sex +
+log_motion:Sex</code></h4>
 <pre class="r"><code>lm_mr_contr_motion_motion_sex_int &lt;- lm(mental_rot ~ log_contrast + log_motion + Sex + log_motion:Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_motion_motion_sex_int)</code></pre>
 <pre><code>## 
@@ -1954,7 +2059,8 @@ summary(lm_mr_contr_motion_motion_sex_int)</code></pre>
 </div>
 <div id="model-4-mental_rot-log_contrast-sex" class="section level4">
 <h4>Model 4: <code>mental_rot ~ log_contrast + Sex</code></h4>
-<p>Let’s try dropping <code>log_motion</code> and the <code>Sex:log_motion</code> interaction.</p>
+<p>Let’s try dropping <code>log_motion</code> and the
+<code>Sex:log_motion</code> interaction.</p>
 <pre class="r"><code>lm_mr_contr_no_motion_sex &lt;- lm(mental_rot ~ log_contrast + Sex, data = df_mr_contr_motion)
 summary(lm_mr_contr_no_motion_sex)</code></pre>
 <pre><code>## 
@@ -2006,7 +2112,8 @@ summary(lm_mr_contr_no_motion_sex)</code></pre>
 ## 2    120 4077.3 -2   -232.59 3.5694 0.03126 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>We keep the <code>log_motion</code> and <code>log_motion:Sex</code> terms in the model.</p>
+<p>We keep the <code>log_motion</code> and <code>log_motion:Sex</code>
+terms in the model.</p>
 </div>
 <div id="model-5-mental_rot-sex" class="section level4">
 <h4>Model 5: <code>mental_rot ~ Sex</code></h4>
@@ -2057,29 +2164,55 @@ summary(lm_mr_no_vision_sex)</code></pre>
 ## 2    121 4337.9 -3   -493.24 5.0461 0.002521 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The fuller model with the vision variables remains the best-fitting one, even after trimming.</p>
+<p>The fuller model with the vision variables remains the best-fitting
+one, even after trimming.</p>
 </div>
 </div>
 </div>
 <div id="relative-weight-analysis" class="section level2">
 <h2>Relative weight analysis</h2>
-<p>This analysis derives from work by Tonidel, Lebreton and Johnson and code provided by Lebreton.</p>
-<p>Tonidandel, S., Lebreton, J. M., &amp; Johnson, J. W. (2009). Determining the statistical significance of relative weights. <em>Psychological Methods, </em>14*(4), 387–399. <a href="https://doi.org/10.1037/a0017735" class="uri">https://doi.org/10.1037/a0017735</a></p>
+<p>This analysis derives from work by Tonidel, Lebreton and Johnson and
+code provided by Lebreton.</p>
+<p>Tonidandel, S., Lebreton, J. M., &amp; Johnson, J. W. (2009).
+Determining the statistical significance of relative weights.
+<em>Psychological Methods, </em>14*(4), 387–399. <a
+href="https://doi.org/10.1037/a0017735"
+class="uri">https://doi.org/10.1037/a0017735</a></p>
 <div id="setup-2" class="section level3">
 <h3>Setup</h3>
 <pre class="r"><code>set.seed(1234)
 n_boots &lt;- 10000
-library(tidyverse) # For pipe &#39;%&gt;%&#39;</code></pre>
+library(tidyverse) # For pipe &#39;%&gt;%&#39;
+library(mediation)</code></pre>
+<pre><code>## Loading required package: MASS</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:patchwork&#39;:
+## 
+##     area</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loading required package: mvtnorm</code></pre>
+<pre><code>## Loading required package: sandwich</code></pre>
+<pre><code>## mediation: Causal Mediation Analysis
+## Version: 4.5.0</code></pre>
 </div>
 <div id="import-and-clean-data" class="section level3">
 <h3>Import and clean data</h3>
 <pre class="r"><code>df &lt;- readr::read_csv(file.path(&quot;csv/mr-contr-motion-sex.csv&quot;))</code></pre>
-<pre><code>## Rows: 125 Columns: 5</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+<pre><code>## Rows: 125 Columns: 5
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): Sex
-## dbl (4): mental_rot, log_contrast, log_motion, Masculine_hobbies</code></pre>
-<pre><code>## 
+## dbl (4): mental_rot, log_contrast, log_motion, Masculine_hobbies
+## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code># Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
@@ -2091,7 +2224,8 @@ df &lt;- df %&gt;%
 <pre class="r"><code>df &lt;- df %&gt;%
   dplyr::mutate(., male_motion = male * log_motion) %&gt;%
   dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion)</code></pre>
-<p>Compute residuals of <code>male_motion ~ 1 + male + log_motion</code> in order to estimate relative weight properly.</p>
+<p>Compute residuals of <code>male_motion ~ 1 + male + log_motion</code>
+in order to estimate relative weight properly.</p>
 <pre class="r"><code>male_motion_lm &lt;- lm(formula = male_motion ~ 1 + male + log_motion, data = df)
 
 male_motion_resid &lt;- resid(male_motion_lm)
@@ -2146,7 +2280,7 @@ summary(fit1)</code></pre>
 ## Multiple R-squared:  0.1335, Adjusted R-squared:  0.112 
 ## F-statistic: 6.212 on 3 and 121 DF,  p-value: 0.0005839</code></pre>
 <pre class="r"><code>plot(fit1) # residual plots for OLS; use &lt;Return&gt; key to cycle through plots in console.</code></pre>
-<p><img src="img/unnamed-chunk-92-1.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-2.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-3.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-4.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-93-1.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-2.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-3.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-93-4.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>fit2 &lt;- psych::corr.test(df)
 print(fit2)</code></pre>
 <pre><code>## Call:psych::corr.test(x = df)
@@ -2359,16 +2493,18 @@ CI.Significance</code></pre>
 </div>
 <div id="run-the-rwa-on-the-trimmed-data" class="section level3">
 <h3>Run the RWA on the trimmed data</h3>
-<p>We deleted two female participants with very low motion duration thresholds. Here we examine whether that changes the relative weights.</p>
+<p>We deleted two female participants with very low motion duration
+thresholds. Here we examine whether that changes the relative
+weights.</p>
 <div id="import-and-clean-data-1" class="section level4">
 <h4>Import and clean data</h4>
 <pre class="r"><code>df &lt;- readr::read_csv(file.path(&quot;csv/mr-contr-motion-sex-trimmed.csv&quot;))</code></pre>
-<pre><code>## Rows: 123 Columns: 4</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+<pre><code>## Rows: 123 Columns: 4
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): Sex
-## dbl (3): log_contrast, log_motion, mental_rot</code></pre>
-<pre><code>## 
+## dbl (3): log_contrast, log_motion, mental_rot
+## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code># Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
@@ -2422,7 +2558,8 @@ multRci &lt;- boot::boot.ci(multRBoot, conf = 0.95, type = &quot;bca&quot;)
 runRBoot(length(randData[, 2:(numVar - 1)]))
 CI.Significance &lt;- CIresult</code></pre>
 </div>
-<div id="relative-weights-for-full-model-trimmed-data" class="section level4">
+<div id="relative-weights-for-full-model-trimmed-data"
+class="section level4">
 <h4>Relative weights for full model (trimmed data)</h4>
 <pre class="r"><code>#R-squared For the Model
 RSQ.Results</code></pre>
@@ -2495,12 +2632,38 @@ CI.Significance</code></pre>
 ##   Male   21  0  3  1   2   1   2   0</code></pre>
 </div>
 </div>
-<div id="check-internal-reliability-of-interests" class="section level2">
+<div id="check-internal-reliability-of-interests"
+class="section level2">
 <h2>Check internal reliability of interests</h2>
-<p>This measure was taken from a subset of a measure of Gender Diagnosticity (Lippa &amp; Connelly, 1991). Lippa’s measure had participants rate degree of interest in 51 everyday activities (e.g., making a speech, cooking, and discussing politics), and 39 amusements and hobbies (e.g., fishing, jazz or rock concerts, and art galleries). Subjects rated their degree of preference on a 5-point scale: strongly dislike, (1) slightly dislike (2), neutral or indifferent (3), slightly like (4), and strongly like (5). The lists of activities and amusements came from those appearing in Part I of the Strong-Campbell Interest Inventory, Form T325 (Campbell &amp; Hansen, 1981). Our list of items collapses the two subsets of hobby types into one category, and eliminates those which were outdated or unpopular by the time Phase 4 testing began.</p>
-<p>Lippa, R., &amp; Connelly, S. (1990). Gender diagnosticity: A new Bayesian approach to gender-related individual differences. Journal of Personality and Social Psychology, 59(5), 1051–1065. <a href="https://doi.org/10.1037/0022-3514.59.5.1051" class="uri">https://doi.org/10.1037/0022-3514.59.5.1051</a></p>
-<p>Campbell, D. P., &amp; Hansen, J.-I. C. (1981). Manual for the SVIB-SCII: Strong-Campbell interest inventory, form T325 of the Strong vocational interest blank (Vol. 325). Stanford University Press.</p>
-<p>dancing</br> going to art galleries</br> going to church groups</br> writing poetry</br> trying new fashions</br> aerobics</br> travelling</br> talking on phone with friends</br> clothes shopping</br> romance novels</br> singing</br> photography</br> going to formal dress affairs</br> cooking</br> going to shows and plays</br> knitting</br> romance movies</br> going out to dinner with friends</br> going to museums</br> house plants</br> collecting stuffed animals</br> collecting pictures of friends and family</p>
+<p>This measure was taken from a subset of a measure of Gender
+Diagnosticity (Lippa &amp; Connelly, 1991). Lippa’s measure had
+participants rate degree of interest in 51 everyday activities (e.g.,
+making a speech, cooking, and discussing politics), and 39 amusements
+and hobbies (e.g., fishing, jazz or rock concerts, and art galleries).
+Subjects rated their degree of preference on a 5-point scale: strongly
+dislike, (1) slightly dislike (2), neutral or indifferent (3), slightly
+like (4), and strongly like (5). The lists of activities and amusements
+came from those appearing in Part I of the Strong-Campbell Interest
+Inventory, Form T325 (Campbell &amp; Hansen, 1981). Our list of items
+collapses the two subsets of hobby types into one category, and
+eliminates those which were outdated or unpopular by the time Phase 4
+testing began.</p>
+<p>Lippa, R., &amp; Connelly, S. (1990). Gender diagnosticity: A new
+Bayesian approach to gender-related individual differences. Journal of
+Personality and Social Psychology, 59(5), 1051–1065. <a
+href="https://doi.org/10.1037/0022-3514.59.5.1051"
+class="uri">https://doi.org/10.1037/0022-3514.59.5.1051</a></p>
+<p>Campbell, D. P., &amp; Hansen, J.-I. C. (1981). Manual for the
+SVIB-SCII: Strong-Campbell interest inventory, form T325 of the Strong
+vocational interest blank (Vol. 325). Stanford University Press.</p>
+<p>dancing</br> going to art galleries</br> going to church groups</br>
+writing poetry</br> trying new fashions</br> aerobics</br>
+travelling</br> talking on phone with friends</br> clothes shopping</br>
+romance novels</br> singing</br> photography</br> going to formal dress
+affairs</br> cooking</br> going to shows and plays</br> knitting</br>
+romance movies</br> going out to dinner with friends</br> going to
+museums</br> house plants</br> collecting stuffed animals</br>
+collecting pictures of friends and family</p>
 <p>22 items</p>
 <pre class="r"><code>interest_vars &lt;- sex_diff_df[, 27:86]
 f_typed_interests &lt;-
@@ -2659,8 +2822,13 @@ psych::alpha(f_interest_vars)</code></pre>
 ## House plants                              0.05 0.14 0.29 0.27 0.25 0.01
 ## Collecting stuffed animals                0.24 0.31 0.26 0.18 0.02 0.01
 ## Collecting pictures of friends and family 0.05 0.02 0.21 0.26 0.47 0.01</code></pre>
-<p>Activities showing strong patterns of endorsement or high ratings by male participants:</p>
-<p>golf</br> home electronics</br> surfing</br> computers</br> video games</br> watching violent movies</br> going to car shows</br> fishing</br> poker</br> playing basketball</br> TV sports</br> football</br> weight lifting</br> working on cars</br> drag racing</br></p>
+<p>Activities showing strong patterns of endorsement or high ratings by
+male participants:</p>
+<p>golf</br> home electronics</br> surfing</br> computers</br> video
+games</br> watching violent movies</br> going to car shows</br>
+fishing</br> poker</br> playing basketball</br> TV sports</br>
+football</br> weight lifting</br> working on cars</br> drag
+racing</br></p>
 <p>15 items</p>
 <pre class="r"><code>m_typed_interests &lt;-
   c(
@@ -2762,6 +2930,249 @@ psych::alpha(m_interest_vars)</code></pre>
 ## Weight lifting          0.13 0.24 0.25 0.24 0.15 0.01
 ## Working on cars         0.44 0.35 0.15 0.02 0.05 0.01
 ## Drag racing             0.30 0.27 0.29 0.08 0.05 0.01</code></pre>
+</div>
+<div id="mediation-analysis" class="section level2">
+<h2>Mediation analysis</h2>
+<p>One of the reviewers asked whether we had done or considered a
+mediation analysis. We had not previously, but the following shows the
+results of a sequential analysis of sex as a predictor of mental
+rotation with log contrast thresholds as a mediator, and a second
+mediation analysis with log motion thresholds as a mediator.</p>
+<div id="purpose-1" class="section level3">
+<h3>Purpose</h3>
+<p>Run a mediation analysis on <code>log_contrast</code> and
+<code>log_motion</code> as predictors of <code>mental_rot</code>.</p>
+<p>This was helpful:</p>
+<p><a
+href="https://towardsdatascience.com/doing-and-reporting-your-first-mediation-analysis-in-r-2fe423b92171"
+class="uri">https://towardsdatascience.com/doing-and-reporting-your-first-mediation-analysis-in-r-2fe423b92171</a></p>
+</div>
+<div id="setup-3" class="section level3">
+<h3>Setup</h3>
+<pre class="r"><code>set.seed(1234)
+library(mediation)
+library(tidyverse)</code></pre>
+</div>
+<div id="import-and-clean-data-2" class="section level3">
+<h3>Import and clean data</h3>
+<pre class="r"><code>sex_df &lt;- readr::read_csv(file.path(&quot;csv/mr-contr-motion-sex.csv&quot;))</code></pre>
+<pre><code>## Rows: 125 Columns: 5
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): Sex
+## dbl (4): mental_rot, log_contrast, log_motion, Masculine_hobbies
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code># Requires all variables be numeric and scaled so we recode Sex with with Female = 1
+df &lt;- sex_df %&gt;%
+  dplyr::mutate(., sex = if_else(Sex == &quot;Male&quot;, 0, 1),
+                mental_rot = (mental_rot-mean(mental_rot))/sd(mental_rot),
+                log_contrast = (log_contrast-mean(log_contrast))/sd(log_contrast),
+                log_motion = (log_motion-mean(log_motion)/sd(log_motion)))%&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, sex)</code></pre>
+</div>
+<div id="fit-linear-models" class="section level3">
+<h3>Fit linear models</h3>
+<div id="direct-effect-of-sex-on-mental_rot" class="section level4">
+<h4>Direct effect of <code>sex</code> on <code>mental_rot</code></h4>
+<pre class="r"><code>fit.sex_effect &lt;- lm(sex ~ mental_rot, df)
+summary(fit.sex_effect)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sex ~ mental_rot, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.90748  0.04422  0.18912  0.25352  0.44672 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.76000    0.03747  20.282  &lt; 2e-16 ***
+## mental_rot  -0.09881    0.03762  -2.626  0.00973 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.419 on 123 degrees of freedom
+## Multiple R-squared:  0.0531, Adjusted R-squared:  0.0454 
+## F-statistic: 6.898 on 1 and 123 DF,  p-value: 0.009727</code></pre>
+</div>
+<div id="effect-of-sex-on-mediator-log_motion" class="section level4">
+<h4>Effect of <code>sex</code> on mediator
+(<code>log_motion</code>)</h4>
+<pre class="r"><code>fit.log_motion &lt;- lm(log_motion ~ sex, df)
+summary(fit.log_motion)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = log_motion ~ sex, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.46369 -0.15494 -0.05777  0.08811  1.40736 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  6.25692    0.04649 134.579  &lt; 2e-16 ***
+## sex          0.18462    0.05333   3.462 0.000739 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2547 on 123 degrees of freedom
+## Multiple R-squared:  0.08878,    Adjusted R-squared:  0.08137 
+## F-statistic: 11.98 on 1 and 123 DF,  p-value: 0.0007388</code></pre>
+</div>
+<div id="effect-of-sex-on-mediator-log_contrast" class="section level4">
+<h4>Effect of <code>sex</code> on mediator
+(<code>log_contrast</code>)</h4>
+<pre class="r"><code>fit.log_contrast &lt;- lm(log_contrast ~ sex, df)
+summary(fit.log_contrast)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = log_contrast ~ sex, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.3431 -0.6215 -0.3029  0.4102  3.1846 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)  -0.3801     0.1790  -2.123   0.0358 *
+## sex           0.5002     0.2054   2.435   0.0163 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9807 on 123 degrees of freedom
+## Multiple R-squared:  0.046,  Adjusted R-squared:  0.03824 
+## F-statistic: 5.931 on 1 and 123 DF,  p-value: 0.01631</code></pre>
+</div>
+<div id="effects-of-sex-and-mediator-log_motion-on-mental_rot"
+class="section level4">
+<h4>Effects of <code>sex</code> and mediator (<code>log_motion</code>)
+on <code>mental_rot</code></h4>
+<pre class="r"><code>fit.mental_rot_log_motion &lt;- lm(mental_rot ~ log_motion + sex, df)
+summary(fit.mental_rot_log_motion)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_motion + sex, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.00157 -0.63628 -0.07914  0.62746  2.07727 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)   5.3638     2.1338   2.514   0.0133 *
+## log_motion   -0.7920     0.3399  -2.330   0.0214 *
+## sex          -0.3912     0.2106  -1.858   0.0656 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9599 on 122 degrees of freedom
+## Multiple R-squared:  0.09345,    Adjusted R-squared:  0.07859 
+## F-statistic: 6.288 on 2 and 122 DF,  p-value: 0.002518</code></pre>
+</div>
+<div id="effects-of-sex-and-mediator-log_contrast-on-mental_rot"
+class="section level4">
+<h4>Effects of <code>sex</code> and mediator (<code>log_contrast</code>)
+on <code>mental_rot</code></h4>
+<pre class="r"><code>fit.mental_rot_log_contrast &lt;- lm(mental_rot ~ log_contrast + sex, df)
+summary(fit.mental_rot_log_contrast)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ log_contrast + sex, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.04985 -0.64603 -0.06441  0.68399  2.17899 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)   0.31698    0.17697   1.791   0.0757 . 
+## log_contrast -0.24056    0.08753  -2.748   0.0069 **
+## sex          -0.41708    0.20413  -2.043   0.0432 * 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.952 on 122 degrees of freedom
+## Multiple R-squared:  0.1083, Adjusted R-squared:  0.09369 
+## F-statistic: 7.409 on 2 and 122 DF,  p-value: 0.0009186</code></pre>
+</div>
+</div>
+<div id="use-mediation-package-to-estimate-direct-mediated-effects"
+class="section level3">
+<h3>Use <code>mediation</code> package to estimate direct, mediated
+effects</h3>
+<div id="log_motion-as-mediator" class="section level4">
+<h4><code>log_motion</code> as mediator</h4>
+<pre class="r"><code>results_log_motion &lt;-
+  mediate(
+    fit.log_motion,
+    fit.mental_rot_log_motion,
+    treat = &#39;sex&#39;,
+    mediator = &#39;log_motion&#39;,
+    boot = T
+  )</code></pre>
+<pre><code>## Running nonparametric bootstrap</code></pre>
+<pre class="r"><code>summary(results_log_motion)</code></pre>
+<pre><code>## 
+## Causal Mediation Analysis 
+## 
+## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
+## 
+##                Estimate 95% CI Lower 95% CI Upper p-value  
+## ACME           -0.14621     -0.33590        -0.01   0.030 *
+## ADE            -0.39119     -0.85196         0.05   0.092 .
+## Total Effect   -0.53740     -0.95466        -0.14   0.012 *
+## Prop. Mediated  0.27207      0.00384         1.23   0.042 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Sample Size Used: 125 
+## 
+## 
+## Simulations: 1000</code></pre>
+<p>Sex -&gt; mental_rot: -0.0988124</br> Sex -&gt; log_motion:
+0.1846153</br> log_motion -&gt; mental_rot: -0.7919776</p>
+<p><em>Direct effect</em></br> Sex -&gt; mental_rot: -0.3911895, <span
+class="math inline">\(p=\)</span> 0.092</br> 95% CI: -0.8519598,
+0.0539975</p>
+<p><em>Mediated effect</em></br> Sex -&gt; log_motion -&gt; mental_rot:
+-0.1462112, <span class="math inline">\(p=\)</span> 0.03</br> 95% CI:
+-0.3359006, -0.0101059</p>
+</div>
+<div id="log_contrast-as-mediator" class="section level4">
+<h4><code>log_contrast</code> as mediator</h4>
+<pre class="r"><code>results_log_contrast &lt;- mediate(fit.log_contrast, fit.mental_rot_log_contrast, treat = &#39;sex&#39;,
+                              mediator = &#39;log_contrast&#39;, boot = T)</code></pre>
+<pre><code>## Running nonparametric bootstrap</code></pre>
+<pre class="r"><code>summary(results_log_contrast)</code></pre>
+<pre><code>## 
+## Causal Mediation Analysis 
+## 
+## Nonparametric Bootstrap Confidence Intervals with the Percentile Method
+## 
+##                Estimate 95% CI Lower 95% CI Upper p-value   
+## ACME            -0.1203      -0.2383        -0.02   0.012 * 
+## ADE             -0.4171      -0.8754        -0.01   0.048 * 
+## Total Effect    -0.5374      -0.9809        -0.13   0.008 **
+## Prop. Mediated   0.2239       0.0417         0.90   0.020 * 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Sample Size Used: 125 
+## 
+## 
+## Simulations: 1000</code></pre>
+<p>Sex -&gt; mental_rot: -0.0988124</br> Sex -&gt; log_contrast:
+0.5001795</br> log_contrast -&gt; mental_rot: -0.2405582</p>
+<p><em>Direct effect</em></br> Sex -&gt; mental_rot: -0.4170784, <span
+class="math inline">\(p=\)</span> 0.048</br> 95% CI: -0.8754313,
+-0.0117965</p>
+<p><em>Mediated effect</em> Sex -&gt; log_contrast -&gt; mental_rot:
+-0.1203223, <span class="math inline">\(p=\)</span> 0.012</br> 95% CI:
+-0.2383342, -0.0231835</p>
+</div>
+</div>
 </div>
 </div>
 

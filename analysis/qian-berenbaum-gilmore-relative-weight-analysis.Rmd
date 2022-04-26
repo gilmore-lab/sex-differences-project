@@ -12,6 +12,7 @@ output:
 set.seed(1234)
 n_boots <- 10000
 library(tidyverse) # For pipe '%>%'
+library(mediation)
 ```
 
 ### Import and clean data

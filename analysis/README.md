@@ -13,6 +13,7 @@ Files related to a manuscript prepared by Qian, Berenbaum, & Gilmore are as foll
 - `qian-berenbaum-gilmore.Rmd`: Code to reproduce analyses and figures in the paper.
 - `qian-berenbaum-gilmore-plots.Rmd`: Code specifically to generate the figures.
 - `qian-berenbaum-gilmore-relative-weight-analysis.Rmd`: Code to reproduce this analysis.
+- `qian-berenbaum-gilmore-mediation.Rmd`: Code to reproduce this analysis.
 
 ## Other folders of note
 
