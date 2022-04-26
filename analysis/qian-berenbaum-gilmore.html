@@ -14,8 +14,8 @@
 
 <title>Analyses for Qian, Berenbaum, &amp; Gilmore</title>
 
-<script src="qian-berenbaum-gilmore_files/header-attrs-2.9/header-attrs.js"></script>
-<script src="qian-berenbaum-gilmore_files/jquery-1.11.3/jquery.min.js"></script>
+<script src="qian-berenbaum-gilmore_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="qian-berenbaum-gilmore_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="qian-berenbaum-gilmore_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="qian-berenbaum-gilmore_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -37,8 +37,6 @@
 <script src="qian-berenbaum-gilmore_files/navigation-1.1/codefolding.js"></script>
 <link href="qian-berenbaum-gilmore_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="qian-berenbaum-gilmore_files/highlightjs-9.12.0/highlight.js"></script>
-<script src="qian-berenbaum-gilmore_files/kePrint-0.0.1/kePrint.js"></script>
-<link href="qian-berenbaum-gilmore_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -256,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analyses for Qian, Berenbaum, &amp; Gilmore</h1>
 <h4 class="author">Yiming Qian &amp; Rick Gilmore</h4>
-<h4 class="date">2021-10-11 15:22:21</h4>
+<h4 class="date">2021-11-22 13:33:12</h4>
 
 </div>
 
@@ -275,21 +273,15 @@ div.tocify {
 <h1>Import data</h1>
 <p>Data from the set of tasks were merged and cleaned as described in <code>import-clean-raw-data.Rmd</code>.</p>
 <pre class="r"><code>sex_diff_df &lt;- readr::read_csv(file.path(params$data_path, params$csv_fn)) </code></pre>
+<pre><code>## Rows: 132 Columns: 86</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (8): Sex, Race, Age, School_year, Major, Handedness, Glasses, Acuity
+## dbl (77): Participant, Stereo_amin, motion_dur_thr, motion_dur_thr_mean, mot...
+## lgl  (1): Color_vision</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   .default = col_double(),
-##   Sex = col_character(),
-##   Race = col_character(),
-##   Age = col_character(),
-##   School_year = col_character(),
-##   Major = col_character(),
-##   Handedness = col_character(),
-##   Glasses = col_character(),
-##   Acuity = col_character(),
-##   Color_vision = col_logical()
-## )
-## ℹ Use `spec()` for the full column specifications.</code></pre>
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 <div id="preregistered-analyses" class="section level1">
 <h1>Preregistered analyses</h1>
@@ -925,20 +917,105 @@ vocab_tt</code></pre>
 </div>
 </div>
 </div>
-<div id="visualizations" class="section level2">
-<h2>Visualizations</h2>
+</div>
+<div id="visualizations" class="section level1">
+<h1>Visualizations</h1>
+<div id="setup-1" class="section level2">
+<h2>Setup</h2>
+<pre class="r"><code>if (!require(&quot;gridExtra&quot;)){
+  install.packages(&quot;gridExtra&quot;)
+}
+
+library(gridExtra)
+library(patchwork)
+
+our_color_palette = &quot;Dark2&quot;
+our_colors &lt;- RColorBrewer::brewer.pal(n = 3, name = our_color_palette)
+plot_point_size &lt;- 0.75
+
+# Recode &quot;female&quot;/&quot;male&quot; as &quot;women&quot;/&quot;men
+
+recoded_sex_diff_df &lt;- sex_diff_df %&gt;%
+  dplyr::mutate(., Sex = dplyr::recode(Sex, Female = &quot;Women&quot;, Male = &quot;Men&quot;))</code></pre>
 <pre class="r"><code># &quot;The APA has determined specifications for the size of figures and the fonts used in them. Figures of one column must be between 2 and 3.25 inches wide (5 to 8.45 cm). Two-column figures must be between 4.25 and 6.875 inches wide (10.6 to 17.5 cm). The height of figures should not exceed the top and bottom margins. The text in a figure should be in a san serif font (such as Helvetica, Arial, or Futura). The font size must be between eight and fourteen point. Use circles and squares to distinguish curves on a line graph (at the same font size as the other labels). &quot;
-theme.custom &lt;- theme(panel.background = element_rect(fill = &quot;white&quot;, colour = &quot;grey50&quot;),
-                      plot.title = element_text(size=12, face=&quot;bold&quot;,hjust = 0.5),
-                      axis.title.x = element_text(size=10),
-                      axis.title.y = element_text(size=10),
-                      strip.text = element_text(size=9),
-                      axis.text = element_text(size=9),
-                      legend.position = &quot;bottom&quot;,
-                       legend.title = element_blank(),
-#  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                      legend.text=element_text(size=9))</code></pre>
-<p>The following scatterplots are formatted so that higher sensitivity on the visual tasks (lower log thresholds) are to the right.</p>
+theme.custom &lt;- theme_classic() +
+  theme(
+    plot.title = element_text(size = 13, face = &quot;bold&quot;, hjust = 0.5),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12),
+    strip.text = element_text(size = 11),
+    axis.text = element_text(size = 11),
+    legend.position = &quot;bottom&quot;,
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    aspect.ratio = 1
+  )</code></pre>
+<div id="histograms" class="section level3">
+<h3>Histograms</h3>
+<pre class="r"><code>sex_diff_boxplot &lt;- function(df = recoded_sex_diff_df,
+                             x_var = &quot;Sex&quot;,
+                             y_var = &quot;log_contrast&quot;,
+                             axis_label = &quot;log(contrast)&quot;) {
+  x_var_s &lt;- sym(x_var)
+  y_var_s &lt;- sym(y_var)
+  
+  p &lt;- ggplot(df) +
+    aes(
+      x = !!x_var_s,
+      y = !!y_var_s,
+      group = Sex,
+      color = Sex
+    ) +
+    geom_boxplot(outlier.shape = NA, color = &quot;black&quot;) +
+    geom_jitter(size = plot_point_size,
+                height = .1,
+                width = .1,
+                alpha = 1/2) +
+    scale_color_brewer(palette = our_color_palette) +
+    theme.custom +
+    ylab(axis_label) +
+    theme(legend.position = &quot;none&quot;) +
+    theme(axis.title.x = element_blank())
+  p
+}
+
+sex_diff_boxplot(recoded_sex_diff_df)</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-83-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p_hist_contrast &lt;- sex_diff_boxplot(y_var = &quot;log_contrast&quot;, axis_label = &quot;log(contrast)&quot;)
+
+p_hist_contrast</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/hist_contrast-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p_hist_motion &lt;- sex_diff_boxplot(y_var = &quot;log_motion&quot;, axis_label = &quot;log(motion)&quot;)
+
+p_hist_motion</code></pre>
+<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/hist_motion-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p_hist_mental_rot &lt;- sex_diff_boxplot(y_var = &quot;mental_rot&quot;, axis_label = &quot;Mental rotation score&quot;)
+
+p_hist_mental_rot</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/hist_mental_rot-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p_hist_interests &lt;- sex_diff_boxplot(y_var = &#39;Masculine_hobbies&#39;, axis_label = &quot;Male-typed activities&quot;)
+
+p_hist_interests</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/hist_interests-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p_hist_vocab &lt;- sex_diff_boxplot(y_var = &#39;vocab&#39;, axis_label = &quot;Vocabulary&quot;)
+
+p_hist_vocab</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/vocab-1.png" width="2100" style="display: block; margin: auto;" /></p>
+</div>
+<div id="scatterplots" class="section level3">
+<h3>Scatterplots</h3>
 <pre class="r"><code>sex_diff_scatter &lt;-
   function(df,
            x_var,
@@ -951,11 +1028,8 @@ theme.custom &lt;- theme(panel.background = element_rect(fill = &quot;white&quot
            any = NULL,
            x_lab = &quot;X axis&quot;,
            y_lab = &quot;Y axis&quot;,
-           square_axis = TRUE,
-           margin_type = &quot;boxplot&quot;
-           ) {
+           square_axis = TRUE) {
     require(tidyverse)
-    require(ggExtra)
     
     x_var_s &lt;- sym(x_var)
     y_var_s &lt;- sym(y_var)
@@ -965,36 +1039,41 @@ theme.custom &lt;- theme(panel.background = element_rect(fill = &quot;white&quot
         x = !!x_var_s,
         y = !!y_var_s,
         group = Sex,
+        fill = Sex,
         color = Sex
       ) +
-      geom_point(size=4) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = &quot;lm&quot;, na.rm = TRUE) +
+      geom_jitter(size = plot_point_size) +
+      stat_smooth(
+        method = &quot;lm&quot;,
+        se = FALSE,
+        na.rm = TRUE
+      ) +
       xlab(x_lab) +
-      ylab(y_lab)+
+      ylab(y_lab) +
       theme.custom +
-      scale_colour_grey(start=0,end=0.5) +
-     annotate(
+      annotate(
         &quot;text&quot;,
         x = anx,
         y = any,
-        size=6,
-        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
-             hjust = 1
-      ) 
+        size = 5,
+        label = c(an_f, an_m),
+        color = our_colors[2:1],
+        hjust = 0 # left-justified
+      )
+      
+    p &lt;- p + scale_color_brewer(palette = our_color_palette)
     
     if (square_axis)
     {
       p + coord_fixed() + theme(asp.ratio = 1)
     }
     
-    if (stringr::str_detect(x_var, &#39;hobbies&#39;)) {
-      p &lt;- p + xlim(1, 5)
-    }
-    if (stringr::str_detect(y_var, &#39;hobbies&#39;)) {
-      p &lt;- p + ylim(1, 5)
-    }
+    # if (stringr::str_detect(x_var, &#39;hobbies&#39;)) {
+    #   p &lt;- p + xlim(1, 5)
+    # }
+    # if (stringr::str_detect(y_var, &#39;hobbies&#39;)) {
+    #   p &lt;- p + ylim(1, 5)
+    # }
     
     # Reverse scale for threshold measures?
     if (x_rev)
@@ -1002,11 +1081,7 @@ theme.custom &lt;- theme(panel.background = element_rect(fill = &quot;white&quot
     if (y_rev)
       p &lt;- p + scale_y_reverse()
     
-    p1 &lt;- ggExtra::ggMarginal(p,
-                              type = margin_type,
-                              margins = &quot;both&quot;,
-                              groupFill = TRUE)
-    p1
+    p
   }</code></pre>
 <p>Create matrices of correlation coefficients for subsequent plotting.</p>
 <pre class="r"><code>corr_vars &lt;- c(&#39;log_contrast&#39;, &#39;log_motion&#39;, &#39;mental_rot&#39;, &#39;Masculine_hobbies&#39;)
@@ -1023,7 +1098,7 @@ df_corr_M &lt;- sex_diff_df_M %&gt;%
 
 corr_M &lt;- Hmisc::rcorr(as.matrix(df_corr_M), type = c(&quot;pearson&quot;))
 
-df_corr_all &lt;- sex_diff_df %&gt;%
+df_corr_all &lt;- recoded_sex_diff_df %&gt;%
   dplyr::select(., corr_vars)
 
 corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;))</code></pre>
@@ -1041,6 +1116,7 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;
     n =  corr_all_df$n[x_var, y_var],
     pop = &quot;Both&quot;
   )
+  
   males_df &lt;- tibble::tibble(
     cor_coef = corr_M_df$r[x_var, y_var],
     p_val = corr_M_df$P[x_var, y_var],
@@ -1063,11 +1139,12 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;
   
   # Add stars for significance levels
   df &lt;- df %&gt;%
-    mutate(., stars = if_else(p_val &lt; .005, &quot;***&quot;,
+    mutate(., stars = if_else(p_val &lt; .001, &quot;****&quot;,
+                              if_else(p_val &lt; .005, &quot;***&quot;,
                               if_else(
                                 p_val &lt; .01, &quot;**&quot;,
-                                if_else(p_val &lt; .05, &quot;*&quot;, &quot; ns&quot;)
-                              )))
+                                if_else(p_val &lt; .05, &quot;*&quot;, &quot;&quot;)
+                              ))))
   
   if (print_table) {
     kableExtra::kable(df, format = &#39;html&#39;) %&gt;%
@@ -1076,16 +1153,19 @@ corr_all &lt;- Hmisc::rcorr(as.matrix(df_corr_all), type = c(&quot;pearson&quot;
     df
   }
 }</code></pre>
-<div id="contrast-mental-rotation" class="section level3">
-<h3>Contrast &amp; mental rotation</h3>
-<pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;mental_rot&quot;,
-                              corr_all,
-                              corr_M_df = corr_M,
-                              corr_F_df = corr_F,
-                              print_table = FALSE)
+<div id="mental-rotation-and-contrast" class="section level4">
+<h4>Mental rotation and contrast</h4>
+<pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(
+  &quot;log_contrast&quot;,
+  &quot;mental_rot&quot;,
+  corr_all,
+  corr_M_df = corr_M,
+  corr_F_df = corr_F,
+  print_table = FALSE
+)
 
-p1&lt;-sex_diff_scatter(
-  sex_diff_df,
+p_mental_rot_contrast &lt;- sex_diff_scatter(
+  recoded_sex_diff_df,
   &quot;log_contrast&quot;,
   &quot;mental_rot&quot;,
   x_rev = FALSE,
@@ -1100,160 +1180,24 @@ p1&lt;-sex_diff_scatter(
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-1.2),
-  c(12, 38),
+  c(-1.55),
+  c(35, 38),
   &quot;log(contrast threshold)&quot;,
   &quot;Mental rotation score&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<pre class="r"><code>p1</code></pre>
-<p><img src="img/contrast-sens-mental-rot-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;mental_rot&quot;)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:right;">
-cor_coef
-</th>
-<th style="text-align:right;">
-p_val
-</th>
-<th style="text-align:right;">
-n
-</th>
-<th style="text-align:left;">
-pop
-</th>
-<th style="text-align:left;">
-stars
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
--0.2444586
-</td>
-<td style="text-align:right;">
-0.1929443
-</td>
-<td style="text-align:right;">
-30
-</td>
-<td style="text-align:left;">
-Males
-</td>
-<td style="text-align:left;">
-ns
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
--0.2838364
-</td>
-<td style="text-align:right;">
-0.0044124
-</td>
-<td style="text-align:right;">
-99
-</td>
-<td style="text-align:left;">
-Females
-</td>
-<td style="text-align:left;">
-***
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="motion-mental-rotation" class="section level3">
-<h3>Motion &amp; mental rotation</h3>
-<pre class="r"><code>sex_diff_scatter_2 &lt;-
-  function(df,
-           x_var,
-           y_var,
-           x_rev = FALSE,
-           y_rev = FALSE,
-           an_f = &quot;&quot;,
-           an_m = &quot;&quot;,
-           anx = NULL,
-           any = NULL,
-           x_lab = &quot;X axis&quot;,
-           y_lab = &quot;Y axis&quot;,
-           square_axis = TRUE,
-           margin_type = &quot;boxplot&quot;) {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s &lt;- sym(x_var)
-    y_var_s &lt;- sym(y_var)
-    
-    p &lt;- ggplot(df) +
-      aes(
-        x = !!x_var_s,
-        y = !!y_var_s,
-        group = Sex,
-        color = Sex
-      ) +
-      geom_point(size=4) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = &quot;lm&quot;, na.rm = TRUE) +
-     theme.custom +
-      xlab(x_lab) +
-      ylab(y_lab) +
-      scale_colour_grey(start=0,end=0.5)+
-      annotate(
-        &quot;text&quot;,
-        x = anx,
-        y = any,
-        size=6,
-        label = c(an_f, an_m), color=gray.colors(2, start = 0, end = 0.5),
-             hjust = 1
-      )
+)
 
-    # if (show_corr_vals) {
-    #   p + annotate(
-    #     &quot;text&quot;,
-    #     x = anx,
-    #     y = any,
-    #     label = c(an_f, an_m),
-    #     color = c(&#39;red&#39;, &#39;darkturquoise&#39;)
-    #   )
-    # }
-    # 
-    # if (square_axis)
-    # {
-    #   p + coord_fixed() + theme(asp.ratio = 1)
-    # }
-    # 
-    # if (stringr::str_detect(x_var, &#39;hobbies&#39;)) {
-    #   p &lt;- p + xlim(1, 5)
-    # }
-    # if (stringr::str_detect(y_var, &#39;hobbies&#39;)) {
-    #   p &lt;- p + ylim(1, 5)
-    # }
-    # 
-    # # Reverse scale for threshold measures?
-    # if (x_rev)
-    #   p &lt;- p + scale_x_reverse()
-    # if (y_rev)
-    #   p &lt;- p + scale_y_reverse()
-    # 
-    # p1 &lt;- ggExtra::ggMarginal(p,
-    #                           type = margin_type,
-    #                           margins = &quot;both&quot;,
-    #                           groupFill = TRUE)
-    p
-  }</code></pre>
+p_mental_rot_contrast</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/contrast-sens-mental-rot-1.png" width="2100" style="display: block; margin: auto;" /></p>
+</div>
+<div id="mental-rotation-and-motion" class="section level4">
+<h4>Mental rotation and motion</h4>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_motion&quot;,
                               &quot;mental_rot&quot;, print_table = FALSE)
 
-p_motion &lt;- sex_diff_scatter_2(
-  sex_diff_df,
+p_motion &lt;- sex_diff_scatter(
+  recoded_sex_diff_df,
   &quot;log_motion&quot;,
   &quot;mental_rot&quot;,
   x_rev = FALSE,
@@ -1268,212 +1212,68 @@ p_motion &lt;- sex_diff_scatter_2(
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-0.9),
-  c(12, 38),
+  c(-1.55),
+  c(35, 38),
   &quot;log(motion threshold)&quot;,
   &quot;Mental rotation score&quot;
 )
 
-# p_motion &lt;- sex_diff_scatter(
-#   sex_diff_df,
-#   &quot;log_motion&quot;,
-#   &quot;mental_rot&quot;,
-#   x_rev = FALSE,
-#   y_rev = FALSE,
-#   paste0(
-#     &quot;r = &quot;,
-#     format(corr_df$cor_coef[3], digits = 2, nsmall = 2),
-#     corr_df$stars[3]
-#   ),
-#   paste0(
-#     &quot;r = &quot;,
-#     format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-#     corr_df$stars[2]
-#   ),
-#   c(-1.8,-1.9),
-#   c(30, 36),
-#   &quot;log(motion threshold)&quot;,
-#   &quot;Mental rotation score&quot;
-# )
-
-p_aug &lt;- p_motion +
+p_mental_rot_motion &lt;- p_motion +
   ggplot2::annotate(
     geom = &quot;point&quot;,
-    x = sex_diff_df$log_motion[c(115, 118)],
-    y = sex_diff_df$mental_rot[c(115, 118)],
+    x = recoded_sex_diff_df$log_motion[c(115, 118)],
+    y = recoded_sex_diff_df$mental_rot[c(115, 118)],
     color = &quot;black&quot;,
-    size = 8,
+    size = 6,
     shape = 0
   )
 
-p_aug &lt;- ggExtra::ggMarginal(p_aug,
-                             type = &quot;boxplot&quot;,
-                             margins = &quot;both&quot;,
-                             groupFill = TRUE)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+p_mental_rot_motion</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<pre class="r"><code>p_aug</code></pre>
-<p><img src="img/motion-duration-mental-rot-annotate-outliers-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>sex_diff_corr_summ(&quot;log_motion&quot;, &quot;mental_rot&quot;)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:right;">
-cor_coef
-</th>
-<th style="text-align:right;">
-p_val
-</th>
-<th style="text-align:right;">
-n
-</th>
-<th style="text-align:left;">
-pop
-</th>
-<th style="text-align:left;">
-stars
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-0.1203345
-</td>
-<td style="text-align:right;">
-0.5264717
-</td>
-<td style="text-align:right;">
-30
-</td>
-<td style="text-align:left;">
-Males
-</td>
-<td style="text-align:left;">
-ns
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
--0.3166253
-</td>
-<td style="text-align:right;">
-0.0015794
-</td>
-<td style="text-align:right;">
-97
-</td>
-<td style="text-align:left;">
-Females
-</td>
-<td style="text-align:left;">
-***
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="contrast-male-typed-interests" class="section level3">
-<h3>Contrast &amp; male-typed interests</h3>
-<pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;Masculine_hobbies&quot;,
-                              corr_all,
-                              corr_M_df = corr_M,
-                              corr_F_df = corr_F,
-                              print_table = FALSE)
+<p><img src="img/motion-duration-mental-rot-annotate-outliers-1.png" width="2100" style="display: block; margin: auto;" /> #### Male-typed interests and contrast</p>
+<pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(
+  &quot;log_contrast&quot;,
+  &quot;Masculine_hobbies&quot;,
+  corr_all,
+  corr_M_df = corr_M,
+  corr_F_df = corr_F,
+  print_table = FALSE
+)
 
-p3&lt;-sex_diff_scatter(
-  sex_diff_df,
+p_interests_contrast &lt;- sex_diff_scatter(
+  recoded_sex_diff_df,
   &quot;log_contrast&quot;,
   &quot;Masculine_hobbies&quot;,
   x_rev = FALSE,
   y_rev = FALSE,
-  paste0(
-    &quot;r = &quot;,
-    format(corr_df$cor_coef[2], digits = 2, nsmall = 2),
-    &quot;*&quot;
-  ),
+  paste0(&quot;r = &quot;,
+         format(
+           corr_df$cor_coef[2], digits = 2, nsmall = 2
+         ),
+         &quot;*&quot;),
   paste0(
     &quot;r = &quot;,
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-1.2),
-  c(1.2, 4.8),
+  c(-1.5),
+  c(4.35, 4.8),
   &quot;log(contrast threshold)&quot;,
   &quot;Interest in male-typed activities&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+)
+p_interests_contrast</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<pre class="r"><code>p3</code></pre>
 <p><img src="img/contrast-sens-male-hobbies-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>sex_diff_corr_summ(&quot;log_contrast&quot;, &quot;Masculine_hobbies&quot;)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:right;">
-cor_coef
-</th>
-<th style="text-align:right;">
-p_val
-</th>
-<th style="text-align:right;">
-n
-</th>
-<th style="text-align:left;">
-pop
-</th>
-<th style="text-align:left;">
-stars
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-0.2100723
-</td>
-<td style="text-align:right;">
-0.2651882
-</td>
-<td style="text-align:right;">
-30
-</td>
-<td style="text-align:left;">
-Males
-</td>
-<td style="text-align:left;">
-ns
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
--0.1934967
-</td>
-<td style="text-align:right;">
-0.0549851
-</td>
-<td style="text-align:right;">
-99
-</td>
-<td style="text-align:left;">
-Females
-</td>
-<td style="text-align:left;">
-ns
-</td>
-</tr>
-</tbody>
-</table>
 </div>
-<div id="motion-contrast" class="section level3">
-<h3>Motion &amp; contrast</h3>
+<div id="contrast-and-motion" class="section level4">
+<h4>Contrast and motion</h4>
 <pre class="r"><code>corr_df &lt;- sex_diff_corr_summ(&quot;log_motion&quot;,
                               &quot;log_contrast&quot;, print_table = FALSE)
 
-p_vision&lt;-sex_diff_scatter_2(
-  sex_diff_df,
+p_vision &lt;- sex_diff_scatter(
+  recoded_sex_diff_df,
   &quot;log_motion&quot;,
   &quot;log_contrast&quot;,
   x_rev = FALSE,
@@ -1488,102 +1288,120 @@ p_vision&lt;-sex_diff_scatter_2(
     format(corr_df$cor_coef[1], digits = 2, nsmall = 2),
     corr_df$stars[1]
   ),
-  c(-0.8),
-  c(-1.96,-1.3),
+  c(-1.4),
+  c(-1.38, -1.3),
   &quot;log(motion threshold)&quot;,
   &quot;log(contrast threshold)&quot;
 )
 
-p_aug2 &lt;- p_vision +
+p_vision_aug &lt;- p_vision +
   ggplot2::annotate(
     geom = &quot;point&quot;,
-    x = sex_diff_df$log_motion[c(115, 118)],
-    y = sex_diff_df$log_contrast[c(115, 118)],
+    x = recoded_sex_diff_df$log_motion[c(115, 118)],
+    y = recoded_sex_diff_df$log_contrast[c(115, 118)],
     color = &quot;black&quot;,
     size = 8,
     shape = 0
   )
 
-p_aug2 &lt;- ggExtra::ggMarginal(p_aug2,
-                             type = &quot;boxplot&quot;,
-                             margins = &quot;both&quot;,
-                             groupFill = TRUE)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+p_vision_aug</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<pre class="r"><code>p_aug2</code></pre>
 <p><img src="img/motion-duration-contrast-sens-1.png" width="2100" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>sex_diff_corr_summ(&quot;log_motion&quot;,
-                   &quot;log_contrast&quot;)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:right;">
-cor_coef
-</th>
-<th style="text-align:right;">
-p_val
-</th>
-<th style="text-align:right;">
-n
-</th>
-<th style="text-align:left;">
-pop
-</th>
-<th style="text-align:left;">
-stars
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-0.4069684
-</td>
-<td style="text-align:right;">
-0.0256180
-</td>
-<td style="text-align:right;">
-30
-</td>
-<td style="text-align:left;">
-Males
-</td>
-<td style="text-align:left;">
-<ul>
-<li></td>
-</tr>
-<tr>
-<td style="text-align:right;">
-0.1455917
-</td>
-<td style="text-align:right;">
-0.1569604
-</td>
-<td style="text-align:right;">
-96
-</td>
-<td style="text-align:left;">
-Females
-</td>
-<td style="text-align:left;">
-ns
-</td>
-</tr>
-</tbody>
-</table></li>
-</ul>
-<pre class="r"><code>library(&quot;gridExtra&quot;)
-p = grid.arrange(ncol = 2, nrow = 2, p1, p_aug, p3,p_aug2)</code></pre>
-<p><img src="img/unnamed-chunk-52-1.png" width="2100" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="export" class="section level3">
+<h3>Export</h3>
+<pre class="r"><code>p_boxplots &lt;- p_hist_contrast + p_hist_motion + p_hist_mental_rot + p_hist_interests
+p_boxplots_annotated &lt;- p_boxplots + plot_annotation(tag_levels = &quot;A&quot;)
+p_boxplots_annotated</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-86-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(
-  plot = p,
-  filename = paste0(&quot;~/Desktop/fig2.png&quot;),
+  plot = p_boxplots_annotated,
+  filename = &quot;paper_figs/fig-01-boxplots.jpg&quot;,
   units = &quot;in&quot;,
-  height = 12,
-  width = 12,
+  width = 6.875,
   dpi = 600
 )</code></pre>
+<pre><code>## Saving 6.88 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code># Mental rotation and vision measures
+p_mental_rot_scatters &lt;- p_mental_rot_contrast | p_mental_rot_motion
+p_mental_rot_scatters_annotated &lt;- p_mental_rot_scatters + plot_annotation(tag_levels = &quot;A&quot;)
+p_mental_rot_scatters_annotated</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<p><img src="img/unnamed-chunk-87-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(
+  plot = p_mental_rot_scatters_annotated,
+  filename = &quot;paper_figs/fig-02-mental-rot-vision.jpg&quot;,
+  units = &quot;in&quot;,
+  width = 6.875,
+  dpi = 600
+)</code></pre>
+<pre><code>## Saving 6.88 x 5 in image
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(
+  plot = p_hist_vocab,
+  filename = &quot;paper_figs/fig-S1-vocab.jpg&quot;,
+  units = &quot;in&quot;,
+  width = 3.4375,
+  dpi = 600
+)</code></pre>
+<pre><code>## Saving 3.44 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code># # Mental rotation and vision measures
+# p = grid.arrange(ncol = 2, nrow = 1, p_mental_rot_contrast, p_mental_rot_motion)
+# ggsave(
+#   plot = p,
+#   filename = &quot;paper_figs/fig-02-mental-rot-vision-alt.jpg&quot;,
+#   units = &quot;in&quot;,
+#   width = 6.875,
+#   dpi = 600
+# )
+
+# Contrast thresholds and motion thresholds
+ggsave(
+  plot = p_vision_aug,
+  filename = &quot;paper_figs/fig-03-contrast-motion.jpg&quot;,
+  units = &quot;in&quot;,
+  width = 3.4375,
+  dpi = 600
+)</code></pre>
+<pre><code>## Saving 3.44 x 5 in image</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(
+  plot = p_interests_contrast,
+  filename = &quot;paper_figs/fig-S2-contrast-interests.jpg&quot;,
+  units = &quot;in&quot;,
+  width = 3.4375,
+  dpi = 600  
+)</code></pre>
+<pre><code>## Saving 3.44 x 5 in image
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 </div>
 </div>
 </div>
@@ -1891,10 +1709,6 @@ summary(lm_mr_no_vision_sex)</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Again, the full model containing the vision measures and sex is the best-fitting.</p>
 </div>
-<div id="relative-weight-analysis-rwa" class="section level4">
-<h4>Relative Weight Analysis (RWA)</h4>
-<p>We conducted a Relative Weight Analysis that is described in a separate file &lt;relative-weight-analysis.html&gt;.</p>
-</div>
 </div>
 </div>
 <div id="do-outliers-account-for-results" class="section level2">
@@ -1941,7 +1755,7 @@ summary(lm_mr_no_vision_sex)</code></pre>
   aes(Sex, log_motion) +
   geom_boxplot()</code></pre>
 <pre><code>## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="img/unnamed-chunk-68-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p><img src="img/unnamed-chunk-65-1.png" width="2100" style="display: block; margin: auto;" /></p>
 <p>We then test for a difference in means.</p>
 <pre class="r"><code>mdt_tt &lt;-
   t.test(
@@ -2247,32 +2061,609 @@ summary(lm_mr_no_vision_sex)</code></pre>
 </div>
 </div>
 </div>
-<div id="does-interest-in-specific-male-typed-hobbies-correlate-with-vision" class="section level2">
-<h2>Does interest in specific male-typed hobbies correlate with vision?</h2>
-<p>Determine which hobbies are strongly male-typed according to (CITE):</p>
-<ul>
-<li>Golf</li>
-<li>Home eletronics</li>
-<li>Surfing</li>
-<li>Computers</li>
-<li>Video games</li>
-<li>Watching violent movies</li>
-<li>Going to car shows</li>
-<li>Fishing</li>
-<li>Poker</li>
-<li>Playing Basketball</li>
-<li>TV sports</li>
-<li>Football</li>
-<li>Weight lifting</li>
-<li>Working on cars</li>
-<li>Drag racing</li>
-</ul>
-<pre class="r"><code>var &lt;-
+<div id="relative-weight-analysis" class="section level2">
+<h2>Relative weight analysis</h2>
+<p>This analysis derives from work by Tonidel, Lebreton and Johnson and code provided by Lebreton.</p>
+<p>Tonidandel, S., Lebreton, J. M., &amp; Johnson, J. W. (2009). Determining the statistical significance of relative weights. <em>Psychological Methods, </em>14*(4), 387–399. <a href="https://doi.org/10.1037/a0017735" class="uri">https://doi.org/10.1037/a0017735</a></p>
+<div id="setup-2" class="section level3">
+<h3>Setup</h3>
+<pre class="r"><code>set.seed(1234)
+n_boots &lt;- 10000
+library(tidyverse) # For pipe &#39;%&gt;%&#39;</code></pre>
+</div>
+<div id="import-and-clean-data" class="section level3">
+<h3>Import and clean data</h3>
+<pre class="r"><code>df &lt;- readr::read_csv(file.path(&quot;csv/mr-contr-motion-sex.csv&quot;))</code></pre>
+<pre><code>## Rows: 125 Columns: 5</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): Sex
+## dbl (4): mental_rot, log_contrast, log_motion, Masculine_hobbies</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code># Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
+df &lt;- df %&gt;%
+  dplyr::mutate(., male = if_else(Sex == &quot;Male&quot;, 1, 0)) %&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male)</code></pre>
+<div id="create-sexlog_motion-variable" class="section level4">
+<h4>Create Sex:log_motion variable</h4>
+<pre class="r"><code>df &lt;- df %&gt;%
+  dplyr::mutate(., male_motion = male * log_motion) %&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion)</code></pre>
+<p>Compute residuals of <code>male_motion ~ 1 + male + log_motion</code> in order to estimate relative weight properly.</p>
+<pre class="r"><code>male_motion_lm &lt;- lm(formula = male_motion ~ 1 + male + log_motion, data = df)
+
+male_motion_resid &lt;- resid(male_motion_lm)
+
+df &lt;- df %&gt;%
+  dplyr::mutate(., male_motion_r = male_motion_resid) %&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion_r)</code></pre>
+</div>
+<div id="grab-variable-names" class="section level4">
+<h4>Grab variable names</h4>
+<pre class="r"><code>predictors &lt;- names(df)[2:length(df)] </code></pre>
+</div>
+<div id="verify-data-are-not-singular" class="section level4">
+<h4>Verify data are not singular</h4>
+<pre class="r"><code>eigen(cor(df))</code></pre>
+<pre><code>## eigen() decomposition
+## $values
+## [1] 1.7677516 1.0911077 0.8169678 0.6983037 0.6258693
+## 
+## $vectors
+##             [,1]       [,2]        [,3]        [,4]        [,5]
+## [1,]  0.51272782 -0.3414962  0.32063915 -0.02314792  0.71912812
+## [2,] -0.47841465 -0.2585187 -0.64674856  0.15542849  0.51170868
+## [3,] -0.51472730 -0.1154897  0.34813553 -0.76354669  0.13234820
+## [4,]  0.48730243  0.1225308 -0.59482425 -0.62590288 -0.04418425
+## [5,]  0.07630037 -0.8878045 -0.06239072 -0.02341374 -0.44893282</code></pre>
+</div>
+</div>
+<div id="run-conventional-regression-analyses" class="section level3">
+<h3>Run conventional regression analyses</h3>
+<pre class="r"><code>fit1 &lt;- lm(mental_rot ~ 1 + log_contrast + log_motion + male, data = df)
+summary(fit1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mental_rot ~ 1 + log_contrast + log_motion + male, 
+##     data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -12.6528  -4.0435  -0.1531   3.8296  12.6256 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)     4.024      6.698   0.601   0.5491  
+## log_contrast   -7.716      3.264  -2.364   0.0197 *
+## log_motion     -3.911      2.087  -1.874   0.0634 .
+## male            1.936      1.284   1.507   0.1343  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.784 on 121 degrees of freedom
+## Multiple R-squared:  0.1335, Adjusted R-squared:  0.112 
+## F-statistic: 6.212 on 3 and 121 DF,  p-value: 0.0005839</code></pre>
+<pre class="r"><code>plot(fit1) # residual plots for OLS; use &lt;Return&gt; key to cycle through plots in console.</code></pre>
+<p><img src="img/unnamed-chunk-92-1.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-2.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-3.png" width="2100" style="display: block; margin: auto;" /><img src="img/unnamed-chunk-92-4.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fit2 &lt;- psych::corr.test(df)
+print(fit2)</code></pre>
+<pre><code>## Call:psych::corr.test(x = df)
+## Correlation matrix 
+##               mental_rot log_contrast log_motion  male male_motion_r
+## mental_rot          1.00        -0.28      -0.26  0.23          0.18
+## log_contrast       -0.28         1.00       0.24 -0.21          0.07
+## log_motion         -0.26         0.24       1.00 -0.30          0.00
+## male                0.23        -0.21      -0.30  1.00          0.00
+## male_motion_r       0.18         0.07       0.00  0.00          1.00
+## Sample Size 
+## [1] 125
+## Probability values (Entries above the diagonal are adjusted for multiple tests.) 
+##               mental_rot log_contrast log_motion male male_motion_r
+## mental_rot          0.00         0.01       0.03 0.06          0.17
+## log_contrast        0.00         0.00       0.04 0.08          1.00
+## log_motion          0.00         0.01       0.00 0.01          1.00
+## male                0.01         0.02       0.00 0.00          1.00
+## male_motion_r       0.04         0.42       1.00 1.00          0.00
+## 
+##  To see confidence intervals of the correlations, print with the short=FALSE option</code></pre>
+<div id="load-helper-functions" class="section level4">
+<h4>Load helper functions</h4>
+<pre class="r"><code># First up is the RWA function for a traditional multiple regression analysis
+multRegress &lt;- function(mydata) {
+  numVar &lt;&lt;- NCOL(mydata)
+  Variables &lt;&lt;- names(mydata)[2:numVar]
+  
+  mydata &lt;- cor(mydata, use = &quot;pairwise.complete.obs&quot;)
+  RXX &lt;- mydata[2:numVar, 2:numVar]
+  RXY &lt;- mydata[2:numVar, 1]
+  
+  RXX.eigen &lt;- eigen(RXX)
+  D &lt;- diag(RXX.eigen$val)
+  delta &lt;- sqrt(D)
+  
+  lambda &lt;- RXX.eigen$vec %*% delta %*% t(RXX.eigen$vec)
+  lambdasq &lt;- lambda ^ 2
+  beta &lt;- solve(lambda) %*% RXY
+  rsquare &lt;&lt;- sum(beta ^ 2)
+  
+  RawWgt &lt;- lambdasq %*% beta ^ 2
+  import &lt;- (RawWgt / rsquare) * 100
+  
+  result &lt;&lt;-
+    data.frame(Variables,
+               Raw.RelWeight = RawWgt,
+               Rescaled.RelWeight = import)
+}
+
+# Next up, are functions for the bootstrapping options
+multBootstrap &lt;- function(mydata, indices) {
+  mydata &lt;- mydata[indices, ]
+  multWeights &lt;- multRegress(mydata)
+  return(multWeights$Raw.RelWeight)
+}
+
+multBootrand &lt;- function(mydata, indices) {
+  mydata &lt;- mydata[indices, ]
+  multRWeights &lt;- multRegress(mydata)
+  multReps &lt;- multRWeights$Raw.RelWeight
+  randWeight &lt;- multReps[length(multReps)]
+  randStat &lt;- multReps[-(length(multReps))] - randWeight
+  return(randStat)
+}
+
+multBootcomp &lt;- function(mydata, indices, pred_index = 1) {
+  mydata &lt;- mydata[indices, ]
+  multCWeights &lt;- multRegress(mydata)
+  multCeps &lt;- multCWeights$Raw.RelWeight
+  comp2Stat &lt;-
+    multCeps - multCeps[pred_index] # Need to change the number in brackets to reflect which predictor is focal
+  comp2Stat &lt;-
+    comp2Stat[-pred_index] # # If 1st predictor, then [1], if the 3rd predictor, then [3]
+  predictors2 &lt;&lt;-
+    predictors[-pred_index] # Change number in all three lines (88:90) of code
+  return(comp2Stat)
+}
+
+mybootci &lt;- function(x, FUN2 = multBootcomp) {
+  boot::boot.ci(multBoot,
+          conf = 0.95,
+          type = &quot;bca&quot;,
+          index = x) # using bias corrected and accelerated CIs
+}
+
+runBoot &lt;- function(num) {
+  INDEX &lt;- 1:num
+  test &lt;- lapply(INDEX, FUN = mybootci)
+  test2 &lt;- t(sapply(test, &#39;[[&#39;, i = 4)) #extracts confidence interval
+  CIresult &lt;&lt;-
+    data.frame(Variables,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}
+
+myRbootci &lt;- function(x) {
+  boot::boot.ci(multRBoot,
+          conf = 0.95,
+          type = &quot;bca&quot;,
+          index = x)
+}
+
+runRBoot &lt;- function(num) {
+  INDEX &lt;- 1:num
+  test &lt;- lapply(INDEX, FUN = myRbootci)
+  test2 &lt;- t(sapply(test, &#39;[[&#39;, i = 4))
+  CIresult &lt;&lt;-
+    data.frame(predictors,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}
+
+myCbootci &lt;- function(x) {
+  boot::boot.ci(multC2Boot,
+          conf = 0.95,
+          type = &quot;bca&quot;,
+          index = x)
+}
+
+runCBoot &lt;- function(num) {
+  INDEX &lt;- 1:num
+  test &lt;- lapply(INDEX, FUN = myCbootci)
+  test2 &lt;- t(sapply(test, &#39;[[&#39;, i = 4))
+  CIresult &lt;&lt;-
+    data.frame(predictors2,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}
+
+myGbootci &lt;- function(x) {
+  boot::boot.ci(groupBoot,
+          conf = 0.95,
+          type = &quot;bca&quot;,
+          index = x)
+}
+
+runGBoot &lt;- function(num) {
+  INDEX &lt;- 1:num
+  test &lt;- lapply(INDEX, FUN = myGbootci)
+  test2 &lt;- t(sapply(test, &#39;[[&#39;, i = 4))
+  CIresult &lt;&lt;-
+    data.frame(predictors,
+               CI.Lower.Bound = test2[, 4],
+               CI.Upper.Bound = test2[, 5])
+}</code></pre>
+</div>
+<div id="run-the-rwa" class="section level4">
+<h4>Run the RWA</h4>
+<pre class="r"><code>multRegress(df)
+(RW.Results &lt;-
+    result) # create new objects that saves results of RW analysis.</code></pre>
+<pre><code>##       Variables Raw.RelWeight Rescaled.RelWeight
+## 1  log_contrast    0.06039150           35.00539
+## 2    log_motion    0.04370211           25.33153
+## 3          male    0.03213888           18.62901
+## 4 male_motion_r    0.03628811           21.03407</code></pre>
+<pre class="r"><code># using the () just tells R to print the results and create the object.
+
+RSQ.Results &lt;- rsquare</code></pre>
+</div>
+<div id="run-bootstrapping-to-estimate-ses" class="section level4">
+<h4>Run bootstrapping to estimate SEs</h4>
+<pre class="r"><code>#Bootstrapped Confidence interval around the individual relative weights
+#Please be patient -- This can take a few minutes to run
+multBoot &lt;-
+  boot::boot(df, multBootstrap, n_boots) # n_boots is the # of replications;
+# you can change to other values.
+multci &lt;- boot::boot.ci(multBoot, conf = 0.95, type = &quot;bca&quot;)
+runBoot(length(df[, 2:numVar]))
+CI.Results &lt;- CIresult
+
+#Bootstrapped Confidence interval tests of Significance
+#Please be patient -- This can take a few minutes to run
+randVar &lt;- rnorm(nrow(df[, 1]), 0, 1)
+randData &lt;- cbind(df, randVar)
+multRBoot &lt;- boot::boot(randData, multBootrand, n_boots)
+multRci &lt;- boot::boot.ci(multRBoot, conf = 0.95, type = &quot;bca&quot;)
+runRBoot(length(randData[, 2:(numVar - 1)]))
+CI.Significance &lt;- CIresult</code></pre>
+</div>
+<div id="relative-weights-for-full-model" class="section level4">
+<h4>Relative weights for full model</h4>
+<pre class="r"><code>#R-squared For the Model
+RSQ.Results</code></pre>
+<pre><code>## [1] 0.1725206</code></pre>
+<pre class="r"><code>#The Raw and Rescaled Weights
+RW.Results</code></pre>
+<pre><code>##       Variables Raw.RelWeight Rescaled.RelWeight
+## 1  log_contrast    0.06039150           35.00539
+## 2    log_motion    0.04370211           25.33153
+## 3          male    0.03213888           18.62901
+## 4 male_motion_r    0.03628811           21.03407</code></pre>
+<pre class="r"><code>#BCa Confidence Intervals around the raw weights
+CI.Results</code></pre>
+<pre><code>##       Variables CI.Lower.Bound CI.Upper.Bound
+## 1  log_contrast    0.013717914      0.1437826
+## 2    log_motion    0.005376345      0.1150290
+## 3          male    0.002376390      0.1092834
+## 4 male_motion_r    0.001728772      0.1398696</code></pre>
+<pre class="r"><code>#BCa Confidence Interval Tests of significance
+#If Zero is not included, Weight is Significant
+CI.Significance</code></pre>
+<pre><code>##      predictors CI.Lower.Bound CI.Upper.Bound
+## 1  log_contrast    0.001505236      0.1520616
+## 2    log_motion   -0.012087599      0.1264643
+## 3          male   -0.023620491      0.1218635
+## 4 male_motion_r   -0.027466339      0.1455339</code></pre>
+</div>
+</div>
+<div id="run-the-rwa-on-the-trimmed-data" class="section level3">
+<h3>Run the RWA on the trimmed data</h3>
+<p>We deleted two female participants with very low motion duration thresholds. Here we examine whether that changes the relative weights.</p>
+<div id="import-and-clean-data-1" class="section level4">
+<h4>Import and clean data</h4>
+<pre class="r"><code>df &lt;- readr::read_csv(file.path(&quot;csv/mr-contr-motion-sex-trimmed.csv&quot;))</code></pre>
+<pre><code>## Rows: 123 Columns: 4</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): Sex
+## dbl (3): log_contrast, log_motion, mental_rot</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code># Requires all variables be numeric so we recode Sex with Female = 0, Male = 1.
+df &lt;- df %&gt;%
+  dplyr::mutate(., male = if_else(Sex == &quot;Male&quot;, 1, 0)) %&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male)
+
+df &lt;- df %&gt;%
+  dplyr::mutate(., male_motion = male * log_motion) %&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion)
+
+male_motion_lm &lt;- lm(formula = male_motion ~ 1 + male + log_motion, data = df)
+
+male_motion_resid &lt;- resid(male_motion_lm)
+
+df &lt;- df %&gt;%
+  dplyr::mutate(., male_motion_r = male_motion_resid) %&gt;%
+  dplyr::select(., mental_rot, log_contrast, log_motion, male, male_motion_r)</code></pre>
+</div>
+<div id="run-the-rwa-1" class="section level4">
+<h4>Run the RWA</h4>
+<pre class="r"><code>multRegress(df)
+(RW.Results &lt;-
+    result) # create new objects that saves results of RW analysis.</code></pre>
+<pre><code>##       Variables Raw.RelWeight Rescaled.RelWeight
+## 1  log_contrast    0.05916210           37.51117
+## 2    log_motion    0.02750092           17.43670
+## 3          male    0.03135051           19.87749
+## 4 male_motion_r    0.03970511           25.17464</code></pre>
+<pre class="r"><code># using the () just tells R to print the results and create the object.
+
+RSQ.Results &lt;- rsquare</code></pre>
+</div>
+<div id="run-bootstrapping-to-estimate-ses-1" class="section level4">
+<h4>Run bootstrapping to estimate SEs</h4>
+<pre class="r"><code>#Bootstrapped Confidence interval around the individual relative weights
+#Please be patient -- This can take a few minutes to run
+multBoot &lt;-
+  boot::boot(df, multBootstrap, n_boots) # n_boots is the # of replications;
+# you can change to other values.
+multci &lt;- boot::boot.ci(multBoot, conf = 0.95, type = &quot;bca&quot;)
+runBoot(length(df[, 2:numVar]))
+CI.Results &lt;- CIresult
+
+#Bootstrapped Confidence interval tests of Significance
+#Please be patient -- This can take a few minutes to run
+randVar &lt;- rnorm(nrow(df[, 1]), 0, 1)
+randData &lt;- cbind(df, randVar)
+multRBoot &lt;- boot::boot(randData, multBootrand, n_boots)
+multRci &lt;- boot::boot.ci(multRBoot, conf = 0.95, type = &quot;bca&quot;)
+runRBoot(length(randData[, 2:(numVar - 1)]))
+CI.Significance &lt;- CIresult</code></pre>
+</div>
+<div id="relative-weights-for-full-model-trimmed-data" class="section level4">
+<h4>Relative weights for full model (trimmed data)</h4>
+<pre class="r"><code>#R-squared For the Model
+RSQ.Results</code></pre>
+<pre><code>## [1] 0.1577186</code></pre>
+<pre class="r"><code>#The Raw and Rescaled Weights
+RW.Results</code></pre>
+<pre><code>##       Variables Raw.RelWeight Rescaled.RelWeight
+## 1  log_contrast    0.05916210           37.51117
+## 2    log_motion    0.02750092           17.43670
+## 3          male    0.03135051           19.87749
+## 4 male_motion_r    0.03970511           25.17464</code></pre>
+<pre class="r"><code>#BCa Confidence Intervals around the raw weights
+CI.Results</code></pre>
+<pre><code>##       Variables CI.Lower.Bound CI.Upper.Bound
+## 1  log_contrast    0.012512133     0.14325350
+## 2    log_motion    0.002274291     0.09796519
+## 3          male    0.001911248     0.10947270
+## 4 male_motion_r    0.001700543     0.15083544</code></pre>
+<pre class="r"><code>#BCa Confidence Interval Tests of significance
+#If Zero is not included, Weight is Significant
+CI.Significance</code></pre>
+<pre><code>##      predictors CI.Lower.Bound CI.Upper.Bound
+## 1  log_contrast    0.011176291      0.1513664
+## 2    log_motion   -0.004852393      0.1140991
+## 3          male   -0.004952606      0.1231238
+## 4 male_motion_r   -0.004730022      0.1606819</code></pre>
+</div>
+</div>
+</div>
+<div id="do-men-and-women-differ-in-other-ways" class="section level2">
+<h2>Do men and women differ in other ways?</h2>
+<div id="age" class="section level3">
+<h3>Age</h3>
+<pre class="r"><code>xtabs(~ Sex + Age, df_trimmed)</code></pre>
+<pre><code>##         Age
+## Sex      18-19 20-21 22-23 23+
+##   Female    74    21     2   2
+##   Male      19     9     1   1</code></pre>
+</div>
+<div id="school_year" class="section level3">
+<h3>School_year</h3>
+<pre class="r"><code>xtabs(~ Sex + School_year, df_trimmed)</code></pre>
+<pre><code>##         School_year
+## Sex      1st 2nd 3rd 4th
+##   Female  64  19  12   4
+##   Male    19   3   6   2</code></pre>
+</div>
+<div id="acuity" class="section level3">
+<h3>Acuity</h3>
+<pre class="r"><code>xtabs(~ Sex + Acuity, df_trimmed)</code></pre>
+<pre><code>##         Acuity
+## Sex      20/16 20/20 20/25 20/32
+##   Female    77    20     1     1
+##   Male      19    10     1     0</code></pre>
+</div>
+<div id="glasses" class="section level3">
+<h3>Glasses</h3>
+<pre class="r"><code>xtabs(~ Sex + Glasses, df_trimmed)</code></pre>
+<pre><code>##         Glasses
+## Sex      glasses/contacts none
+##   Female               34   30
+##   Male                  7   12</code></pre>
+</div>
+<div id="stereo-acuity" class="section level3">
+<h3>Stereo acuity</h3>
+<pre class="r"><code>xtabs(~ Sex + Stereo_amin, df_trimmed)</code></pre>
+<pre><code>##         Stereo_amin
+## Sex      40 50 60 80 100 140 400 800
+##   Female 84  5  3  2   2   2   0   1
+##   Male   21  0  3  1   2   1   2   0</code></pre>
+</div>
+</div>
+<div id="check-internal-reliability-of-interests" class="section level2">
+<h2>Check internal reliability of interests</h2>
+<p>This measure was taken from a subset of a measure of Gender Diagnosticity (Lippa &amp; Connelly, 1991). Lippa’s measure had participants rate degree of interest in 51 everyday activities (e.g., making a speech, cooking, and discussing politics), and 39 amusements and hobbies (e.g., fishing, jazz or rock concerts, and art galleries). Subjects rated their degree of preference on a 5-point scale: strongly dislike, (1) slightly dislike (2), neutral or indifferent (3), slightly like (4), and strongly like (5). The lists of activities and amusements came from those appearing in Part I of the Strong-Campbell Interest Inventory, Form T325 (Campbell &amp; Hansen, 1981). Our list of items collapses the two subsets of hobby types into one category, and eliminates those which were outdated or unpopular by the time Phase 4 testing began.</p>
+<p>Lippa, R., &amp; Connelly, S. (1990). Gender diagnosticity: A new Bayesian approach to gender-related individual differences. Journal of Personality and Social Psychology, 59(5), 1051–1065. <a href="https://doi.org/10.1037/0022-3514.59.5.1051" class="uri">https://doi.org/10.1037/0022-3514.59.5.1051</a></p>
+<p>Campbell, D. P., &amp; Hansen, J.-I. C. (1981). Manual for the SVIB-SCII: Strong-Campbell interest inventory, form T325 of the Strong vocational interest blank (Vol. 325). Stanford University Press.</p>
+<p>dancing</br> going to art galleries</br> going to church groups</br> writing poetry</br> trying new fashions</br> aerobics</br> travelling</br> talking on phone with friends</br> clothes shopping</br> romance novels</br> singing</br> photography</br> going to formal dress affairs</br> cooking</br> going to shows and plays</br> knitting</br> romance movies</br> going out to dinner with friends</br> going to museums</br> house plants</br> collecting stuffed animals</br> collecting pictures of friends and family</p>
+<p>22 items</p>
+<pre class="r"><code>interest_vars &lt;- sex_diff_df[, 27:86]
+f_typed_interests &lt;-
+  c(&quot;Dancing&quot;,
+    &quot;Going to art galleries&quot;,
+    &quot;Going to church groups&quot;,
+    &quot;Writing poetry&quot;,
+    &quot;Trying new fashions&quot;,
+    &quot;Aerobics&quot;,
+    &quot;Travelling&quot;,
+    &quot;Talking on phone with friends&quot;,
+    &quot;Clothes shopping&quot;,
+    &quot;Romance novels&quot;,
+    &quot;Singing&quot;,
+    &quot;Photography&quot;,
+    &quot;Going to formal dress affairs&quot;,
+    &quot;Cooking&quot;,
+    &quot;Going to shows and plays&quot;,
+    &quot;Knitting&quot;,
+    &quot;Romance movies&quot;,
+    &quot;Going out to dinner with friends&quot;,
+    &quot;Going to museums&quot;,
+    &quot;House plants&quot;,
+    &quot;Collecting stuffed animals&quot;,
+    &quot;Collecting pictures of friends and family&quot;
+  )
+f_interest_vars &lt;- interest_vars[, names(interest_vars) %in% f_typed_interests]
+psych::alpha(f_interest_vars)</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = f_interest_vars)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N   ase mean   sd median_r
+##        0.8       0.8    0.85      0.15 3.9 0.025  3.5 0.46     0.15
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.75 0.8 0.85 
+## 
+##  Reliability if an item is dropped:
+##                                           raw_alpha std.alpha G6(smc) average_r
+## Dancing                                        0.78      0.78    0.84      0.15
+## Going to art galleries                         0.78      0.78    0.83      0.15
+## Going to church groups                         0.80      0.80    0.86      0.16
+## Writing poetry                                 0.79      0.79    0.85      0.15
+## Trying new fashions                            0.78      0.78    0.84      0.15
+## Aerobics                                       0.79      0.79    0.85      0.15
+## Travelling                                     0.79      0.79    0.85      0.15
+## Talking on phone with friends                  0.79      0.79    0.85      0.15
+## Clothes shopping                               0.78      0.78    0.84      0.15
+## Romance novels                                 0.78      0.78    0.84      0.15
+## Singing                                        0.79      0.79    0.85      0.15
+## Photography                                    0.79      0.79    0.84      0.15
+## Going to formal dress affairs                  0.78      0.78    0.84      0.15
+## Cooking                                        0.80      0.80    0.86      0.16
+## Going to shows and plays                       0.79      0.79    0.85      0.15
+## Knitting                                       0.80      0.80    0.85      0.16
+## Romance movies                                 0.78      0.78    0.84      0.15
+## Going out to dinner with friends               0.79      0.79    0.85      0.15
+## Going to museums                               0.79      0.79    0.84      0.15
+## House plants                                   0.78      0.78    0.84      0.15
+## Collecting stuffed animals                     0.79      0.79    0.85      0.15
+## Collecting pictures of friends and family      0.79      0.79    0.84      0.15
+##                                           S/N alpha se var.r med.r
+## Dancing                                   3.6    0.027 0.017  0.15
+## Going to art galleries                    3.6    0.027 0.015  0.15
+## Going to church groups                    4.0    0.025 0.016  0.15
+## Writing poetry                            3.8    0.026 0.016  0.15
+## Trying new fashions                       3.6    0.027 0.015  0.14
+## Aerobics                                  3.8    0.026 0.017  0.15
+## Travelling                                3.7    0.026 0.016  0.15
+## Talking on phone with friends             3.8    0.026 0.017  0.15
+## Clothes shopping                          3.6    0.027 0.015  0.14
+## Romance novels                            3.6    0.027 0.016  0.14
+## Singing                                   3.7    0.026 0.016  0.15
+## Photography                               3.7    0.026 0.017  0.14
+## Going to formal dress affairs             3.6    0.027 0.015  0.15
+## Cooking                                   4.0    0.025 0.016  0.15
+## Going to shows and plays                  3.7    0.026 0.017  0.14
+## Knitting                                  4.0    0.025 0.015  0.15
+## Romance movies                            3.6    0.027 0.016  0.14
+## Going out to dinner with friends          3.8    0.026 0.017  0.15
+## Going to museums                          3.7    0.026 0.015  0.15
+## House plants                              3.6    0.027 0.017  0.14
+## Collecting stuffed animals                3.8    0.026 0.017  0.15
+## Collecting pictures of friends and family 3.7    0.026 0.016  0.14
+## 
+##  Item statistics 
+##                                             n raw.r std.r r.cor r.drop mean
+## Dancing                                   131  0.53  0.51  0.48   0.43  3.7
+## Going to art galleries                    131  0.55  0.53  0.54   0.46  3.3
+## Going to church groups                    131  0.23  0.23  0.15   0.13  2.3
+## Writing poetry                            131  0.44  0.41  0.36   0.33  2.2
+## Trying new fashions                       131  0.53  0.55  0.54   0.46  3.8
+## Aerobics                                  131  0.41  0.40  0.35   0.31  3.2
+## Travelling                                131  0.39  0.43  0.39   0.32  4.6
+## Talking on phone with friends             131  0.31  0.36  0.31   0.25  4.4
+## Clothes shopping                          131  0.52  0.54  0.53   0.43  4.1
+## Romance novels                            131  0.54  0.49  0.48   0.44  3.1
+## Singing                                   131  0.45  0.43  0.39   0.35  3.5
+## Photography                               131  0.40  0.44  0.40   0.33  3.9
+## Going to formal dress affairs             131  0.54  0.55  0.53   0.46  3.8
+## Cooking                                   131  0.25  0.26  0.18   0.15  4.0
+## Going to shows and plays                  131  0.45  0.45  0.40   0.35  3.6
+## Knitting                                  131  0.28  0.26  0.21   0.19  2.2
+## Romance movies                            131  0.51  0.51  0.50   0.42  3.8
+## Going out to dinner with friends          131  0.30  0.37  0.32   0.26  4.8
+## Going to museums                          131  0.47  0.46  0.46   0.37  3.5
+## House plants                              131  0.54  0.54  0.51   0.46  3.5
+## Collecting stuffed animals                131  0.41  0.39  0.35   0.31  2.4
+## Collecting pictures of friends and family 131  0.47  0.48  0.45   0.38  4.1
+##                                             sd
+## Dancing                                   1.21
+## Going to art galleries                    1.13
+## Going to church groups                    1.10
+## Writing poetry                            1.25
+## Trying new fashions                       0.94
+## Aerobics                                  1.10
+## Travelling                                0.76
+## Talking on phone with friends             0.67
+## Clothes shopping                          1.16
+## Romance novels                            1.30
+## Singing                                   1.20
+## Photography                               0.88
+## Going to formal dress affairs             1.07
+## Cooking                                   0.96
+## Going to shows and plays                  1.16
+## Knitting                                  1.00
+## Romance movies                            1.18
+## Going out to dinner with friends          0.46
+## Going to museums                          1.17
+## House plants                              1.17
+## Collecting stuffed animals                1.09
+## Collecting pictures of friends and family 1.07
+## 
+## Non missing response frequency for each item
+##                                              1    2    3    4    5 miss
+## Dancing                                   0.07 0.13 0.13 0.39 0.28 0.01
+## Going to art galleries                    0.07 0.20 0.24 0.37 0.13 0.01
+## Going to church groups                    0.27 0.30 0.27 0.12 0.03 0.01
+## Writing poetry                            0.43 0.18 0.21 0.13 0.05 0.01
+## Trying new fashions                       0.02 0.06 0.28 0.39 0.25 0.01
+## Aerobics                                  0.09 0.14 0.37 0.28 0.11 0.01
+## Travelling                                0.01 0.02 0.05 0.18 0.74 0.01
+## Talking on phone with friends             0.00 0.01 0.08 0.40 0.51 0.01
+## Clothes shopping                          0.05 0.08 0.08 0.27 0.53 0.01
+## Romance novels                            0.15 0.20 0.22 0.28 0.15 0.01
+## Singing                                   0.09 0.10 0.24 0.35 0.21 0.01
+## Photography                               0.00 0.07 0.24 0.43 0.26 0.01
+## Going to formal dress affairs             0.05 0.08 0.14 0.45 0.28 0.01
+## Cooking                                   0.02 0.06 0.12 0.45 0.34 0.01
+## Going to shows and plays                  0.08 0.08 0.26 0.35 0.24 0.01
+## Knitting                                  0.32 0.30 0.31 0.06 0.02 0.01
+## Romance movies                            0.05 0.12 0.16 0.31 0.36 0.01
+## Going out to dinner with friends          0.00 0.00 0.02 0.17 0.81 0.01
+## Going to museums                          0.06 0.15 0.21 0.36 0.23 0.01
+## House plants                              0.05 0.14 0.29 0.27 0.25 0.01
+## Collecting stuffed animals                0.24 0.31 0.26 0.18 0.02 0.01
+## Collecting pictures of friends and family 0.05 0.02 0.21 0.26 0.47 0.01</code></pre>
+<p>Activities showing strong patterns of endorsement or high ratings by male participants:</p>
+<p>golf</br> home electronics</br> surfing</br> computers</br> video games</br> watching violent movies</br> going to car shows</br> fishing</br> poker</br> playing basketball</br> TV sports</br> football</br> weight lifting</br> working on cars</br> drag racing</br></p>
+<p>15 items</p>
+<pre class="r"><code>m_typed_interests &lt;-
   c(
-    &quot;Participant&quot;,
-    &quot;Sex&quot;,
-    &quot;log_contrast&quot;,
-    &quot;log_motion&quot;,
     &quot;Golf&quot;,
     &quot;Home electronics&quot;,
     &quot;Surfing&quot;,
@@ -2287,18 +2678,14 @@ summary(lm_mr_no_vision_sex)</code></pre>
     &quot;Football&quot;,
     &quot;Weight lifting&quot;,
     &quot;Working on cars&quot;,
-    &quot;Drag racing&quot;,
-    &quot;Masculine_hobbies&quot;
+    &quot;Drag racing&quot;
   )
-male_hobbies &lt;- sex_diff_df[, var]
-male_hobbies_F &lt;- male_hobbies %&gt;% 
-  dplyr::filter(Sex == &quot;Female&quot;)</code></pre>
-<div id="calculate-alpha" class="section level3">
-<h3>Calculate alpha</h3>
-<pre class="r"><code>psych::alpha(male_hobbies[,-c(1:4,20)])</code></pre>
+
+m_interest_vars &lt;- interest_vars[, ( names(interest_vars) %in% m_typed_interests )]
+psych::alpha(m_interest_vars)</code></pre>
 <pre><code>## 
 ## Reliability analysis   
-## Call: psych::alpha(x = male_hobbies[, -c(1:4, 20)])
+## Call: psych::alpha(x = m_interest_vars)
 ## 
 ##   raw_alpha std.alpha G6(smc) average_r S/N   ase mean  sd median_r
 ##       0.79       0.8    0.84      0.21 3.9 0.026    3 0.6      0.2
@@ -2375,292 +2762,6 @@ male_hobbies_F &lt;- male_hobbies %&gt;%
 ## Weight lifting          0.13 0.24 0.25 0.24 0.15 0.01
 ## Working on cars         0.44 0.35 0.15 0.02 0.05 0.01
 ## Drag racing             0.30 0.27 0.29 0.08 0.05 0.01</code></pre>
-</div>
-<div id="check-data-for-outliers" class="section level3">
-<h3>Check data for outliers</h3>
-<pre class="r"><code>FindOutliers(male_hobbies$Masculine_hobbies)</code></pre>
-<pre><code>## integer(0)</code></pre>
-<p>No data are outliers.</p>
-</div>
-<div id="correlation-between-male-typed-hobbies-and-log-contrast" class="section level3">
-<h3>Correlation between male-typed hobbies and log contrast</h3>
-<pre class="r"><code>rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$P[,1] # home electronics and basketball</code></pre>
-<pre><code>##            log_contrast                    Golf        Home electronics 
-##                      NA             0.515670721             0.026808742 
-##                 Surfing               Computers             Video games 
-##             0.101246749             0.406131320             0.064211971 
-## Watching violent movies      Going to car shows                 Fishing 
-##             0.126427003             0.583906276             0.343230099 
-##                   Poker      Playing basketball               TV sports 
-##             0.625660353             0.006502565             0.451328734 
-##                Football          Weight lifting         Working on cars 
-##             0.655463043             0.733745030             0.338041754 
-##             Drag racing       Masculine_hobbies 
-##             0.446397558             0.054985103</code></pre>
-<pre class="r"><code>rcorr(as.matrix(male_hobbies_F[,-c(1,2,4)]))$r[,1]</code></pre>
-<pre><code>##            log_contrast                    Golf        Home electronics 
-##              1.00000000              0.06609877             -0.22257196 
-##                 Surfing               Computers             Video games 
-##             -0.16567326             -0.08441350             -0.18673478 
-## Watching violent movies      Going to car shows                 Fishing 
-##             -0.15464281              0.05570944              0.09625879 
-##                   Poker      Playing basketball               TV sports 
-##             -0.04963025             -0.27178430             -0.07656075 
-##                Football          Weight lifting         Working on cars 
-##             -0.04539678             -0.03461554             -0.09729378 
-##             Drag racing       Masculine_hobbies 
-##             -0.07739510             -0.19349666</code></pre>
-<p><code>Playing basketball</code> and <code>Home electronics</code> substantial large negative correlations (in women) with log contrast thresholds.</p>
-<div id="playing-basketball-and-contrast-sensitivity" class="section level4">
-<h4>Playing basketball and Contrast Sensitivity</h4>
-<pre class="r"><code>cor.test(
-  male_hobbies_F$log_contrast,
-  male_hobbies_F$&quot;Playing basketball&quot;,
-  method = &quot;pearson&quot;,
-  alternative = &quot;two.sided&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  male_hobbies_F$log_contrast and male_hobbies_F$&quot;Playing basketball&quot;
-## t = -2.7815, df = 97, p-value = 0.006503
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  -0.44530403 -0.07858904
-## sample estimates:
-##        cor 
-## -0.2717843</code></pre>
-<pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default(male_hobbies_F, log_contrast, &quot;Playing basketball&quot;)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
-<pre><code>## [1] &quot;r = -0.27 95% CI [-0.45, -0.08]&quot;</code></pre>
-</div>
-<div id="home-electronics-and-contrast-sensitivity" class="section level4">
-<h4>Home electronics and Contrast Sensitivity</h4>
-<pre class="r"><code>cor.test(
-   male_hobbies_F$log_contrast,
-   male_hobbies_F$&quot;Home electronics&quot;,
-  method = &quot;pearson&quot;,
-  alternative = &quot;two.sided&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  male_hobbies_F$log_contrast and male_hobbies_F$&quot;Home electronics&quot;
-## t = -2.2485, df = 97, p-value = 0.02681
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  -0.40230708 -0.02631643
-## sample estimates:
-##       cor 
-## -0.222572</code></pre>
-<pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default( male_hobbies_F, log_contrast, &quot;Home electronics&quot;)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
-<pre><code>## [1] &quot;r = -0.22 95% CI [-0.40, -0.03]&quot;</code></pre>
-</div>
-</div>
-<div id="correlation-between-male-typed-hobbies-and-log-motion" class="section level3">
-<h3>Correlation between male-typed hobbies and log motion</h3>
-<pre class="r"><code>rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$P[,1] # computer, camping, weight lifting</code></pre>
-<pre><code>##              log_motion                    Golf        Home electronics 
-##                      NA             0.982298677             0.490946085 
-##                 Surfing               Computers             Video games 
-##             0.082785357             0.016869517             0.076531451 
-## Watching violent movies      Going to car shows                 Fishing 
-##             0.442946624             0.959971813             0.263468621 
-##                   Poker      Playing basketball               TV sports 
-##             0.784023504             0.417944365             0.285775452 
-##                Football          Weight lifting         Working on cars 
-##             0.735051646             0.001657865             0.886451933 
-##             Drag racing       Masculine_hobbies 
-##             0.108169626             0.742927984</code></pre>
-<pre class="r"><code>rcorr(as.matrix(male_hobbies_F[,-c(1:3)]))$r[,1]</code></pre>
-<pre><code>##              log_motion                    Golf        Home electronics 
-##             1.000000000             0.002282348            -0.070767181 
-##                 Surfing               Computers             Video games 
-##             0.177037912            -0.242137747            -0.180694692 
-## Watching violent movies      Going to car shows                 Fishing 
-##            -0.078800385             0.005162812            -0.114650517 
-##                   Poker      Playing basketball               TV sports 
-##            -0.028188456             0.083177939             0.109474652 
-##                Football          Weight lifting         Working on cars 
-##             0.034801421             0.315280233            -0.014688289 
-##             Drag racing       Masculine_hobbies 
-##             0.164132309             0.033728935</code></pre>
-<p><code>Weightlifing</code> and <code>Computers</code> shows substantial correlations with motion duration thresholds.</p>
-<div id="weightlifting-and-motion-duration" class="section level4">
-<h4>Weightlifting and Motion Duration</h4>
-<pre class="r"><code>cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$&quot;Weight lifting&quot;,
-  method = &quot;pearson&quot;,
-  alternative = &quot;two.sided&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  male_hobbies_F$log_motion and male_hobbies_F$&quot;Weight lifting&quot;
-## t = 3.2381, df = 95, p-value = 0.001658
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  0.1236075 0.4842739
-## sample estimates:
-##       cor 
-## 0.3152802</code></pre>
-<pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default( male_hobbies_F, log_motion, &quot;Weight lifting&quot;)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
-<pre><code>## [1] &quot;r = 0.32 95% CI [0.12, 0.48]&quot;</code></pre>
-<div id="computers-and-motion-duration" class="section level5">
-<h5>Computers and Motion Duration</h5>
-<pre class="r"><code>cor.test(
-   male_hobbies_F$log_motion,
-   male_hobbies_F$&quot;Computers&quot;,
-  method = &quot;pearson&quot;,
-  alternative = &quot;two.sided&quot;
-)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s product-moment correlation
-## 
-## data:  male_hobbies_F$log_motion and male_hobbies_F$Computers
-## t = -2.4325, df = 95, p-value = 0.01687
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  -0.42124004 -0.04485878
-## sample estimates:
-##        cor 
-## -0.2421377</code></pre>
-<pre class="r"><code>es_mental_mas_contrast &lt;- esci::estimateCorrelation.default( male_hobbies_F, log_motion, &quot;Computers&quot;)</code></pre>
-<pre><code>## Warning in predict.lm(lbf, interval = &quot;prediction&quot;, level = conf.level): predictions on current data refer to _future_ responses</code></pre>
-<pre class="r"><code>es_mental_mas_contrast$formatted_r</code></pre>
-<pre><code>## [1] &quot;r = -0.24 95% CI [-0.42, -0.04]&quot;</code></pre>
-</div>
-</div>
-</div>
-<div id="set-function-for-scatterplot" class="section level3">
-<h3>set function for scatterplot</h3>
-<pre class="r"><code>sex_diff_scatter3 &lt;-
-  function(df,
-           x_var,
-           y_var,
-           x_lab = &quot;X axis&quot;,
-           y_lab = &quot;Y axis&quot;
-           ) {
-    require(tidyverse)
-    require(ggExtra)
-    
-    x_var_s &lt;- sym(x_var)
-    y_var_s &lt;- sym(y_var)
-    
-    p &lt;- ggplot(df) +
-      aes(
-        x = !!x_var_s,
-        y = !!y_var_s
-      ) +
-      geom_point(size=4) +
-      xlab(x_var) +
-      ylab(y_var) +
-      stat_smooth(method = &quot;lm&quot;, na.rm = TRUE) +
-      xlab(x_lab) +
-      ylab(y_lab)+
-      theme.custom +
-      ylim(1, 5) 
-p
-  }</code></pre>
-<div id="get-scatterplot-for-contrast-sensitivity-and-playing-basketball" class="section level4">
-<h4>get scatterplot for contrast sensitivity and playing basketball</h4>
-<pre class="r"><code>sex_diff_scatter3(
-  male_hobbies_F,
-  &quot;log_contrast&quot;,
-  &quot;Playing basketball&quot;,
-  &quot;log(contrast threshold)&quot;,
-  &quot;Playing basketball&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-94-1.png" width="2100" style="display: block; margin: auto;" /> #### get scatterplot for contrast sensitivity and electronics</p>
-<pre class="r"><code>sex_diff_scatter3(
-  male_hobbies_F,
-  &quot;log_contrast&quot;,
-  &quot;Home electronics&quot;,
-  &quot;log(contrast threshold)&quot;,
-  &quot;Home electronics&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-95-1.png" width="2100" style="display: block; margin: auto;" /> #### get scatterplot for motion sensitivity and weight lifting</p>
-<pre class="r"><code>sex_diff_scatter3(
-  male_hobbies_F,
-  &quot;log_motion&quot;,
-  &quot;Weight lifting&quot;,
-  &quot;log(motion threshold)&quot;,
-  &quot;Weight lifting&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-96-1.png" width="2100" style="display: block; margin: auto;" /> #### get scatterplot for motion sensitivity and weight lifting, after excluding outliers</p>
-<pre class="r"><code>male_hobbies_Fex&lt;-male_hobbies_F[-which(male_hobbies_F$log_motion &gt; -1),]
-sex_diff_scatter3(
-  male_hobbies_Fex,
-  &quot;log_motion&quot;,
-  &quot;Weight lifting&quot;,
-  &quot;log(motion threshold)&quot;,
-  &quot;Weight lifting&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-97-1.png" width="2100" style="display: block; margin: auto;" /></p>
-</div>
-<div id="get-scatterplot-for-motion-sensitivity-and-weight-lifting" class="section level4">
-<h4>get scatterplot for motion sensitivity and weight lifting</h4>
-<pre class="r"><code>sex_diff_scatter3(
-  male_hobbies_F,
-  &quot;log_motion&quot;,
-  &quot;Computers&quot;,
-  &quot;log(motion threshold)&quot;,
-  &quot;Computers&quot;
-)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="img/unnamed-chunk-98-1.png" width="2100" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-</div>
-<div id="do-men-and-women-differ-in-other-ways" class="section level2">
-<h2>Do men and women differ in other ways?</h2>
-<div id="age" class="section level3">
-<h3>Age</h3>
-<pre class="r"><code>xtabs(~ Sex + Age, df_trimmed)</code></pre>
-<pre><code>##         Age
-## Sex      18-19 20-21 22-23 23+
-##   Female    74    21     2   2
-##   Male      19     9     1   1</code></pre>
-</div>
-<div id="school_year" class="section level3">
-<h3>School_year</h3>
-<pre class="r"><code>xtabs(~ Sex + School_year, df_trimmed)</code></pre>
-<pre><code>##         School_year
-## Sex      1st 2nd 3rd 4th
-##   Female  64  19  12   4
-##   Male    19   3   6   2</code></pre>
-</div>
-<div id="visual-acuity" class="section level3">
-<h3>Visual acuity</h3>
-<pre class="r"><code>xtabs(~ Sex + Acuity, df_trimmed)</code></pre>
-<pre><code>##         Acuity
-## Sex      20/16 20/20 20/25 20/32
-##   Female    77    20     1     1
-##   Male      19    10     1     0</code></pre>
-</div>
-<div id="stereo-acuity" class="section level3">
-<h3>Stereo acuity</h3>
-<pre class="r"><code>xtabs(~ Sex + Stereo_amin, df_trimmed)</code></pre>
-<pre><code>##         Stereo_amin
-## Sex      40 50 60 80 100 140 400 800
-##   Female 84  5  3  2   2   2   0   1
-##   Male   21  0  3  1   2   1   2   0</code></pre>
-</div>
 </div>
 </div>
 
